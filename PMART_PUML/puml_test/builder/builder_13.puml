@@ -1,0 +1,89 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		class HTMLEditor {
+			{const} CONTENT_TYPE: java.lang.String
+			{const} FILE_EXTENSIONS: java.lang.String [*]
+			-_CHANGED: JavaPrimitiveTypes.boolean
+			-_CURRENT_PARAGRAPH: javax.swing.text.Element
+			-_CURRENT_RUN: javax.swing.text.Element
+			-_EDITOR: javax.swing.JTextPane
+			-_EVENT_LISTENER: E
+			-_FILE: java.io.File
+			'Default Document Constructor.
+			<<Create>> HTMLEditor()
+			append(file : java.io.File)
+			'@param start int
+			'@param length int
+			'@param wordsOnly boolean expand or contract length to match the nearest  whole word.
+			documentSetSelection(start : JavaPrimitiveTypes.int, length : JavaPrimitiveTypes.int, wordsOnly : JavaPrimitiveTypes.boolean)
+			'Returns the content type as a MIME string.
+			'@return java.lang.String
+			getContentType(): java.lang.String
+			getCurrentParagraph(): javax.swing.text.Element
+			getCurrentRun(): javax.swing.text.Element
+			'Returns the content type as a MIME string.
+			'@return java.lang.String
+			-getEventListener(): E
+			'Returns the content type as a MIME string.
+			'@return java.lang.String
+			getFileExtensions(): java.lang.String
+			getInputAttributes(): javax.swing.text.MutableAttributeSet
+			getTextComponent(): javax.swing.JEditorPane
+			hasBeenActivated(editor : Editor)
+			hasBeenDeactivated(editor : Editor)
+			init()
+			insert(file : java.io.File, position : JavaPrimitiveTypes.int)
+			'Has the document changed since we loaded/created it?
+			'@return boolean
+			isChanged(): JavaPrimitiveTypes.boolean
+			'Does the document contain any data?
+			'@return boolean
+			isEmpty(): JavaPrimitiveTypes.boolean
+			'Does the document contain formatting, or can we write it as plain text without  loosing anything.
+			'@return boolean
+			isFormatted(): JavaPrimitiveTypes.boolean
+			'Does the document represent a new file?
+			'@return boolean
+			isNew(): JavaPrimitiveTypes.boolean
+			keyPressed(kp : java.awt.event.KeyEvent)
+			keyReleased(kr : java.awt.event.KeyEvent)
+			keyTyped(kt : java.awt.event.KeyEvent)
+			mouseClicked(e : java.awt.event.MouseEvent)
+			mouseEntered(e : java.awt.event.MouseEvent)
+			mouseExited(e : java.awt.event.MouseEvent)
+			mousePressed(e : java.awt.event.MouseEvent)
+			mouseReleased(e : java.awt.event.MouseEvent)
+			read(file : java.io.File)
+			requestFocus()
+			'Sets the blink rate of the Caret.
+			'@param colour java.awt.Color
+			setCaretBlinkRate(rate : JavaPrimitiveTypes.int)
+			'Sets the colour of the Caret.
+			'@param colour java.awt.Color
+			setCaretColor(colour : java.awt.Color)
+			'Set the document changed flag.
+			'@param changed boolean
+			setChanged(changed : JavaPrimitiveTypes.boolean)
+			setCurrentParagraph(paragraph : javax.swing.text.Element)
+			setCurrentRun(run : javax.swing.text.Element)
+			'Sets the selection colour.
+			'@param colour java.awt.Color
+			setSelectionColor(colour : java.awt.Color)
+			write(file : java.io.File)
+		}
+	}
+	java.awt.event.MouseListener <|.. Builder.HTMLEditor
+	java.awt.event.KeyListener <|.. Builder.HTMLEditor
+	Builder.Editor <|-- Builder.HTMLEditor
+	java.lang.String "CONTENT_TYPE" <-- Builder.HTMLEditor
+	java.lang.String "FILE_EXTENSIONS 0..*" <-- Builder.HTMLEditor
+	JavaPrimitiveTypes.boolean "_CHANGED" <-- Builder.HTMLEditor
+	javax.swing.text.Element "_CURRENT_PARAGRAPH" <-- Builder.HTMLEditor
+	javax.swing.text.Element "_CURRENT_RUN" <-- Builder.HTMLEditor
+	javax.swing.JTextPane "_EDITOR" <-- Builder.HTMLEditor
+	Builder.HTMLEditor "_PARENT" <-- Builder.HTMLEditor.E
+	Builder.HTMLEditor.E "_EVENT_LISTENER" <-- Builder.HTMLEditor
+	java.io.File "_FILE" <-- Builder.HTMLEditor
+}
+@enduml

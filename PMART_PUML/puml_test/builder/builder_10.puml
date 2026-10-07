@@ -1,0 +1,51 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		'Builds the invocation of the method that is extracted for insertion into the place where the method was extracted
+		'@author    Chris Seguin
+		class EMBuilder {
+			-isStatement: JavaPrimitiveTypes.boolean
+			-localVariableNeeded: JavaPrimitiveTypes.boolean
+			-methodName: java.lang.String
+			-parameters: java.util.LinkedList
+			-returnSummary: VariableSummary
+			'Constructor for the EMBuilder object
+			<<Create>> EMBuilder()
+			'Builds the statement or assignment or local variable declaration
+			'@return    The resulting value
+			build(): Node
+			'Builds the assignment
+			'@param stateExpress  Description of Parameter
+			-buildAssignment(stateExpress : ASTStatementExpression)
+			'Builds the method invocation
+			'@param stateExpress  Description of Parameter
+			'@param index         Description of Parameter
+			'@return               Description of the Returned Value
+			-buildMethodInvocation(stateExpress : SimpleNode, index : JavaPrimitiveTypes.int): ASTPrimaryExpression
+			'Builds a local variable declaration
+			'@param blockStatement  the block statement we are inserting into
+			-buildWithLocal(blockStatement : ASTBlockStatement)
+			'Sets the LocalVariableNeeded attribute of the EMBuilder object
+			'@param value  The new LocalVariableNeeded value
+			setLocalVariableNeeded(value : JavaPrimitiveTypes.boolean)
+			'Sets the MethodName attribute of the EMBuilder object
+			'@param value  The new MethodName value
+			setMethodName(value : java.lang.String)
+			'Sets the Parameters attribute of the EMBuilder object
+			'@param list  The new Parameters value
+			setParameters(list : java.util.LinkedList)
+			'Sets the ReturnName attribute of the EMBuilder object
+			'@param name  The new ReturnName value
+			setReturnSummary(value : VariableSummary)
+			'Sets the Statement attribute of the EMBuilder object
+			'@param value  The new Statement value
+			setStatement(value : JavaPrimitiveTypes.boolean)
+		}
+	}
+	JavaPrimitiveTypes.boolean "isStatement" <-- Builder.EMBuilder
+	JavaPrimitiveTypes.boolean "localVariableNeeded" <-- Builder.EMBuilder
+	java.lang.String "methodName" <-- Builder.EMBuilder
+	java.util.LinkedList "parameters" <-- Builder.EMBuilder
+	Builder.VariableSummary "returnSummary" <-- Builder.EMBuilder
+}
+@enduml
