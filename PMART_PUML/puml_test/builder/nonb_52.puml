@@ -1,0 +1,37 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'The package selector dialog box
+			'@author    Chris Seguin
+			class PackageSelectorDialog {
+				-buttons: ButtonPanel
+				-selection: PackageSelectorArea
+				-summary: PackageSummary
+				'Constructor for the PackageSelectorDialog object
+				'@param parent  the parent dialog rame
+				<<Create>> PackageSelectorDialog(parent : javax.swing.JFrame)
+				'Selects the package when the user presses OK
+				'@param evt  the action event
+				actionPerformed(evt : java.awt.event.ActionEvent)
+				'Gets the summary that has been selected
+				'@return    the selected package summary
+				getSummary(): PackageSummary
+				'The main program for the PackageSelectorDialog class
+				'@param args  The command line arguments
+				{static} main(args : java.lang.String)
+			}
+		}
+	}
+	java.awt.event.ActionListener <|.. Builder.nonbuilder.PackageSelectorDialog
+	javax.swing.JDialog <|-- Builder.nonbuilder.PackageSelectorDialog
+	javax.swing.JPanel <|-- Builder.nonbuilder.PackageSelectorArea
+	java.awt.event.ActionListener "listener" <-- Builder.nonbuilder.PackageSelectorDialog.ButtonPanel
+	java.awt.Dimension "preferredSize" <-- Builder.nonbuilder.PackageSelectorDialog.ButtonPanel
+	Builder.nonbuilder.PackageSelectorDialog.ButtonPanel "buttons" <-- Builder.nonbuilder.PackageSelectorDialog
+	javax.swing.JList "listbox" <-- Builder.nonbuilder.PackageSelectorArea
+	javax.swing.JScrollPane "pane" <-- Builder.nonbuilder.PackageSelectorArea
+	Builder.nonbuilder.PackageSelectorArea "selection" <-- Builder.nonbuilder.PackageSelectorDialog
+	Builder.nonbuilder.PackageSummary "summary" <-- Builder.nonbuilder.PackageSelectorDialog
+}
+@enduml

@@ -1,0 +1,94 @@
+@startuml
+'Design pattern Factory Method
+package "PMD v1.8" as PMD_v1.8 {
+	package net {
+		package sourceforge {
+			package pmd {
+				package symboltable {
+					'DP role: creator
+					interface ScopeFactory {
+						openScope(scopes : PMD_v1.8.java.util.Stack, node : PMD_v1.8.net.sourceforge.pmd.ast.SimpleNode)
+					}
+					'DP role: product
+					interface Scope {
+						addDeclaration(decl : VariableNameDeclaration)
+						addDeclaration(decl : MethodNameDeclaration)
+						addVariableNameOccurrence(occ : NameOccurrence): NameDeclaration
+						contains(occ : NameOccurrence): JavaPrimitiveTypes.boolean
+						getEnclosingClassScope(): ClassScope
+						getParent(): Scope
+						getVariableDeclarations(lookingForUsed : JavaPrimitiveTypes.boolean): PMD_v1.8.java.util.Map
+						setParent(parent : Scope)
+					}
+					'DP role: concreteProduct
+					class ClassScope {
+						-{static} anonymousInnerClassCounter: JavaPrimitiveTypes.int
+						-className: PMD_v1.8.java.lang.String
+						<<Create>> ClassScope(className : PMD_v1.8.java.lang.String)
+						<<Create>> ClassScope()
+						addDeclaration(decl : MethodNameDeclaration)
+						-clipClassName(in : PMD_v1.8.java.lang.String): PMD_v1.8.java.lang.String
+						#findVariableHere(occurrence : NameOccurrence): NameDeclaration
+						getClassName(): PMD_v1.8.java.lang.String
+						getEnclosingClassScope(): ClassScope
+						toString(): PMD_v1.8.java.lang.String
+					}
+					'DP role: concreteCreator
+					class BasicScopeFactory {
+						-scopeEvaluators: PMD_v1.8.java.util.Set
+						<<Create>> BasicScopeFactory()
+						openScope(scopes : PMD_v1.8.java.util.Stack, node : PMD_v1.8.net.sourceforge.pmd.ast.SimpleNode)
+					}
+					'DP role: concreteProduct
+					'DP role: concreteProduct
+					class GlobalScope {
+						<<Create>> GlobalScope()
+						addDeclaration(decl : MethodNameDeclaration)
+						addDeclaration(decl : VariableNameDeclaration)
+						addVariableNameOccurrence(occ : NameOccurrence): NameDeclaration
+						contains(occ : NameOccurrence): JavaPrimitiveTypes.boolean
+						#findVariableHere(occ : NameOccurrence): NameDeclaration
+						getEnclosingClassScope(): ClassScope
+						getUnusedVariableDeclarations(): PMD_v1.8.java.util.Map
+						toString(): PMD_v1.8.java.lang.String
+					}
+					'DP role: concreteProduct
+					class LocalScope {
+						<<Create>> LocalScope()
+						addDeclaration(nameDecl : VariableNameDeclaration)
+						findVariableHere(occurrence : NameOccurrence): NameDeclaration
+						toString(): PMD_v1.8.java.lang.String
+					}
+					'DP role: concreteProduct
+					class MethodScope {
+						<<Create>> MethodScope()
+						findVariableHere(occurrence : NameOccurrence): NameDeclaration
+						toString(): PMD_v1.8.java.lang.String
+					}
+					AbstractNameDeclaration <|-- VariableNameDeclaration
+					NameDeclaration <|.. VariableNameDeclaration
+					AbstractNameDeclaration <|-- MethodNameDeclaration
+					NameDeclaration <|.. MethodNameDeclaration
+					AbstractScope <|-- ClassScope
+					Scope <|.. AbstractScope
+					ScopeFactory <|.. BasicScopeFactory
+					AbstractScope <|-- GlobalScope
+					Scope <|.. GlobalScope
+					AbstractScope <|-- LocalScope
+					AbstractScope <|-- MethodScope
+					PMD_v1.8.net.sourceforge.pmd.ast.SimpleNode "node" <-- AbstractNameDeclaration
+					PMD_v1.8.java.lang.String "image" <-- NameOccurrence
+					JavaPrimitiveTypes.boolean "isMethodOrConstructorInvocation" <-- NameOccurrence
+					PMD_v1.8.net.sourceforge.pmd.ast.SimpleNode "location" <-- NameOccurrence
+					PMD_v1.8.java.util.Map "methodNames" <-- AbstractScope
+					Scope "parent" <-- AbstractScope
+					PMD_v1.8.java.util.Map "variableNames" <-- AbstractScope
+					JavaPrimitiveTypes.int "anonymousInnerClassCounter" <-- ClassScope
+					PMD_v1.8.java.lang.String "className" <-- ClassScope
+					PMD_v1.8.java.util.Set "scopeEvaluators" <-- BasicScopeFactory
+				}
+			}
+		}
+	}
+}
+@enduml

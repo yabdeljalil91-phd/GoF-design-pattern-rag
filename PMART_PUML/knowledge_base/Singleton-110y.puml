@@ -1,0 +1,20 @@
+@startuml
+' Singleton class UML for NullWritable (Nutch v0.4)
+
+package "10 - Nutch v0.4" as Nutch {
+
+    class NullWritable {
+        - {const} THIS: NullWritable
+        - <<Create>> NullWritable()
+
+        ' Singleton accessor
+        {static} get(): NullWritable
+
+        ' Methods
+        readFields(in: java.io.DataInput)
+        write(out: java.io.DataOutput)
+    }
+
+    Writable <|.. NullWritable
+}
+@enduml

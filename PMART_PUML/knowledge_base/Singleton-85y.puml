@@ -1,0 +1,21 @@
+@startuml
+' Singleton class UML for Clipboard (JHotDraw 5.1)
+
+package "JHotDraw v5.1" as JHotDraw {
+
+    class Clipboard {
+        - fContents: Object
+        {static} fgClipboard: Clipboard
+
+        ' Protected constructor to enforce singleton
+        -Clipboard()
+
+        ' Static accessor for singleton instance
+        {static} getClipboard(): Clipboard
+
+        ' Instance methods to get/set clipboard contents
+        getContents(): Object
+        setContents(contents: Object)
+    }
+}
+@enduml

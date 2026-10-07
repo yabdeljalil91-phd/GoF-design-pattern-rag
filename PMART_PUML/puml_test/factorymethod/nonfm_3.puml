@@ -1,0 +1,153 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'Refactoring class that extracts a portion of the method and creates a new method with what the user has selected.
+			'@author    Chris Seguin
+			class ExtractMethodRefactoring {
+				{const} PACKAGE: JavaPrimitiveTypes.int = 1
+				{const} PRIVATE: JavaPrimitiveTypes.int = 0
+				{const} PROTECTED: JavaPrimitiveTypes.int = 2
+				{const} PUBLIC: JavaPrimitiveTypes.int = 3
+				-arguments: java.lang.Object [*]
+				-empf: EMParameterFinder
+				-extractedMethodFileSummary: FileSummary
+				-fullFile: java.lang.StringBuffer
+				-key: Node
+				-mainFileSummary: FileSummary
+				-methodName: java.lang.String
+				-prot: JavaPrimitiveTypes.int
+				-returnType: java.lang.Object
+				-root: SimpleNode
+				-selection: java.lang.String
+				-signature: java.lang.StringBuffer
+				'Constructor for the ExtractMethodRefactoring object
+				#<<Create>> ExtractMethodRefactoring()
+				'Adds the return at the end of the method if one is necessary
+				'@param methodDecl  The feature to be added to the Return attribute
+				'@return             Description of the Returned Value
+				-addReturn(methodDecl : SimpleNode): SimpleNode
+				'Finds the parameters
+				'@param result  the location where the section was found
+				'@return         Description of the Returned Value
+				-findParameters(result : Found): EMParameterFinder
+				'Description of the Method
+				'@param node  Description of Parameter
+				'@return       Description of the Returned Value
+				-findVariablesUsed(node : Node): FileSummary
+				'Gets the Description attribute of the ExtractMethodRefactoring object
+				'@return    The Description value
+				getDescription(): java.lang.String
+				'Gets the FileRoot attribute of the ExtractMethodRefactoring object
+				'@return    The FileRoot value
+				-getFileRoot(): SimpleNode
+				'Gets the FullFile attribute of the ExtractMethodRefactoring object
+				'@return    The FullFile value
+				getFullFile(): java.lang.String
+				'Gets the ID attribute of the ExtractMethodRefactoring object
+				'@return    The ID value
+				getID(): JavaPrimitiveTypes.int
+				'Gets the MethodTree attribute of the ExtractMethodRefactoring object
+				'@return    The MethodTree value
+				-getMethodTree(): SimpleNode
+				'Gets the Parameters attribute of the ExtractMethodRefactoring object
+				'@return                           The Parameters value
+				'@exception RefactoringException  Description of Exception
+				getParameters(): VariableSummary
+				'Returns the protection
+				'@return    The Protection value
+				-getProtection(): java.lang.String
+				'Gets the return type for the extracted method
+				'@return    The return type
+				getReturnType(): java.lang.Object
+				'Returns the return type
+				'@return    The ReturnType value
+				-getReturnTypeString(): java.lang.String
+				'Gets the possible return types
+				'@return                           The return types
+				'@exception RefactoringException  problem in loading these
+				getReturnTypes(): java.lang.Object
+				'Gets the Signature attribute of the ExtractMethodRefactoring object
+				'@return    The Signature value
+				getSignature(): java.lang.String
+				'Inserts the method at the next class found when heading up from the first place where we replaced this value
+				'@param currentNode  where this was found
+				'@param methodTree   the method to be inserted
+				-insertAtNextClass(currentNode : SimpleNode, methodTree : SimpleNode)
+				'Gets the Statement attribute of the ExtractMethodRefactoring object
+				'@return    The Statement value
+				isStatement(): JavaPrimitiveTypes.boolean
+				'Creates a string with the new method in it
+				'@return    the new method
+				-makeMethod(): java.lang.String
+				'These items must be true before the refactoring will work
+				'@exception RefactoringException  the problem that arose
+				#preconditions()
+				'This allows us to scan for the parameters first
+				'@param srch  Description of Parameter
+				'@return       Description of the Returned Value
+				-prescan(srch : Search): EMParameterFinder
+				'Prints the file using the pretty printer option
+				'@param root  Description of Parameter
+				-printFile(root : SimpleNode)
+				'Replace all instances of code with a selected value
+				'@param root  Description of Parameter
+				-replaceAllInstances(root : SimpleNode)
+				'Replaces the extracted method
+				'@param result   where we found the portion to replace
+				'@param builder  build a method invocation
+				-replaceExtractedMethod(result : Found, builder : EMBuilder)
+				'Sets the FullFile attribute of the ExtractMethodRefactoring object
+				'@param value  The new FullFile value
+				setFullFile(value : java.lang.String)
+				'Sets the FullFile attribute of the ExtractMethodRefactoring object
+				'@param value  The new FullFile value
+				setFullFile(value : java.lang.StringBuffer)
+				'Sets the MethodName attribute of the ExtractMethodRefactoring object
+				'@param value  The new MethodName value
+				setMethodName(value : java.lang.String)
+				'Sets the order of the parameters
+				'@param data  The new ParameterOrder value
+				setParameterOrder(data : java.lang.Object)
+				'Sets the Protection attribute of the ExtractMethodRefactoring object
+				'@param value  The new Protection value
+				setProtection(value : JavaPrimitiveTypes.int)
+				'Sets the return type for the extracted method
+				'@param obj  The new ReturnType value
+				setReturnType(obj : java.lang.Object)
+				'Sets the Selection attribute of the ExtractMethodRefactoring object
+				'@param value  The new Selection value
+				setSelection(value : java.lang.String)
+				'Actually make the transformation
+				#transform()
+				'Adds the static and synchronized attributes to the extracted method
+				'@param currentNode  where the body of the extracted method was found
+				'@param methodTree   the method we are extracting
+				-updateModifiers(currentNode : SimpleNode, methodTree : SimpleNode)
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.Refactoring <|-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	JavaPrimitiveTypes.int "PACKAGE" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	JavaPrimitiveTypes.int "PRIVATE" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	JavaPrimitiveTypes.int "PROTECTED" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	JavaPrimitiveTypes.int "PUBLIC" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	java.lang.Object "arguments 0..*" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	Factory_method.nonfactorymethod.EMParameterFinder "empf" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	Factory_method.nonfactorymethod.FileSummary "extractedMethodFileSummary" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	java.lang.StringBuffer "fullFile" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	Factory_method.nonfactorymethod.Node "key" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	Factory_method.nonfactorymethod.FileSummary "mainFileSummary" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	java.lang.String "methodName" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	JavaPrimitiveTypes.int "prot" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	java.lang.Object "returnType" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	Factory_method.nonfactorymethod.SimpleNode "root" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	java.lang.String "selection" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	java.lang.StringBuffer "signature" <-- Factory_method.nonfactorymethod.ExtractMethodRefactoring
+	JavaPrimitiveTypes.boolean "isStatement" <-- Factory_method.nonfactorymethod.EMBuilder
+	JavaPrimitiveTypes.boolean "localVariableNeeded" <-- Factory_method.nonfactorymethod.EMBuilder
+	java.lang.String "methodName" <-- Factory_method.nonfactorymethod.EMBuilder
+	java.util.LinkedList "parameters" <-- Factory_method.nonfactorymethod.EMBuilder
+	Factory_method.nonfactorymethod.VariableSummary "returnSummary" <-- Factory_method.nonfactorymethod.EMBuilder
+}
+@enduml

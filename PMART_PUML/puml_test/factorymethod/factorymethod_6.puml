@@ -1,0 +1,22 @@
+@startuml
+package dpd_jdt {
+	package Loader {
+		package name {
+			abstract class Creator {
+				<<Create>> Creator()
+				createProduct(): Product
+			}
+			class ConcreteCreatorA {
+				<<Create>> ConcreteCreatorA()
+				createProduct(): Product
+			}
+			class ConcreteCreatorB {
+				<<Create>> ConcreteCreatorB()
+				createProduct(): Product
+			}
+		}
+	}
+	Loader.name.Creator <|-- Loader.name.ConcreteCreatorA
+	Loader.name.Creator <|-- Loader.name.ConcreteCreatorB
+}
+@enduml

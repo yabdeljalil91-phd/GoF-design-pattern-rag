@@ -1,0 +1,28 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package nonsingleton {
+			'A rectangle figure.
+			class RectangleFigure {
+				-fDisplayBox: java.awt.Rectangle
+				-rectangleFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 184722075881789163
+				<<Create>> RectangleFigure()
+				<<Create>> RectangleFigure(origin : java.awt.Point, corner : java.awt.Point)
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				displayBox(): java.awt.Rectangle
+				drawBackground(g : java.awt.Graphics)
+				drawFrame(g : java.awt.Graphics)
+				handles(): java.util.Vector
+				read(dr : StorableInput)
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	Singleton.nonsingleton.AttributeFigure <|-- Singleton.nonsingleton.RectangleFigure
+	java.awt.Rectangle "fDisplayBox" <-- Singleton.nonsingleton.RectangleFigure
+	JavaPrimitiveTypes.int "rectangleFigureSerializedDataVersion" <-- Singleton.nonsingleton.RectangleFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Singleton.nonsingleton.RectangleFigure
+}
+@enduml

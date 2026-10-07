@@ -1,0 +1,45 @@
+@startuml
+package "DrJava v20020619" as DrJava_v20020619 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package compiler {
+							class CompilerRegistry {
+								{const} DEFAULT_COMPILERS: DrJava_v20020619.java.lang.String [*]
+								{const} ONLY: CompilerRegistry
+								-_activeCompiler: CompilerInterface
+								-_baseClassLoader: DrJava_v20020619.java.lang.ClassLoader
+								-_registeredCompilers: DrJava_v20020619.java.util.LinkedList
+								-<<Create>> CompilerRegistry()
+								-{static} _getToolsJarURLs(): DrJava_v20020619.java.net.URL
+								-_instantiateCompiler(name : DrJava_v20020619.java.lang.String): CompilerInterface
+								-_registerDefaultCompilers()
+								{static} createCompiler(clazz : DrJava_v20020619.java.lang.Class): CompilerInterface
+								getActiveCompiler(): CompilerInterface
+								getAvailableCompilers(): CompilerInterface
+								getBaseClassLoader(): DrJava_v20020619.java.lang.ClassLoader
+								isNoCompilerAvailable(): JavaPrimitiveTypes.boolean
+								registerCompiler(name : DrJava_v20020619.java.lang.String)
+								setActiveCompiler(compiler : CompilerInterface)
+								setBaseClassLoader(l : DrJava_v20020619.java.lang.ClassLoader)
+							}
+							DrJava_v20020619.java.lang.Comparable <|.. CompilerError
+							DrJava_v20020619.java.lang.String "DEFAULT_COMPILERS 0..*" <-- CompilerRegistry
+							DrJava_v20020619.java.io.File "_file" <-- CompilerError
+							JavaPrimitiveTypes.boolean "_isWarning" <-- CompilerError
+							JavaPrimitiveTypes.int "_lineNumber" <-- CompilerError
+							DrJava_v20020619.java.lang.String "_message" <-- CompilerError
+							JavaPrimitiveTypes.int "_startColumn" <-- CompilerError
+							CompilerInterface "_activeCompiler" <-- CompilerRegistry
+							DrJava_v20020619.java.lang.ClassLoader "_baseClassLoader" <-- CompilerRegistry
+							DrJava_v20020619.java.util.LinkedList "_registeredCompilers" <-- CompilerRegistry
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

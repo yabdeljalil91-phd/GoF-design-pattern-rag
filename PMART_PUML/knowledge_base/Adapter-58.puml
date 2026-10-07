@@ -1,0 +1,1153 @@
+@startuml
+'Design pattern Adapter
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package openide {
+			package filesystems {
+				'DP role: client
+				abstract class AbstractFolder {
+					-{const} EMPTY: Netbeans_v1.0.x.java.util.HashMap
+					-{const} EMPTY_ARRAY: AbstractFileObject [*]
+					-{const} EXT_SEP: JavaPrimitiveTypes.char = .
+					-children: Netbeans_v1.0.x.java.lang.String [*]
+					#fullName: Netbeans_v1.0.x.java.lang.ref.Reference
+					-listeners: Netbeans_v1.0.x.javax.swing.event.EventListenerList
+					-map: Netbeans_v1.0.x.java.util.HashMap
+					#name: Netbeans_v1.0.x.java.lang.String
+					#parent: AbstractFolder
+					-system: FileSystem
+					#systemName: Netbeans_v1.0.x.java.lang.String
+					<<Create>> AbstractFolder(fs : FileSystem, parent : AbstractFolder, name : Netbeans_v1.0.x.java.lang.String)
+					addFileChangeListener(fcl : FileChangeListener)
+					-check()
+					-constructName(sb : Netbeans_v1.0.x.java.lang.StringBuffer, sepChar : JavaPrimitiveTypes.char, extChar : JavaPrimitiveTypes.char): JavaPrimitiveTypes.boolean
+					#createFile(name : Netbeans_v1.0.x.java.lang.String): AbstractFolder
+					#fileAttributeChanged0(fileattributeevent : FileAttributeEvent)
+					#fileChanged0(fileevent : FileEvent)
+					#fileCreated0(fileevent : FileEvent, flag : JavaPrimitiveTypes.boolean)
+					#fileDeleted0(fileevent : FileEvent)
+					#fileRenamed0(filerenameevent : FileRenameEvent)
+					find(en : Netbeans_v1.0.x.java.util.Enumeration): FileObject
+					findIfExists(en : Netbeans_v1.0.x.java.util.Enumeration): FileObject
+					#getChild(name : Netbeans_v1.0.x.java.lang.String): AbstractFolder
+					getChildren(): FileObject
+					getExt(): Netbeans_v1.0.x.java.lang.String
+					getFileObject(name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					getFileSystem(): FileSystem
+					getName(): Netbeans_v1.0.x.java.lang.String
+					getNameExt(): Netbeans_v1.0.x.java.lang.String
+					getPackageNameExt(separatorChar : JavaPrimitiveTypes.char, extSepChar : JavaPrimitiveTypes.char): Netbeans_v1.0.x.java.lang.String
+					getParent(): FileObject
+					#hasAtLeastOneListeners(): JavaPrimitiveTypes.boolean
+					#hasListeners(): JavaPrimitiveTypes.boolean
+					isRoot(): JavaPrimitiveTypes.boolean
+					isValid(): JavaPrimitiveTypes.boolean
+					#list(): Netbeans_v1.0.x.java.lang.String
+					-listeners(): Netbeans_v1.0.x.java.util.Enumeration
+					refresh(expected : JavaPrimitiveTypes.boolean)
+					#refresh(added : Netbeans_v1.0.x.java.lang.String, removed : Netbeans_v1.0.x.java.lang.String)
+					#refresh(added : Netbeans_v1.0.x.java.lang.String, removed : Netbeans_v1.0.x.java.lang.String, fire : JavaPrimitiveTypes.boolean, expected : JavaPrimitiveTypes.boolean)
+					removeFileChangeListener(fcl : FileChangeListener)
+					subfiles(): AbstractFileObject
+					toString(): Netbeans_v1.0.x.java.lang.String
+					writeReplace(): Netbeans_v1.0.x.java.lang.Object
+				}
+				'DP role: client
+				'DP role: adaptee
+				abstract class FileObject {
+					{const} serialVersionUID: JavaPrimitiveTypes.long = 85305031923497718
+					<<Create>> FileObject()
+					#accept(o : Netbeans_v1.0.x.java.lang.Object): JavaPrimitiveTypes.boolean
+					addFileChangeListener(fcl : FileChangeListener)
+					-constructName(sb : Netbeans_v1.0.x.java.lang.StringBuffer, sepChar : JavaPrimitiveTypes.char)
+					copy(target : FileObject, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					createData(name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					createFolder(name : Netbeans_v1.0.x.java.lang.String): FileObject
+					delete(lock : FileLock)
+					existsExt(ext : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+					#fireFileAttributeChangedEvent(en : Netbeans_v1.0.x.java.util.Enumeration, fe : FileAttributeEvent)
+					#fireFileChangedEvent(en : Netbeans_v1.0.x.java.util.Enumeration, fe : FileEvent)
+					#fireFileDataCreatedEvent(en : Netbeans_v1.0.x.java.util.Enumeration, fe : FileEvent)
+					#fireFileDeletedEvent(en : Netbeans_v1.0.x.java.util.Enumeration, fe : FileEvent)
+					#fireFileFolderCreatedEvent(en : Netbeans_v1.0.x.java.util.Enumeration, fe : FileEvent)
+					#fireFileRenamedEvent(en : Netbeans_v1.0.x.java.util.Enumeration, fe : FileRenameEvent)
+					getAttribute(attrName : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.Object
+					getAttributes(): Netbeans_v1.0.x.java.util.Enumeration
+					getChildren(): FileObject
+					getChildren(rec : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.java.util.Enumeration
+					getData(rec : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.java.util.Enumeration
+					getExt(): Netbeans_v1.0.x.java.lang.String
+					getFileObject(name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					getFileObject(name : Netbeans_v1.0.x.java.lang.String): FileObject
+					getFileSystem(): FileSystem
+					getFolders(rec : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.java.util.Enumeration
+					getInputStream(): Netbeans_v1.0.x.java.io.InputStream
+					getMIMEType(): Netbeans_v1.0.x.java.lang.String
+					getName(): Netbeans_v1.0.x.java.lang.String
+					getOutputStream(lock : FileLock): Netbeans_v1.0.x.java.io.OutputStream
+					getPackageName(separatorChar : JavaPrimitiveTypes.char): Netbeans_v1.0.x.java.lang.String
+					getPackageNameExt(separatorChar : JavaPrimitiveTypes.char, extSepChar : JavaPrimitiveTypes.char): Netbeans_v1.0.x.java.lang.String
+					getParent(): FileObject
+					getSize(): JavaPrimitiveTypes.long
+					getURL(): Netbeans_v1.0.x.java.net.URL
+					hasExt(ext : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+					isData(): JavaPrimitiveTypes.boolean
+					isFolder(): JavaPrimitiveTypes.boolean
+					isReadOnly(): JavaPrimitiveTypes.boolean
+					isRoot(): JavaPrimitiveTypes.boolean
+					isValid(): JavaPrimitiveTypes.boolean
+					lastModified(): Netbeans_v1.0.x.java.util.Date
+					lock(): FileLock
+					move(lock : FileLock, target : FileObject, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					-putEventDispatcher(d : EventDispatcher)
+					refresh(expected : JavaPrimitiveTypes.boolean)
+					refresh()
+					removeFileChangeListener(fcl : FileChangeListener)
+					rename(lock : FileLock, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String)
+					setAttribute(attrName : Netbeans_v1.0.x.java.lang.String, value : Netbeans_v1.0.x.java.lang.Object)
+					setImportant(b : JavaPrimitiveTypes.boolean)
+				}
+				'DP role: target
+				'DP role: adaptee
+				interface FileChangeListener {
+					fileAttributeChanged(fe : FileAttributeEvent)
+					fileChanged(fe : FileEvent)
+					fileDataCreated(fe : FileEvent)
+					fileDeleted(fe : FileEvent)
+					fileFolderCreated(fe : FileEvent)
+					fileRenamed(fe : FileRenameEvent)
+				}
+				'/** 
+				' * Adapter for changes in <code>FileObject</code>s. Can be attached to any  {@link FileObject}.
+				' * @see FileChangeListener
+				' * @author Jaroslav Tulach, Petr Hamernik
+				' * @version 0.15 December 14, 1997
+				' */
+				'DP role: adapter
+				class FileChangeAdapter {
+					<<Create>> FileChangeAdapter()
+					'/** 
+					' * Fired when a file attribute is changed.
+					' * @param fe the event describing context where action has taken place,the name of attribute and the old and new values.
+					' */
+					fileAttributeChanged(fe : FileAttributeEvent)
+					'/** 
+					' * Fired when a file is changed.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileChanged(fe : FileEvent)
+					'/** 
+					' * Fired when a new file is created. This action can only be listened in folders containing the created file up to the root of file system.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileDataCreated(fe : FileEvent)
+					'/** 
+					' * Fired when a file is deleted.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileDeleted(fe : FileEvent)
+					'/** 
+					' * Fired when a new folder is created. This action can only be listened to in folders containing the created folder up to the root of file system.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileFolderCreated(fe : FileEvent)
+					'/** 
+					' * Fired when a file is renamed.
+					' * @param fe the event describing context where action has taken placeand the original name and extension.
+					' */
+					fileRenamed(fe : FileRenameEvent)
+				}
+				'/** 
+				' * Implementation of the file object for multi file system.
+				' * @author Jaroslav Tulach, 
+				' */
+				'DP role: adapter
+				class MultiFileObject {
+					-{const} EXT_SEP: JavaPrimitiveTypes.char = .
+					-{const} PATH_SEP: JavaPrimitiveTypes.char = /
+					-delegates: Netbeans_v1.0.x.java.util.Set
+					-leader: FileObject
+					-lock: Netbeans_v1.0.x.java.lang.ref.Reference
+					{const} serialVersionUID: JavaPrimitiveTypes.long = -2343651324897646809
+					-weakL: FileChangeListener
+					'/** 
+					' * Constructor. Takes reference to file system this file belongs to.
+					' * @param fs the file system
+					' * @param parent the parent object (folder)
+					' * @param name name of the object (e.g. <code>filename.ext</code>)
+					' */
+					<<Create>> MultiFileObject(fs : MultiFileSystem, parent : MultiFileObject, name : Netbeans_v1.0.x.java.lang.String)
+					'/** 
+					' * Constructor for root.
+					' * @param fs the file system
+					' */
+					<<Create>> MultiFileObject(fs : MultiFileSystem)
+					'/** 
+					' * Copies this file. This allows the filesystem to perform any additional operation associated with the copy. But the default implementation is simple copy of the file and its attributes
+					' * @param target target folder to move this file to
+					' * @param name new basename of file
+					' * @param ext new extension of file (ignored for folders)
+					' * @return the newly created file object representing the moved file
+					' */
+					copy(target : FileObject, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					'/** 
+					' * Copies content of one folder into another.
+					' * @param source source folder
+					' * @param target target folder
+					' * @exception IOException if it fails
+					' */
+					-{static} copyContent(source : FileObject, target : FileObject)
+					createData(name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					'/** 
+					' * Method to create a file object for given subfile.
+					' * @param name of the subfile
+					' * @return the file object
+					' */
+					#createFile(name : Netbeans_v1.0.x.java.lang.String): AbstractFolder
+					createFolder(name : Netbeans_v1.0.x.java.lang.String): FileObject
+					'/** 
+					' * All objects that are beyond this one.
+					' * @return enumeration of FileObject
+					' */
+					-delegates(): Netbeans_v1.0.x.java.util.Enumeration
+					delete(lock : FileLock)
+					'/** 
+					' * Fired when a file attribute is changed.
+					' * @param fe the event describing context where action has taken place,the name of attribute and the old and new values.
+					' */
+					fileAttributeChanged(fe : FileAttributeEvent)
+					'/** 
+					' * Fired when a file is changed.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileChanged(fe : FileEvent)
+					'/** 
+					' * Fired when a new file is created. This action can only be listened in folders containing the created file up to the root of file system.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileDataCreated(fe : FileEvent)
+					'/** 
+					' * Fired when a file is deleted.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileDeleted(fe : FileEvent)
+					'/** 
+					' * Fired when a new folder is created. This action can only be listened to in folders containing the created folder up to the root of file system.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileFolderCreated(fe : FileEvent)
+					'/** 
+					' * Fired when a file is renamed.
+					' * @param fe the event describing context where action has taken placeand the original name and extension.
+					' */
+					fileRenamed(fe : FileRenameEvent)
+					getAttribute(attrName : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.Object
+					getAttributes(): Netbeans_v1.0.x.java.util.Enumeration
+					getInputStream(): Netbeans_v1.0.x.java.io.InputStream
+					'/** 
+					' * File system.
+					' */
+					getLeaderFileSystem(): FileSystem
+					getMIMEType(): Netbeans_v1.0.x.java.lang.String
+					'/** 
+					' * Getter for one of children.
+					' */
+					-getMultiChild(name : Netbeans_v1.0.x.java.lang.String): MultiFileObject
+					'/** 
+					' * Getter for the right file system 
+					' */
+					-getMultiFileSystem(): MultiFileSystem
+					getOutputStream(lock : FileLock): Netbeans_v1.0.x.java.io.OutputStream
+					getSize(): JavaPrimitiveTypes.long
+					isData(): JavaPrimitiveTypes.boolean
+					isFolder(): JavaPrimitiveTypes.boolean
+					isReadOnly(): JavaPrimitiveTypes.boolean
+					lastModified(): Netbeans_v1.0.x.java.util.Date
+					'/** 
+					' * Method that allows subclasses to return its children.
+					' * @return names (name . ext) of subfiles
+					' */
+					#list(): Netbeans_v1.0.x.java.lang.String
+					lock(): FileLock
+					'/** 
+					' * Moves this file. This allows the filesystem to perform any additional operation associated with the move. But the default implementation is encapsulated as copy and delete.
+					' * @param lock File must be locked before renaming.
+					' * @param target target folder to move this file to
+					' * @param name new basename of file
+					' * @param ext new extension of file (ignored for folders)
+					' * @return the newly created file object representing the moved file
+					' */
+					move(lock : FileLock, target : FileObject, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					'/** 
+					' * When refreshing, also update the state of delegates.
+					' */
+					#refresh(add : Netbeans_v1.0.x.java.lang.String, remove : Netbeans_v1.0.x.java.lang.String, fire : JavaPrimitiveTypes.boolean, expected : JavaPrimitiveTypes.boolean)
+					rename(lock : FileLock, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String)
+					setAttribute(attrName : Netbeans_v1.0.x.java.lang.String, value : Netbeans_v1.0.x.java.lang.Object)
+					setImportant(b : JavaPrimitiveTypes.boolean)
+					'/** 
+					' * Tests the lock if it is valid, if not throws exception.
+					' * @param l lock to test
+					' * @return the lock to use on leader
+					' */
+					-testLock(l : FileLock): FileLock
+					'/** 
+					' * Updates list of all references.
+					' */
+					-update()
+					'/** 
+					' * Method that goes upon list of folders and updates its locks. This is used when an object is masked which may lead to creation of folders on a disk.
+					' * @param fo folder to check
+					' * @exception IOException if something locks cannot be updated
+					' */
+					-{static} updateFoldersLock(fo : FileObject)
+					'/** 
+					' * Converts the file to be writable. The file has to be locked!
+					' * @return file object (new leader) that is writable
+					' * @exception IOException if the object cannot be writable
+					' */
+					-writable(): FileObject
+				}
+				AbstractFolder <|-- AbstractFileObject
+				FileObject <|-- AbstractFolder
+				Netbeans_v1.0.x.java.io.Serializable <|.. FileObject
+				Netbeans_v1.0.x.java.util.EventListener <|-- FileChangeListener
+				FileEvent <|-- FileAttributeEvent
+				Netbeans_v1.0.x.java.util.EventObject <|-- FileEvent
+				FileEvent <|-- FileRenameEvent
+				Netbeans_v1.0.x.java.io.Serializable <|.. FileSystem
+				Netbeans_v1.0.x.java.util.EventListener <|-- FileStatusListener
+				Netbeans_v1.0.x.java.util.EventObject <|-- FileStatusEvent
+				FileSystem <|-- AbstractFileSystem
+				Netbeans_v1.0.x.java.lang.Runnable <|.. RefreshRequest
+				Netbeans_v1.0.x.java.util.EventListener <|-- RepositoryListener
+				Netbeans_v1.0.x.java.util.EventObject <|-- RepositoryEvent
+				Netbeans_v1.0.x.org.openide.nodes.Node.Cookie <|.. Repository
+				Netbeans_v1.0.x.java.io.Serializable <|.. Repository
+				Netbeans_v1.0.x.java.util.EventObject <|-- RepositoryReorderedEvent
+				FileChangeListener <|.. FileChangeAdapter
+				AbstractFolder <|-- MultiFileObject
+				FileChangeListener <|.. MultiFileObject
+				FileSystem <|-- MultiFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileObject
+				JavaPrimitiveTypes.boolean "expected" <-- FileEvent
+				FileObject "file" <-- FileEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileEvent
+				JavaPrimitiveTypes.long "time" <-- FileEvent
+				Netbeans_v1.0.x.java.lang.String "name" <-- FileAttributeEvent
+				Netbeans_v1.0.x.java.lang.Object "newValue" <-- FileAttributeEvent
+				Netbeans_v1.0.x.java.lang.Object "oldValue" <-- FileAttributeEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileAttributeEvent
+				Netbeans_v1.0.x.java.lang.String "ext" <-- FileRenameEvent
+				Netbeans_v1.0.x.java.lang.String "name" <-- FileRenameEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileRenameEvent
+				JavaPrimitiveTypes.boolean "locked" <-- FileLock
+				Netbeans_v1.0.x.java.lang.String "PROP_HIDDEN" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "PROP_READ_ONLY" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "PROP_ROOT" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "PROP_SYSTEM_NAME" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "PROP_VALID" <-- FileSystem
+				Status "STATUS_NONE" <-- FileSystem
+				JavaPrimitiveTypes.boolean "assigned" <-- FileSystem
+				JavaPrimitiveTypes.boolean "compilation" <-- Bean
+				JavaPrimitiveTypes.boolean "debug" <-- Bean
+				JavaPrimitiveTypes.boolean "doc" <-- Bean
+				JavaPrimitiveTypes.boolean "execution" <-- Bean
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Bean
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "supp" <-- Bean
+				FileSystemCapability "capability" <-- FileSystem
+				JavaPrimitiveTypes.boolean "hidden" <-- FileSystem
+				Netbeans_v1.0.x.javax.swing.event.EventListenerList "listenerList" <-- FileSystem
+				JavaPrimitiveTypes.int "requests" <-- FileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "systemName" <-- FileSystem
+				JavaPrimitiveTypes.boolean "valid" <-- FileSystem
+				Netbeans_v1.0.x.java.util.Set "files" <-- FileStatusEvent
+				JavaPrimitiveTypes.boolean "icon" <-- FileStatusEvent
+				JavaPrimitiveTypes.boolean "name" <-- FileStatusEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileStatusEvent
+				Netbeans_v1.0.x.java.util.HashMap "EMPTY" <-- AbstractFolder
+				AbstractFileObject "EMPTY_ARRAY 0..*" <-- AbstractFolder
+				JavaPrimitiveTypes.char "EXT_SEP" <-- AbstractFolder
+				Netbeans_v1.0.x.java.lang.String "children 0..*" <-- AbstractFolder
+				Netbeans_v1.0.x.java.lang.ref.Reference "fullName" <-- AbstractFolder
+				Netbeans_v1.0.x.javax.swing.event.EventListenerList "listeners" <-- AbstractFolder
+				Netbeans_v1.0.x.java.util.HashMap "map" <-- AbstractFolder
+				Netbeans_v1.0.x.java.lang.String "name" <-- AbstractFolder
+				FileSystem "system" <-- AbstractFolder
+				Netbeans_v1.0.x.java.lang.String "systemName" <-- AbstractFolder
+				JavaPrimitiveTypes.boolean "closed" <-- NotifyOutputStream
+				JavaPrimitiveTypes.char "EXT_SEP" <-- AbstractFileObject
+				JavaPrimitiveTypes.char "PATH_SEP" <-- AbstractFileObject
+				Netbeans_v1.0.x.java.lang.Boolean "folder" <-- AbstractFileObject
+				Netbeans_v1.0.x.java.util.Date "lastModified" <-- AbstractFileObject
+				Netbeans_v1.0.x.java.lang.ref.Reference "lock" <-- AbstractFileObject
+				JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractFileObject
+				Netbeans_v1.0.x.org.openide.util.actions.SystemAction "NO_SYSTEM_ACTIONS 0..*" <-- AbstractFileSystem
+				Netbeans_v1.0.x.org.openide.util.actions.SystemAction "SYSTEM_ACTIONS 0..*" <-- AbstractFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Attr
+				Attr "attr" <-- AbstractFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Change
+				Change "change" <-- AbstractFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Info
+				Info "info" <-- AbstractFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- List
+				List "list" <-- AbstractFileSystem
+				JavaPrimitiveTypes.int "REFRESH_COUNT" <-- RefreshRequest
+				Netbeans_v1.0.x.java.util.Enumeration "en" <-- RefreshRequest
+				JavaPrimitiveTypes.int "refreshTime" <-- RefreshRequest
+				Netbeans_v1.0.x.java.lang.ref.Reference "system" <-- RefreshRequest
+				Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task "task" <-- RefreshRequest
+				RefreshRequest "refresher" <-- AbstractFileSystem
+				AbstractFileObject "root" <-- AbstractFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Transfer
+				Transfer "transfer" <-- AbstractFileSystem
+				Netbeans_v1.0.x.java.lang.String "fullName" <-- Invalid
+				Netbeans_v1.0.x.java.lang.String "name" <-- Invalid
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Invalid
+				Netbeans_v1.0.x.java.lang.String "fileName" <-- Replace
+				Netbeans_v1.0.x.java.lang.String "fsName" <-- Replace
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Replace
+				JavaPrimitiveTypes.boolean "add" <-- RepositoryEvent
+				FileSystem "fileSystem" <-- RepositoryEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- RepositoryEvent
+				Netbeans_v1.0.x.java.util.ArrayList "fileSystems" <-- Repository
+				Netbeans_v1.0.x.java.util.Hashtable "listeners" <-- Repository
+				Netbeans_v1.0.x.java.util.Hashtable "names" <-- Repository
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "propListener" <-- Repository
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Repository
+				FileSystem "system" <-- Repository
+				Netbeans_v1.0.x.java.beans.VetoableChangeListener "vetoListener" <-- Repository
+				JavaPrimitiveTypes.int "perm 0..*" <-- RepositoryReorderedEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- RepositoryReorderedEvent
+				JavaPrimitiveTypes.char "EXT_SEP" <-- MultiFileObject
+				JavaPrimitiveTypes.char "PATH_SEP" <-- MultiFileObject
+				Netbeans_v1.0.x.java.util.Set "delegates" <-- MultiFileObject
+				FileObject "leader" <-- MultiFileObject
+				Netbeans_v1.0.x.java.lang.ref.Reference "lock" <-- MultiFileObject
+				JavaPrimitiveTypes.long "serialVersionUID" <-- MultiFileObject
+				FileChangeListener "weakL" <-- MultiFileObject
+				Netbeans_v1.0.x.java.lang.String "MASK" <-- MultiFileSystem
+				JavaPrimitiveTypes.int "WRITE_SYSTEM_INDEX" <-- MultiFileSystem
+				MultiFileObject "root" <-- MultiFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- MultiFileSystem
+				FileSystem "systems 0..*" <-- MultiFileSystem
+				FileLock "lock" <-- MfLock
+			}
+			package loaders {
+				'DP role: adaptee
+				abstract class DataObject {
+					{const} EA_ASSIGNED_LOADER: Netbeans_v1.0.x.java.lang.String = NetBeansAttrAssignedLoader
+					{const} PROP_COOKIE: Netbeans_v1.0.x.java.lang.String = cookie
+					{const} PROP_FILES: Netbeans_v1.0.x.java.lang.String = files
+					{const} PROP_HELP: Netbeans_v1.0.x.java.lang.String = helpCtx
+					{const} PROP_MODIFIED: Netbeans_v1.0.x.java.lang.String = modified
+					{const} PROP_NAME: Netbeans_v1.0.x.java.lang.String = name
+					{const} PROP_PRIMARY_FILE: Netbeans_v1.0.x.java.lang.String = primaryFile
+					{const} PROP_TEMPLATE: Netbeans_v1.0.x.java.lang.String = template
+					{const} PROP_VALID: Netbeans_v1.0.x.java.lang.String = valid
+					item: Item
+					-listeners: Netbeans_v1.0.x.javax.swing.event.EventListenerList
+					-loader: DataLoader
+					-modif: JavaPrimitiveTypes.boolean
+					-{static} modified: ModifiedRegistry
+					-nodeDelegate: Netbeans_v1.0.x.org.openide.nodes.Node
+					{const} serialVersionUID: JavaPrimitiveTypes.long = 3328227388376142699
+					-{static} syncModified: Netbeans_v1.0.x.java.util.Set
+					<<Create>> DataObject(pf : Netbeans_v1.0.x.org.openide.filesystems.FileObject, loader : DataLoader)
+					-<<Create>> DataObject(pf : Netbeans_v1.0.x.org.openide.filesystems.FileObject, item : Item, loader : DataLoader)
+					addPropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					addVetoableChangeListener(l : Netbeans_v1.0.x.java.beans.VetoableChangeListener)
+					copy(f : DataFolder): DataObject
+					createFromTemplate(f : DataFolder): DataObject
+					createFromTemplate(f : DataFolder, name : Netbeans_v1.0.x.java.lang.String): DataObject
+					#createNodeDelegate(): Netbeans_v1.0.x.org.openide.nodes.Node
+					createShadow(f : DataFolder): DataShadow
+					delete()
+					#dispose()
+					files(): Netbeans_v1.0.x.java.util.Set
+					#finalize()
+					{static} find(fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject): DataObject
+					-{static} fireOperationEvent(ev : OperationEvent, type : JavaPrimitiveTypes.int)
+					#firePropertyChange(name : Netbeans_v1.0.x.java.lang.String, oldValue : Netbeans_v1.0.x.java.lang.Object, newValue : Netbeans_v1.0.x.java.lang.Object)
+					#fireVetoableChange(name : Netbeans_v1.0.x.java.lang.String, oldValue : Netbeans_v1.0.x.java.lang.Object, newValue : Netbeans_v1.0.x.java.lang.Object)
+					getClonedNodeDelegate(filter : DataFilter): Netbeans_v1.0.x.org.openide.nodes.Node
+					getCookie(c : Netbeans_v1.0.x.java.lang.Class): Netbeans_v1.0.x.org.openide.nodes.Node.Cookie
+					getFolder(): DataFolder
+					getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+					getLoader(): DataLoader
+					getName(): Netbeans_v1.0.x.java.lang.String
+					getNodeDelegate(): Netbeans_v1.0.x.org.openide.nodes.Node
+					getPrimaryFile(): Netbeans_v1.0.x.org.openide.filesystems.FileObject
+					{static} getRegistry(): Registry
+					{static} getString(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+					#handleCopy(f : DataFolder): DataObject
+					#handleCreateFromTemplate(df : DataFolder, name : Netbeans_v1.0.x.java.lang.String): DataObject
+					#handleCreateShadow(f : DataFolder): DataShadow
+					#handleDelete()
+					#handleMove(df : DataFolder): Netbeans_v1.0.x.org.openide.filesystems.FileObject
+					#handleRename(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.org.openide.filesystems.FileObject
+					isCopyAllowed(): JavaPrimitiveTypes.boolean
+					isDeleteAllowed(): JavaPrimitiveTypes.boolean
+					isModified(): JavaPrimitiveTypes.boolean
+					isMoveAllowed(): JavaPrimitiveTypes.boolean
+					isRenameAllowed(): JavaPrimitiveTypes.boolean
+					isShadowAllowed(): JavaPrimitiveTypes.boolean
+					isTemplate(): JavaPrimitiveTypes.boolean
+					isValid(): JavaPrimitiveTypes.boolean
+					-listeners(): Netbeans_v1.0.x.javax.swing.event.EventListenerList
+					#markFiles()
+					move(df : DataFolder)
+					removePropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					removeVetoableChangeListener(l : Netbeans_v1.0.x.java.beans.VetoableChangeListener)
+					rename(name : Netbeans_v1.0.x.java.lang.String)
+					setModified(modif : JavaPrimitiveTypes.boolean)
+					{static} setTemplate(fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject, newTempl : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.boolean
+					setTemplate(newTempl : JavaPrimitiveTypes.boolean)
+					setValid(valid : JavaPrimitiveTypes.boolean)
+					#takePrimaryFileLock(): Netbeans_v1.0.x.org.openide.filesystems.FileLock
+					writeReplace(): Netbeans_v1.0.x.java.lang.Object
+				}
+				'DP role: adapter
+				class FolderList {
+					-{const} LATER_PRIORITY: JavaPrimitiveTypes.int = 5
+					-{const} PROCESSOR: Netbeans_v1.0.x.org.openide.util.RequestProcessor
+					#folder: DataFolder
+					-order: Netbeans_v1.0.x.java.util.List
+					-primaryFiles: Netbeans_v1.0.x.java.util.HashMap
+					-refreshTask: Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task
+					{const} serialVersionUID: JavaPrimitiveTypes.long = -592616022226761148
+					-time: JavaPrimitiveTypes.long
+					<<Create>> FolderList(df : DataFolder, attach : JavaPrimitiveTypes.boolean)
+					changeComparator()
+					computeChildrenList(filter : FolderListListener): Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task
+					-createBoth(filter : FolderListListener, notify : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.java.util.ArrayList
+					-{static} createObjects(order : Netbeans_v1.0.x.java.util.Collection, map : Netbeans_v1.0.x.java.util.Map, f : FolderListListener): Netbeans_v1.0.x.java.util.ArrayList
+					-{static} createOrder(list : Netbeans_v1.0.x.java.util.ArrayList): Netbeans_v1.0.x.java.util.ArrayList
+					-doRefreshIfNotDone(): Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task
+					fileAttributeChanged(fe : Netbeans_v1.0.x.org.openide.filesystems.FileAttributeEvent)
+					fileChanged(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					fileDataCreated(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					fileDeleted(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					fileFolderCreated(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					fileRenamed(fe : Netbeans_v1.0.x.org.openide.filesystems.FileRenameEvent)
+					-fireChildrenChange(add : Netbeans_v1.0.x.java.util.ArrayList, removed : Netbeans_v1.0.x.java.util.ArrayList)
+					getChildren(): DataObject
+					getChildrenList(): Netbeans_v1.0.x.java.util.ArrayList
+					-getChildrenList(filter : FolderListListener): ListTask
+					-getObjects(f : FolderListListener): Netbeans_v1.0.x.java.util.ArrayList
+					reassign(df : DataFolder)
+					refresh()
+					-refresh(now : JavaPrimitiveTypes.long)
+				}
+				'/** 
+				' * Object that provides main functionality for xml data loader.
+				' * @author Libor Kramolis, Jaroslav Tulach
+				' */
+				'DP role: adaptee
+				class XMLDataObject {
+					{const} PROP_DOCUMENT: Netbeans_v1.0.x.java.lang.String = document
+					{const} PROP_INFO: Netbeans_v1.0.x.java.lang.String = info
+					{const} STATUS_ERROR: JavaPrimitiveTypes.int = 3
+					{const} STATUS_NOT: JavaPrimitiveTypes.int = 0
+					{const} STATUS_OK: JavaPrimitiveTypes.int = 1
+					{const} STATUS_WARNING: JavaPrimitiveTypes.int = 2
+					{const} XMLINFO_DTD_PUBLIC_ID: Netbeans_v1.0.x.java.lang.String = -//Forte for Java//DTD xmlinfo//EN
+					{const} XMLINFO_DTD_PUBLIC_ID_OLD: Netbeans_v1.0.x.java.lang.String = -//NetBeans IDE//DTD xmlinfo//EN
+					-{static} XML_RP: Netbeans_v1.0.x.org.openide.util.RequestProcessor
+					-editor: Netbeans_v1.0.x.org.openide.cookies.EditorCookie
+					-{static} errorHandler: ErrorPrinter
+					-info: Info
+					-infoParser: InfoParser
+					-infoTask: Netbeans_v1.0.x.org.openide.util.Task
+					{const} serialVersionUID: JavaPrimitiveTypes.long = 8757854986453256578
+					-status: JavaPrimitiveTypes.int
+					-xmlDocument: Netbeans_v1.0.x.java.lang.ref.Reference
+					'/** 
+					' * Create new XMLDataObject
+					' * @param fo the primary file object
+					' * @param loader loader of this data object
+					' */
+					<<Create>> XMLDataObject(fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject, loader : MultiFileLoader)
+					'/** 
+					' * Clears the document. Called when the document file is changed.
+					' */
+					clearDocument()
+					'/** 
+					' * Creates empty DOM Document. 
+					' */
+					{static} createDocument(): Netbeans_v1.0.x.org.w3c.dom.Document
+					'/** 
+					' * Allows subclasses to provide own editor cookie.
+					' * @return editor cookie to use
+					' */
+					#createEditorCookie(): Netbeans_v1.0.x.org.openide.cookies.EditorCookie
+					'/** 
+					' * Creates SAX InputSource for specified URL 
+					' */
+					{static} createInputSource(url : Netbeans_v1.0.x.java.net.URL): Netbeans_v1.0.x.org.xml.sax.InputSource
+					'/** 
+					' * Provides node that should represent this data object. When a node for representation in a parent is requested by a call to getNode (parent) it is the exact copy of this node with only parent changed. This implementation creates instance <CODE>DataNode</CODE>. <P> This method is called only once.
+					' * @return the node representation for this data object
+					' * @see DataNode
+					' */
+					#createNodeDelegate(): Netbeans_v1.0.x.org.openide.nodes.Node
+					'/** 
+					' * Creates SAX parse that can be used to parse XML files.
+					' * @return sax parser
+					' */
+					{static} createParser(): Netbeans_v1.0.x.org.xml.sax.Parser
+					'/** 
+					' * Creates SAX parse that can be used to parse XML files.
+					' * @param validate if true validating parser is returned
+					' * @return sax parser
+					' */
+					{static} createParser(validate : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.xml.sax.Parser
+					'/** 
+					' * @return a cookie if it has been found in the xmlinfo file
+					' */
+					getCookie(cls : Netbeans_v1.0.x.java.lang.Class): Netbeans_v1.0.x.org.openide.nodes.Node.Cookie
+					'/** 
+					' * Creates w3c's document for the xml file. Either returns cached reference or parses the file and creates new document.
+					' * @return the parsed document
+					' * @exception SAXException if there is a parsing error
+					' * @exception IOException if there is an I/O error
+					' */
+					getDocument(): Netbeans_v1.0.x.org.w3c.dom.Document
+					getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+					getInfo(): Info
+					'/** 
+					' * @return one of STATUS_XXX constants  
+					' */
+					getStatus(): JavaPrimitiveTypes.int
+					'/** 
+					' * Provides access to internal XML parser. This method takes URL. After successful finish the document tree is returned. Used non validating parser.
+					' * @param url the url to read the file from
+					' */
+					{static} parse(url : Netbeans_v1.0.x.java.net.URL): Netbeans_v1.0.x.org.w3c.dom.Document
+					'/** 
+					' * Provides access to internal XML parser. This method takes URL. After successful finish the document tree is returned. Used non validating parser.
+					' * @param url the url to read the file from
+					' * @param validate if true validating parser is used
+					' */
+					{static} parse(url : Netbeans_v1.0.x.java.net.URL, validate : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.w3c.dom.Document
+					'/** 
+					' * Provides access to internal XML parser. This method takes URL. After successful finish the document tree is returned.
+					' * @param url the url to read the file from
+					' * @param eh error handler to notify about exception
+					' */
+					{static} parse(url : Netbeans_v1.0.x.java.net.URL, eh : Netbeans_v1.0.x.org.xml.sax.ErrorHandler): Netbeans_v1.0.x.org.w3c.dom.Document
+					'/** 
+					' * Provides access to internal XML parser. This method takes URL. After successful finish the document tree is returned.
+					' * @param url the url to read the file from
+					' * @param eh error handler to notify about exception
+					' * @param validate if true validating parser is used
+					' */
+					{static} parse(url : Netbeans_v1.0.x.java.net.URL, eh : Netbeans_v1.0.x.org.xml.sax.ErrorHandler, validate : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.w3c.dom.Document
+					'/** 
+					' * Parses the primary file of this data object. and provide different implementation.
+					' * @return the document in the primary file
+					' * @exception IOException if error during parsing occures
+					' */
+					parsePrimaryFile(): Netbeans_v1.0.x.org.w3c.dom.Document
+					'/** 
+					' * Registers the given public ID as corresponding to a particular  URI, typically a local copy.  This URI will be used in preference to ones provided as system IDs in XML entity declarations.  This mechanism would most typically be used for Document Type Definitions (DTDs), where the public IDs are formally managed and versioned. <P> Any created parser use global entity resolver and you can register its catalog entry.
+					' * @param publicId The managed public ID being mapped
+					' * @param uri The URI of the preferred copy of that entity
+					' */
+					{static} registerCatalogEntry(publicId : Netbeans_v1.0.x.java.lang.String, uri : Netbeans_v1.0.x.java.lang.String)
+					'/** 
+					' * Registers a given public ID as corresponding to a particular Java resource in a given class loader, typically distributed with a software package.  This resource will be preferred over system IDs included in XML documents.  This mechanism should most typically be used for Document Type Definitions (DTDs), where the public IDs are formally managed and versioned. <P> If a mapping to a URI has been provided, that mapping takes precedence over this one. <P> Any created parser use global entity resolver and you can register its catalog entry.
+					' * @param publicId The managed public ID being mapped
+					' * @param resourceName The name of the Java resource
+					' * @param loader The class loader holding the resource, or null ifit is a system resource.
+					' */
+					{static} registerCatalogEntry(publicId : Netbeans_v1.0.x.java.lang.String, resourceName : Netbeans_v1.0.x.java.lang.String, loader : Netbeans_v1.0.x.java.lang.ClassLoader)
+					setInfo(ii : Info)
+					-setInfoImpl(ii : Info)
+					'/** 
+					' * Called when the info file is parsed and the icon should change.
+					' * @param res resource for the icon
+					' */
+					#updateIconBase(res : Netbeans_v1.0.x.java.lang.String)
+					'/** 
+					' * Writes DOM Document to writer. 
+					' */
+					{static} write(doc : Netbeans_v1.0.x.org.w3c.dom.Document, writer : Netbeans_v1.0.x.java.io.Writer)
+					-writeInfo()
+				}
+				Netbeans_v1.0.x.java.util.EventListener <|-- OperationListener
+				Netbeans_v1.0.x.org.openide.nodes.Node.Cookie <|.. DataObject
+				Netbeans_v1.0.x.java.io.Serializable <|.. DataObject
+				Netbeans_v1.0.x.org.openide.util.SharedClassObject <|-- DataLoader
+				DataObject <|-- DataFolder
+				Netbeans_v1.0.x.java.io.Serializable <|.. DataFolder
+				Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener <|.. FolderList
+				Netbeans_v1.0.x.java.io.Serializable <|-- DataFilter
+				DataObject <|-- DataShadow
+				Netbeans_v1.0.x.org.openide.nodes.AbstractNode <|-- DataNode
+				DataObject <|-- MultiDataObject
+				DataLoader <|-- MultiFileLoader
+				MultiDataObject <|-- XMLDataObject
+				Netbeans_v1.0.x.java.lang.String "EA_ASSIGNED_LOADER" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_COOKIE" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_FILES" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_HELP" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_MODIFIED" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_NAME" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_PRIMARY_FILE" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_TEMPLATE" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_VALID" <-- DataObject
+				Netbeans_v1.0.x.java.lang.ref.Reference "obj" <-- Item
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "primaryFile" <-- Item
+				Item "item" <-- DataObject
+				Netbeans_v1.0.x.javax.swing.event.EventListenerList "listeners" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_ACTIONS" <-- DataLoader
+				Netbeans_v1.0.x.java.lang.String "PROP_DISPLAY_NAME" <-- DataLoader
+				Netbeans_v1.0.x.java.lang.Object "PROP_REPRESENTATION_CLASS" <-- DataLoader
+				DataLoader "loader" <-- DataObject
+				JavaPrimitiveTypes.boolean "modif" <-- DataObject
+				Netbeans_v1.0.x.java.util.HashSet "listeners" <-- ModifiedRegistry
+				JavaPrimitiveTypes.long "serialVersionUID" <-- ModifiedRegistry
+				ModifiedRegistry "modified" <-- DataObject
+				Netbeans_v1.0.x.org.openide.nodes.Node "nodeDelegate" <-- DataObject
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DataObject
+				Netbeans_v1.0.x.java.util.Set "syncModified" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "EA_ORDER" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "EA_SORT_MODE" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "FOLDER_ICON_BASE" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "PROP_CHILDREN" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "PROP_ORDER" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "PROP_SORT_MODE" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "ROOT_SHADOW_NAME" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "SET_SORTING" <-- DataFolder
+				JavaPrimitiveTypes.int "LATER_PRIORITY" <-- FolderList
+				Netbeans_v1.0.x.org.openide.util.RequestProcessor "PROCESSOR" <-- FolderList
+				DataFolder "folder" <-- FolderList
+				Netbeans_v1.0.x.java.util.List "order" <-- FolderList
+				Netbeans_v1.0.x.java.util.HashMap "primaryFiles" <-- FolderList
+				Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task "refreshTask" <-- FolderList
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FolderList
+				JavaPrimitiveTypes.long "time" <-- FolderList
+				FolderListListener "filter" <-- ListTask
+				Netbeans_v1.0.x.java.util.ArrayList "result" <-- ListTask
+				Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task "task" <-- ListTask
+				FolderList "list" <-- DataFolder
+				Netbeans_v1.0.x.org.openide.nodes.Node "node" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.ref.Reference "order" <-- DataFolder
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.ref.Reference "sortMode" <-- DataFolder
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DataFilter
+				Netbeans_v1.0.x.java.util.Comparator "comp" <-- Order
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "folder" <-- Order
+				Netbeans_v1.0.x.java.util.HashMap "order" <-- Order
+				Netbeans_v1.0.x.java.lang.String "SHADOW_EXTENSION" <-- DataShadow
+				DataObject "original" <-- DataShadow
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DataShadow
+				Netbeans_v1.0.x.java.text.MessageFormat "descriptionFormat" <-- ShadowNode
+				Netbeans_v1.0.x.java.text.MessageFormat "format" <-- ShadowNode
+				DataShadow "obj" <-- ShadowNode
+				Netbeans_v1.0.x.org.openide.nodes.Sheet "sheet" <-- ShadowNode
+				Netbeans_v1.0.x.java.lang.String "ICON_BASE" <-- DataNode
+				DataObject "obj" <-- DataNode
+				Netbeans_v1.0.x.org.openide.filesystems.FileSystem "previous" <-- PropL
+				Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener "weakL" <-- PropL
+				PropL "propL" <-- DataNode
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DataNode
+				JavaPrimitiveTypes.boolean "clone" <-- ObjectHandle
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "obj" <-- ObjectHandle
+				JavaPrimitiveTypes.long "serialVersionUID" <-- ObjectHandle
+				DataFolder "df" <-- Index
+				Listener "listener" <-- Index
+				Netbeans_v1.0.x.org.openide.nodes.Node "node" <-- Index
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "fo" <-- Replace
+				DataObject "obj" <-- Replace
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Replace
+				DataObject "orig" <-- Copy
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Copy
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "file" <-- Move
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Move
+				Netbeans_v1.0.x.java.lang.String "name" <-- Rename
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Rename
+				EntryL "cookieL" <-- MultiDataObject
+				Netbeans_v1.0.x.org.openide.nodes.CookieSet "cookieSet" <-- MultiDataObject
+				Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener "entryL" <-- MultiDataObject
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "file" <-- Entry
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "lock" <-- Entry
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Entry
+				Entry "primary" <-- MultiDataObject
+				Netbeans_v1.0.x.java.util.HashMap "secondary" <-- MultiDataObject
+				JavaPrimitiveTypes.long "serialVersionUID" <-- MultiDataObject
+				JavaPrimitiveTypes.long "serialVersionUID" <-- MultiFileLoader
+				Entry "entry" <-- EntryReplace
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "file" <-- EntryReplace
+				JavaPrimitiveTypes.long "serialVersionUID" <-- EntryReplace
+				Netbeans_v1.0.x.org.openide.windows.CloneableTopComponent.Ref "allEditors" <-- OpenSupport
+				Entry "entry" <-- OpenSupport
+				Entry "entry" <-- Listener
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Listener
+				Netbeans_v1.0.x.java.lang.String "PROP_DOCUMENT" <-- XMLDataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_INFO" <-- XMLDataObject
+				JavaPrimitiveTypes.int "STATUS_ERROR" <-- XMLDataObject
+				JavaPrimitiveTypes.int "STATUS_NOT" <-- XMLDataObject
+				JavaPrimitiveTypes.int "STATUS_OK" <-- XMLDataObject
+				JavaPrimitiveTypes.int "STATUS_WARNING" <-- XMLDataObject
+				Netbeans_v1.0.x.java.lang.String "XMLINFO_DTD_PUBLIC_ID" <-- XMLDataObject
+				Netbeans_v1.0.x.java.lang.String "XMLINFO_DTD_PUBLIC_ID_OLD" <-- XMLDataObject
+				Netbeans_v1.0.x.org.openide.util.RequestProcessor "XML_RP" <-- XMLDataObject
+				Netbeans_v1.0.x.org.openide.cookies.EditorCookie "editor" <-- XMLDataObject
+				ErrorPrinter "errorHandler" <-- XMLDataObject
+				Netbeans_v1.0.x.java.lang.String "iconBase" <-- Info
+				Netbeans_v1.0.x.java.util.Set "processors" <-- Info
+				Info "info" <-- XMLDataObject
+				Netbeans_v1.0.x.java.lang.String "ATT_ICON_BASE" <-- InfoParser
+				Netbeans_v1.0.x.java.lang.String "ATT_PROCESSOR_CLASS" <-- InfoParser
+				Netbeans_v1.0.x.java.lang.String "TAG_ICON" <-- InfoParser
+				Netbeans_v1.0.x.java.lang.String "TAG_INFO" <-- InfoParser
+				Netbeans_v1.0.x.java.lang.String "TAG_PROCESSOR" <-- InfoParser
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "fileObject" <-- InfoParser
+				Info "tempInfo" <-- InfoParser
+				InfoParser "infoParser" <-- XMLDataObject
+				Netbeans_v1.0.x.org.openide.util.Task "infoTask" <-- XMLDataObject
+				JavaPrimitiveTypes.long "serialVersionUID" <-- XMLDataObject
+				JavaPrimitiveTypes.int "status" <-- XMLDataObject
+				Netbeans_v1.0.x.java.lang.ref.Reference "xmlDocument" <-- XMLDataObject
+				Netbeans_v1.0.x.java.lang.String "XMLINFO_EXT" <-- Loader
+				Netbeans_v1.0.x.java.lang.String "XML_EXT" <-- Loader
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Loader
+			}
+		}
+		package netbeans {
+			package core {
+				'/** 
+				' * Classloader for the filesystem pool. Attaches itself as a listener to each file a class has been loaded from. If such a file is deleted, modified or renamed clears the global variable that holds "current" classloader, so on next request for current one new is created.
+				' * @author Jaroslav Tulach
+				' */
+				'DP role: adapter
+				class ClassLoaderSupport {
+					-{static} current: ClassLoaderSupport
+					-listener: Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+					-{static} pool: Netbeans_v1.0.x.org.openide.filesystems.Repository
+					'/** 
+					' * Constructor that attaches itself to the filesystem pool.
+					' */
+					<<Create>> ClassLoaderSupport()
+					'/** 
+					' * Creates new classloader. Synchronized to allow only one access the current at time.
+					' */
+					{static} createClassLoader(): Netbeans_v1.0.x.java.lang.ClassLoader
+					'/** 
+					' * @return the current classloader for the system 
+					' */
+					{static} currentClassLoader(): Netbeans_v1.0.x.java.lang.ClassLoader
+					'/** 
+					' * Fired when a file attribute has been changed.
+					' * @param fe the event describing context where action has taken place,the name of attribute and old and new value.
+					' */
+					fileAttributeChanged(fe : Netbeans_v1.0.x.org.openide.filesystems.FileAttributeEvent)
+					'/** 
+					' * Fired when a file has been changed.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileChanged(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					'/** 
+					' * Fired when a new file has been created. This action can only be listened in folders containing the created file up to the root of file system.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileDataCreated(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					'/** 
+					' * Fired when a file has been deleted.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileDeleted(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					'/** 
+					' * Fired when a new folder has been created. This action can only be listened in folders containing the created file up to the root of file system.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileFolderCreated(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					'/** 
+					' * Fired when a file has been renamed.
+					' * @param fe the event describing context where action has taken placeand the original name and extension.
+					' */
+					fileRenamed(fe : Netbeans_v1.0.x.org.openide.filesystems.FileRenameEvent)
+					'/** 
+					' * Called when new file system is added to the pool.
+					' * @param ev event describing the action
+					' */
+					fileSystemAdded(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+					'/** 
+					' * Resets the loader.
+					' */
+					fileSystemPoolReordered(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryReorderedEvent)
+					'/** 
+					' * Called when a file system is deleted from the pool.
+					' * @param ev event describing the action
+					' */
+					fileSystemRemoved(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+					'/** 
+					' * When looking for a file, register listener on its changes.
+					' * @param name of the class
+					' * @return the Class or null
+					' */
+					#findClass(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.Class
+					'/** 
+					' * Resets the loader, removes it from listneing on all known objects.
+					' */
+					-reset()
+					'/** 
+					' * Resets the loader.
+					' */
+					{static} resetLoader()
+					'/** 
+					' * Tests whether this object is current loader and if so, clears the loader.
+					' * @param fo file object that initiated the action
+					' */
+					-test(fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject)
+					'/** 
+					' * If this object is not current classloader, removes it from listening on given file object.
+					' */
+					-testRemove(fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject)
+				}
+				'/** 
+				' * Produces list of packages.
+				' * @author   Jan Jancura, Jaroslav Tulach
+				' */
+				'DP role: adapter
+				class Packages {
+					-{const} MIN_LIMIT: JavaPrimitiveTypes.int = 8
+					-{const} MUL_LIMIT: JavaPrimitiveTypes.int = 2
+					-{const} PRIORITY_READ: JavaPrimitiveTypes.int = 4
+					-{const} PRIORITY_WRITE: JavaPrimitiveTypes.int = 3
+					-PROCESSOR: Netbeans_v1.0.x.org.openide.util.RequestProcessor
+					{const} PROP_LIST: Netbeans_v1.0.x.java.lang.String = list
+					{const} PROP_NAME: Netbeans_v1.0.x.java.lang.String = name
+					-fileFolders: Netbeans_v1.0.x.java.util.TreeSet
+					-indexOfFileSystem: Netbeans_v1.0.x.java.util.Map
+					-pcs: Netbeans_v1.0.x.java.beans.PropertyChangeSupport
+					-{static} ref: Netbeans_v1.0.x.java.lang.ref.Reference
+					-weakFCL: Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+					-weakPCL: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					-<<Create>> Packages()
+					addPropertyChangeListener(pcl : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					'/** 
+					' * Comparator for two FileObjects representing folders.
+					' */
+					compare(o1 : Netbeans_v1.0.x.java.lang.Object, o2 : Netbeans_v1.0.x.java.lang.Object): JavaPrimitiveTypes.int
+					'/** 
+					' * Create enumeration of all folders on all file systems.
+					' * @return enum of FileObjects
+					' */
+					-{static} createFolders(): Netbeans_v1.0.x.java.util.Enumeration
+					'/** 
+					' * Create enumeration of all subfiles under given file.
+					' * @param fo file object
+					' * @return enum of FileObjects
+					' */
+					-{static} createSubFolders(fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject): Netbeans_v1.0.x.java.util.Enumeration
+					'/** 
+					' * Fired when a file attribute is changed.
+					' * @param fe the event describing context where action has taken place,the name of attribute and the old and new values.
+					' */
+					fileAttributeChanged(fe : Netbeans_v1.0.x.org.openide.filesystems.FileAttributeEvent)
+					'/** 
+					' * Fired when a file is changed.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileChanged(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					'/** 
+					' * Fired when a new file is created. This action can only be listened in folders containing the created file up to the root of file system.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileDataCreated(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					'/** 
+					' * Fired when a file is deleted.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileDeleted(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					'/** 
+					' * Fired when a new folder is created. This action can only be listened to in folders containing the created folder up to the root of file system.
+					' * @param fe the event describing context where action has taken place
+					' */
+					fileFolderCreated(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					'/** 
+					' * Fired when a file is renamed.
+					' * @param fe the event describing context where action has taken placeand the original name and extension.
+					' */
+					fileRenamed(fe : Netbeans_v1.0.x.org.openide.filesystems.FileRenameEvent)
+					'/** 
+					' * Adds packages for given FS.
+					' */
+					fileSystemAdded(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+					'/** 
+					' * Does nothing.
+					' */
+					fileSystemPoolReordered(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryReorderedEvent)
+					'/** 
+					' * Removes packages of given FS.
+					' */
+					fileSystemRemoved(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+					'/** 
+					' * When finalized, stop the request processor
+					' */
+					#finalize()
+					'/** 
+					' * Getter for default instance.
+					' */
+					{static} getDefault(): Packages
+					'/** 
+					' * Getter for index of file system.
+					' */
+					-indexOf(fs : Netbeans_v1.0.x.org.openide.filesystems.FileSystem): JavaPrimitiveTypes.int
+					'/** 
+					' * Starts the initialization.
+					' */
+					-initialize()
+					'/** 
+					' * Method for sending working tasks into the queue.
+					' */
+					-postTask(r : Netbeans_v1.0.x.java.lang.Runnable)
+					'/** 
+					' * Processes packages in the enumeration.
+					' * @param en the enumeration of files to process
+					' * @param cnt max count of packages to process in this task
+					' */
+					-processPackages(en : Netbeans_v1.0.x.java.util.Enumeration, cnt : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.lang.Runnable
+					propertyChange(p1 : Netbeans_v1.0.x.java.beans.PropertyChangeEvent)
+					'/** 
+					' * Returns TreeMap of file => nodes contained in given FileObject. For null returns map of all files.
+					' */
+					-putPackages(source : Netbeans_v1.0.x.org.openide.filesystems.FileObject)
+					'/** 
+					' * Removes all packages from given file system.
+					' */
+					-removeFileSystemPackages(fs : Netbeans_v1.0.x.org.openide.filesystems.FileSystem)
+					removePropertyChangeListener(pcl : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					'/** 
+					' * Called when a PackageChildren object wants to update its state
+					' */
+					update(ch : PackageChildren)
+				}
+				Netbeans_v1.0.x.org.openide.execution.NbClassLoader <|-- ClassLoaderSupport
+				Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener <|.. ClassLoaderSupport
+				Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener <|.. ClassLoaderSupport
+				Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener <|.. Packages
+				Netbeans_v1.0.x.java.util.Comparator <|.. Packages
+				Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener <|.. Packages
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. Packages
+				Netbeans_v1.0.x.org.openide.nodes.Children.Keys <|-- PackageChildren
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. PackageChildren
+				Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener "listener" <-- ClassLoaderSupport
+				Netbeans_v1.0.x.org.openide.filesystems.Repository "pool" <-- ClassLoaderSupport
+				JavaPrimitiveTypes.int "MIN_LIMIT" <-- Packages
+				JavaPrimitiveTypes.int "MUL_LIMIT" <-- Packages
+				JavaPrimitiveTypes.int "PRIORITY_READ" <-- Packages
+				JavaPrimitiveTypes.int "PRIORITY_WRITE" <-- Packages
+				Netbeans_v1.0.x.org.openide.util.RequestProcessor "PROCESSOR" <-- Packages
+				Netbeans_v1.0.x.java.lang.String "PROP_LIST" <-- Packages
+				Netbeans_v1.0.x.java.lang.String "PROP_NAME" <-- Packages
+				Netbeans_v1.0.x.java.util.TreeSet "fileFolders" <-- Packages
+				Netbeans_v1.0.x.java.util.Map "indexOfFileSystem" <-- Packages
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "pcs" <-- Packages
+				Netbeans_v1.0.x.java.lang.ref.Reference "ref" <-- Packages
+				Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener "weakFCL" <-- Packages
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "weakPCL" <-- Packages
+				Netbeans_v1.0.x.org.openide.loaders.DataFilter "DATA_FILTER" <-- PackageChildren
+				Netbeans_v1.0.x.org.openide.loaders.DataFilter "dataFilter" <-- PackageChildren
+				Packages "packages" <-- PackageChildren
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "weakPCL" <-- PackageChildren
+			}
+			package modules {
+				package corba {
+					'/** 
+					' * Object that provides main functionality for idl data loader. This class is final only for performance reasons, can be unfinaled if desired.
+					' * @author Karel Gardas
+					' */
+					'DP role: adaptee
+					class IDLDataObject {
+						-{const} DEBUG: JavaPrimitiveTypes.boolean = false
+						-{const} STATUS_ERROR: JavaPrimitiveTypes.int = 1
+						-{const} STATUS_OK: JavaPrimitiveTypes.int = 0
+						-{const} STYLE_ALL: JavaPrimitiveTypes.int = 3
+						-{const} STYLE_FIRST_LEVEL: JavaPrimitiveTypes.int = 1
+						-{const} STYLE_FIRST_LEVEL_WITH_NESTED_TYPES: JavaPrimitiveTypes.int = 2
+						-{const} STYLE_NOTHING: JavaPrimitiveTypes.int = 0
+						-_column: JavaPrimitiveTypes.int
+						-_line: JavaPrimitiveTypes.int
+						-generator: Netbeans_v1.0.x.org.netbeans.modules.corba.idl.generator.ImplGenerator
+						-idlNode: IDLNode
+						-idl_loader: Netbeans_v1.0.x.org.openide.loaders.MultiFileLoader
+						-parser: Netbeans_v1.0.x.org.netbeans.modules.corba.idl.src.IDLParser
+						-position_of_element: Netbeans_v1.0.x.org.openide.text.PositionRef
+						-possibleNames: Netbeans_v1.0.x.java.util.Hashtable
+						{const} serialVersionUID: JavaPrimitiveTypes.long = -7151972557886707595
+						-src: Netbeans_v1.0.x.org.netbeans.modules.corba.idl.src.IDLElement
+						-status: JavaPrimitiveTypes.int
+						<<Create>> IDLDataObject(obj : Netbeans_v1.0.x.org.openide.filesystems.FileObject, loader : Netbeans_v1.0.x.org.openide.loaders.MultiFileLoader)
+						canGenerate(fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject): JavaPrimitiveTypes.boolean
+						createCompiler(job : Netbeans_v1.0.x.org.openide.compiler.CompilerJob, type : Netbeans_v1.0.x.java.lang.Class): Netbeans_v1.0.x.org.openide.compiler.Compiler
+						'/** 
+						' * Provides node that should represent this data object. When a node for representation in a parent is requested by a call to getNode (parent) it is the exact copy of this node with only parent changed. This implementation creates instance <CODE>DataNode</CODE>. <P> This method is called only once.
+						' * @return the node representation for this data object
+						' * @see DataNode
+						' */
+						#createNodeDelegate(): Netbeans_v1.0.x.org.openide.nodes.Node
+						createPossibleNames(ic : Netbeans_v1.0.x.java.util.Vector, ii : Netbeans_v1.0.x.java.util.Vector): Netbeans_v1.0.x.java.util.Hashtable
+						generateImplementation()
+						getColumnPosition(): JavaPrimitiveTypes.int
+						getGeneratedFileObjects(): Netbeans_v1.0.x.java.util.Vector
+						'/** 
+						' * Help context for this object.
+						' * @return help context
+						' */
+						getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+						-getIdlConstructs(style : JavaPrimitiveTypes.int, src : Netbeans_v1.0.x.org.netbeans.modules.corba.idl.src.IDLElement): Netbeans_v1.0.x.java.util.Vector
+						-getIdlConstructs(style : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.util.Vector
+						-getIdlInterfaces(style : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.util.Vector
+						-getIdlInterfaces(element : Netbeans_v1.0.x.org.netbeans.modules.corba.idl.src.IDLElement, style : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.util.Vector
+						getImplementationNames(): Netbeans_v1.0.x.java.util.Vector
+						getLinePosition(): JavaPrimitiveTypes.int
+						getPositionRef(): Netbeans_v1.0.x.org.openide.text.PositionRef
+						getPossibleNames(): Netbeans_v1.0.x.java.util.Hashtable
+						getSources(): Netbeans_v1.0.x.org.netbeans.modules.corba.idl.src.IDLElement
+						hasGeneratedImplementation(): JavaPrimitiveTypes.int
+						openAtLinePosition()
+						openAtPosition(line_pos : JavaPrimitiveTypes.int, offset : JavaPrimitiveTypes.int)
+						parse()
+						setColumnPosition(column : JavaPrimitiveTypes.int)
+						setLinePosition(line : JavaPrimitiveTypes.int)
+						setPositionRef(ref : Netbeans_v1.0.x.org.openide.text.PositionRef)
+						startParsing()
+						update()
+					}
+					Netbeans_v1.0.x.org.openide.loaders.MultiDataObject <|-- IDLDataObject
+					Netbeans_v1.0.x.org.openide.loaders.DataNode <|-- IDLNode
+					JavaPrimitiveTypes.boolean "DEBUG" <-- IDLDataObject
+					JavaPrimitiveTypes.int "STATUS_ERROR" <-- IDLDataObject
+					JavaPrimitiveTypes.int "STATUS_OK" <-- IDLDataObject
+					JavaPrimitiveTypes.int "STYLE_ALL" <-- IDLDataObject
+					JavaPrimitiveTypes.int "STYLE_FIRST_LEVEL" <-- IDLDataObject
+					JavaPrimitiveTypes.int "STYLE_FIRST_LEVEL_WITH_NESTED_TYPES" <-- IDLDataObject
+					JavaPrimitiveTypes.int "STYLE_NOTHING" <-- IDLDataObject
+					JavaPrimitiveTypes.int "_column" <-- IDLDataObject
+					JavaPrimitiveTypes.int "_line" <-- IDLDataObject
+					Netbeans_v1.0.x.org.netbeans.modules.corba.idl.generator.ImplGenerator "generator" <-- IDLDataObject
+					JavaPrimitiveTypes.boolean "DEBUG" <-- IDLNode
+					Netbeans_v1.0.x.java.lang.String "IDL_ERROR_ICON" <-- IDLNode
+					Netbeans_v1.0.x.java.lang.String "IDL_ICON_BASE" <-- IDLNode
+					Netbeans_v1.0.x.org.netbeans.modules.corba.idl.node.IDLDocumentChildren "children" <-- IDLNode
+					IDLDataObject "ido" <-- IDLNode
+					IDLNode "idlNode" <-- IDLDataObject
+					Netbeans_v1.0.x.org.openide.loaders.MultiFileLoader "idl_loader" <-- IDLDataObject
+					Netbeans_v1.0.x.org.netbeans.modules.corba.idl.src.IDLParser "parser" <-- IDLDataObject
+					Netbeans_v1.0.x.org.openide.text.PositionRef "position_of_element" <-- IDLDataObject
+					Netbeans_v1.0.x.java.util.Hashtable "possibleNames" <-- IDLDataObject
+					JavaPrimitiveTypes.long "serialVersionUID" <-- IDLDataObject
+					Netbeans_v1.0.x.org.netbeans.modules.corba.idl.src.IDLElement "src" <-- IDLDataObject
+					JavaPrimitiveTypes.int "status" <-- IDLDataObject
+				}
+			}
+		}
+	}
+}
+@enduml

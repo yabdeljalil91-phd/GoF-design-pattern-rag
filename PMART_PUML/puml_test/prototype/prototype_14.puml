@@ -1,0 +1,44 @@
+@startuml
+package dpd_jdt {
+	package P {
+		package name {
+			'A TextFigure specialized to edit numbers.
+			class NumberTextFigure {
+				-numberTextFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -4056859232918336475
+				<<Create>> NumberTextFigure()
+				'Gets the numerical value of the contained text. return the value or 0 in the case of an illegal number format.
+				getValue(): JavaPrimitiveTypes.int
+				'Gets the number of columns to be used by the text overlay.
+				'@see FloatingTextField
+				overlayColumns(): JavaPrimitiveTypes.int
+				'Sets the numberical value of the contained text.
+				setValue(value : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	P.name.TextFigure <|-- P.name.NumberTextFigure
+	P.name.AttributeFigure <|-- P.name.TextFigure
+	P.name.FigureChangeListener <|-- P.name.TextFigure
+	P.name.TextHolder <|-- P.name.TextFigure
+	java.lang.Cloneable <|-- P.name.Figure
+	java.io.Serializable <|-- P.name.Figure
+	java.awt.Font "fFont" <-- P.name.TextFigure
+	JavaPrimitiveTypes.int "fHeight" <-- P.name.TextFigure
+	JavaPrimitiveTypes.boolean "fIsReadOnly" <-- P.name.TextFigure
+	P.name.OffsetLocator "fLocator" <-- P.name.TextFigure
+	P.name.Figure "fObservedFigure" <-- P.name.TextFigure
+	JavaPrimitiveTypes.int "fOriginX" <-- P.name.TextFigure
+	JavaPrimitiveTypes.int "fOriginY" <-- P.name.TextFigure
+	JavaPrimitiveTypes.boolean "fSizeIsDirty" <-- P.name.TextFigure
+	java.lang.String "fText" <-- P.name.TextFigure
+	JavaPrimitiveTypes.int "fWidth" <-- P.name.TextFigure
+	java.lang.String "fgCurrentFontName" <-- P.name.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontSize" <-- P.name.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontStyle" <-- P.name.TextFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- P.name.TextFigure
+	JavaPrimitiveTypes.int "textFigureSerializedDataVersion" <-- P.name.TextFigure
+	JavaPrimitiveTypes.int "numberTextFigureSerializedDataVersion" <-- P.name.NumberTextFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- P.name.NumberTextFigure
+}
+@enduml

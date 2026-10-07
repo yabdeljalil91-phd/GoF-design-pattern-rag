@@ -1,0 +1,24 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'The package list filter that determines if the package should be included in the PackageSelectorArea.
+			'@author    Chris Seguin
+			abstract class PackageListFilter {
+				-{static} singleton: PackageListFilter
+				<<Create>> PackageListFilter()
+				'Description of the Method
+				'@return    Description of the Returned Value
+				{static} get(): PackageListFilter
+				'Returns true if we should include it
+				'@param summary  the summary in question
+				'@return          true if it should be included
+				isIncluded(summary : PackageSummary): JavaPrimitiveTypes.boolean
+				'Sets the Singleton attribute of the PackageListFilter class
+				'@param value  The new Singleton value
+				{static} setSingleton(value : PackageListFilter)
+			}
+		}
+	}
+}
+@enduml

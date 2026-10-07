@@ -1,0 +1,31 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package nonsingleton {
+			class AnimationDecorator {
+				-animationDecoratorSerializedDataVersion: JavaPrimitiveTypes.int
+				-fXVelocity: JavaPrimitiveTypes.int
+				-fYVelocity: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 7894632974364110685
+				<<Create>> AnimationDecorator()
+				<<Create>> AnimationDecorator(figure : Figure)
+				animationStep()
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				displayBox(): java.awt.Rectangle
+				read(dr : StorableInput)
+				velocity(xVelocity : JavaPrimitiveTypes.int, yVelocity : JavaPrimitiveTypes.int)
+				velocity(): java.awt.Point
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	Singleton.nonsingleton.DecoratorFigure <|-- Singleton.nonsingleton.AnimationDecorator
+	java.lang.Cloneable <|-- Singleton.nonsingleton.Figure
+	java.io.Serializable <|-- Singleton.nonsingleton.Figure
+	JavaPrimitiveTypes.int "animationDecoratorSerializedDataVersion" <-- Singleton.nonsingleton.AnimationDecorator
+	JavaPrimitiveTypes.int "fXVelocity" <-- Singleton.nonsingleton.AnimationDecorator
+	JavaPrimitiveTypes.int "fYVelocity" <-- Singleton.nonsingleton.AnimationDecorator
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Singleton.nonsingleton.AnimationDecorator
+}
+@enduml

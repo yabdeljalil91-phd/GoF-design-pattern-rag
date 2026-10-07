@@ -1,0 +1,365 @@
+@startuml
+'Design pattern Strategy
+package "JHotDraw v5.1" as JHotDraw_v5.1 {
+	package CH {
+		package ifa {
+			package draw {
+				package standard {
+					'/** 
+					' * The standard implementation of DrawingView.
+					' * @see DrawingView
+					' * @see Painter
+					' * @see Tool
+					' */
+					'DP role: context
+					class StandardDrawingView {
+						-drawingViewSerializedDataVersion: JavaPrimitiveTypes.int
+						-fBackgrounds: JHotDraw_v5.1.java.util.Vector
+						-fConstrainer: JHotDraw_v5.1.CH.ifa.draw.framework.PointConstrainer
+						-fDamage: JHotDraw_v5.1.java.awt.Rectangle
+						-fDrawing: JHotDraw_v5.1.CH.ifa.draw.framework.Drawing
+						-fEditor: JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor
+						-fForegrounds: JHotDraw_v5.1.java.util.Vector
+						-fLastClick: JHotDraw_v5.1.java.awt.Point
+						-fSelection: JHotDraw_v5.1.java.util.Vector
+						-fSelectionHandles: JHotDraw_v5.1.java.util.Vector
+						-fUpdateStrategy: JHotDraw_v5.1.CH.ifa.draw.framework.Painter
+						-fViewSize: JHotDraw_v5.1.java.awt.Dimension
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = -3878153366174603336
+						'/** 
+						' * Constructs the view.
+						' */
+						<<Create>> StandardDrawingView(editor : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor, width : JavaPrimitiveTypes.int, height : JavaPrimitiveTypes.int)
+						'/** 
+						' * Adds a figure to the drawing.
+						' * @return the added figure.
+						' */
+						add(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						'/** 
+						' * Adds a vector of figures to the drawing.
+						' */
+						addAll(figures : JHotDraw_v5.1.java.util.Vector)
+						'/** 
+						' * Adds a background.
+						' */
+						addBackground(painter : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						'/** 
+						' * Adds a foreground.
+						' */
+						addForeground(painter : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						'/** 
+						' * Adds a figure to the current selection.
+						' */
+						addToSelection(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						'/** 
+						' * Adds a vector of figures to the current selection.
+						' */
+						addToSelectionAll(figures : JHotDraw_v5.1.java.util.Vector)
+						'/** 
+						' * Refreshes the drawing if there is some accumulated damage
+						' */
+						checkDamage()
+						-checkMinimumSize()
+						'/** 
+						' * Clears the current selection.
+						' */
+						clearSelection()
+						'/** 
+						' * Constrains a point to the current grid.
+						' */
+						#constrainPoint(p : JHotDraw_v5.1.java.awt.Point): JHotDraw_v5.1.java.awt.Point
+						'/** 
+						' * Draws the contents of the drawing view. The view has three layers: background, drawing, handles. The layers are drawn in back to front order.
+						' */
+						drawAll(g : JHotDraw_v5.1.java.awt.Graphics)
+						'/** 
+						' * Draws the background. If a background pattern is set it is used to fill the background. Otherwise the background is filled in the background color.
+						' */
+						drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						'/** 
+						' * Draws the drawing.
+						' */
+						drawDrawing(g : JHotDraw_v5.1.java.awt.Graphics)
+						'/** 
+						' * Draws the currently active handles.
+						' */
+						drawHandles(g : JHotDraw_v5.1.java.awt.Graphics)
+						-drawPainters(g : JHotDraw_v5.1.java.awt.Graphics, v : JHotDraw_v5.1.java.util.Vector)
+						'/** 
+						' * Gets the drawing.
+						' */
+						drawing(): JHotDraw_v5.1.CH.ifa.draw.framework.Drawing
+						drawingInvalidated(e : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingChangeEvent)
+						drawingRequestUpdate(e : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingChangeEvent)
+						'/** 
+						' * Gets the editor.
+						' */
+						editor(): JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor
+						'/** 
+						' * Finds a handle at the given coordinates.
+						' * @return the hit handle, null if no handle is found.
+						' */
+						findHandle(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Handle
+						'/** 
+						' * Freezes the view by acquiring the drawing lock.
+						' * @see Drawing#lock
+						' */
+						freezeView()
+						'/** 
+						' * Gets the current constrainer.
+						' */
+						getConstrainer(): JHotDraw_v5.1.CH.ifa.draw.framework.PointConstrainer
+						'/** 
+						' * Gets the current selection as a FigureSelection. A FigureSelection can be cut, copied, pasted.
+						' */
+						getFigureSelection(): JHotDraw_v5.1.CH.ifa.draw.framework.FigureSelection
+						'/** 
+						' * Gets the minimum dimension of the drawing.
+						' */
+						getMinimumSize(): JHotDraw_v5.1.java.awt.Dimension
+						'/** 
+						' * Gets the preferred dimension of the drawing..
+						' */
+						getPreferredSize(): JHotDraw_v5.1.java.awt.Dimension
+						'/** 
+						' * Handles cursor keys by moving all the selected figures one grid point in the cursor direction.
+						' */
+						#handleCursorKey(key : JavaPrimitiveTypes.int)
+						isFocusTraversable(): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Handles key down events. Cursor keys are handled by the view the other key events are delegated to the currently active tool.
+						' * @return whether the event was handled.
+						' */
+						keyPressed(e : JHotDraw_v5.1.java.awt.event.KeyEvent)
+						keyReleased(e : JHotDraw_v5.1.java.awt.event.KeyEvent)
+						keyTyped(e : JHotDraw_v5.1.java.awt.event.KeyEvent)
+						'/** 
+						' * Gets the position of the last click inside the view.
+						' */
+						lastClick(): JHotDraw_v5.1.java.awt.Point
+						mouseClicked(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						'/** 
+						' * Handles mouse drag events. The event is delegated to the currently active tool.
+						' * @return whether the event was handled.
+						' */
+						mouseDragged(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						mouseEntered(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						mouseExited(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						'/** 
+						' * Handles mouse move events. The event is delegated to the currently active tool.
+						' * @return whether the event was handled.
+						' */
+						mouseMoved(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						'/** 
+						' * Handles mouse down events. The event is delegated to the currently active tool.
+						' * @return whether the event was handled.
+						' */
+						mousePressed(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						'/** 
+						' * Handles mouse up events. The event is delegated to the currently active tool.
+						' * @return whether the event was handled.
+						' */
+						mouseReleased(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						-moveSelection(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int)
+						'/** 
+						' * Paints the drawing view. The actual drawing is delegated to the current update strategy.
+						' * @see Painter
+						' */
+						paint(g : JHotDraw_v5.1.java.awt.Graphics)
+						-readObject(s : JHotDraw_v5.1.java.io.ObjectInputStream)
+						'/** 
+						' * Removes a figure from the drawing.
+						' * @return the removed figure
+						' */
+						remove(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						'/** 
+						' * Removes a background.
+						' */
+						removeBackground(painter : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						'/** 
+						' * Removes a foreground.
+						' */
+						removeForeground(painter : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						'/** 
+						' * Removes a figure from the selection.
+						' */
+						removeFromSelection(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						repairDamage()
+						'/** 
+						' * Gets the currently selected figures.
+						' * @return a vector with the selected figures. The vectoris a copy of the current selection.
+						' */
+						selection(): JHotDraw_v5.1.java.util.Vector
+						'/** 
+						' * Informs that the current selection changed. By default this event is forwarded to the drawing editor.
+						' */
+						#selectionChanged()
+						'/** 
+						' * Gets the number of selected figures.
+						' */
+						selectionCount(): JavaPrimitiveTypes.int
+						'/** 
+						' * Gets an enumeration over the currently selected figures.
+						' */
+						selectionElements(): JHotDraw_v5.1.CH.ifa.draw.framework.FigureEnumeration
+						'/** 
+						' * Gets an enumeration of the currently active handles.
+						' */
+						-selectionHandles(): JHotDraw_v5.1.java.util.Enumeration
+						'/** 
+						' * Gets the currently selected figures in Z order.
+						' * @see #selection
+						' * @return a vector with the selected figures. The vectoris a copy of the current selection.
+						' */
+						selectionZOrdered(): JHotDraw_v5.1.java.util.Vector
+						'/** 
+						' * Sets the grid spacing that is used to constrain points.
+						' */
+						setConstrainer(c : JHotDraw_v5.1.CH.ifa.draw.framework.PointConstrainer)
+						'/** 
+						' * Sets the current display update strategy.
+						' * @see UpdateStrategy
+						' */
+						setDisplayUpdate(updateStrategy : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						'/** 
+						' * Sets and installs another drawing in the view.
+						' */
+						setDrawing(d : JHotDraw_v5.1.CH.ifa.draw.framework.Drawing)
+						'/** 
+						' * Sets the view's editor.
+						' */
+						setEditor(editor : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor)
+						'/** 
+						' * If a figure isn't selected it is added to the selection. Otherwise it is removed from the selection.
+						' */
+						toggleSelection(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						'/** 
+						' * Gets the current tool.
+						' */
+						tool(): JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+						'/** 
+						' * Unfreezes the view by releasing the drawing lock.
+						' * @see Drawing#unlock
+						' */
+						unfreezeView()
+						'/** 
+						' * Updates the drawing view.
+						' */
+						update(g : JHotDraw_v5.1.java.awt.Graphics)
+					}
+					'/** 
+					' * The BufferedUpdateStrategy implements an update strategy that first draws a view into a buffer followed by copying the buffer to the DrawingView.
+					' * @see DrawingView
+					' */
+					'DP role: concreteStrategy
+					class BufferedUpdateStrategy {
+						-bufferedUpdateSerializedDataVersion: JavaPrimitiveTypes.int
+						-fImageheight: JavaPrimitiveTypes.int
+						-fImagewidth: JavaPrimitiveTypes.int
+						-fOffscreen: JHotDraw_v5.1.java.awt.Image
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 6489532222954612824
+						<<Create>> BufferedUpdateStrategy()
+						'/** 
+						' * Draws the view contents.
+						' */
+						draw(g : JHotDraw_v5.1.java.awt.Graphics, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+					}
+					'/** 
+					' * The SimpleUpdateStrategy implements an update strategy that directly redraws a DrawingView.
+					' * @see DrawingView
+					' */
+					'DP role: concreteStrategy
+					class SimpleUpdateStrategy {
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = -7539925820692134566
+						<<Create>> SimpleUpdateStrategy()
+						'/** 
+						' * Draws the view contents.
+						' */
+						draw(g : JHotDraw_v5.1.java.awt.Graphics, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+					}
+					JHotDraw_v5.1.java.awt.Panel <|-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView <|.. StandardDrawingView
+					JHotDraw_v5.1.java.awt.event.MouseListener <|.. StandardDrawingView
+					JHotDraw_v5.1.java.awt.event.MouseMotionListener <|.. StandardDrawingView
+					JHotDraw_v5.1.java.awt.event.KeyListener <|.. StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.Painter <|.. BufferedUpdateStrategy
+					JHotDraw_v5.1.CH.ifa.draw.framework.Painter <|.. SimpleUpdateStrategy
+					JavaPrimitiveTypes.int "drawingViewSerializedDataVersion" <-- StandardDrawingView
+					JHotDraw_v5.1.java.util.Vector "fBackgrounds" <-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.PointConstrainer "fConstrainer" <-- StandardDrawingView
+					JHotDraw_v5.1.java.awt.Rectangle "fDamage" <-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.Drawing "fDrawing" <-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor "fEditor" <-- StandardDrawingView
+					JHotDraw_v5.1.java.util.Vector "fForegrounds" <-- StandardDrawingView
+					JHotDraw_v5.1.java.awt.Point "fLastClick" <-- StandardDrawingView
+					JHotDraw_v5.1.java.util.Vector "fSelection" <-- StandardDrawingView
+					JHotDraw_v5.1.java.util.Vector "fSelectionHandles" <-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.Painter "fUpdateStrategy" <-- StandardDrawingView
+					JHotDraw_v5.1.java.awt.Dimension "fViewSize" <-- StandardDrawingView
+					JavaPrimitiveTypes.long "serialVersionUID" <-- StandardDrawingView
+					JavaPrimitiveTypes.int "bufferedUpdateSerializedDataVersion" <-- BufferedUpdateStrategy
+					JavaPrimitiveTypes.int "fImageheight" <-- BufferedUpdateStrategy
+					JavaPrimitiveTypes.int "fImagewidth" <-- BufferedUpdateStrategy
+					JHotDraw_v5.1.java.awt.Image "fOffscreen" <-- BufferedUpdateStrategy
+					JavaPrimitiveTypes.long "serialVersionUID" <-- BufferedUpdateStrategy
+					JavaPrimitiveTypes.long "serialVersionUID" <-- SimpleUpdateStrategy
+				}
+				package framework {
+					'DP role: strategy
+					interface Painter {
+						draw(g : JHotDraw_v5.1.java.awt.Graphics, view : DrawingView)
+					}
+					JHotDraw_v5.1.java.awt.image.ImageObserver <|-- DrawingView
+					DrawingChangeListener <|-- DrawingView
+					JHotDraw_v5.1.java.util.EventListener <|-- DrawingChangeListener
+					JHotDraw_v5.1.java.util.EventObject <|-- DrawingChangeEvent
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Drawing
+					FigureChangeListener <|-- Drawing
+					JHotDraw_v5.1.java.io.Serializable <|-- Drawing
+					JHotDraw_v5.1.java.util.EventListener <|-- FigureChangeListener
+					JHotDraw_v5.1.java.util.EventObject <|-- FigureChangeEvent
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Figure
+					JHotDraw_v5.1.java.lang.Cloneable <|-- Figure
+					JHotDraw_v5.1.java.io.Serializable <|-- Figure
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Locator
+					JHotDraw_v5.1.java.io.Serializable <|-- Locator
+					JHotDraw_v5.1.java.lang.Cloneable <|-- Locator
+					JHotDraw_v5.1.java.io.Serializable <|-- Connector
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Connector
+					Figure <|-- ConnectionFigure
+					FigureChangeListener <|-- ConnectionFigure
+					JHotDraw_v5.1.java.util.Enumeration <|-- FigureEnumeration
+					JHotDraw_v5.1.java.io.Serializable <|-- Painter
+					JHotDraw_v5.1.java.awt.Rectangle "fRectangle" <-- DrawingChangeEvent
+					JHotDraw_v5.1.java.awt.Rectangle "fRectangle" <-- FigureChangeEvent
+					JHotDraw_v5.1.java.awt.Rectangle "fgEmptyRectangle" <-- FigureChangeEvent
+					JavaPrimitiveTypes.int "HANDLESIZE" <-- Handle
+					JHotDraw_v5.1.java.lang.String "TYPE" <-- FigureSelection
+					JavaPrimitiveTypes.byte "fData 0..*" <-- FigureSelection
+				}
+				package samples {
+					package javadraw {
+						'/** 
+						' * PatternDrawer a background that can be added to a drawing.
+						' * @see DrawingView
+						' * @see Painter
+						' */
+						'DP role: concreteStrategy
+						class PatternPainter {
+							-fImage: JHotDraw_v5.1.java.awt.Image
+							<<Create>> PatternPainter(image : JHotDraw_v5.1.java.awt.Image)
+							draw(g : JHotDraw_v5.1.java.awt.Graphics, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+							'/** 
+							' * Draws a pattern background pattern by replicating an image.
+							' */
+							-drawPattern(g : JHotDraw_v5.1.java.awt.Graphics, image : JHotDraw_v5.1.java.awt.Image, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						}
+						JHotDraw_v5.1.CH.ifa.draw.framework.Painter <|.. PatternPainter
+						JHotDraw_v5.1.java.awt.Image "fImage" <-- PatternPainter
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

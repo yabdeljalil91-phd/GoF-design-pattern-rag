@@ -1,0 +1,90 @@
+@startuml
+'Design pattern Adapter
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+	package org {
+		package acm {
+			package seguin {
+				package awt {
+					'DP role: client
+					class OrderableList {
+						-olm: OrderableListModel
+						<<Create>> OrderableList(data : JRefactory_v2.6.24.java.lang.Object, render : JRefactory_v2.6.24.javax.swing.ListCellRenderer)
+						addListDataListener(l : JRefactory_v2.6.24.javax.swing.event.ListDataListener)
+						'/** 
+						' * Gets the correctly ordered data 
+						' */
+						getData(): JRefactory_v2.6.24.java.lang.Object
+						{static} main(args : JRefactory_v2.6.24.java.lang.String)
+						removeListDataListener(l : JRefactory_v2.6.24.javax.swing.event.ListDataListener)
+					}
+					'DP role: adaptee
+					class OrderableListModel {
+						-data: JRefactory_v2.6.24.java.lang.Object [*]
+						-list: JRefactory_v2.6.24.javax.swing.JList
+						<<Create>> OrderableListModel()
+						getData(): JRefactory_v2.6.24.java.lang.Object
+						getElementAt(index : JavaPrimitiveTypes.int): JRefactory_v2.6.24.java.lang.Object
+						getSize(): JavaPrimitiveTypes.int
+						setData(value : JRefactory_v2.6.24.java.lang.Object)
+						setList(value : JRefactory_v2.6.24.javax.swing.JList)
+						swap(first : JavaPrimitiveTypes.int, second : JavaPrimitiveTypes.int)
+					}
+					'/** 
+					' * Adapter to move items around in the listbox
+					' * @author    Chris Seguin
+					' */
+					'DP role: adapter
+					class MoveItemAdapter {
+						-direction: JavaPrimitiveTypes.int
+						-list: JRefactory_v2.6.24.javax.swing.JList
+						-olm: OrderableListModel
+						'/** 
+						' * Constructor for the MoveItemAdapter object
+						' * @param model      the list model
+						' * @param list       the list
+						' * @param direction  the direction of movement
+						' */
+						<<Create>> MoveItemAdapter(model : OrderableListModel, list : JRefactory_v2.6.24.javax.swing.JList, direction : JavaPrimitiveTypes.int)
+						'/** 
+						' * Swap the item's on the user's command
+						' * @param evt  the command to swap
+						' */
+						actionPerformed(evt : JRefactory_v2.6.24.java.awt.event.ActionEvent)
+					}
+					JRefactory_v2.6.24.javax.swing.JPanel <|-- OrderableList
+					JRefactory_v2.6.24.javax.swing.AbstractListModel <|-- OrderableListModel
+					JRefactory_v2.6.24.java.awt.event.ActionListener <|.. MoveItemAdapter
+					JRefactory_v2.6.24.java.lang.Object "data 0..*" <-- OrderableListModel
+					JRefactory_v2.6.24.javax.swing.JList "list" <-- OrderableListModel
+					OrderableListModel "olm" <-- OrderableList
+					JavaPrimitiveTypes.int "direction" <-- MoveItemAdapter
+					JRefactory_v2.6.24.javax.swing.JList "list" <-- MoveItemAdapter
+					OrderableListModel "olm" <-- MoveItemAdapter
+				}
+			}
+		}
+	}
+	package java {
+		package awt {
+			package event {
+				'/** 
+				' * The listener interface for receiving action events. The class that is interested in processing an action event implements this interface, and the object created with that class is registered with a component, using the component's {@code addActionListener} method. When the action eventoccurs, that object's  {@code actionPerformed} method isinvoked.
+				' * @see ActionEvent
+				' * @see <a href="https://docs.oracle.com/javase/tutorial/uiswing/events/actionlistener.html">How to Write an Action Listener</a>
+				' * @author Carl Quinn
+				' * @since 1.1
+				' */
+				'DP role: target
+				interface ActionListener {
+					'/** 
+					' * Invoked when an action occurs.
+					' * @param e the event to be processed
+					' */
+					actionPerformed(e : ActionEvent)
+				}
+				JRefactory_v2.6.24.java.util.EventListener <|-- ActionListener
+			}
+		}
+	}
+}
+@enduml

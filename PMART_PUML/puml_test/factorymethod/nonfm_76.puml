@@ -1,0 +1,29 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			class BouncingDrawing {
+				-bouncingDrawingSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -8566272817418441758
+				<<Create>> BouncingDrawing()
+				add(figure : Figure): Figure
+				animationStep()
+				remove(figure : Figure): Figure
+				replace(figure : Figure, replacement : Figure)
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.StandardDrawing <|-- Factory_method.nonfactorymethod.BouncingDrawing
+	Factory_method.nonfactorymethod.Animatable <|-- Factory_method.nonfactorymethod.BouncingDrawing
+	Factory_method.nonfactorymethod.CompositeFigure <|-- Factory_method.nonfactorymethod.StandardDrawing
+	Factory_method.nonfactorymethod.Drawing <|-- Factory_method.nonfactorymethod.StandardDrawing
+	java.lang.Cloneable <|-- Factory_method.nonfactorymethod.Figure
+	java.io.Serializable <|-- Factory_method.nonfactorymethod.Figure
+	JavaPrimitiveTypes.int "drawingSerializedDataVersion" <-- Factory_method.nonfactorymethod.StandardDrawing
+	java.lang.Thread "fDrawingLockHolder" <-- Factory_method.nonfactorymethod.StandardDrawing
+	java.util.Vector "fListeners" <-- Factory_method.nonfactorymethod.StandardDrawing
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Factory_method.nonfactorymethod.StandardDrawing
+	JavaPrimitiveTypes.int "bouncingDrawingSerializedDataVersion" <-- Factory_method.nonfactorymethod.BouncingDrawing
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Factory_method.nonfactorymethod.BouncingDrawing
+}
+@enduml

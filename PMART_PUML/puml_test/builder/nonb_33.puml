@@ -1,0 +1,21 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Object responsible for loading the UML class diagrams for the Elixir IDE.
+			'@author    Chris Seguin
+			class ElixirClassDiagramLoader {
+				-{static} singleton: SingleDirClassDiagramReloader
+				'Constructor for the ElixirClassDiagramLoader object
+				<<Create>> ElixirClassDiagramLoader()
+				'Registers a reloader with Elixir IDE
+				'@param init  the reloader
+				{static} register(init : SingleDirClassDiagramReloader)
+				'Order from the user to reload the diagrams
+				{static} reload()
+			}
+		}
+	}
+	Builder.nonbuilder.SingleDirClassDiagramReloader "singleton" <-- Builder.nonbuilder.ElixirClassDiagramLoader
+}
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Adds the refactorings onto the project view
+			'@author    Chris Seguin
+			class ProjectViewRefactorings {
+				<<Create>> ProjectViewRefactorings()
+				'Gets the ContextAction attribute of the ProjectViewRefactorings object
+				'@param browser  Description of Parameter
+				'@param nodes    Description of Parameter
+				'@return          The ContextAction value
+				getContextAction(browser : Browser, nodes : Node): javax.swing.Action
+			}
+		}
+	}
+	Builder.nonbuilder.ContextActionProvider <|-- Builder.nonbuilder.ProjectViewRefactorings
+}
+@enduml

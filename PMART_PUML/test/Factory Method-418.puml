@@ -1,0 +1,33 @@
+@startuml
+package "DrJava v20030203" as DrJava_v20030203 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package platform {
+						class DefaultPlatform {
+							{static} ONLY: DefaultPlatform
+							#<<Create>> DefaultPlatform()
+							afterUISetup(about : DrJava_v20030203.javax.swing.Action, prefs : DrJava_v20030203.javax.swing.Action, quit : DrJava_v20030203.javax.swing.Action)
+							beforeUISetup()
+							isUsingSystemLAF(): JavaPrimitiveTypes.boolean
+						}
+						interface PlatformSupport {
+							afterUISetup(about : DrJava_v20030203.javax.swing.Action, prefs : DrJava_v20030203.javax.swing.Action, quit : DrJava_v20030203.javax.swing.Action)
+							beforeUISetup()
+							isUsingSystemLAF(): JavaPrimitiveTypes.boolean
+						}
+						class PlatformFactory {
+							{const} ONLY: PlatformSupport
+							<<Create>> PlatformFactory()
+							-{static} getPlatformSupport(): PlatformSupport
+						}
+						PlatformSupport <|.. DefaultPlatform
+						PlatformSupport "ONLY" <-- PlatformFactory
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

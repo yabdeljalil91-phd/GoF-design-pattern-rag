@@ -1,0 +1,248 @@
+@startuml
+package dpd_jdt {
+	package Context {
+		package nonContext {
+			interface JavaParserConstants {
+				{const} ABSTRACT: JavaPrimitiveTypes.int = 16
+				{const} ANDASSIGN: JavaPrimitiveTypes.int = 117
+				{const} ASSIGN: JavaPrimitiveTypes.int = 87
+				{const} BANG: JavaPrimitiveTypes.int = 90
+				{const} BIT_AND: JavaPrimitiveTypes.int = 106
+				{const} BIT_OR: JavaPrimitiveTypes.int = 107
+				{const} BOOLEAN: JavaPrimitiveTypes.int = 17
+				{const} BREAK: JavaPrimitiveTypes.int = 18
+				{const} BYTE: JavaPrimitiveTypes.int = 19
+				{const} CASE: JavaPrimitiveTypes.int = 20
+				{const} CATCH: JavaPrimitiveTypes.int = 21
+				{const} CATEGORY_COMMENT: JavaPrimitiveTypes.int = 14
+				{const} CHAR: JavaPrimitiveTypes.int = 22
+				{const} CHARACTER_LITERAL: JavaPrimitiveTypes.int = 73
+				{const} CLASS: JavaPrimitiveTypes.int = 23
+				{const} COLON: JavaPrimitiveTypes.int = 93
+				{const} COMMA: JavaPrimitiveTypes.int = 85
+				{const} CONST: JavaPrimitiveTypes.int = 24
+				{const} CONTINUE: JavaPrimitiveTypes.int = 25
+				{const} DECIMAL_LITERAL: JavaPrimitiveTypes.int = 68
+				{const} DECR: JavaPrimitiveTypes.int = 101
+				{const} DEFAULT: JavaPrimitiveTypes.int = 0
+				{const} DIGIT: JavaPrimitiveTypes.int = 77
+				{const} DO: JavaPrimitiveTypes.int = 27
+				{const} DOT: JavaPrimitiveTypes.int = 86
+				{const} DOUBLE: JavaPrimitiveTypes.int = 28
+				{const} ELSE: JavaPrimitiveTypes.int = 29
+				{const} EOF: JavaPrimitiveTypes.int = 0
+				{const} EQ: JavaPrimitiveTypes.int = 94
+				{const} EXPONENT: JavaPrimitiveTypes.int = 72
+				{const} EXTENDS: JavaPrimitiveTypes.int = 30
+				{const} FALSE: JavaPrimitiveTypes.int = 31
+				{const} FINAL: JavaPrimitiveTypes.int = 32
+				{const} FINALLY: JavaPrimitiveTypes.int = 33
+				{const} FLOAT: JavaPrimitiveTypes.int = 34
+				{const} FLOATING_POINT_LITERAL: JavaPrimitiveTypes.int = 71
+				{const} FOR: JavaPrimitiveTypes.int = 35
+				{const} FORMAL_COMMENT: JavaPrimitiveTypes.int = 12
+				{const} GE: JavaPrimitiveTypes.int = 96
+				{const} GOTO: JavaPrimitiveTypes.int = 36
+				{const} GT: JavaPrimitiveTypes.int = 88
+				{const} HEX_LITERAL: JavaPrimitiveTypes.int = 69
+				{const} HOOK: JavaPrimitiveTypes.int = 92
+				{const} IDENTIFIER: JavaPrimitiveTypes.int = 75
+				{const} IF: JavaPrimitiveTypes.int = 37
+				{const} IMPLEMENTS: JavaPrimitiveTypes.int = 38
+				{const} IMPORT: JavaPrimitiveTypes.int = 39
+				{const} INCR: JavaPrimitiveTypes.int = 100
+				{const} INSTANCEOF: JavaPrimitiveTypes.int = 40
+				{const} INT: JavaPrimitiveTypes.int = 41
+				{const} INTEGER_LITERAL: JavaPrimitiveTypes.int = 67
+				{const} INTERFACE: JavaPrimitiveTypes.int = 42
+				{const} IN_CATEGORY_COMMENT: JavaPrimitiveTypes.int = 4
+				{const} IN_FORMAL_COMMENT: JavaPrimitiveTypes.int = 2
+				{const} IN_MULTI_LINE_COMMENT: JavaPrimitiveTypes.int = 3
+				{const} IN_SINGLE_LINE_COMMENT: JavaPrimitiveTypes.int = 1
+				{const} LBRACE: JavaPrimitiveTypes.int = 80
+				{const} LBRACKET: JavaPrimitiveTypes.int = 82
+				{const} LE: JavaPrimitiveTypes.int = 95
+				{const} LETTER: JavaPrimitiveTypes.int = 76
+				{const} LONG: JavaPrimitiveTypes.int = 43
+				{const} LPAREN: JavaPrimitiveTypes.int = 78
+				{const} LSHIFT: JavaPrimitiveTypes.int = 110
+				{const} LSHIFTASSIGN: JavaPrimitiveTypes.int = 121
+				{const} LT: JavaPrimitiveTypes.int = 89
+				{const} MINUS: JavaPrimitiveTypes.int = 103
+				{const} MINUSASSIGN: JavaPrimitiveTypes.int = 114
+				{const} MULTI_LINE_COMMENT: JavaPrimitiveTypes.int = 13
+				{const} NATIVE: JavaPrimitiveTypes.int = 44
+				{const} NE: JavaPrimitiveTypes.int = 97
+				{const} NEW: JavaPrimitiveTypes.int = 45
+				{const} NULL: JavaPrimitiveTypes.int = 46
+				{const} OCTAL_LITERAL: JavaPrimitiveTypes.int = 70
+				{const} ORASSIGN: JavaPrimitiveTypes.int = 118
+				{const} PACKAGE: JavaPrimitiveTypes.int = 47
+				{const} PLUS: JavaPrimitiveTypes.int = 102
+				{const} PLUSASSIGN: JavaPrimitiveTypes.int = 113
+				{const} PRIVATE: JavaPrimitiveTypes.int = 48
+				{const} PROTECTED: JavaPrimitiveTypes.int = 49
+				{const} PUBLIC: JavaPrimitiveTypes.int = 50
+				{const} RBRACE: JavaPrimitiveTypes.int = 81
+				{const} RBRACKET: JavaPrimitiveTypes.int = 83
+				{const} REM: JavaPrimitiveTypes.int = 109
+				{const} REMASSIGN: JavaPrimitiveTypes.int = 120
+				{const} RETURN: JavaPrimitiveTypes.int = 51
+				{const} RPAREN: JavaPrimitiveTypes.int = 79
+				{const} RSIGNEDSHIFT: JavaPrimitiveTypes.int = 111
+				{const} RSIGNEDSHIFTASSIGN: JavaPrimitiveTypes.int = 122
+				{const} RUNSIGNEDSHIFT: JavaPrimitiveTypes.int = 112
+				{const} RUNSIGNEDSHIFTASSIGN: JavaPrimitiveTypes.int = 123
+				{const} SC_AND: JavaPrimitiveTypes.int = 99
+				{const} SC_OR: JavaPrimitiveTypes.int = 98
+				{const} SEMICOLON: JavaPrimitiveTypes.int = 84
+				{const} SHORT: JavaPrimitiveTypes.int = 52
+				{const} SINGLE_LINE_COMMENT: JavaPrimitiveTypes.int = 11
+				{const} SLASH: JavaPrimitiveTypes.int = 105
+				{const} SLASHASSIGN: JavaPrimitiveTypes.int = 116
+				{const} STAR: JavaPrimitiveTypes.int = 104
+				{const} STARASSIGN: JavaPrimitiveTypes.int = 115
+				{const} STATIC: JavaPrimitiveTypes.int = 53
+				{const} STRICTFP: JavaPrimitiveTypes.int = 54
+				{const} STRING_LITERAL: JavaPrimitiveTypes.int = 74
+				{const} SUPER: JavaPrimitiveTypes.int = 55
+				{const} SWITCH: JavaPrimitiveTypes.int = 56
+				{const} SYNCHRONIZED: JavaPrimitiveTypes.int = 57
+				{const} THIS: JavaPrimitiveTypes.int = 58
+				{const} THROW: JavaPrimitiveTypes.int = 59
+				{const} THROWS: JavaPrimitiveTypes.int = 60
+				{const} TILDE: JavaPrimitiveTypes.int = 91
+				{const} TRANSIENT: JavaPrimitiveTypes.int = 61
+				{const} TRUE: JavaPrimitiveTypes.int = 62
+				{const} TRY: JavaPrimitiveTypes.int = 63
+				{const} VOID: JavaPrimitiveTypes.int = 64
+				{const} VOLATILE: JavaPrimitiveTypes.int = 65
+				{const} WHILE: JavaPrimitiveTypes.int = 66
+				{const} XOR: JavaPrimitiveTypes.int = 108
+				{const} XORASSIGN: JavaPrimitiveTypes.int = 119
+				{const} _DEFAULT: JavaPrimitiveTypes.int = 26
+				{const} tokenImage: java.lang.String [*]
+			}
+		}
+	}
+	JavaPrimitiveTypes.int "ABSTRACT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "ANDASSIGN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "ASSIGN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "BANG" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "BIT_AND" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "BIT_OR" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "BOOLEAN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "BREAK" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "BYTE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "CASE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "CATCH" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "CATEGORY_COMMENT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "CHAR" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "CHARACTER_LITERAL" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "CLASS" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "COLON" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "COMMA" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "CONST" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "CONTINUE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "DECIMAL_LITERAL" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "DECR" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "DEFAULT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "DIGIT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "DO" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "DOT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "DOUBLE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "ELSE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "EOF" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "EQ" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "EXPONENT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "EXTENDS" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "FALSE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "FINAL" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "FINALLY" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "FLOAT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "FLOATING_POINT_LITERAL" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "FOR" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "FORMAL_COMMENT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "GE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "GOTO" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "GT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "HEX_LITERAL" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "HOOK" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "IDENTIFIER" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "IF" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "IMPLEMENTS" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "IMPORT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "INCR" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "INSTANCEOF" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "INT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "INTEGER_LITERAL" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "INTERFACE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "IN_CATEGORY_COMMENT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "IN_FORMAL_COMMENT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "IN_MULTI_LINE_COMMENT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "IN_SINGLE_LINE_COMMENT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "LBRACE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "LBRACKET" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "LE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "LETTER" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "LONG" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "LPAREN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "LSHIFT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "LSHIFTASSIGN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "LT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "MINUS" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "MINUSASSIGN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "MULTI_LINE_COMMENT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "NATIVE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "NE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "NEW" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "NULL" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "OCTAL_LITERAL" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "ORASSIGN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "PACKAGE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "PLUS" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "PLUSASSIGN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "PRIVATE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "PROTECTED" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "PUBLIC" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "RBRACE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "RBRACKET" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "REM" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "REMASSIGN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "RETURN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "RPAREN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "RSIGNEDSHIFT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "RSIGNEDSHIFTASSIGN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "RUNSIGNEDSHIFT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "RUNSIGNEDSHIFTASSIGN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "SC_AND" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "SC_OR" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "SEMICOLON" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "SHORT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "SINGLE_LINE_COMMENT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "SLASH" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "SLASHASSIGN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "STAR" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "STARASSIGN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "STATIC" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "STRICTFP" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "STRING_LITERAL" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "SUPER" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "SWITCH" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "SYNCHRONIZED" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "THIS" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "THROW" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "THROWS" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "TILDE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "TRANSIENT" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "TRUE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "TRY" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "VOID" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "VOLATILE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "WHILE" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "XOR" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "XORASSIGN" <-- Context.nonContext.JavaParserConstants
+	JavaPrimitiveTypes.int "_DEFAULT" <-- Context.nonContext.JavaParserConstants
+	java.lang.String "tokenImage 0..*" <-- Context.nonContext.JavaParserConstants
+}
+@enduml

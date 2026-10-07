@@ -1,0 +1,88 @@
+@startuml
+' Singleton class UML for HTMLComponentFactory (MapperXML v1.9.7)
+' Enhanced for RAG + GoF classification (Singleton + Factory Method hybrid)
+
+package "MapperXML v1.9.7" as MapperXML {
+
+    class HTMLComponentFactory {
+
+        '====================================================
+        ' SINGLETON STATE (global factory instance)
+        '====================================================
+        - {static} factory: HTMLComponentFactory
+
+        '====================================================
+        ' CONSTRUCTION CONTROL (Singleton enforcement)
+        '====================================================
+        ' Private constructor prevents external instantiation
+        - <<Create>> HTMLComponentFactory()
+
+        '====================================================
+        ' SINGLETON ACCESS POINT
+        '====================================================
+        {static} getInstance(): HTMLComponentFactory
+
+        '====================================================
+        ' FACTORY RESPONSIBILITIES (core design behavior)
+        '====================================================
+
+        ' Creates UI components from DOM elements (mapping layer)
+        # createComponentForElement(
+            id: String,
+            element: org.w3c.dom.Element,
+            holders: ValueHolder
+        ): Component
+
+        ' Suggests candidate components based on DOM structure
+        getSuggestedComponents(element: org.w3c.dom.Element): java.util.Vector
+
+        '====================================================
+        ' INITIALIZATION / INTERNAL CONFIGURATION
+        '====================================================
+
+        # initTagTable()
+
+        ' Internal formatting logic for field-element mapping
+        - setupFormat(field: AbstractField, element: org.w3c.dom.Element)
+    }
+
+    '========================================================
+    ' TYPE HIERARCHY (polymorphic factory abstraction)
+    '========================================================
+    ComponentFactory <|-- HTMLComponentFactory
+
+    '========================================================
+    ' RAG-ORIENTED DESIGN PATTERN INTERPRETATION
+    '========================================================
+    '
+    ' Primary pattern: Singleton
+    ' Secondary pattern: Factory Method / Abstract Factory specialization
+    '
+    '========================================================
+    ' STRUCTURAL SIGNALS (Singleton detection)
+    '========================================================
+    ' - static factory instance holder
+    ' - private constructor
+    ' - static getInstance()
+    '
+    '========================================================
+    ' BEHAVIORAL SIGNALS (Factory semantics)
+    '========================================================
+    ' - createComponentForElement(...)
+    '     → dynamic object creation based on DOM input
+    '
+    ' - getSuggestedComponents(...)
+    '     → heuristic-based candidate generation
+    '
+    '========================================================
+    ' ARCHITECTURAL ROLE
+    '========================================================
+    ' This class is NOT a pure Singleton:
+    '   → It is a Singleton-controlled Factory
+    '
+    ' Pattern composition:
+    '   Singleton + Factory Method (primary)
+    '   + DOM-to-UI mapping layer
+    '
+}
+@enduml

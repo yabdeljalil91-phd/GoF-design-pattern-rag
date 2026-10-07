@@ -1,0 +1,50 @@
+@startuml
+title Template Method Pattern in JHotDraw (Focused)
+
+abstract class AbstractFigure {
+    .. Template Methods ..
+    + displayBox(Rectangle r)
+    + moveBy(int dx, int dy)
+    .. Primitive Operations (Hooks) ..
+    # {abstract} basicDisplayBox(Point p1, Point p2)
+    # {abstract} basicMoveBy(int dx, int dy)
+}
+
+note right of AbstractFigure::displayBox
+  **Template Method:**
+  void displayBox(Rectangle r) {
+    willChange();
+    basicDisplayBox(r.origin, r.corner);
+    changed();
+  }
+end note
+
+class RectangleFigure {
+    # basicDisplayBox()
+    # basicMoveBy()
+}
+
+class EllipseFigure {
+    # basicDisplayBox()
+    # basicMoveBy()
+}
+
+package "Composite Structure" {
+    class CompositeFigure {
+        + fFigures: Vector
+    }
+    
+    class StandardDrawing {
+        + add()
+        + remove()
+    }
+}
+
+' Relationships
+AbstractFigure <|-- RectangleFigure
+AbstractFigure <|-- EllipseFigure
+AbstractFigure <|-- CompositeFigure
+CompositeFigure <|-- StandardDrawing
+CompositeFigure o--> AbstractFigure : children
+
+@enduml

@@ -1,0 +1,54 @@
+@startuml
+package dpd_jdt {
+	package Ressource {
+		package name {
+			'The factory used for creating instances of Specification class.  SpecificationFactory collects information about available database  description files and is able to specify if system can control  the database (specified by product name or live connection) or not.  It also provides a list of supported databases. Information about databases reads from file org/netbeans/lib/ddl/DatabaseSpecification.plist. It's possible to replace it by setting db.specifications.file system property pointing to another one.
+			'@author Slavek Psenicka
+			class SpecificationFactory {
+				-dbFile: java.lang.String = org/netbeans/lib/ddl/resources/dbspec.plist
+				-dbSpecs: java.util.HashMap
+				-debug: JavaPrimitiveTypes.boolean
+				-drvFile: java.lang.String = org/netbeans/lib/ddl/resources/driverspec.plist
+				-drvSpecs: java.util.HashMap
+				'Constructor. Reads a bunch of specification files and prepares sfiles array. Files should be read from default place or from folder specified by system property named "db.specifications.folder".
+				<<Create>> SpecificationFactory()
+				'Creates instance of DriverSpecification class; a driver-specification class. This object knows about used driver.
+				createDriverSpecification(driverName : java.lang.String): DriverSpecification
+				'Creates instance of DatabaseSpecification class; a database-specification class. This object knows about used database and can be used as factory for db-manipulating commands. It connects to the database  and reads database metadata. Throws DatabaseProductNotFoundException if database (obtained from database metadata) is not supported.
+				createSpecification(dbcon : DBConnection): DatabaseSpecification
+				'Creates instance of DatabaseSpecification class; a database-specification class. This object knows about used database and can be used as factory for db-manipulating commands. It connects to the database  and reads database metadata. Throws DatabaseProductNotFoundException if database (obtained from database metadata) is not supported. Uses given Connection
+				createSpecification(dbcon : DBConnection, jdbccon : java.sql.Connection): DatabaseSpecification
+				'Creates instance of DatabaseSpecification class; a database-specification class. This object knows about used database and can be used as factory for db-manipulating commands. It connects to database and reads metadata as createSpecification(DBConnection connection), but always uses specified databaseProductName. This is not recommended technique.
+				createSpecification(connection : DBConnection, databaseProductName : java.lang.String, c : java.sql.Connection): DatabaseSpecification
+				'Creates instance of DatabaseSpecification class; a database-specification class. This object knows about used database and can be used as factory for db-manipulating commands. It connects to database and reads metadata as createSpecification(DBConnection connection), but always uses specified databaseProductName. This is not recommended technique.
+				createSpecification(databaseProductName : java.lang.String, c : java.sql.Connection): DatabaseSpecification
+				createSpecification(c : java.sql.Connection): DatabaseSpecification
+				createSpecification(c : java.sql.Connection, databaseProductName : java.lang.String): DatabaseSpecification
+				'Creates deep copy of Map. All items will be cloned. Used internally in this object.
+				-deepClone(map : java.util.HashMap): java.util.HashMap
+				'Joins base map with additional one. Copies keys only if not present in base map. Used internally in this object.
+				-deepUnion(base : java.util.HashMap, additional : java.util.HashMap, deep : JavaPrimitiveTypes.boolean): java.util.HashMap
+				'Returns true if database (specified by databaseProductName) is supported by system. Does not throw exception if it doesn't.
+				isDatabaseSupported(databaseProductName : java.lang.String): JavaPrimitiveTypes.boolean
+				'Returns debug-mode flag
+				isDebugMode(): JavaPrimitiveTypes.boolean
+				'Returns true if driver (specified by driverName) is supported by system. Does not throw exception if it doesn't.
+				isDriverSupported(driverName : java.lang.String): JavaPrimitiveTypes.boolean
+				'Sets debug-mode flag
+				setDebugMode(mode : JavaPrimitiveTypes.boolean)
+				'Returns array of database products supported by system. It returns string array only, if you need a Specification instance, use  appropriate createSpecification method.
+				supportedDatabases(): java.util.Set
+				'Returns array of driver products supported by system. It returns string array only, if you need a Specification instance, use  appropriate createDriverSpecification method.
+				supportedDrivers(): java.util.Set
+			}
+		}
+	}
+	Ressource.name.DatabaseSpecificationFactory <|.. Ressource.name.SpecificationFactory
+	Ressource.name.DriverSpecificationFactory <|.. Ressource.name.SpecificationFactory
+	java.lang.String "dbFile" <-- Ressource.name.SpecificationFactory
+	java.util.HashMap "dbSpecs" <-- Ressource.name.SpecificationFactory
+	JavaPrimitiveTypes.boolean "debug" <-- Ressource.name.SpecificationFactory
+	java.lang.String "drvFile" <-- Ressource.name.SpecificationFactory
+	java.util.HashMap "drvSpecs" <-- Ressource.name.SpecificationFactory
+}
+@enduml

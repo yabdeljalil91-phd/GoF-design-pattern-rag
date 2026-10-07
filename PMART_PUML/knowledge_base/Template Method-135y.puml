@@ -1,0 +1,58 @@
+@startuml
+' Improved Template Method UML for PMDTask
+
+package "PMD v1.8" {
+
+  package net.sourceforge.pmd.ant {
+
+    ' Abstract class: defines template method
+    abstract class AbstractPMDTask {
+        #encoding: String
+        #failOnError: boolean
+        #ruleSetFiles: String
+
+        ' Template method
+        +execute(): void
+
+        ' Steps to be implemented by concrete subclasses
+        #loadFiles(): void
+        #applyRules(): void
+        #reportResults(): void
+    }
+
+    ' Concrete class: implements the steps
+    class PMDTask extends AbstractPMDTask {
+        -failOnRuleViolation: boolean
+        -shortFilenames: boolean
+        -targetJDK13: boolean
+        -filesets: List
+        -formatters: List
+
+        ' Step implementations
+        #loadFiles(): void
+        #applyRules(): void
+        #reportResults(): void
+
+        ' Extra methods
+        +addFormatter(f: Formatter): void
+        +setEncoding(encoding: String): void
+        +setFailOnError(fail: boolean): void
+    }
+
+    ' Supporting classes
+    class Formatter {
+        +renderer: Renderer
+        +toFile: File
+    }
+
+    class Renderer
+    class Report
+    class RuleSet
+
+    ' Relationships
+    PMDTask --> Formatter
+    PMDTask --> Report
+    PMDTask --> RuleSet
+  }
+}
+@enduml

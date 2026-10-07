@@ -1,0 +1,1129 @@
+@startuml
+'Design pattern Abstract Factory
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package netbeans {
+			package editor {
+				package ext {
+					'/** 
+					' * Extended caret implementation
+					' * @author Miloslav Metelka
+					' * @version 1.00
+					' */
+					'DP role: client
+					class ExtCaret {
+						{const} HIGHLIGHT_BRACKET_LAYER_NAME: Netbeans_v1.0.x.java.lang.String = highlight-bracket-layer
+						{const} HIGHLIGHT_BRACKET_LAYER_VISIBILITY: JavaPrimitiveTypes.int = 11000
+						{const} HIGHLIGHT_ROW_LAYER_NAME: Netbeans_v1.0.x.java.lang.String = highlight-row-layer
+						{const} HIGHLIGHT_ROW_LAYER_VISIBILITY: JavaPrimitiveTypes.int = 1600
+						bracketMarkValid: JavaPrimitiveTypes.boolean
+						highlightBracket: JavaPrimitiveTypes.boolean
+						highlightBracketColoring: Netbeans_v1.0.x.org.netbeans.editor.Coloring
+						highlightBracketMark: Netbeans_v1.0.x.org.netbeans.editor.MarkFactory.DrawMark
+						highlightRow: JavaPrimitiveTypes.boolean
+						highlightRowColoring: Netbeans_v1.0.x.org.netbeans.editor.Coloring
+						highlightRowMark: Netbeans_v1.0.x.org.netbeans.editor.MarkFactory.DrawMark
+						{const} serialVersionUID: JavaPrimitiveTypes.long = -4292670043122577690
+						simpleBracketMatching: JavaPrimitiveTypes.boolean
+						<<Create>> ExtCaret()
+						deinstall(c : Netbeans_v1.0.x.javax.swing.text.JTextComponent)
+						install(c : Netbeans_v1.0.x.javax.swing.text.JTextComponent)
+						'/** 
+						' * Called when settings were changed. The method is called also in constructor, so the code must count with the evt being null.
+						' */
+						settingsChange(evt : Netbeans_v1.0.x.org.netbeans.editor.SettingsChangeEvent)
+						#update(scrollRect : Netbeans_v1.0.x.java.awt.Rectangle, scrollPolicy : JavaPrimitiveTypes.int)
+					}
+					Netbeans_v1.0.x.org.netbeans.editor.BaseCaret <|-- ExtCaret
+					Netbeans_v1.0.x.java.lang.String "HIGHLIGHT_BRACKET_LAYER_NAME" <-- ExtCaret
+					JavaPrimitiveTypes.int "HIGHLIGHT_BRACKET_LAYER_VISIBILITY" <-- ExtCaret
+					Netbeans_v1.0.x.java.lang.String "HIGHLIGHT_ROW_LAYER_NAME" <-- ExtCaret
+					JavaPrimitiveTypes.int "HIGHLIGHT_ROW_LAYER_VISIBILITY" <-- ExtCaret
+					JavaPrimitiveTypes.boolean "bracketMarkValid" <-- ExtCaret
+					JavaPrimitiveTypes.boolean "highlightBracket" <-- ExtCaret
+					Netbeans_v1.0.x.org.netbeans.editor.Coloring "highlightBracketColoring" <-- ExtCaret
+					Netbeans_v1.0.x.org.netbeans.editor.MarkFactory.DrawMark "highlightBracketMark" <-- ExtCaret
+					JavaPrimitiveTypes.boolean "highlightRow" <-- ExtCaret
+					Netbeans_v1.0.x.org.netbeans.editor.Coloring "highlightRowColoring" <-- ExtCaret
+					Netbeans_v1.0.x.org.netbeans.editor.MarkFactory.DrawMark "highlightRowMark" <-- ExtCaret
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ExtCaret
+					JavaPrimitiveTypes.boolean "simpleBracketMatching" <-- ExtCaret
+				}
+				'/** 
+				' * Support class for chain of MarkBlocks
+				' * @author Miloslav Metelka
+				' * @version 1.00
+				' */
+				'DP role: client
+				class MarkChain {
+					#chain: ChainDrawMark
+					#curMark: ChainDrawMark
+					#doc: BaseDocument
+					#layerName: Netbeans_v1.0.x.java.lang.String
+					'/** 
+					' * Construct chain using draw marks 
+					' */
+					<<Create>> MarkChain(doc : BaseDocument, layerName : Netbeans_v1.0.x.java.lang.String)
+					'/** 
+					' * Add mark to the chain
+					' * @return true if the mark was addedfalse if there's already mark at that pos
+					' */
+					addMark(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Tests whether the position range is partly or fully inside some mark block from the chain.
+					' * @param pos compared position
+					' * @return relation of curMark to the given position
+					' */
+					compareMark(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					#createAndInsertNewMark(pos : JavaPrimitiveTypes.int): ChainDrawMark
+					#createMark(): ChainDrawMark
+					getChain(): ChainDrawMark
+					getCurMark(): ChainDrawMark
+					'/** 
+					' * Is there mark at given position? 
+					' */
+					isMark(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Remove non-empty block from area covered by blocks from chain 
+					' */
+					removeMark(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					toString(): Netbeans_v1.0.x.java.lang.String
+					'/** 
+					' * Toggle the mark so that if it didn't exist it is created and if it existed it's removed
+					' * @return true if the new mark was addedfalse if the existing mark was removed
+					' */
+					toggleMark(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				}
+				'DP role: concreteFactory
+				class MarkFactory {
+				}
+				'DP role: abstractProduct
+				class Mark {
+					marks: DocMarks
+					valid: JavaPrimitiveTypes.boolean
+					<<Create>> Mark()
+					<<Create>> Mark(insertAfter : JavaPrimitiveTypes.boolean)
+					compare(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					getInsertAfter(): JavaPrimitiveTypes.boolean
+					getLine(): JavaPrimitiveTypes.int
+					getOffset(): JavaPrimitiveTypes.int
+					getOffsetAndLine(line : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					isValid(): JavaPrimitiveTypes.boolean
+					remove()
+					#removeUpdateAction(pos : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int)
+					toString(): Netbeans_v1.0.x.java.lang.String
+				}
+				'DP role: client
+				abstract class DrawLayer {
+					#active: JavaPrimitiveTypes.boolean
+					#extendEOL: JavaPrimitiveTypes.boolean
+					#extendEmptyLine: JavaPrimitiveTypes.boolean
+					-name: Netbeans_v1.0.x.java.lang.String
+					nextUpdateStatusPos: JavaPrimitiveTypes.int
+					#updateStatusEOL: JavaPrimitiveTypes.boolean
+					-visibility: JavaPrimitiveTypes.int
+					<<Create>> DrawLayer(name : Netbeans_v1.0.x.java.lang.String, visibility : JavaPrimitiveTypes.int)
+					getName(): Netbeans_v1.0.x.java.lang.String
+					getNextUpdateStatusPos(): JavaPrimitiveTypes.int
+					getVisibility(): JavaPrimitiveTypes.int
+					#init(ctx : DrawContext)
+					isActive(): JavaPrimitiveTypes.boolean
+					setNextUpdateStatusPos(nextUpdateStatusPos : JavaPrimitiveTypes.int)
+					toString(): Netbeans_v1.0.x.java.lang.String
+					#updateContext(ctx : DrawContext)
+					#updateStatus(ctx : DrawContext, mark : DrawMark)
+				}
+				'DP role: client
+				class BaseDocument {
+					{const} BLOCKS_FINDER_PROP: Netbeans_v1.0.x.java.lang.String = blocks-finder
+					{const} FILE_NAME_PROP: Netbeans_v1.0.x.java.lang.String = file-name
+					{const} ID_PROP: Netbeans_v1.0.x.java.lang.String = id
+					{const} KIT_CLASS_PROP: Netbeans_v1.0.x.java.lang.String = kit-class
+					{const} LAYER_ADDED: JavaPrimitiveTypes.char [*]
+					{const} LINE_BATCH_SIZE: Netbeans_v1.0.x.java.lang.String = line-batch-size
+					{const} LINE_LIMIT_PROP: Netbeans_v1.0.x.java.lang.String = line-limit
+					{const} LS_CR: Netbeans_v1.0.x.java.lang.String = 
+					{const} LS_CRLF: Netbeans_v1.0.x.java.lang.String
+					{const} LS_LF: Netbeans_v1.0.x.java.lang.String
+					-{const} MAX_READ_THREADS: JavaPrimitiveTypes.int = 10
+					{const} READ_LINE_SEPARATOR_PROP: Netbeans_v1.0.x.java.lang.String = __EndOfLine__
+					{const} STRING_BWD_FINDER_PROP: Netbeans_v1.0.x.java.lang.String = string-bwd-finder
+					{const} STRING_FINDER_PROP: Netbeans_v1.0.x.java.lang.String = string-finder
+					{const} UNDO_MANAGER_PROP: Netbeans_v1.0.x.java.lang.String = undo-manager
+					{const} WRAP_SEARCH_MARK_PROP: Netbeans_v1.0.x.java.lang.String = wrap-search-mark
+					{const} WRITE_LINE_SEPARATOR_PROP: Netbeans_v1.0.x.java.lang.String = write-line-separator
+					-{const} WRITE_LOCK_MISSING: Netbeans_v1.0.x.java.lang.String = extWriteUnlock() without extWriteLock()
+					-atomicDepth: JavaPrimitiveTypes.int
+					-atomicEdits: Netbeans_v1.0.x.javax.swing.undo.CompoundEdit
+					-bookmarkChain: MarkChain
+					-composedTextElement: Netbeans_v1.0.x.javax.swing.text.AbstractDocument.LeafElement
+					-{const} debugEditor: JavaPrimitiveTypes.boolean
+					#defaultRootElem: BaseElement
+					-drawLayerList: DrawLayerList
+					findSupportListener: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					-identifierAcceptor: Acceptor
+					#inited: JavaPrimitiveTypes.boolean
+					kitClass: Netbeans_v1.0.x.java.lang.Class
+					#lineRootElement: LineRootElement
+					#listenerList: Netbeans_v1.0.x.javax.swing.event.EventListenerList
+					#modified: JavaPrimitiveTypes.boolean
+					op: DocOp
+					-posFreeList: Netbeans_v1.0.x.java.util.ArrayList
+					-posList: Netbeans_v1.0.x.java.util.ArrayList
+					-syntaxList: Netbeans_v1.0.x.java.util.ArrayList
+					-syntaxSupport: SyntaxSupport
+					#undoMergeReset: JavaPrimitiveTypes.boolean
+					-whitespaceAcceptor: Acceptor
+					-writeDeep: JavaPrimitiveTypes.int
+					<<Create>> BaseDocument(kitClass : Netbeans_v1.0.x.java.lang.Class, addToRegistry : JavaPrimitiveTypes.boolean)
+					-<<Create>> BaseDocument(kitClass : Netbeans_v1.0.x.java.lang.Class, addToRegistry : JavaPrimitiveTypes.boolean, op : DocOp)
+					addLayer(layer : DrawLayer): JavaPrimitiveTypes.boolean
+					atomicLock()
+					atomicUnlock()
+					breakAtomicLock()
+					#createDocumentEvent(pos : JavaPrimitiveTypes.int, length : JavaPrimitiveTypes.int, type : Netbeans_v1.0.x.javax.swing.event.DocumentEvent.EventType): BaseDocumentEvent
+					createPosition(offset : JavaPrimitiveTypes.int, bias : Netbeans_v1.0.x.javax.swing.text.Position.Bias): Netbeans_v1.0.x.javax.swing.text.Position
+					createSyntax(): Syntax
+					extWriteLock()
+					extWriteUnlock()
+					find(finder : Finder, startPos : JavaPrimitiveTypes.int, limitPos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					findLayer(layerName : Netbeans_v1.0.x.java.lang.String): DrawLayer
+					-findSupportChange(evt : Netbeans_v1.0.x.java.beans.PropertyChangeEvent)
+					#getAtomicDepth(): JavaPrimitiveTypes.int
+					getChars(pos : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): JavaPrimitiveTypes.char
+					getChars(block : JavaPrimitiveTypes.int): JavaPrimitiveTypes.char
+					getChars(pos : JavaPrimitiveTypes.int, ret : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int)
+					getDefaultRootElement(): Netbeans_v1.0.x.javax.swing.text.Element
+					getDrawLayerList(): DrawLayerList
+					getFreeSyntax(): Syntax
+					getKitClass(): Netbeans_v1.0.x.java.lang.Class
+					getLength(): JavaPrimitiveTypes.int
+					-getLineRootElement(): LineRootElement
+					getNextBookmark(pos : JavaPrimitiveTypes.int, wrap : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.int
+					getParagraphElement(pos : JavaPrimitiveTypes.int): Netbeans_v1.0.x.javax.swing.text.Element
+					getRootElements(): Netbeans_v1.0.x.javax.swing.text.Element
+					getStoredPosition(posID : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					getSyntaxSupport(): SyntaxSupport
+					getTabSize(): JavaPrimitiveTypes.int
+					getText(block : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.lang.String
+					insertString(offset : JavaPrimitiveTypes.int, text : Netbeans_v1.0.x.java.lang.String, a : Netbeans_v1.0.x.javax.swing.text.AttributeSet)
+					isAtomicLock(): JavaPrimitiveTypes.boolean
+					isIdentifierPart(ch : JavaPrimitiveTypes.char): JavaPrimitiveTypes.boolean
+					isModified(): JavaPrimitiveTypes.boolean
+					isWhitespace(ch : JavaPrimitiveTypes.char): JavaPrimitiveTypes.boolean
+					#preInsertUpdate(offset : JavaPrimitiveTypes.int, text : Netbeans_v1.0.x.java.lang.String, a : Netbeans_v1.0.x.javax.swing.text.AttributeSet)
+					#preRemoveUpdate(evt : Netbeans_v1.0.x.javax.swing.text.AbstractDocument.DefaultDocumentEvent)
+					print(container : PrintContainer)
+					processText(tbp : TextBatchProcessor, startPos : JavaPrimitiveTypes.int, endPos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					read(reader : Netbeans_v1.0.x.java.io.Reader, pos : JavaPrimitiveTypes.int)
+					releaseSyntax(syntax : Syntax)
+					remove(offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int)
+					removeStoredPosition(posID : JavaPrimitiveTypes.int)
+					render(r : Netbeans_v1.0.x.java.lang.Runnable)
+					runAtomic(r : Netbeans_v1.0.x.java.lang.Runnable)
+					runAtomicAsUser(r : Netbeans_v1.0.x.java.lang.Runnable)
+					settingsChange(evt : SettingsChangeEvent)
+					storePosition(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					toggleBookmark(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					write(writer : Netbeans_v1.0.x.java.io.Writer, pos : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int)
+				}
+				'DP role: client
+				class DocOp {
+					-{const} CACHE_LEN: JavaPrimitiveTypes.int = 5
+					-{const} DOC_LEN: Netbeans_v1.0.x.java.lang.String = . Document length is 
+					-MARK_DISTANCE: JavaPrimitiveTypes.int
+					-MAX_MARK_DISTANCE: JavaPrimitiveTypes.int
+					-MIN_MARK_DISTANCE: JavaPrimitiveTypes.int
+					-SYNTAX_UPDATE_BATCH_SIZE: JavaPrimitiveTypes.int
+					-{const} WRONG_POSITION: Netbeans_v1.0.x.java.lang.String = Wrong position 
+					-beolLineFwdFinder: BEOLLineFwdFinder
+					-beolPosFwdFinder: BEOLPosFwdFinder
+					-bolBwdFinder: BOLBwdFinder
+					-cache: DocCache
+					-cacheSupport: DocCacheSupport
+					-doc: BaseDocument
+					-docLen: JavaPrimitiveTypes.int
+					-endMark: Mark
+					-eolFwdFinder: EOLFwdFinder
+					eolMark: SyntaxMark
+					-leftUpdateMark: SyntaxMark
+					-lineCache: CacheEntry [*]
+					-marks: DocMarks
+					-posVisColFwdFinder: PosVisColFwdFinder
+					statCacheHit: JavaPrimitiveTypes.int
+					statCacheMiss: JavaPrimitiveTypes.int
+					-suRenderer: SyntaxUpdateRenderer
+					-tmpLine: JavaPrimitiveTypes.int [*]
+					-visColPosFwdFinder: VisColPosFwdFinder
+					<<Create>> DocOp()
+					-adjustNextBOL(pos : JavaPrimitiveTypes.int, returnIfBOL : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.int
+					-cacheLoadLine(line : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					-cacheLoadLineByPos(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					-cacheMoveFirst(ind : JavaPrimitiveTypes.int)
+					cacheToString(): Netbeans_v1.0.x.java.lang.String
+					-cacheUpdate(remove : JavaPrimitiveTypes.boolean, undoEdit : ModifyUndoEdit)
+					checkEOLMark(pos : JavaPrimitiveTypes.int)
+					createPosition(offset : JavaPrimitiveTypes.int): Netbeans_v1.0.x.javax.swing.text.Position
+					createPosition(offset : JavaPrimitiveTypes.int, bias : Netbeans_v1.0.x.javax.swing.text.Position.Bias): Netbeans_v1.0.x.javax.swing.text.Position
+					directCacheWrite(pos : JavaPrimitiveTypes.int, cache : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int)
+					find(finder : Finder, startPos : JavaPrimitiveTypes.int, limitPos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					getBOL(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					getBOLFromLine(line : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					-getBOLFromLineImpl(line : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					-getBOLImpl(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					getBOLRelLine(pos : JavaPrimitiveTypes.int, relLine : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					getChars(where : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int, txt : Netbeans_v1.0.x.javax.swing.text.Segment)
+					getChars(pos : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): JavaPrimitiveTypes.char
+					getChars(pos : JavaPrimitiveTypes.int, ret : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int)
+					getEOL(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					getEOLFromLine(line : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					-getEOLImpl(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					getEOLNL(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					getEOLRelLine(pos : JavaPrimitiveTypes.int, relLine : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					getLeftSyntaxMark(pos : JavaPrimitiveTypes.int): SyntaxMark
+					getLine(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					getLineCount(): JavaPrimitiveTypes.int
+					-getLineImpl(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					getOffsetFromVisCol(visCol : JavaPrimitiveTypes.int, startLinePos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					getOffsetMark(pos : JavaPrimitiveTypes.int, markClass : Netbeans_v1.0.x.java.lang.Class): Mark
+					getString(where : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.lang.String
+					getVisColFromPos(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					infoToString(): Netbeans_v1.0.x.java.lang.String
+					initCacheContent(initCache : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, cacheLen : JavaPrimitiveTypes.int)
+					initialReadUpdate()
+					insert(offset : JavaPrimitiveTypes.int, chars : JavaPrimitiveTypes.char): Netbeans_v1.0.x.javax.swing.undo.UndoableEdit
+					insertEdit(undoEdit : ModifyUndoEdit)
+					insertMark(mark : Mark, pos : JavaPrimitiveTypes.int)
+					insertMark(mark : Mark, pos : JavaPrimitiveTypes.int, line : JavaPrimitiveTypes.int)
+					insertMark(pos : JavaPrimitiveTypes.int, insertAfter : JavaPrimitiveTypes.boolean): Mark
+					insertString(offset : JavaPrimitiveTypes.int, text : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.javax.swing.undo.UndoableEdit
+					insertUpdate(undoEdit : ModifyUndoEdit)
+					-invalidateCache()
+					isBOL(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					isEOL(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					length(): JavaPrimitiveTypes.int
+					markPlanesToString(markClasses : Netbeans_v1.0.x.java.lang.Class, markChars : JavaPrimitiveTypes.char): Netbeans_v1.0.x.java.lang.String
+					moveMark(mark : Mark, newPos : JavaPrimitiveTypes.int)
+					prepareSyntax(slot : Slot, syntax : Syntax, leftSyntaxMark : SyntaxMark, reqPos : JavaPrimitiveTypes.int, reqLen : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					remove(offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): Netbeans_v1.0.x.javax.swing.undo.UndoableEdit
+					removeEdit(undoEdit : ModifyUndoEdit)
+					removeUpdate(undoEdit : ModifyUndoEdit)
+					renderMarks(r : Renderer)
+					setDocument(doc : BaseDocument)
+					toString(): Netbeans_v1.0.x.java.lang.String
+					-update(remove : JavaPrimitiveTypes.boolean, undoEdit : ModifyUndoEdit)
+					-updateEvenly()
+				}
+				'/** 
+				' * Caret implementation
+				' * @author Miloslav Metelka
+				' * @version 1.00
+				' */
+				'DP role: client
+				class BaseCaret {
+					{const} BLOCK_CARET: Netbeans_v1.0.x.java.lang.String = block-caret
+					{const} LINE_CARET: Netbeans_v1.0.x.java.lang.String = line-caret
+					{const} THIN_LINE_CARET: Netbeans_v1.0.x.java.lang.String = thin-line-caret
+					blinkVisible: JavaPrimitiveTypes.boolean
+					caretDG: CaretDG
+					caretMark: DrawMark
+					#changeEvent: Netbeans_v1.0.x.javax.swing.event.ChangeEvent
+					#component: Netbeans_v1.0.x.javax.swing.text.JTextComponent
+					-{const} debugCaretFocus: JavaPrimitiveTypes.boolean
+					#dotChar: JavaPrimitiveTypes.char [*]
+					-{static} emptyDotChar: JavaPrimitiveTypes.char [*]
+					#flasher: Netbeans_v1.0.x.javax.swing.Timer
+					-focusListener: Netbeans_v1.0.x.java.awt.event.FocusListener
+					italic: JavaPrimitiveTypes.boolean
+					-listenDoc: BaseDocument
+					#listenerList: Netbeans_v1.0.x.javax.swing.event.EventListenerList
+					magicCaretPosition: Netbeans_v1.0.x.java.awt.Point
+					-overwriteMode: JavaPrimitiveTypes.boolean
+					#previousFont: Netbeans_v1.0.x.java.awt.Font
+					-selectLineAction: Netbeans_v1.0.x.javax.swing.Action
+					-selectWordAction: Netbeans_v1.0.x.javax.swing.Action
+					selectionMark: DrawMark
+					selectionVisible: JavaPrimitiveTypes.boolean
+					{const} serialVersionUID: JavaPrimitiveTypes.long = -9113841520331402768
+					-settingsListener: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					#textBackColor: Netbeans_v1.0.x.java.awt.Color
+					#textFont: Netbeans_v1.0.x.java.awt.Font
+					#textForeColor: Netbeans_v1.0.x.java.awt.Color
+					type: Netbeans_v1.0.x.java.lang.String
+					visible: JavaPrimitiveTypes.boolean
+					-xPoints: JavaPrimitiveTypes.int [*]
+					-yPoints: JavaPrimitiveTypes.int [*]
+					<<Create>> BaseCaret()
+					'/** 
+					' * Fired when blink timer fires 
+					' */
+					actionPerformed(evt : Netbeans_v1.0.x.java.awt.event.ActionEvent)
+					'/** 
+					' * Adds listener to track when caret position was changed 
+					' */
+					addChangeListener(l : Netbeans_v1.0.x.javax.swing.event.ChangeListener)
+					changedUpdate(evt : Netbeans_v1.0.x.javax.swing.event.DocumentEvent)
+					'/** 
+					' * Called when UI is being removed from JTextComponent 
+					' */
+					deinstall(c : Netbeans_v1.0.x.javax.swing.text.JTextComponent)
+					'/** 
+					' * Update the caret's visual position 
+					' */
+					dispatchUpdate()
+					dispatchUpdate(scrollRect : Netbeans_v1.0.x.java.awt.Rectangle, scrollPolicy : JavaPrimitiveTypes.int)
+					'/** 
+					' * Redefine to Object.equals() to prevent defaulting to Rectangle.equals() which would cause incorrect firing
+					' */
+					equals(o : Netbeans_v1.0.x.java.lang.Object): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Notifies listeners that caret position has changed 
+					' */
+					#fireStateChanged()
+					focusGained(evt : Netbeans_v1.0.x.java.awt.event.FocusEvent)
+					focusLost(evt : Netbeans_v1.0.x.java.awt.event.FocusEvent)
+					'/** 
+					' * Returns blink rate of the caret or 0 if caret doesn't blink 
+					' */
+					getBlinkRate(): JavaPrimitiveTypes.int
+					'/** 
+					' * Gets the current position of the caret 
+					' */
+					getDot(): JavaPrimitiveTypes.int
+					'/** 
+					' * Get position used to mark begining of the selected block 
+					' */
+					getMagicCaretPosition(): Netbeans_v1.0.x.java.awt.Point
+					'/** 
+					' * Gets the current position of the selection mark. If there's a selection this position will be different from the caret position.
+					' */
+					getMark(): JavaPrimitiveTypes.int
+					insertUpdate(evt : Netbeans_v1.0.x.javax.swing.event.DocumentEvent)
+					'/** 
+					' * Called when UI is being installed into JTextComponent 
+					' */
+					install(c : Netbeans_v1.0.x.javax.swing.text.JTextComponent)
+					'/** 
+					' * Is the selection visible? 
+					' */
+					isSelectionVisible(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Is the caret currently visible 
+					' */
+					isVisible(): JavaPrimitiveTypes.boolean
+					#modelChanged(oldDoc : BaseDocument, newDoc : BaseDocument)
+					mouseClicked(evt : Netbeans_v1.0.x.java.awt.event.MouseEvent)
+					mouseDragged(evt : Netbeans_v1.0.x.java.awt.event.MouseEvent)
+					mouseEntered(evt : Netbeans_v1.0.x.java.awt.event.MouseEvent)
+					mouseExited(evt : Netbeans_v1.0.x.java.awt.event.MouseEvent)
+					mouseMoved(evt : Netbeans_v1.0.x.java.awt.event.MouseEvent)
+					mousePressed(evt : Netbeans_v1.0.x.java.awt.event.MouseEvent)
+					mouseReleased(evt : Netbeans_v1.0.x.java.awt.event.MouseEvent)
+					moveDot(pos : JavaPrimitiveTypes.int)
+					'/** 
+					' * Makes selection by moving dot but leaving mark 
+					' */
+					moveDot(pos : JavaPrimitiveTypes.int, scrollRect : Netbeans_v1.0.x.java.awt.Rectangle, scrollPolicy : JavaPrimitiveTypes.int)
+					'/** 
+					' * Renders the caret 
+					' */
+					paint(g : Netbeans_v1.0.x.java.awt.Graphics)
+					#paintCustomCaret(g : Netbeans_v1.0.x.java.awt.Graphics)
+					propertyChange(evt : Netbeans_v1.0.x.java.beans.PropertyChangeEvent)
+					'/** 
+					' * Removes listeners to caret position changes 
+					' */
+					removeChangeListener(l : Netbeans_v1.0.x.javax.swing.event.ChangeListener)
+					removeUpdate(evt : Netbeans_v1.0.x.javax.swing.event.DocumentEvent)
+					resetBlink()
+					'/** 
+					' * Sets the caret blink rate.
+					' * @param rate blink rate in milliseconds, 0 means no blink
+					' */
+					setBlinkRate(rate : JavaPrimitiveTypes.int)
+					setDot(pos : JavaPrimitiveTypes.int)
+					'/** 
+					' * Sets the caret position to some position.  This causes removal of the active selection.
+					' */
+					setDot(pos : JavaPrimitiveTypes.int, scrollRect : Netbeans_v1.0.x.java.awt.Rectangle, scrollPolicy : JavaPrimitiveTypes.int)
+					'/** 
+					' * Saves the current caret position.  This is used when caret up or down actions occur, moving between lines that have uneven end positions.
+					' * @param p  the Point to use for the saved position
+					' */
+					setMagicCaretPosition(p : Netbeans_v1.0.x.java.awt.Point)
+					'/** 
+					' * Sets the selection visibility 
+					' */
+					setSelectionVisible(v : JavaPrimitiveTypes.boolean)
+					'/** 
+					' * Sets the caret visibility 
+					' */
+					setVisible(v : JavaPrimitiveTypes.boolean)
+					#setVisibleImpl(v : JavaPrimitiveTypes.boolean)
+					'/** 
+					' * Called when settings were changed. The method is called also in constructor, so the code must count with the evt being null.
+					' */
+					settingsChange(evt : SettingsChangeEvent)
+					#update(scrollRect : Netbeans_v1.0.x.java.awt.Rectangle, scrollPolicy : JavaPrimitiveTypes.int)
+					updateType()
+				}
+				'DP role: client
+				class Drawer {
+				}
+				'/** 
+				' * Support class for chain of MarkBlocks
+				' * @author Miloslav Metelka
+				' * @version 1.00
+				' */
+				'DP role: client
+				class MarkBlockChain {
+					#chain: MarkBlock
+					#currentBlock: MarkBlock
+					#doc: BaseDocument
+					'/** 
+					' * Construct chain using regular base marks 
+					' */
+					<<Create>> MarkBlockChain(doc : BaseDocument)
+					'/** 
+					' * Add non-empty block to the chain of blocks
+					' * @param concat whether concatenate adjacent blocks
+					' */
+					addBlock(startPos : JavaPrimitiveTypes.int, endPos : JavaPrimitiveTypes.int, concat : JavaPrimitiveTypes.boolean)
+					adjustToBlockEnd(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					'/** 
+					' * Return the position adjusted to the start of the next mark-block.
+					' */
+					adjustToNextBlockStart(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					'/** 
+					' * Removes mark block and possibly updates the chain.
+					' * @return next block after removed one
+					' */
+					#checkedRemove(blk : MarkBlock): MarkBlock
+					'/** 
+					' * Tests whether the position range is partly or fully inside some mark block from the chain.
+					' * @param startPos starting position of tested area
+					' * @param endPos ending position of tested area for removal or sameas startPos when insert is made
+					' * @return relation of currentBlock to the given block
+					' */
+					compareBlock(startPos : JavaPrimitiveTypes.int, endPos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					#createBlock(startPos : JavaPrimitiveTypes.int, endPos : JavaPrimitiveTypes.int): MarkBlock
+					#createBlockEndMark(): Mark
+					#createBlockStartMark(): Mark
+					getChain(): MarkBlock
+					'/** 
+					' * Remove non-empty block from area covered by blocks from chain 
+					' */
+					removeBlock(startPos : JavaPrimitiveTypes.int, endPos : JavaPrimitiveTypes.int)
+					removeEmptyBlocks()
+					toString(): Netbeans_v1.0.x.java.lang.String
+				}
+				'/** 
+				' * Various internal tests
+				' * @author Miloslav Metelka
+				' * @version 0.10
+				' */
+				'DP role: client
+				class EditorDebug {
+					-<<Create>> EditorDebug()
+					{static} checkSettings(kitClass : Netbeans_v1.0.x.java.lang.Class)
+					{static} debugArray(array : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.String
+					{static} debugArray(array : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.lang.String
+					{static} debugBlocks(doc : BaseDocument, blocks : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.lang.String
+					{static} debugChars(seg : Netbeans_v1.0.x.javax.swing.text.Segment): Netbeans_v1.0.x.java.lang.String
+					{static} debugChars(chars : JavaPrimitiveTypes.char): Netbeans_v1.0.x.java.lang.String
+					'/** 
+					' * Replace '\n', '\r' and '\t' in the char array so they are identifiable. 
+					' */
+					{static} debugChars(chars : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.lang.String
+					{static} debugIterator(i : Netbeans_v1.0.x.java.util.Iterator): Netbeans_v1.0.x.java.lang.String
+					{static} debugList(l : Netbeans_v1.0.x.java.util.List): Netbeans_v1.0.x.java.lang.String
+					{static} debugPairs(pairs : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.lang.String
+					'/** 
+					' * Replace '\n', '\r' and '\t' in the string so they are identifiable. 
+					' */
+					{static} debugString(s : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+					{static} dumpPlanes(component : Netbeans_v1.0.x.javax.swing.text.JTextComponent)
+					{static} dumpSyntaxMarks(component : Netbeans_v1.0.x.javax.swing.text.JTextComponent)
+					{static} test(component : Netbeans_v1.0.x.javax.swing.text.JTextComponent)
+				}
+				'/** 
+				' * Various text analyzes over the document
+				' * @author Miloslav Metelka
+				' * @version 1.00
+				' */
+				'DP role: client
+				class Analyzer {
+					{const} EMPTY_CHAR_ARRAY: JavaPrimitiveTypes.char [*]
+					-{static} platformLS: Netbeans_v1.0.x.java.lang.Object
+					-{static} spacesBuffer: JavaPrimitiveTypes.char [*]
+					-{static} tabsBuffer: JavaPrimitiveTypes.char [*]
+					-<<Create>> Analyzer()
+					{static} blocksHit(blocks : JavaPrimitiveTypes.int, startPos : JavaPrimitiveTypes.int, endPos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					{static} blocksIndex(blocks : JavaPrimitiveTypes.int, startPos : JavaPrimitiveTypes.int, endPos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					{static} concat(chars1 : JavaPrimitiveTypes.char, chars2 : JavaPrimitiveTypes.char): JavaPrimitiveTypes.char
+					'/** 
+					' * Convert text with LF line separators to text that uses line separators of the document. This function is used when saving text into the file. Segment's data are converted inside the segment's data or new segment's data array is allocated. NOTE: Source segment must have just LFs as separators! Otherwise the conversion won't work correctly.
+					' * @param src source chars to convert from
+					' * @param len length of valid part of src data
+					' * @param tgt target chars to convert to. The array MUST have twicethe size of src otherwise index exception can be thrown
+					' * @param lsType line separator type to be used i.e. LS_LF, LS_CR, LS_CRLF
+					' * @return length of valid chars in tgt array
+					' */
+					{static} convertLFToLS(src : JavaPrimitiveTypes.char, len : JavaPrimitiveTypes.int, tgt : JavaPrimitiveTypes.char, lsType : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.int
+					'/** 
+					' * Convert text with generic line separators to line feeds (LF). As the linefeeds are one char long there is no need to allocate another buffer since the only possibility is that the returned length will be smaller than previous (if there were some CRLF separators.
+					' * @param chars char array with data to convert
+					' * @param len valid portion of chars array
+					' * @return new valid portion of chars array after conversion
+					' */
+					{static} convertLSToLF(chars : JavaPrimitiveTypes.char, len : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					'/** 
+					' * Convert string with generic line separators to line feeds (LF).
+					' * @param text string to convert
+					' * @return new string with converted LSs to LFs
+					' */
+					{static} convertLSToLF(text : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+					{static} createSpacesBuffer(numSpaces : JavaPrimitiveTypes.int): JavaPrimitiveTypes.char
+					'/** 
+					' * Get buffer filled with spaces/tabs so that it reaches from some column to some other column.
+					' */
+					{static} createWhiteSpaceFillBuffer(startCol : JavaPrimitiveTypes.int, endCol : JavaPrimitiveTypes.int, tabSize : JavaPrimitiveTypes.int): JavaPrimitiveTypes.char
+					{static} endsWith(chars : JavaPrimitiveTypes.char, suffix : JavaPrimitiveTypes.char): JavaPrimitiveTypes.boolean
+					{static} equals(s : Netbeans_v1.0.x.java.lang.String, chars : JavaPrimitiveTypes.char): JavaPrimitiveTypes.boolean
+					{static} equals(s : Netbeans_v1.0.x.java.lang.String, chars : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					{static} extract(chars : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): JavaPrimitiveTypes.char
+					'/** 
+					' * Get visual column. 
+					' */
+					{static} getColumn(buffer : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int, tabSize : JavaPrimitiveTypes.int, startCol : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					{static} getFirstLFOffset(s : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.int
+					'/** 
+					' * Get offset of the first found new-line
+					' * @return offset of '\n' or -1
+					' */
+					{static} getFirstLFOffset(chars : JavaPrimitiveTypes.char): JavaPrimitiveTypes.int
+					{static} getFirstLFOffset(chars : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					{static} getFirstNonSpace(chars : JavaPrimitiveTypes.char): JavaPrimitiveTypes.int
+					'/** 
+					' * Return the first index that is not space 
+					' */
+					{static} getFirstNonSpace(chars : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					{static} getFirstNonWhite(chars : JavaPrimitiveTypes.char): JavaPrimitiveTypes.int
+					'/** 
+					' * Return the first index that is not space or tab or new-line char 
+					' */
+					{static} getFirstNonWhite(chars : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					{static} getFirstTab(chars : JavaPrimitiveTypes.char): JavaPrimitiveTypes.int
+					{static} getFirstTab(chars : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					{static} getIndentChars(indent : JavaPrimitiveTypes.int, expandTabs : JavaPrimitiveTypes.boolean, tabSize : JavaPrimitiveTypes.int): JavaPrimitiveTypes.char
+					'/** 
+					' * Count the number of line feeds in char array.
+					' * @return number of LF characters contained in array.
+					' */
+					{static} getLFCount(chars : JavaPrimitiveTypes.char): JavaPrimitiveTypes.int
+					{static} getLFCount(chars : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					{static} getLFCount(s : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.int
+					{static} getLastNonWhite(chars : JavaPrimitiveTypes.char): JavaPrimitiveTypes.int
+					'/** 
+					' * Return the last index that is not space or tab or new-line char 
+					' */
+					{static} getLastNonWhite(chars : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					'/** 
+					' * Get platform default line separator 
+					' */
+					{static} getPlatformLS(): Netbeans_v1.0.x.java.lang.Object
+					'/** 
+					' * Get buffer filled with appropriate number of spaces. The buffer can have actually more spaces than requested.
+					' * @param numSpaces number of spaces
+					' */
+					{static} getSpacesBuffer(numSpaces : JavaPrimitiveTypes.int): JavaPrimitiveTypes.char
+					'/** 
+					' * Get buffer filled with appropriate number of tabs. The buffer can have actually more tabs than requested.
+					' * @param numSpaces number of spaces
+					' */
+					{static} getTabsBuffer(numTabs : JavaPrimitiveTypes.int): JavaPrimitiveTypes.char
+					'/** 
+					' * Do initial reading of document. Translate any line separators found in document to line separators used by document. It also cares for elements that were already created on the empty document. Although the document must be empty there can be already marks created. Initial read is equivalent to inserting the string array of the whole document size at position 0 in the document. Therefore all the marks that are not insertAfter are removed and reinserted to the end of the document after the whole initial read is finished.
+					' * @param doc document for which the initialization is performed
+					' * @param reader reader from which document should be read
+					' * @param lsType line separator type
+					' * @param testLS test line separator of file and if it's consistent, use it
+					' * @param markDistance the distance between the new syntax mark is put
+					' */
+					{static} initialRead(doc : BaseDocument, reader : Netbeans_v1.0.x.java.io.Reader, testLS : JavaPrimitiveTypes.boolean)
+					{static} isSpace(s : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+					{static} isSpace(chars : JavaPrimitiveTypes.char): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Return true if the array contains only space chars 
+					' */
+					{static} isSpace(chars : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					{static} isWhitespace(chars : JavaPrimitiveTypes.char): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Return true if the array contains only space or tab chars 
+					' */
+					{static} isWhitespace(chars : JavaPrimitiveTypes.char, offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Loads the file and performs conversion of line separators to LF. This method can be used in debuging of syntax scanner or somewhere else.
+					' * @param fileName the name of the file to load
+					' * @return array of loaded characters with '\n' as line separator
+					' */
+					{static} loadFile(fileName : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.char
+					'/** 
+					' * Read from some reader and insert into document 
+					' */
+					{static} read(doc : BaseDocument, reader : Netbeans_v1.0.x.java.io.Reader, pos : JavaPrimitiveTypes.int)
+					'/** 
+					' * Remove all spaces fromt the given string 
+					' */
+					{static} removeSpaces(s : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+					'/** 
+					' * Reverses the order of characters in the array. It works from the begining of the array, so no offset is given.
+					' */
+					{static} reverse(chars : JavaPrimitiveTypes.char, len : JavaPrimitiveTypes.int)
+					{static} startsWith(chars : JavaPrimitiveTypes.char, prefix : JavaPrimitiveTypes.char): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Test line separator on given semgment. This implementation simply checks the first line of file but it can be redefined to do more thorough test.
+					' * @param seg segment where analyzes are performed
+					' * @return line separator type found in the file
+					' */
+					{static} testLS(chars : JavaPrimitiveTypes.char, len : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.lang.String
+					'/** 
+					' * Write from document to some writer 
+					' */
+					{static} write(doc : BaseDocument, writer : Netbeans_v1.0.x.java.io.Writer, pos : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int)
+				}
+				TreeMark <|-- Mark
+				Netbeans_v1.0.x.javax.swing.event.ChangeListener <|.. ExtUI
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. ExtUI
+				SettingsChangeListener <|.. ExtUI
+				Netbeans_v1.0.x.java.util.EventListener <|-- SettingsChangeListener
+				Netbeans_v1.0.x.java.util.EventObject <|-- SettingsChangeEvent
+				SettingsChangeListener <|.. Abbrev
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. Abbrev
+				Netbeans_v1.0.x.javax.swing.text.AbstractDocument <|-- BaseDocument
+				SettingsChangeListener <|.. BaseDocument
+				Netbeans_v1.0.x.javax.swing.text.Element <|.. BaseElement
+				Netbeans_v1.0.x.javax.swing.text.AbstractDocument.Content <|.. DocOp
+				Netbeans_v1.0.x.javax.swing.text.AbstractDocument.DefaultDocumentEvent <|-- BaseDocumentEvent
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. StatusBar
+				SettingsChangeListener <|.. StatusBar
+				Netbeans_v1.0.x.java.io.Serializable <|.. Coloring
+				Netbeans_v1.0.x.java.awt.event.MouseAdapter <|-- ToolTipSupport
+				Netbeans_v1.0.x.java.awt.event.MouseMotionListener <|.. ToolTipSupport
+				Netbeans_v1.0.x.java.awt.event.ActionListener <|.. ToolTipSupport
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. ToolTipSupport
+				SettingsChangeListener <|.. ToolTipSupport
+				AbstractFinder <|-- WordMatch
+				SettingsChangeListener <|.. WordMatch
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. WordMatch
+				Netbeans_v1.0.x.java.util.HashMap <|-- StringMap
+				Netbeans_v1.0.x.java.awt.Rectangle <|-- BaseCaret
+				Netbeans_v1.0.x.javax.swing.text.Caret <|.. BaseCaret
+				Netbeans_v1.0.x.java.awt.event.FocusListener <|.. BaseCaret
+				Netbeans_v1.0.x.java.awt.event.MouseListener <|.. BaseCaret
+				Netbeans_v1.0.x.java.awt.event.MouseMotionListener <|.. BaseCaret
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. BaseCaret
+				Netbeans_v1.0.x.javax.swing.event.DocumentListener <|.. BaseCaret
+				Netbeans_v1.0.x.java.awt.event.ActionListener <|.. BaseCaret
+				SettingsChangeListener <|.. BaseCaret
+				JavaPrimitiveTypes.boolean "insertAfter" <-- TreeMark
+				JavaPrimitiveTypes.int "relLine" <-- TreeMark
+				JavaPrimitiveTypes.int "relPos" <-- TreeMark
+				DocMarks "docMarks" <-- Plane
+				JavaPrimitiveTypes.int "markCnt" <-- Plane
+				TreeMark "marks 0..*" <-- Plane
+				JavaPrimitiveTypes.int "tmpInt" <-- Plane
+				DocMarks "marks" <-- Mark
+				JavaPrimitiveTypes.boolean "valid" <-- Mark
+				JavaPrimitiveTypes.boolean "stayBOL" <-- ContextMark
+				JavaPrimitiveTypes.boolean "activateLayer" <-- DrawMark
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "extUIRef" <-- DrawMark
+				Netbeans_v1.0.x.java.lang.String "layerName" <-- DrawMark
+				Netbeans_v1.0.x.java.lang.Class "kitClass" <-- SettingsChangeEvent
+				Netbeans_v1.0.x.java.lang.Object "newValue" <-- SettingsChangeEvent
+				Netbeans_v1.0.x.java.lang.Object "oldValue" <-- SettingsChangeEvent
+				Netbeans_v1.0.x.java.lang.String "settingName" <-- SettingsChangeEvent
+				Netbeans_v1.0.x.java.lang.String "COMPONENT_PROPERTY" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Dimension "NULL_DIMENSION" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Insets "NULL_INSETS" <-- ExtUI
+				Netbeans_v1.0.x.java.lang.String "OVERWRITE_MODE_PROPERTY" <-- ExtUI
+				Netbeans_v1.0.x.java.lang.String "POPUP_MENU_PROPERTY" <-- ExtUI
+				JavaPrimitiveTypes.int "SCROLL_DEFAULT" <-- ExtUI
+				JavaPrimitiveTypes.int "SCROLL_FIND" <-- ExtUI
+				JavaPrimitiveTypes.int "SCROLL_MOVE" <-- ExtUI
+				JavaPrimitiveTypes.int "SCROLL_SMALLEST" <-- ExtUI
+				JavaPrimitiveTypes.int "STYLE_CNT" <-- ExtUI
+				Netbeans_v1.0.x.java.util.HashMap "abbrevMap" <-- Abbrev
+				Netbeans_v1.0.x.java.lang.StringBuffer "abbrevSB" <-- Abbrev
+				Acceptor "addTypedAcceptor" <-- Abbrev
+				JavaPrimitiveTypes.boolean "checkDocText" <-- Abbrev
+				JavaPrimitiveTypes.boolean "checkTextDelimiter" <-- Abbrev
+				Acceptor "doExpandAcceptor" <-- Abbrev
+				ExtUI "extUI" <-- Abbrev
+				Acceptor "resetAcceptor" <-- Abbrev
+				Abbrev "abbrev" <-- ExtUI
+				JavaPrimitiveTypes.int "ascents 0..*" <-- ExtUI
+				JavaPrimitiveTypes.int "baseLeftMargin" <-- ExtUI
+				JavaPrimitiveTypes.int "charHeight" <-- ExtUI
+				Netbeans_v1.0.x.java.util.Map "coloringMap" <-- ExtUI
+				Netbeans_v1.0.x.javax.swing.text.JTextComponent "component" <-- ExtUI
+				JavaPrimitiveTypes.int "componentID" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Dimension "componentSizeIncrement" <-- ExtUI
+				JavaPrimitiveTypes.int "defaultSpaceWidth" <-- ExtUI
+				JavaPrimitiveTypes.boolean "active" <-- DrawLayer
+				JavaPrimitiveTypes.boolean "extendEOL" <-- DrawLayer
+				JavaPrimitiveTypes.boolean "extendEmptyLine" <-- DrawLayer
+				Netbeans_v1.0.x.java.lang.String "name" <-- DrawLayer
+				JavaPrimitiveTypes.int "nextUpdateStatusPos" <-- DrawLayer
+				JavaPrimitiveTypes.boolean "updateStatusEOL" <-- DrawLayer
+				JavaPrimitiveTypes.int "visibility" <-- DrawLayer
+				DrawLayer "EMPTY 0..*" <-- DrawLayerList
+				DrawLayer "layers 0..*" <-- DrawLayerList
+				DrawLayerList "drawLayerList" <-- ExtUI
+				Netbeans_v1.0.x.javax.swing.JComponent "extComponent" <-- ExtUI
+				JavaPrimitiveTypes.boolean "fixedFont" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.event.FocusAdapter "focusL" <-- ExtUI
+				JavaPrimitiveTypes.boolean "fontsInited" <-- ExtUI
+				JavaPrimitiveTypes.boolean "highlightSearch" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Rectangle "lastExtentBounds" <-- ExtUI
+				JavaPrimitiveTypes.float "lineHeightCorrection" <-- ExtUI
+				JavaPrimitiveTypes.int "lineNumberAscent" <-- ExtUI
+				JavaPrimitiveTypes.int "lineNumberDigitWidth" <-- ExtUI
+				JavaPrimitiveTypes.boolean "lineNumberEnabled" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Insets "lineNumberMargin" <-- ExtUI
+				JavaPrimitiveTypes.int "lineNumberMaxDigitCnt" <-- ExtUI
+				JavaPrimitiveTypes.boolean "lineNumberVisible" <-- ExtUI
+				JavaPrimitiveTypes.boolean "lineNumberVisibleSetting" <-- ExtUI
+				JavaPrimitiveTypes.int "lineNumberWidth" <-- ExtUI
+				Netbeans_v1.0.x.java.lang.String "BLOCKS_FINDER_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "FILE_NAME_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "ID_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "KIT_CLASS_PROP" <-- BaseDocument
+				JavaPrimitiveTypes.char "LAYER_ADDED 0..*" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "LINE_BATCH_SIZE" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "LINE_LIMIT_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "LS_CR" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "LS_CRLF" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "LS_LF" <-- BaseDocument
+				JavaPrimitiveTypes.int "MAX_READ_THREADS" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "READ_LINE_SEPARATOR_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "STRING_BWD_FINDER_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "STRING_FINDER_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "UNDO_MANAGER_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "WRAP_SEARCH_MARK_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "WRITE_LINE_SEPARATOR_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "WRITE_LOCK_MISSING" <-- BaseDocument
+				JavaPrimitiveTypes.int "atomicDepth" <-- BaseDocument
+				Netbeans_v1.0.x.javax.swing.undo.CompoundEdit "atomicEdits" <-- BaseDocument
+				MarkChain "bookmarkChain" <-- BaseDocument
+				Netbeans_v1.0.x.javax.swing.text.AbstractDocument.LeafElement "composedTextElement" <-- BaseDocument
+				JavaPrimitiveTypes.boolean "debugEditor" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "ElementNameAttribute" <-- BaseElement
+				Netbeans_v1.0.x.javax.swing.text.AttributeSet "attrs" <-- BaseElement
+				BaseDocument "doc" <-- BaseElement
+				BaseElement "defaultRootElem" <-- BaseDocument
+				DrawLayerList "drawLayerList" <-- BaseDocument
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "findSupportListener" <-- BaseDocument
+				Acceptor "identifierAcceptor" <-- BaseDocument
+				JavaPrimitiveTypes.boolean "inited" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.Class "kitClass" <-- BaseDocument
+				LineRootElement "lineRootElement" <-- BaseDocument
+				Netbeans_v1.0.x.javax.swing.event.EventListenerList "listenerList" <-- BaseDocument
+				JavaPrimitiveTypes.boolean "modified" <-- BaseDocument
+				JavaPrimitiveTypes.int "CACHE_LEN" <-- DocOp
+				Netbeans_v1.0.x.java.lang.String "DOC_LEN" <-- DocOp
+				JavaPrimitiveTypes.int "MARK_DISTANCE" <-- DocOp
+				JavaPrimitiveTypes.int "MAX_MARK_DISTANCE" <-- DocOp
+				JavaPrimitiveTypes.int "MIN_MARK_DISTANCE" <-- DocOp
+				JavaPrimitiveTypes.int "SYNTAX_UPDATE_BATCH_SIZE" <-- DocOp
+				Netbeans_v1.0.x.java.lang.String "WRONG_POSITION" <-- DocOp
+				JavaPrimitiveTypes.boolean "found" <-- AbstractFinder
+				JavaPrimitiveTypes.int "bolPos" <-- BEOLLineFwdFinder
+				JavaPrimitiveTypes.int "fwdLines" <-- BEOLLineFwdFinder
+				BEOLLineFwdFinder "beolLineFwdFinder" <-- DocOp
+				JavaPrimitiveTypes.int "bolPos" <-- BEOLPosFwdFinder
+				JavaPrimitiveTypes.int "line" <-- BEOLPosFwdFinder
+				JavaPrimitiveTypes.int "tgtPos" <-- BEOLPosFwdFinder
+				BEOLPosFwdFinder "beolPosFwdFinder" <-- DocOp
+				BOLBwdFinder "bolBwdFinder" <-- DocOp
+				JavaPrimitiveTypes.int "MIN_FRAGMENT_BACK_OVERLAP_LEN" <-- DocCache
+				JavaPrimitiveTypes.char "buffer 0..*" <-- Fragment
+				JavaPrimitiveTypes.int "firstMod" <-- Fragment
+				JavaPrimitiveTypes.int "fragLen" <-- Fragment
+				JavaPrimitiveTypes.int "lastMod" <-- Fragment
+				JavaPrimitiveTypes.boolean "modified" <-- Fragment
+				JavaPrimitiveTypes.int "origLen" <-- Fragment
+				JavaPrimitiveTypes.int "startPos" <-- Fragment
+				JavaPrimitiveTypes.boolean "valid" <-- Fragment
+				Fragment "defFrag" <-- DocCache
+				JavaPrimitiveTypes.boolean "directMode" <-- DocCache
+				JavaPrimitiveTypes.int "docLenDelta" <-- DocCache
+				Fragment "frags 0..*" <-- DocCache
+				JavaPrimitiveTypes.int "statBackOverlapCnt" <-- DocCache
+				JavaPrimitiveTypes.int "statFragSetEmpty" <-- DocCache
+				JavaPrimitiveTypes.int "statFragSwitchCnt" <-- DocCache
+				JavaPrimitiveTypes.int "statInsert" <-- DocCache
+				JavaPrimitiveTypes.int "statOverlapCnt" <-- DocCache
+				JavaPrimitiveTypes.int "statRead" <-- DocCache
+				JavaPrimitiveTypes.int "statReadFragCnt" <-- DocCache
+				JavaPrimitiveTypes.int "statRemove" <-- DocCache
+				JavaPrimitiveTypes.int "statWriteFragCnt" <-- DocCache
+				JavaPrimitiveTypes.int "SAVE_BUFFER_LEN" <-- DocCacheSupport
+				JavaPrimitiveTypes.int "docLen" <-- DocCacheSupport
+				JavaPrimitiveTypes.long "statCharsRead" <-- DocCacheSupport
+				JavaPrimitiveTypes.long "statCharsWritten" <-- DocCacheSupport
+				DocCacheSupport "support" <-- DocCache
+				DocCache "cache" <-- DocOp
+				DocCacheSupport "cacheSupport" <-- DocOp
+				BaseDocument "doc" <-- DocOp
+				JavaPrimitiveTypes.int "docLen" <-- DocOp
+				Mark "endMark" <-- DocOp
+				EOLFwdFinder "eolFwdFinder" <-- DocOp
+				StateInfo "stateInfo" <-- SyntaxMark
+				SyntaxMark "eolMark" <-- DocOp
+				SyntaxMark "leftUpdateMark" <-- DocOp
+				JavaPrimitiveTypes.int "bol" <-- CacheEntry
+				JavaPrimitiveTypes.int "eol" <-- CacheEntry
+				JavaPrimitiveTypes.int "line" <-- CacheEntry
+				CacheEntry "lineCache 0..*" <-- DocOp
+				DocMarks "marks" <-- DocOp
+				JavaPrimitiveTypes.int "tabSize" <-- PosVisColFwdFinder
+				JavaPrimitiveTypes.int "visCol" <-- PosVisColFwdFinder
+				PosVisColFwdFinder "posVisColFwdFinder" <-- DocOp
+				JavaPrimitiveTypes.int "statCacheHit" <-- DocOp
+				JavaPrimitiveTypes.int "statCacheMiss" <-- DocOp
+				DocMarks "marks" <-- Renderer
+				JavaPrimitiveTypes.boolean "remove" <-- SyntaxUpdateRenderer
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "segDocRef" <-- Slot
+				JavaPrimitiveTypes.int "segLen" <-- Slot
+				JavaPrimitiveTypes.int "segPos" <-- Slot
+				Slot "slot" <-- SyntaxUpdateRenderer
+				Syntax "syntax" <-- SyntaxUpdateRenderer
+				JavaPrimitiveTypes.char "chars 0..*" <-- ModifyUndoEdit
+				JavaPrimitiveTypes.int "lfCount" <-- ModifyUndoEdit
+				JavaPrimitiveTypes.int "line" <-- ModifyUndoEdit
+				JavaPrimitiveTypes.int "offset" <-- ModifyUndoEdit
+				JavaPrimitiveTypes.boolean "remove" <-- ModifyUndoEdit
+				JavaPrimitiveTypes.int "syntaxUpdateOffset" <-- ModifyUndoEdit
+				Netbeans_v1.0.x.java.lang.String "text" <-- ModifyUndoEdit
+				ModifyUndoEdit "undoEdit" <-- SyntaxUpdateRenderer
+				SyntaxUpdateRenderer "suRenderer" <-- DocOp
+				JavaPrimitiveTypes.int "tmpLine 0..*" <-- DocOp
+				JavaPrimitiveTypes.int "curVisCol" <-- VisColPosFwdFinder
+				ExtUI "extUI" <-- VisColPosFwdFinder
+				JavaPrimitiveTypes.int "tabSize" <-- VisColPosFwdFinder
+				JavaPrimitiveTypes.int "visCol" <-- VisColPosFwdFinder
+				VisColPosFwdFinder "visColPosFwdFinder" <-- DocOp
+				DocOp "op" <-- BaseDocument
+				Netbeans_v1.0.x.java.util.ArrayList "posFreeList" <-- BaseDocument
+				Netbeans_v1.0.x.java.util.ArrayList "posList" <-- BaseDocument
+				Netbeans_v1.0.x.java.util.ArrayList "syntaxList" <-- BaseDocument
+				JavaPrimitiveTypes.int "DOT" <-- SyntaxSupport
+				JavaPrimitiveTypes.int "EMPTY_INT_ARRAY 0..*" <-- SyntaxSupport
+				Acceptor "EXPRESSION_ACCEPTORS 0..*" <-- SyntaxSupport
+				JavaPrimitiveTypes.int "ID" <-- SyntaxSupport
+				JavaPrimitiveTypes.int "LAST_COUNT" <-- SyntaxSupport
+				JavaPrimitiveTypes.char "baseLeftBrackets 0..*" <-- SyntaxSupport
+				JavaPrimitiveTypes.char "baseRightBrackets 0..*" <-- SyntaxSupport
+				BaseDocument "doc" <-- SyntaxSupport
+				Acceptor "endVarAcceptor" <-- SyntaxSupport
+				JavaPrimitiveTypes.boolean "lastMatchArrays 0..*" <-- SyntaxSupport
+				JavaPrimitiveTypes.int "lastTokenArrays 0..*" <-- SyntaxSupport
+				JavaPrimitiveTypes.char "leftBrackets 0..*" <-- SyntaxSupport
+				JavaPrimitiveTypes.char "rightBrackets 0..*" <-- SyntaxSupport
+				JavaPrimitiveTypes.int "tokenBlocks 0..*" <-- SyntaxSupport
+				Acceptor "varAcceptor" <-- SyntaxSupport
+				JavaPrimitiveTypes.boolean "forward" <-- GenericFinder
+				JavaPrimitiveTypes.char "bracketChar" <-- BracketFinder
+				JavaPrimitiveTypes.int "depth" <-- BracketFinder
+				JavaPrimitiveTypes.char "matchChar" <-- BracketFinder
+				JavaPrimitiveTypes.int "moveCount" <-- BracketFinder
+				JavaPrimitiveTypes.char "buffer 0..*" <-- CommentOrWhitespaceTP
+				JavaPrimitiveTypes.int "commentTokens 0..*" <-- CommentOrWhitespaceTP
+				JavaPrimitiveTypes.boolean "nonEmpty" <-- CommentOrWhitespaceTP
+				JavaPrimitiveTypes.int "tokenID" <-- TokenIDTP
+				JavaPrimitiveTypes.char "bracketChars 0..*" <-- UnmatchedBracketFinder
+				JavaPrimitiveTypes.int "depths 0..*" <-- UnmatchedBracketFinder
+				JavaPrimitiveTypes.char "matchChars 0..*" <-- UnmatchedBracketFinder
+				JavaPrimitiveTypes.int "moveCount" <-- UnmatchedBracketFinder
+				SyntaxSupport "syntaxSupport" <-- BaseDocument
+				JavaPrimitiveTypes.boolean "undoMergeReset" <-- BaseDocument
+				Acceptor "whitespaceAcceptor" <-- BaseDocument
+				JavaPrimitiveTypes.int "writeDeep" <-- BaseDocument
+				JavaPrimitiveTypes.boolean "inRedo" <-- BaseDocumentEvent
+				JavaPrimitiveTypes.boolean "inUndo" <-- BaseDocumentEvent
+				ModifyUndoEdit "modifyUndoEdit" <-- BaseDocumentEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- BaseDocumentEvent
+				Netbeans_v1.0.x.java.lang.String "drawLayerName" <-- DrawLayerChange
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "lineElemRef" <-- LineMark
+				LineMark "startMark" <-- LineElement
+				BaseDocument "printDoc" <-- ExtUI
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "propertyChangeSupport" <-- ExtUI
+				Netbeans_v1.0.x.java.util.Hashtable "props" <-- ExtUI
+				Netbeans_v1.0.x.java.util.Map "renderingHints" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Insets "scrollFindInsets" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Insets "scrollJumpInsets" <-- ExtUI
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "settingsListener" <-- ExtUI
+				JavaPrimitiveTypes.int "spaceWidths 0..*" <-- ExtUI
+				Netbeans_v1.0.x.javax.swing.border.Border "CELL_BORDER" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "CELL_MAIN" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "CELL_POSITION" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "CELL_TYPING_MODE" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "INSERT_DEFAULT" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "INSERT_LOCALE" <-- StatusBar
+				Netbeans_v1.0.x.java.awt.Insets "NULL_INSETS" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "OVERWRITE_DEFAULT" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "OVERWRITE_LOCALE" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "POS_MAX_STRINGS 0..*" <-- StatusBar
+				Netbeans_v1.0.x.java.awt.Color "backColor" <-- Coloring
+				Netbeans_v1.0.x.java.awt.Font "font" <-- Coloring
+				Netbeans_v1.0.x.java.awt.Color "foreColor" <-- Coloring
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Coloring
+				Coloring "boldColoring" <-- StatusBar
+				JavaPrimitiveTypes.int "caretDelay" <-- StatusBar
+				Netbeans_v1.0.x.javax.swing.Timer "timer" <-- CaretListener
+				CaretListener "caretL" <-- StatusBar
+				Netbeans_v1.0.x.java.util.List "cellList" <-- StatusBar
+				Coloring "coloring" <-- StatusBar
+				ExtUI "extUI" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "insText" <-- StatusBar
+				JavaPrimitiveTypes.boolean "overwriteModeDisplayed" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "ovrText" <-- StatusBar
+				Netbeans_v1.0.x.javax.swing.JPanel "panel" <-- StatusBar
+				JavaPrimitiveTypes.long "serialVersionUID" <-- StatusBar
+				JavaPrimitiveTypes.boolean "visible" <-- StatusBar
+				Netbeans_v1.0.x.java.awt.Dimension "maxDimension" <-- Cell
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Cell
+				Netbeans_v1.0.x.java.lang.String "widestStrings 0..*" <-- Cell
+				StatusBar "statusBar" <-- ExtUI
+				JavaPrimitiveTypes.boolean "superFixedFont" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Color "textLimitLineColor" <-- ExtUI
+				JavaPrimitiveTypes.boolean "textLimitLineVisible" <-- ExtUI
+				JavaPrimitiveTypes.int "textLimitWidth" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Insets "textMargin" <-- ExtUI
+				JavaPrimitiveTypes.int "DISMISS_DELAY" <-- ToolTipSupport
+				JavaPrimitiveTypes.int "INITIAL_DELAY" <-- ToolTipSupport
+				Netbeans_v1.0.x.java.lang.String "NO_ROOT_PANE_DEFAULT" <-- ToolTipSupport
+				Netbeans_v1.0.x.java.lang.String "NO_ROOT_PANE_LOCALE" <-- ToolTipSupport
+				Netbeans_v1.0.x.java.lang.String "UI_PREFIX" <-- ToolTipSupport
+				Netbeans_v1.0.x.java.awt.event.ComponentAdapter "componentL" <-- ToolTipSupport
+				JavaPrimitiveTypes.boolean "enabled" <-- ToolTipSupport
+				Netbeans_v1.0.x.javax.swing.Timer "enterTimer" <-- ToolTipSupport
+				Netbeans_v1.0.x.javax.swing.Timer "exitTimer" <-- ToolTipSupport
+				ExtUI "extUI" <-- ToolTipSupport
+				JavaPrimitiveTypes.int "lastMouseX" <-- ToolTipSupport
+				JavaPrimitiveTypes.int "lastMouseY" <-- ToolTipSupport
+				Netbeans_v1.0.x.javax.swing.JLabel "toolTip" <-- ToolTipSupport
+				ToolTipSupport "toolTipSupport" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Rectangle "virtualSize" <-- ExtUI
+				JavaPrimitiveTypes.boolean "virtualSizeUpdated" <-- ExtUI
+				Netbeans_v1.0.x.java.lang.Object "NULL_DOC" <-- WordMatch
+				JavaPrimitiveTypes.char "baseWord 0..*" <-- WordMatch
+				ExtUI "extUI" <-- WordMatch
+				JavaPrimitiveTypes.boolean "forwardSearch" <-- WordMatch
+				Netbeans_v1.0.x.java.lang.String "lastWord" <-- WordMatch
+				JavaPrimitiveTypes.boolean "matchCase" <-- WordMatch
+				JavaPrimitiveTypes.boolean "matchOneChar" <-- WordMatch
+				JavaPrimitiveTypes.int "maxSearchLen" <-- WordMatch
+				Netbeans_v1.0.x.java.lang.String "previousWord" <-- WordMatch
+				JavaPrimitiveTypes.boolean "realMatchCase" <-- WordMatch
+				JavaPrimitiveTypes.int "searchLen" <-- WordMatch
+				JavaPrimitiveTypes.boolean "smartCase" <-- WordMatch
+				BaseDocument "startDoc" <-- WordMatch
+				Netbeans_v1.0.x.java.util.HashMap "staticWordsDocs" <-- WordMatch
+				JavaPrimitiveTypes.char "word 0..*" <-- WordMatch
+				Netbeans_v1.0.x.java.util.ArrayList "wordInfoList" <-- WordMatch
+				JavaPrimitiveTypes.int "wordLen" <-- WordMatch
+				JavaPrimitiveTypes.int "wordsIndex" <-- WordMatch
+				JavaPrimitiveTypes.long "serialVersionUID" <-- StringMap
+				JavaPrimitiveTypes.char "testChars 0..*" <-- StringMap
+				JavaPrimitiveTypes.int "testLen" <-- StringMap
+				JavaPrimitiveTypes.int "testOffset" <-- StringMap
+				StringMap "wordsMap" <-- WordMatch
+				JavaPrimitiveTypes.boolean "wrapSearch" <-- WordMatch
+				BaseDocument "doc" <-- WordInfo
+				Netbeans_v1.0.x.javax.swing.text.Position "pos" <-- WordInfo
+				Netbeans_v1.0.x.java.lang.String "word" <-- WordInfo
+				WordMatch "wordMatch" <-- ExtUI
+				ChainDrawMark "chain" <-- MarkChain
+				ChainDrawMark "curMark" <-- MarkChain
+				BaseDocument "doc" <-- MarkChain
+				Netbeans_v1.0.x.java.lang.String "layerName" <-- MarkChain
+				Netbeans_v1.0.x.java.lang.String "BLOCK_CARET" <-- BaseCaret
+				Netbeans_v1.0.x.java.lang.String "LINE_CARET" <-- BaseCaret
+				Netbeans_v1.0.x.java.lang.String "THIN_LINE_CARET" <-- BaseCaret
+				JavaPrimitiveTypes.boolean "blinkVisible" <-- BaseCaret
+				Netbeans_v1.0.x.java.awt.Color "backColor" <-- AbstractDG
+				JavaPrimitiveTypes.char "buffer 0..*" <-- AbstractDG
+				Netbeans_v1.0.x.java.awt.Font "font" <-- AbstractDG
+				Netbeans_v1.0.x.java.awt.Color "foreColor" <-- AbstractDG
+				CaretDG "caretDG" <-- BaseCaret
+				DrawMark "caretMark" <-- BaseCaret
+				Netbeans_v1.0.x.javax.swing.event.ChangeEvent "changeEvent" <-- BaseCaret
+				Netbeans_v1.0.x.javax.swing.text.JTextComponent "component" <-- BaseCaret
+				JavaPrimitiveTypes.boolean "debugCaretFocus" <-- BaseCaret
+				JavaPrimitiveTypes.char "dotChar 0..*" <-- BaseCaret
+				JavaPrimitiveTypes.char "emptyDotChar 0..*" <-- BaseCaret
+				Netbeans_v1.0.x.javax.swing.Timer "flasher" <-- BaseCaret
+				Netbeans_v1.0.x.java.awt.event.FocusListener "focusListener" <-- BaseCaret
+				JavaPrimitiveTypes.boolean "italic" <-- BaseCaret
+				BaseDocument "listenDoc" <-- BaseCaret
+				Netbeans_v1.0.x.javax.swing.event.EventListenerList "listenerList" <-- BaseCaret
+				Netbeans_v1.0.x.java.awt.Point "magicCaretPosition" <-- BaseCaret
+				JavaPrimitiveTypes.boolean "overwriteMode" <-- BaseCaret
+				Netbeans_v1.0.x.java.awt.Font "previousFont" <-- BaseCaret
+				Netbeans_v1.0.x.javax.swing.Action "selectLineAction" <-- BaseCaret
+				Netbeans_v1.0.x.javax.swing.Action "selectWordAction" <-- BaseCaret
+				DrawMark "selectionMark" <-- BaseCaret
+				JavaPrimitiveTypes.boolean "selectionVisible" <-- BaseCaret
+				JavaPrimitiveTypes.long "serialVersionUID" <-- BaseCaret
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "settingsListener" <-- BaseCaret
+				Netbeans_v1.0.x.java.awt.Color "textBackColor" <-- BaseCaret
+				Netbeans_v1.0.x.java.awt.Font "textFont" <-- BaseCaret
+				Netbeans_v1.0.x.java.awt.Color "textForeColor" <-- BaseCaret
+				Netbeans_v1.0.x.java.lang.String "type" <-- BaseCaret
+				JavaPrimitiveTypes.boolean "visible" <-- BaseCaret
+				JavaPrimitiveTypes.int "xPoints 0..*" <-- BaseCaret
+				JavaPrimitiveTypes.int "yPoints 0..*" <-- BaseCaret
+				Netbeans_v1.0.x.java.awt.event.FocusListener "fl" <-- FocusHandler
+				JavaPrimitiveTypes.int "AFTER" <-- MarkBlock
+				JavaPrimitiveTypes.int "BEFORE" <-- MarkBlock
+				JavaPrimitiveTypes.int "CONTINUE" <-- MarkBlock
+				JavaPrimitiveTypes.int "CONTINUE_BEGIN" <-- MarkBlock
+				JavaPrimitiveTypes.int "CONTINUE_END" <-- MarkBlock
+				JavaPrimitiveTypes.int "EMPTY" <-- MarkBlock
+				JavaPrimitiveTypes.int "EXTEND" <-- MarkBlock
+				JavaPrimitiveTypes.int "EXTEND_BEGIN" <-- MarkBlock
+				JavaPrimitiveTypes.int "EXTEND_END" <-- MarkBlock
+				JavaPrimitiveTypes.int "IGNORE_EMPTY" <-- MarkBlock
+				JavaPrimitiveTypes.int "INCLUDE" <-- MarkBlock
+				JavaPrimitiveTypes.int "INNER" <-- MarkBlock
+				JavaPrimitiveTypes.int "INSIDE" <-- MarkBlock
+				JavaPrimitiveTypes.int "INSIDE_BEGIN" <-- MarkBlock
+				JavaPrimitiveTypes.int "INSIDE_END" <-- MarkBlock
+				JavaPrimitiveTypes.int "INVALID" <-- MarkBlock
+				JavaPrimitiveTypes.int "OVERLAP" <-- MarkBlock
+				JavaPrimitiveTypes.int "OVERLAP_BEGIN" <-- MarkBlock
+				JavaPrimitiveTypes.int "OVERLAP_END" <-- MarkBlock
+				JavaPrimitiveTypes.int "SAME" <-- MarkBlock
+				JavaPrimitiveTypes.int "THIS_EMPTY" <-- MarkBlock
+				BaseDocument "doc" <-- MarkBlock
+				Mark "endMark" <-- MarkBlock
+				Mark "startMark" <-- MarkBlock
+				MarkBlock "chain" <-- MarkBlockChain
+				MarkBlock "currentBlock" <-- MarkBlockChain
+				BaseDocument "doc" <-- MarkBlockChain
+				Netbeans_v1.0.x.java.lang.String "layerName" <-- LayerChain
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DumpPlanesAction
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DumpSyntaxMarksAction
+				JavaPrimitiveTypes.long "serialVersionUID" <-- SelfTestAction
+				Coloring "coloring" <-- ColorLineLayer
+				JavaPrimitiveTypes.char "EMPTY_CHAR_ARRAY 0..*" <-- Analyzer
+				Netbeans_v1.0.x.java.lang.Object "platformLS" <-- Analyzer
+				JavaPrimitiveTypes.char "spacesBuffer 0..*" <-- Analyzer
+				JavaPrimitiveTypes.char "tabsBuffer 0..*" <-- Analyzer
+			}
+		}
+	}
+}
+@enduml

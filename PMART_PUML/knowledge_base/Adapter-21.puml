@@ -1,0 +1,266 @@
+@startuml
+'Design pattern Adapter
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+	package org {
+		package acm {
+			package seguin {
+				package uml {
+					'/** 
+					' * UMLPopupMenu
+					' * @author    Chris Seguin
+					' */
+					'DP role: client
+					class UMLPopupMenu {
+						-activeComponent: JRefactory_v2.6.24.javax.swing.JPanel
+						-current: UMLPackage
+						-popupMenu: JRefactory_v2.6.24.javax.swing.JPopupMenu
+						'/** 
+						' * Constructor for the UMLPopupMenu object
+						' * @param top   the package diagram
+						' * @param init  the specific panel
+						' */
+						<<Create>> UMLPopupMenu(top : UMLPackage, init : JRefactory_v2.6.24.javax.swing.JPanel)
+						'/** 
+						' * Adds a feature to the FieldRefactorings attribute of the UMLPopupMenu object
+						' * @param menu  The feature to be added to the FieldRefactorings attribute
+						' */
+						-addFieldRefactorings(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu)
+						'/** 
+						' * Adds a feature to the MethodRefactorings attribute of the UMLPopupMenu object
+						' * @param menu  The feature to be added to the MethodRefactorings attribute
+						' */
+						-addMethodRefactorings(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu)
+						'/** 
+						' * Refactorings
+						' * @param menu  The feature to be added to the Refactorings attribute
+						' */
+						#addRefactorings(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu)
+						'/** 
+						' * Adds a feature to the TypeRefactorings attribute of the UMLPopupMenu object
+						' * @param menu  The feature to be added to the TypeRefactorings attribute
+						' */
+						-addTypeRefactorings(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu)
+						'/** 
+						' * Create the popup menu
+						' * @return    Description of the Returned Value
+						' */
+						#createPopupMenu(): JRefactory_v2.6.24.javax.swing.JPopupMenu
+						'/** 
+						' * Get the popup menu
+						' * @return    the popup menu
+						' */
+						getMenu(): JRefactory_v2.6.24.javax.swing.JPopupMenu
+						'/** 
+						' * Add in the metrics
+						' * @param menu  Description of Parameter
+						' * @return       the metrics
+						' */
+						#getMetricsMenu(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu): JRefactory_v2.6.24.javax.swing.JMenuItem
+						'/** 
+						' * Gets the Type attribute of the UMLPopupMenu object
+						' * @return    The Type value
+						' */
+						-getType(): UMLType
+						'/** 
+						' * Gets the Type attribute of the UMLPopupMenu object
+						' * @return    The Type value
+						' */
+						-getTypeSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+					}
+					'DP role: adaptee
+					class UMLType {
+						-{const} DEFAULT: JavaPrimitiveTypes.int = 0
+						-{const} FOREIGN: JavaPrimitiveTypes.int = 2
+						-{const} SELECTED: JavaPrimitiveTypes.int = 1
+						-{const} TITLE_BORDER: JavaPrimitiveTypes.int = 4
+						#borderWidth: JavaPrimitiveTypes.int
+						-{static} defaultBG: JRefactory_v2.6.24.java.awt.Color
+						-{static} foreignBG: JRefactory_v2.6.24.java.awt.Color
+						-high: JavaPrimitiveTypes.int
+						#lineSize: JavaPrimitiveTypes.int
+						-nameLabel: JRefactory_v2.6.24.org.acm.seguin.uml.line.SizableLabel
+						-parent: UMLPackage
+						-roles: RoleHolder
+						-{static} selectedBG: JRefactory_v2.6.24.java.awt.Color
+						-{static} selectedForeignBG: JRefactory_v2.6.24.java.awt.Color
+						-state: JavaPrimitiveTypes.int
+						-titleHeight: JavaPrimitiveTypes.int
+						-type: JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+						-wide: JavaPrimitiveTypes.int
+						<<Create>> UMLType(initParent : UMLPackage, initType : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, foreign : JavaPrimitiveTypes.boolean)
+						-computeLineSize(): JavaPrimitiveTypes.int
+						convertToAssociation(packagePanel : UMLPackage, fieldPanel : UMLField): JRefactory_v2.6.24.org.acm.seguin.uml.line.AssociationRelationship
+						convertToAttribute(packagePanel : UMLPackage, fieldPanel : UMLField)
+						deselect()
+						-drawFrame(g : JRefactory_v2.6.24.java.awt.Graphics, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						-getAttributeCount(): JavaPrimitiveTypes.int
+						getBackgroundColor(): JRefactory_v2.6.24.java.awt.Color
+						getField(name : JRefactory_v2.6.24.java.lang.String): UMLField
+						-{static} getFrameColor(): JRefactory_v2.6.24.java.awt.Color
+						getID(): JRefactory_v2.6.24.java.lang.String
+						getMinimumSize(): JRefactory_v2.6.24.java.awt.Dimension
+						getPackage(): UMLPackage
+						-getPackageName(): JRefactory_v2.6.24.java.lang.String
+						getPreferredSize(): JRefactory_v2.6.24.java.awt.Dimension
+						getSourceSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.Summary
+						getSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+						-{static} initColors()
+						isForeign(): JavaPrimitiveTypes.boolean
+						isSelected(): JavaPrimitiveTypes.boolean
+						load(buffer : JRefactory_v2.6.24.java.lang.String)
+						paint(g : JRefactory_v2.6.24.java.awt.Graphics)
+						print(g : JRefactory_v2.6.24.java.awt.Graphics, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						resize()
+						save(output : JRefactory_v2.6.24.java.io.PrintWriter)
+						scale(value : JavaPrimitiveTypes.double)
+						select()
+						setSelected(way : JavaPrimitiveTypes.boolean)
+						toggleSelect()
+					}
+					'DP role: adaptee
+					class UMLField {
+						-association: JavaPrimitiveTypes.boolean
+						-current: UMLPackage
+						-fieldDragAdapter: JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter
+						-parentDragAdapter: JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter
+						-summary: JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary
+						<<Create>> UMLField(initCurrent : UMLPackage, parent : UMLType, field : JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary, adapter : JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter)
+						#getDefaultBackground(): JRefactory_v2.6.24.java.awt.Color
+						getSourceSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.Summary
+						getSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary
+						getType(): JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+						isAssociation(): JavaPrimitiveTypes.boolean
+						isConvertable(): JavaPrimitiveTypes.boolean
+						setAssociation(way : JavaPrimitiveTypes.boolean)
+					}
+					'/** 
+					' * Converts between associations and attributes 
+					' * @author     Chris Seguin 
+					' * @created    August 17, 1999 
+					' */
+					'DP role: adapter
+					class ConvertAdapter {
+						-fieldPanel: UMLField
+						-packagePanel: UMLPackage
+						-typePanel: UMLType
+						'/** 
+						' * Constructor for the ConvertAdapter object 
+						' * @param packagePanel  the package panel 
+						' * @param fieldPanel    the field panel 
+						' */
+						<<Create>> ConvertAdapter(packagePanel : UMLPackage, fieldPanel : UMLField)
+						'/** 
+						' * Menu item is selected 
+						' * @param ev  selection event 
+						' */
+						actionPerformed(ev : JRefactory_v2.6.24.java.awt.event.ActionEvent)
+					}
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.LinedPanel <|-- UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.io.Saveable <|.. UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.EndPointPanel <|-- UMLType
+					ISourceful <|.. UMLType
+					JRefactory_v2.6.24.javax.swing.JPanel <|-- RoleHolder
+					JRefactory_v2.6.24.java.awt.event.MouseAdapter <|-- UMLMouseAdapter
+					UMLLine <|-- UMLField
+					ISourceful <|.. UMLField
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.EndPointPanel <|-- UMLLine
+					JRefactory_v2.6.24.javax.swing.Icon <|.. UMLIcon
+					JRefactory_v2.6.24.java.awt.event.ActionListener <|.. ConvertAdapter
+					JRefactory_v2.6.24.javax.swing.JPanel "activeComponent" <-- UMLPopupMenu
+					JRefactory_v2.6.24.org.acm.seguin.ide.common.ClassListPanel "classListPanel" <-- UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.SegmentedLine "currentLine" <-- UMLPackage
+					JavaPrimitiveTypes.boolean "first" <-- UMLPackage
+					JavaPrimitiveTypes.boolean "hasChanged" <-- UMLPackage
+					JavaPrimitiveTypes.boolean "loading" <-- UMLPackage
+					JRefactory_v2.6.24.java.lang.String "packageName" <-- UMLPackage
+					JRefactory_v2.6.24.javax.swing.JScrollPane "scrollPane" <-- UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary "summary" <-- UMLPackage
+					JavaPrimitiveTypes.int "DEFAULT" <-- UMLType
+					JavaPrimitiveTypes.int "FOREIGN" <-- UMLType
+					JavaPrimitiveTypes.int "SELECTED" <-- UMLType
+					JavaPrimitiveTypes.int "TITLE_BORDER" <-- UMLType
+					JavaPrimitiveTypes.int "borderWidth" <-- UMLType
+					JRefactory_v2.6.24.java.awt.Color "defaultBG" <-- UMLType
+					JRefactory_v2.6.24.java.awt.Color "foreignBG" <-- UMLType
+					JavaPrimitiveTypes.int "high" <-- UMLType
+					JavaPrimitiveTypes.int "lineSize" <-- UMLType
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.SizableLabel "nameLabel" <-- UMLType
+					UMLPackage "parent" <-- UMLType
+					JavaPrimitiveTypes.int "high" <-- RoleHolder
+					JRefactory_v2.6.24.java.util.LinkedList "labels" <-- RoleHolder
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter "panelDragAdapter" <-- RoleHolder
+					JRefactory_v2.6.24.javax.swing.JPanel "child" <-- UMLMouseAdapter
+					UMLPackage "current" <-- UMLMouseAdapter
+					UMLType "type" <-- UMLMouseAdapter
+					UMLMouseAdapter "popupMenuListener" <-- RoleHolder
+					JavaPrimitiveTypes.int "wide" <-- RoleHolder
+					RoleHolder "roles" <-- UMLType
+					JRefactory_v2.6.24.java.awt.Color "selectedBG" <-- UMLType
+					JRefactory_v2.6.24.java.awt.Color "selectedForeignBG" <-- UMLType
+					JavaPrimitiveTypes.int "state" <-- UMLType
+					JavaPrimitiveTypes.int "titleHeight" <-- UMLType
+					JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary "type" <-- UMLType
+					JavaPrimitiveTypes.int "wide" <-- UMLType
+					JavaPrimitiveTypes.int "DEFAULT" <-- UMLLine
+					JavaPrimitiveTypes.int "PRIVATE" <-- UMLLine
+					JavaPrimitiveTypes.int "PROTECTED" <-- UMLLine
+					JavaPrimitiveTypes.int "PROTECTED_PRIVATE" <-- UMLLine
+					JavaPrimitiveTypes.int "PUBLIC" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "abstractFont" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "abstractTitleFont" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "defaultFont" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "font" <-- UMLLine
+					JavaPrimitiveTypes.int "high" <-- UMLLine
+					JavaPrimitiveTypes.int "iconHeight" <-- UMLIcon
+					JavaPrimitiveTypes.int "iconWidth" <-- UMLIcon
+					JavaPrimitiveTypes.double "scale" <-- UMLIcon
+					UMLIcon "icon" <-- UMLLine
+					JavaPrimitiveTypes.int "iconHeight" <-- UMLLine
+					JavaPrimitiveTypes.int "iconMargin" <-- UMLLine
+					JavaPrimitiveTypes.int "iconWidth" <-- UMLLine
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.SizableLabel "label" <-- UMLLine
+					JavaPrimitiveTypes.int "labelMargin" <-- UMLLine
+					UMLType "parent" <-- UMLLine
+					JavaPrimitiveTypes.int "protection" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Color "protectionColors 0..*" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "staticFont" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "titleFont" <-- UMLLine
+					JavaPrimitiveTypes.int "wide" <-- UMLLine
+					JavaPrimitiveTypes.boolean "association" <-- UMLField
+					UMLPackage "current" <-- UMLField
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter "fieldDragAdapter" <-- UMLField
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter "parentDragAdapter" <-- UMLField
+					JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary "summary" <-- UMLField
+					UMLPackage "current" <-- UMLPopupMenu
+					JRefactory_v2.6.24.javax.swing.JPopupMenu "popupMenu" <-- UMLPopupMenu
+					UMLField "fieldPanel" <-- ConvertAdapter
+					UMLPackage "packagePanel" <-- ConvertAdapter
+					UMLType "typePanel" <-- ConvertAdapter
+				}
+			}
+		}
+	}
+	package java {
+		package awt {
+			package event {
+				'/** 
+				' * The listener interface for receiving action events. The class that is interested in processing an action event implements this interface, and the object created with that class is registered with a component, using the component's {@code addActionListener} method. When the action eventoccurs, that object's  {@code actionPerformed} method isinvoked.
+				' * @see ActionEvent
+				' * @see <a href="https://docs.oracle.com/javase/tutorial/uiswing/events/actionlistener.html">How to Write an Action Listener</a>
+				' * @author Carl Quinn
+				' * @since 1.1
+				' */
+				'DP role: target
+				interface ActionListener {
+					'/** 
+					' * Invoked when an action occurs.
+					' * @param e the event to be processed
+					' */
+					actionPerformed(e : ActionEvent)
+				}
+				JRefactory_v2.6.24.java.util.EventListener <|-- ActionListener
+			}
+		}
+	}
+}
+@enduml

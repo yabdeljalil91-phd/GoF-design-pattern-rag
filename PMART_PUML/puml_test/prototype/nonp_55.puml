@@ -1,0 +1,13 @@
+@startuml
+package dpd_jdt {
+	package Prototype {
+		package nonprototype {
+			'This class defines the current version of JUnit
+			class Version {
+				-<<Create>> Version()
+				{static} id(): java.lang.String
+			}
+		}
+	}
+}
+@enduml

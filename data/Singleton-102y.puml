@@ -1,0 +1,107 @@
+@startuml
+' Singleton class UML for Debug (MapperXML v1.9.7)
+' Enhanced for RAG + GoF classification (Singleton + Static Logger Facade hybrid)
+
+package "MapperXML v1.9.7" as MapperXML {
+
+    class Debug {
+
+        '====================================================
+        ' LOGGING LEVEL CONSTANTS (configuration space)
+        '====================================================
+        - {const} DEBUG: int = 4
+        - {const} ERROR: int = 1
+        - {const} FATAL: int = 0
+        - {const} INFO: int = 3
+        - {const} WARN: int = 2
+        - {const} LEVEL_NAMES: String [*]
+
+        '====================================================
+        ' SINGLETON STATE (global logging context)
+        '====================================================
+        - loggerAdapter: LoggerAdapter
+        - {static} singleton: Debug
+
+        '====================================================
+        ' SINGLETON CONSTRUCTION CONTROL
+        '====================================================
+        ' Private constructor prevents external instantiation
+        - <<Create>> Debug()
+
+        '====================================================
+        ' LOGGING API (static façade layer)
+        '====================================================
+
+        {static} debug(message: Object)
+        {static} debug(message: Object, t: Throwable)
+
+        {static} error(message: Object)
+        {static} error(message: Object, t: Throwable)
+
+        {static} fatal(message: Object)
+        {static} fatal(message: Object, t: Throwable)
+
+        {static} info(message: Object)
+        {static} info(message: Object, t: Throwable)
+
+        {static} warn(message: Object)
+        {static} warn(message: Object, t: Throwable)
+
+        {static} log(level: int, message: String)
+        {static} log(level: int, message: String, t: Throwable)
+
+        '====================================================
+        ' SINGLETON ACCESS + CONFIGURATION
+        '====================================================
+
+        {static} getInstance(): Debug
+        {static} getLoggerAdapter(): LoggerAdapter
+        {static} setLoggerAdapter(loggerAdapter: LoggerAdapter)
+
+        '====================================================
+        ' STATE-DEPENDENT BEHAVIOR (non-static method)
+        '====================================================
+        isEnabledFor(level: int): boolean
+
+    }
+
+    '========================================================
+    ' RAG-ORIENTED DESIGN PATTERN INTERPRETATION
+    '========================================================
+    '
+    ' Primary pattern: Singleton (logging controller)
+    '
+    ' Secondary pattern: Static Facade over Singleton instance
+    '
+    '========================================================
+    ' STRUCTURAL SIGNALS
+    '========================================================
+    ' 1. Static instance holder:
+    '    singleton: Debug
+    '
+    ' 2. Global access point:
+    '    getInstance()
+    '
+    ' 3. Private constructor:
+    '    prevents external instantiation
+    '
+    '========================================================
+    ' BEHAVIORAL SIGNALS (important for LLM classification)
+    '========================================================
+    ' - Heavy use of static logging API:
+    '   → indicates facade / global service wrapper
+    '
+    ' - Instance-level configuration:
+    '   → loggerAdapter + isEnabledFor()
+    '
+    '========================================================
+    ' ARCHITECTURAL CLASSIFICATION
+    '========================================================
+    ' Pattern stack:
+    '   Singleton + Static Facade + Configurable Logger
+    '
+    ' Risk note:
+    '   Can be misclassified as pure Singleton if static API dominates analysis
+    '
+}
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'A TextFigure specialized to edit numbers.
+			class NumberTextFigure {
+				-numberTextFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -4056859232918336475
+				<<Create>> NumberTextFigure()
+				'Gets the numerical value of the contained text. return the value or 0 in the case of an illegal number format.
+				getValue(): JavaPrimitiveTypes.int
+				'Gets the number of columns to be used by the text overlay.
+				'@see FloatingTextField
+				overlayColumns(): JavaPrimitiveTypes.int
+				'Sets the numberical value of the contained text.
+				setValue(value : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.TextFigure <|-- Factory_method.nonfactorymethod.NumberTextFigure
+	Factory_method.nonfactorymethod.AttributeFigure <|-- Factory_method.nonfactorymethod.TextFigure
+	Factory_method.nonfactorymethod.FigureChangeListener <|-- Factory_method.nonfactorymethod.TextFigure
+	Factory_method.nonfactorymethod.TextHolder <|-- Factory_method.nonfactorymethod.TextFigure
+	java.lang.Cloneable <|-- Factory_method.nonfactorymethod.Figure
+	java.io.Serializable <|-- Factory_method.nonfactorymethod.Figure
+	java.awt.Font "fFont" <-- Factory_method.nonfactorymethod.TextFigure
+	JavaPrimitiveTypes.int "fHeight" <-- Factory_method.nonfactorymethod.TextFigure
+	JavaPrimitiveTypes.boolean "fIsReadOnly" <-- Factory_method.nonfactorymethod.TextFigure
+	Factory_method.nonfactorymethod.OffsetLocator "fLocator" <-- Factory_method.nonfactorymethod.TextFigure
+	Factory_method.nonfactorymethod.Figure "fObservedFigure" <-- Factory_method.nonfactorymethod.TextFigure
+	JavaPrimitiveTypes.int "fOriginX" <-- Factory_method.nonfactorymethod.TextFigure
+	JavaPrimitiveTypes.int "fOriginY" <-- Factory_method.nonfactorymethod.TextFigure
+	JavaPrimitiveTypes.boolean "fSizeIsDirty" <-- Factory_method.nonfactorymethod.TextFigure
+	java.lang.String "fText" <-- Factory_method.nonfactorymethod.TextFigure
+	JavaPrimitiveTypes.int "fWidth" <-- Factory_method.nonfactorymethod.TextFigure
+	java.lang.String "fgCurrentFontName" <-- Factory_method.nonfactorymethod.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontSize" <-- Factory_method.nonfactorymethod.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontStyle" <-- Factory_method.nonfactorymethod.TextFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Factory_method.nonfactorymethod.TextFigure
+	JavaPrimitiveTypes.int "textFigureSerializedDataVersion" <-- Factory_method.nonfactorymethod.TextFigure
+	JavaPrimitiveTypes.int "numberTextFigureSerializedDataVersion" <-- Factory_method.nonfactorymethod.NumberTextFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Factory_method.nonfactorymethod.NumberTextFigure
+}
+@enduml

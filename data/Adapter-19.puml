@@ -1,0 +1,110 @@
+@startuml
+'Design pattern Adapter (RAG-enhanced for GoF detection)
+
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+
+	package org {
+		package acm {
+			package seguin {
+
+				package ide {
+					package common {
+
+						'====================================================
+						' ADAPTEE (core domain logic: multi-directory reload)
+						'====================================================
+						class MultipleDirClassDiagramReloader {
+
+							-list: JRefactory_v2.6.24.java.util.LinkedList
+							-necessary: JavaPrimitiveTypes.boolean
+
+							<<Create>> MultipleDirClassDiagramReloader()
+
+							'Manages root input sources (multiple directories)
+							addRootDirectory(value : JRefactory_v2.6.24.java.lang.String)
+
+							'State reset for internal directory registry
+							clear()
+
+							'Configuration flag used by reload process
+							isNecessary(): JavaPrimitiveTypes.boolean
+
+							'Core domain operation (heavy logic)
+							reload()
+
+							'Configuration setter affecting reload behavior
+							setNecessary(value : JavaPrimitiveTypes.boolean)
+						}
+
+						'====================================================
+						' ADAPTER HINT LAYER (inheritance-based adaptation)
+						'====================================================
+
+						'DP signal: potential Adapter base abstraction or intermediate layer
+						'Acts as bridge between Reloader interface and concrete multi-dir logic
+						class ClassDiagramReloader
+
+						'Inheritance chain strengthening Adapter pattern signal
+						ClassDiagramReloader <|-- MultipleDirClassDiagramReloader
+
+						'Target interface (from UML loader subsystem)
+						JRefactory_v2.6.24.org.acm.seguin.uml.loader.Reloader <|.. ClassDiagramReloader
+
+						'====================================================
+						' CLIENT / UI SIDE (consumes reloading abstraction)
+						'====================================================
+
+						'UI component consuming reloader abstraction results
+						class ClassListPanel
+
+						JRefactory_v2.6.24.javax.swing.JPanel <|-- ClassListPanel
+
+						'====================================================
+						' STRUCTURAL DEPENDENCIES (state + aggregation signals)
+						'====================================================
+
+						'Internal state: UML diagrams managed by reloader
+						JRefactory_v2.6.24.java.util.Vector "umlDiagrams" <-- ClassDiagramReloader
+
+						'UI holds model reference (summary dependency)
+						JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary "summary" <-- ClassListPanel
+
+						'UI binds UML package context
+						JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage "umlPackage" <-- ClassListPanel
+
+						'Primary adaptation input collection
+						JRefactory_v2.6.24.java.util.LinkedList "list" <-- MultipleDirClassDiagramReloader
+
+						'Configuration flag affecting adaptation behavior
+						JavaPrimitiveTypes.boolean "necessary" <-- MultipleDirClassDiagramReloader
+
+						'====================================================
+						' RAG ENRICHMENT: ADAPTER PATTERN INTERPRETATION
+						'====================================================
+						'
+						' Adapter hypothesis:
+						' - Target  : Reloader (expected interface)
+						' - Adapter : ClassDiagramReloader / MultipleDirClassDiagramReloader
+						' - Adaptee : MultipleDirClassDiagramReloader (multi-directory logic)
+						' - Client  : ClassListPanel (via UML UI layer)
+						'
+						' Key detection signals:
+						' 1. Interface realization:
+						'    Reloader <|.. ClassDiagramReloader
+						'
+						' 2. Behavioral specialization via inheritance:
+						'    ClassDiagramReloader <|-- MultipleDirClassDiagramReloader
+						'
+						' 3. Semantic mismatch:
+						'    single-directory loader abstraction vs multi-directory implementation
+						'
+						' 4. State-driven adaptation:
+						'    LinkedList + boolean "necessary" controlling reload behavior
+						'
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

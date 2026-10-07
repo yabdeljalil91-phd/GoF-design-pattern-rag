@@ -1,0 +1,21 @@
+@startuml
+package dpd_jdt {
+	package Context {
+		package name {
+			'Adds properties & events to the ClassElementNode
+			'@author Jan Jancura
+			class PatternsBrowserFactory {
+				-{const} CLASS_ACTIONS: SystemAction [*]
+				-writeable: JavaPrimitiveTypes.boolean
+				<<Create>> PatternsBrowserFactory(writeable : JavaPrimitiveTypes.boolean)
+				createClassNode(element : ClassElement): Node
+			}
+		}
+	}
+	Context.name.FilterFactory <|-- Context.name.PatternsBrowserFactory
+	Context.name.ElementNodeFactory <|.. Context.name.FilterFactory
+	Context.name.ElementNodeFactory "delegate" <-- Context.name.FilterFactory
+	Context.name.SystemAction "CLASS_ACTIONS 0..*" <-- Context.name.PatternsBrowserFactory
+	JavaPrimitiveTypes.boolean "writeable" <-- Context.name.PatternsBrowserFactory
+}
+@enduml

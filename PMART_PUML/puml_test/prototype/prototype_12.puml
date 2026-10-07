@@ -1,0 +1,40 @@
+@startuml
+package dpd_jdt {
+	package Context {
+		package name {
+			'A line figure.
+			class LineFigure {
+				-lineFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 511503575249212371
+				'Constructs a LineFigure with both start and end set to Point(0,0).
+				<<Create>> LineFigure()
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				'Gets a copy of the end point.
+				endPoint(): java.awt.Point
+				'Sets the end point.
+				endPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Sets the start and end point.
+				setPoints(start : java.awt.Point, end : java.awt.Point)
+				'Gets a copy of the start point.
+				startPoint(): java.awt.Point
+				'Sets the start point.
+				startPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	Context.name.PolyLineFigure <|-- Context.name.LineFigure
+	Context.name.AbstractFigure <|-- Context.name.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_BOTH" <-- Context.name.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_END" <-- Context.name.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_NONE" <-- Context.name.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_START" <-- Context.name.PolyLineFigure
+	Context.name.LineDecoration "fEndDecoration" <-- Context.name.PolyLineFigure
+	java.awt.Color "fFrameColor" <-- Context.name.PolyLineFigure
+	java.util.Vector "fPoints" <-- Context.name.PolyLineFigure
+	Context.name.LineDecoration "fStartDecoration" <-- Context.name.PolyLineFigure
+	JavaPrimitiveTypes.int "polyLineFigureSerializedDataVersion" <-- Context.name.PolyLineFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Context.name.PolyLineFigure
+	JavaPrimitiveTypes.int "lineFigureSerializedDataVersion" <-- Context.name.LineFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Context.name.LineFigure
+}
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'A line figure.
+			class LineFigure {
+				-lineFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 511503575249212371
+				'Constructs a LineFigure with both start and end set to Point(0,0).
+				<<Create>> LineFigure()
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				'Gets a copy of the end point.
+				endPoint(): java.awt.Point
+				'Sets the end point.
+				endPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Sets the start and end point.
+				setPoints(start : java.awt.Point, end : java.awt.Point)
+				'Gets a copy of the start point.
+				startPoint(): java.awt.Point
+				'Sets the start point.
+				startPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.PolyLineFigure <|-- Factory_method.nonfactorymethod.LineFigure
+	Factory_method.nonfactorymethod.AbstractFigure <|-- Factory_method.nonfactorymethod.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_BOTH" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_END" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_NONE" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_START" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	Factory_method.nonfactorymethod.LineDecoration "fEndDecoration" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	java.awt.Color "fFrameColor" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	java.util.Vector "fPoints" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	Factory_method.nonfactorymethod.LineDecoration "fStartDecoration" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	JavaPrimitiveTypes.int "polyLineFigureSerializedDataVersion" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	JavaPrimitiveTypes.int "lineFigureSerializedDataVersion" <-- Factory_method.nonfactorymethod.LineFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Factory_method.nonfactorymethod.LineFigure
+}
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'HTMLComponentFactory is used to automate the creation of Components based on the HTML Document and its Elements. It determines the Component type based on its element tag "type" attribute and "id" attribute. This class initializes the tagTable with suggested components for HTML tags in its constructor by calling the <code>initTagTable</code> method. <p> This class provides a Singleton via the <code>getInstance</code> method. This is recommended over constructing a new instance. <p> This class contains two primary methods: <ul> <li><code>getSuggestedComponents</code> - for use by design tools.</li> <li><code>createComponents</code> - to automatically create and bind <code>Components</code> at runtime.</li> </ul>
+			class HTMLComponentFactory {
+				-{static} factory: HTMLComponentFactory
+				'Default constructor for HTMLComponentFactory.
+				'@see #getInstance
+				<<Create>> HTMLComponentFactory()
+				'<p>Create a component for given element and set its properties. Only bound components with id's following a strict id naming convention will be created. </p> <p>The id must begin with a ValueHolder's alias. It must then be followed by a double-underscore ("__"). Next the propertyName must appear or the keyword "TEMPLATE_NODE".  An optional suffix can be added to ensure unique id's (as required by spec). The optional suffix must be separated from the property name by a double-underscore("__"). The following are examples of valid id format:</p> <ul> <li>Person__lastName</li> <li>Person__lastName__2</li> <li>Invoices__TEMPLATE_NODE</li> <li>Invoices__TEMPLATE_NODE__2</li> </ul> <p>The alias of the id (first part), must match an alias of a ValueHolder in the given array of ValueHolders, otherwise no Component will be created. The ValueHolder with a matching alias will be set as the new Component's valueHolder. </p> <p>If the new Component is an AbstractField subclass, then its propertyName will be set to the propertyName of the id (second part). If the given Element has a "name" attribute, the Component's parameter will be set to the value of the "name" attribute. <p>If the new Component is a Template (or subclass), then only its collectionValueHolder property will be set. The associated ValueHolder for this Component must be a CollectionValueHolder, otherwise no Component will be created. </p> <p>This method will also attempt to setup the formatting properties for the new Component. This only applies to AbstractField subclasses. The format is extracted from the document within the element's "value" attribute, "href" attribute, or text node. The format must be specified as TYPE:pattern, where TYPE is one of: DATE NUMBER or MSG. The pattern should be a valid pattern for the format type. The following are examples of use: <ul> <li>&lt;span id="Person__birthdate"&gt;DATE:MM/dd/yyyy&lt;/span&gt;</li> <li>&lt;input type="text" id="InvoiceItem__unitPrice" value="NUMBER:###,##0.00" /&gt;</li> <li>&lt;a id="Person__personID" href="MSG:/PersonProfile.mxform?personID={0}"&gt;Link to Person&lt;/a&gt;</li> </ul> </p>
+				'@param id of Element to create component for
+				'@param element to create component for
+				'@param holders the array of ValueHolders for binding
+				'@return new Component with properties set or null
+				#createComponentForElement(id : java.lang.String, element : org.w3c.dom.Element, holders : ValueHolder): Component
+				'Get the singleton instance of the HTMLComponentFactory.
+				{static} getInstance(): HTMLComponentFactory
+				'Returns a Vector of suggested Component class names for given Element. This method will choose the appropriate Components based on the type of Element given.  The default Component type will be the first in the list. <p> If the component is an input component, then the TYPE attribute is also used in selecting the right component. <p> If the Element has an ID, then the com.taursys.xml.DocumentElement Component will be added to the end of the suggestion list. <p> If the id contains the TEMPLATE_NODE keyword, then a Template will be added to the top of the suggestion list. <p> If there are no suggested types of Component for the given Element, then an empty Vector will be returned. <p> Subclasses should override this method if more than the Element tag name is needed to determine the suggested components.
+				'@param element to return default Component type for
+				'@return a Vector containing any suggested Component class names
+				getSuggestedComponents(element : org.w3c.dom.Element): java.util.Vector
+				'Initialize the factory's tagTable with suggested components for HTML documents. During the automated Component creation, only the first suggestion is used. The other suggestions are intended for use by design tools. The following are the suggestions created by this class: <table> <tr> <td>Element Tag</td> <td>Type Attribute</td> <td>Suggested Component(s)</td> </tr> <tr> <td>a</td> <td>n/a</td> <td>HTMLAnchorURL</td> </tr> <tr> <td>select</td> <td>na</td> <td>HTMLSelect</td> </tr> <tr> <td>span</td> <td>n/a</td> <td>TextField</td> </tr> <tr> <td>td</td> <td>n/a</td> <td>TextField</td> </tr> <tr> <td>textarea</td> <td>n/a</td> <td>HTMLInputText</td> </tr> <tr> <td>input</td> <td>hidden</td> <td>HTMLInputText</td> </tr> <tr> <td>input</td> <td>password</td> <td>HTMLInputText</td> </tr> <tr> <td>input</td> <td>submit</td> <td>Button, Trigger</td> </tr> <tr> <td>input</td> <td>text</td> <td>HTMLInputText</td> </tr> <tr> <td>input</td> <td>checkbox</td> <td>HTMLCheckBox</td> </tr> </table> <p>
+				#initTagTable()
+				-setupFormat(field : AbstractField, element : org.w3c.dom.Element)
+			}
+		}
+	}
+	Builder.nonbuilder.ComponentFactory <|-- Builder.nonbuilder.HTMLComponentFactory
+	Builder.nonbuilder.MapperComponent <|-- Builder.nonbuilder.Component
+	java.lang.String "ID_DELIMITER" <-- Builder.nonbuilder.ComponentFactory
+	java.lang.String "TEMPLATE_NODE" <-- Builder.nonbuilder.ComponentFactory
+	java.util.Hashtable "tagTable" <-- Builder.nonbuilder.ComponentFactory
+	java.util.ArrayList "eventTypeList" <-- Builder.nonbuilder.Component
+	java.util.ArrayList "inputListeners" <-- Builder.nonbuilder.Component
+	JavaPrimitiveTypes.boolean "notifySet" <-- Builder.nonbuilder.Component
+	java.util.ArrayList "parameterListeners" <-- Builder.nonbuilder.Component
+	com.taursys.xml.Container "parent" <-- Builder.nonbuilder.Component
+	java.util.ArrayList "recycleListeners" <-- Builder.nonbuilder.Component
+	java.util.ArrayList "renderListeners" <-- Builder.nonbuilder.Component
+	java.util.ArrayList "triggerListeners" <-- Builder.nonbuilder.Component
+	JavaPrimitiveTypes.boolean "visible" <-- Builder.nonbuilder.Component
+}
+@enduml

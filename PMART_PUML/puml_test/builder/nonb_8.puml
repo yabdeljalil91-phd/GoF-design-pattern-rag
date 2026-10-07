@@ -1,0 +1,15 @@
+@startuml
+package dpd_jdt {
+	package Context {
+		package nonContext {
+			'Interface describing methods for creation of all dialogs related to editor functionality
+			'@author Miloslav Metelka
+			'@version 1.00
+			interface DialogCreator {
+				createFindDialog(findPanel : javax.swing.JPanel, buttons : javax.swing.JButton, defaultButtonIndex : JavaPrimitiveTypes.int, cancelButtonIndex : JavaPrimitiveTypes.int, l : java.awt.event.ActionListener): java.awt.Dialog
+				createGotoDialog(gotoPanel : javax.swing.JPanel, buttons : javax.swing.JButton, defaultButtonIndex : JavaPrimitiveTypes.int, cancelButtonIndex : JavaPrimitiveTypes.int, l : java.awt.event.ActionListener): java.awt.Dialog
+			}
+		}
+	}
+}
+@enduml

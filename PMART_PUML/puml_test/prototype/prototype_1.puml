@@ -1,0 +1,39 @@
+@startuml
+package dpd_jdt {
+	package Context {
+		package name {
+			'A tool to create new figures. The figure to be created is specified by a Context. <hr> <b>Design Patterns</b><P> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a href=../pattlets/sld029.htm>Context</a></b><br> CreationTool creates new figures by cloning a Context. <hr>
+			'@see Figure
+			'@see Object#clone
+			class CreationTool {
+				-fAnchorPoint: java.awt.Point
+				-fCreatedFigure: Figure
+				-fContext: Figure
+				'Initializes a CreationTool with the given Context.
+				<<Create>> CreationTool(view : DrawingView, Context : Figure)
+				'Constructs a CreationTool without a Context. This is for subclassers overriding createFigure.
+				#<<Create>> CreationTool(view : DrawingView)
+				'Sets the cross hair cursor.
+				activate()
+				'Creates a new figure by cloning the Context.
+				#createFigure(): Figure
+				'Gets the currently created figure
+				#createdFigure(): Figure
+				'Creates a new figure by cloning the Context.
+				mouseDown(e : java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Adjusts the extent of the created figure
+				mouseDrag(e : java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Checks if the created figure is empty. If it is, the figure is removed from the drawing.
+				'@see Figure#isEmpty
+				mouseUp(e : java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	Context.name.AbstractTool <|-- Context.name.CreationTool
+	java.lang.Cloneable <|-- Context.name.Figure
+	java.io.Serializable <|-- Context.name.Figure
+	java.awt.Point "fAnchorPoint" <-- Context.name.CreationTool
+	Context.name.Figure "fCreatedFigure" <-- Context.name.CreationTool
+	Context.name.Figure "fContext" <-- Context.name.CreationTool
+}
+@enduml

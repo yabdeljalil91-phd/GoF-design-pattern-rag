@@ -1,0 +1,50 @@
+@startuml
+' Singleton class UML for Clipboard (JHotDraw 5.1)
+' Enhanced for RAG + design pattern clarity (Singleton: classical form)
+
+package "JHotDraw v5.1" as JHotDraw {
+
+    class Clipboard {
+
+        '====================================================
+        ' SINGLETON STATE (static instance holder)
+        '====================================================
+        - fContents: Object
+        {static} fgClipboard: Clipboard
+
+        '====================================================
+        ' SINGLETON ENFORCEMENT
+        '====================================================
+        ' Private/protected constructor prevents external instantiation
+        -Clipboard()
+
+        '====================================================
+        ' GLOBAL ACCESS POINT (Singleton retrieval)
+        '====================================================
+        {static} getClipboard(): Clipboard
+
+        '====================================================
+        ' INSTANCE BEHAVIOR (stateful payload operations)
+        '====================================================
+        getContents(): Object
+        setContents(contents: Object)
+    }
+
+    '========================================================
+    ' DESIGN PATTERN SEMANTICS (RAG ANNOTATION LAYER)
+    '========================================================
+    '
+    ' Pattern: Singleton (classical GoF implementation)
+    '
+    ' Structural evidence:
+    ' - Static self-reference: fgClipboard: Clipboard
+    ' - Private constructor: prevents external instantiation
+    ' - Global access method: getClipboard()
+    '
+    ' Behavioral note:
+    ' - Instance state exists (fContents), but lifecycle is globally controlled
+    '
+    ' Classification confidence: HIGH (canonical Singleton form)
+    '
+}
+@enduml

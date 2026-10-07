@@ -1,0 +1,527 @@
+@startuml
+'Design pattern Observer
+package "JUnit v3.7" as JUnit_v3.7 {
+	package junit {
+		package framework {
+			'/** 
+			' * A <code>TestResult</code> collects the results of executing a test case. It is an instance of the Collecting Parameter pattern. The test framework distinguishes between <i>failures</i> and <i>errors</i>. A failure is anticipated and checked for with assertions. Errors are unanticipated problems like an <code>ArrayIndexOutOfBoundsException</code>.
+			' * @see Test
+			' */
+			'DP role: concreteSubject
+			class TestResult {
+				#fErrors: JUnit_v3.7.java.util.Vector
+				#fFailures: JUnit_v3.7.java.util.Vector
+				#fListeners: JUnit_v3.7.java.util.Vector
+				#fRunTests: JavaPrimitiveTypes.int
+				-fStop: JavaPrimitiveTypes.boolean
+				<<Create>> TestResult()
+				'/** 
+				' * Adds an error to the list of errors. The passed in exception caused the error.
+				' */
+				addError(test : Test, t : JUnit_v3.7.java.lang.Throwable)
+				'/** 
+				' * Adds a failure to the list of failures. The passed in exception caused the failure.
+				' */
+				addFailure(test : Test, t : AssertionFailedError)
+				'/** 
+				' * Registers a TestListener
+				' */
+				addListener(listener : TestListener)
+				'/** 
+				' * Returns a copy of the listeners.
+				' */
+				-cloneListeners(): JUnit_v3.7.java.util.Vector
+				'/** 
+				' * Informs the result that a test was completed.
+				' */
+				endTest(test : Test)
+				'/** 
+				' * Gets the number of detected errors.
+				' */
+				errorCount(): JavaPrimitiveTypes.int
+				'/** 
+				' * Returns an Enumeration for the errors
+				' */
+				errors(): JUnit_v3.7.java.util.Enumeration
+				'/** 
+				' * Gets the number of detected failures.
+				' */
+				failureCount(): JavaPrimitiveTypes.int
+				'/** 
+				' * Returns an Enumeration for the failures
+				' */
+				failures(): JUnit_v3.7.java.util.Enumeration
+				'/** 
+				' * Unregisters a TestListener
+				' */
+				removeListener(listener : TestListener)
+				'/** 
+				' * Runs a TestCase.
+				' */
+				#run(test : TestCase)
+				'/** 
+				' * Gets the number of run tests.
+				' */
+				runCount(): JavaPrimitiveTypes.int
+				'/** 
+				' * Runs a TestCase.
+				' */
+				runProtected(test : Test, p : Protectable)
+				'/** 
+				' * Gets the number of run tests.
+				' * @deprecated use <code>runCount</code> instead
+				' */
+				runTests(): JavaPrimitiveTypes.int
+				'/** 
+				' * Checks whether the test run should stop
+				' */
+				shouldStop(): JavaPrimitiveTypes.boolean
+				'/** 
+				' * Informs the result that a test will be started.
+				' */
+				startTest(test : Test)
+				'/** 
+				' * Marks that the test run should stop.
+				' */
+				stop()
+				'/** 
+				' * Gets the number of detected errors.
+				' * @deprecated use <code>errorCount</code> instead
+				' */
+				testErrors(): JavaPrimitiveTypes.int
+				'/** 
+				' * Gets the number of detected failures.
+				' * @deprecated use <code>failureCount</code> instead
+				' */
+				testFailures(): JavaPrimitiveTypes.int
+				'/** 
+				' * Returns whether the entire test was successful or not.
+				' */
+				wasSuccessful(): JavaPrimitiveTypes.boolean
+			}
+			'DP role: observer
+			interface TestListener {
+				addError(test : Test, t : JUnit_v3.7.java.lang.Throwable)
+				addFailure(test : Test, t : AssertionFailedError)
+				endTest(test : Test)
+				startTest(test : Test)
+			}
+			JUnit_v3.7.java.lang.Error <|-- AssertionFailedError
+			Assert <|-- TestCase
+			Test <|.. TestCase
+			Test <|.. TestSuite
+			JUnit_v3.7.java.util.Vector "fErrors" <-- TestResult
+			JUnit_v3.7.java.util.Vector "fFailures" <-- TestResult
+			JUnit_v3.7.java.util.Vector "fListeners" <-- TestResult
+			JavaPrimitiveTypes.int "fRunTests" <-- TestResult
+			JavaPrimitiveTypes.boolean "fStop" <-- TestResult
+			JavaPrimitiveTypes.boolean "condition" <-- Assert
+			JUnit_v3.7.java.lang.String "message" <-- Assert
+			JUnit_v3.7.java.lang.String "fName" <-- TestCase
+			Test "fFailedTest" <-- TestFailure
+			JUnit_v3.7.java.lang.Throwable "fThrownException" <-- TestFailure
+			JUnit_v3.7.java.lang.String "fName" <-- TestSuite
+			JUnit_v3.7.java.util.Vector "fTests" <-- TestSuite
+		}
+		package awtui {
+			'/** 
+			' * An AWT based user interface to run tests. Enter the name of a class which either provides a static suite method or is a subclass of TestCase. <pre> Synopsis: java junit.awtui.TestRunner [-noloading] [TestCase] </pre> TestRunner takes as an optional argument the name of the testcase class to be run.
+			' */
+			'DP role: concreteObserver
+			class TestRunner {
+				-{const} GAP: JavaPrimitiveTypes.int = 4
+				#{static} PLAIN_FONT: JUnit_v3.7.java.awt.Font
+				#fExceptions: JUnit_v3.7.java.util.Vector
+				#fFailedTests: JUnit_v3.7.java.util.Vector
+				#fFailureList: JUnit_v3.7.java.awt.List
+				#fFrame: JUnit_v3.7.java.awt.Frame
+				#fLogo: Logo
+				#fNumberOfErrors: JUnit_v3.7.java.awt.Label
+				#fNumberOfFailures: JUnit_v3.7.java.awt.Label
+				#fNumberOfRuns: JUnit_v3.7.java.awt.Label
+				#fProgressIndicator: ProgressBar
+				#fQuitButton: JUnit_v3.7.java.awt.Button
+				#fRerunButton: JUnit_v3.7.java.awt.Button
+				#fRun: JUnit_v3.7.java.awt.Button
+				#fRunner: JUnit_v3.7.java.lang.Thread
+				#fStatusLine: JUnit_v3.7.java.awt.TextField
+				#fSuiteField: JUnit_v3.7.java.awt.TextField
+				#fTestResult: JUnit_v3.7.junit.framework.TestResult
+				#fTraceArea: JUnit_v3.7.java.awt.TextArea
+				#fUseLoadingRunner: JUnit_v3.7.java.awt.Checkbox
+				<<Create>> TestRunner()
+				-about()
+				addError(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.java.lang.Throwable)
+				addFailure(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.junit.framework.AssertionFailedError)
+				#addGrid(p : JUnit_v3.7.java.awt.Panel, co : JUnit_v3.7.java.awt.Component, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, w : JavaPrimitiveTypes.int, fill : JavaPrimitiveTypes.int, wx : JavaPrimitiveTypes.double, anchor : JavaPrimitiveTypes.int)
+				-appendFailure(kind : JUnit_v3.7.java.lang.String, test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.java.lang.Throwable)
+				#clearStatus()
+				'/** 
+				' * Creates the JUnit menu. Clients override this method to add additional menu items.
+				' */
+				#createJUnitMenu(): JUnit_v3.7.java.awt.Menu
+				#createMenus(mb : JUnit_v3.7.java.awt.MenuBar)
+				#createTestResult(): JUnit_v3.7.junit.framework.TestResult
+				#createUI(suiteName : JUnit_v3.7.java.lang.String): JUnit_v3.7.java.awt.Frame
+				endTest(test : JUnit_v3.7.junit.framework.Test)
+				failureSelected()
+				getRunner(): JUnit_v3.7.java.lang.Thread
+				-isErrorSelected(): JavaPrimitiveTypes.boolean
+				-loadFrameIcon(): JUnit_v3.7.java.awt.Image
+				{static} main(args : JUnit_v3.7.java.lang.String)
+				rerun()
+				#reset()
+				{static} run(test : JUnit_v3.7.java.lang.Class)
+				'/** 
+				' * runs a suite.
+				' * @deprecated use runSuite() instead
+				' */
+				run()
+				#runFailed(message : JUnit_v3.7.java.lang.String)
+				runSuite()
+				-setLabelValue(label : JUnit_v3.7.java.awt.Label, value : JavaPrimitiveTypes.int)
+				setSuiteName(suite : JUnit_v3.7.java.lang.String)
+				-shouldReload(): JavaPrimitiveTypes.boolean
+				-showErrorTrace()
+				-showInfo(message : JUnit_v3.7.java.lang.String)
+				-showStatus(status : JUnit_v3.7.java.lang.String)
+				'/** 
+				' * Starts the TestRunner
+				' */
+				start(args : JUnit_v3.7.java.lang.String)
+				startTest(test : JUnit_v3.7.junit.framework.Test)
+			}
+			JUnit_v3.7.junit.runner.BaseTestRunner <|-- TestRunner
+			JUnit_v3.7.java.awt.Canvas <|-- Logo
+			JUnit_v3.7.java.awt.Canvas <|-- ProgressBar
+			JavaPrimitiveTypes.int "GAP" <-- TestRunner
+			JUnit_v3.7.java.awt.Font "PLAIN_FONT" <-- TestRunner
+			JUnit_v3.7.java.util.Vector "fExceptions" <-- TestRunner
+			JUnit_v3.7.java.util.Vector "fFailedTests" <-- TestRunner
+			JUnit_v3.7.java.awt.List "fFailureList" <-- TestRunner
+			JUnit_v3.7.java.awt.Frame "fFrame" <-- TestRunner
+			JavaPrimitiveTypes.int "fHeight" <-- Logo
+			JUnit_v3.7.java.awt.Image "fImage" <-- Logo
+			JavaPrimitiveTypes.int "fWidth" <-- Logo
+			Logo "fLogo" <-- TestRunner
+			JUnit_v3.7.java.awt.Label "fNumberOfErrors" <-- TestRunner
+			JUnit_v3.7.java.awt.Label "fNumberOfFailures" <-- TestRunner
+			JUnit_v3.7.java.awt.Label "fNumberOfRuns" <-- TestRunner
+			JavaPrimitiveTypes.boolean "fError" <-- ProgressBar
+			JavaPrimitiveTypes.int "fProgress" <-- ProgressBar
+			JavaPrimitiveTypes.int "fProgressX" <-- ProgressBar
+			JavaPrimitiveTypes.int "fTotal" <-- ProgressBar
+			ProgressBar "fProgressIndicator" <-- TestRunner
+			JUnit_v3.7.java.awt.Button "fQuitButton" <-- TestRunner
+			JUnit_v3.7.java.awt.Button "fRerunButton" <-- TestRunner
+			JUnit_v3.7.java.awt.Button "fRun" <-- TestRunner
+			JUnit_v3.7.java.lang.Thread "fRunner" <-- TestRunner
+			JUnit_v3.7.java.awt.TextField "fStatusLine" <-- TestRunner
+			JUnit_v3.7.java.awt.TextField "fSuiteField" <-- TestRunner
+			JUnit_v3.7.junit.framework.TestResult "fTestResult" <-- TestRunner
+			JUnit_v3.7.java.awt.TextArea "fTraceArea" <-- TestRunner
+			JUnit_v3.7.java.awt.Checkbox "fUseLoadingRunner" <-- TestRunner
+		}
+		package ui {
+			'/** 
+			' * @deprecated use junit.awtui.TestRunner.
+			' */
+			'DP role: concreteObserver
+			class TestRunner {
+				<<Create>> TestRunner()
+				{static} main(args : JUnit_v3.7.java.lang.String)
+			}
+			JUnit_v3.7.junit.awtui.TestRunner <|-- TestRunner
+		}
+		package swingui {
+			'/** 
+			' * A Swing based user interface to run tests. Enter the name of a class which either provides a static suite method or is a subclass of TestCase. <pre> Synopsis: java junit.swingui.TestRunner [-noloading] [TestCase] </pre> TestRunner takes as an optional argument the name of the testcase class to be run.
+			' */
+			'DP role: concreteObserver
+			class TestRunner {
+				-{const} FAILUREDETAILVIEW_KEY: JUnit_v3.7.java.lang.String = FailureViewClass
+				-{const} GAP: JavaPrimitiveTypes.int = 4
+				-{const} HISTORY_LENGTH: JavaPrimitiveTypes.int = 5
+				-{const} TESTCOLLECTOR_KEY: JUnit_v3.7.java.lang.String = TestCollectorClass
+				-fCounterPanel: CounterPanel
+				-fFailureView: JUnit_v3.7.junit.runner.FailureDetailView
+				-fFailures: JUnit_v3.7.javax.swing.DefaultListModel
+				#fFrame: JUnit_v3.7.javax.swing.JFrame
+				-fLogo: JUnit_v3.7.javax.swing.JLabel
+				-fProgressIndicator: ProgressBar
+				-fQuitButton: JUnit_v3.7.javax.swing.JButton
+				-fRerunButton: JUnit_v3.7.javax.swing.JButton
+				-fRun: JUnit_v3.7.javax.swing.JButton
+				-fRunner: JUnit_v3.7.java.lang.Thread
+				-fStatusLine: StatusLine
+				-fSuiteCombo: JUnit_v3.7.javax.swing.JComboBox
+				-fTestResult: JUnit_v3.7.junit.framework.TestResult
+				-fTestRunViews: JUnit_v3.7.java.util.Vector
+				-fTestViewTab: JUnit_v3.7.javax.swing.JTabbedPane
+				-fUseLoadingRunner: JUnit_v3.7.javax.swing.JCheckBox
+				<<Create>> TestRunner()
+				-about()
+				#aboutToStart(testSuite : JUnit_v3.7.junit.framework.Test)
+				addError(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.java.lang.Throwable)
+				addFailure(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.junit.framework.AssertionFailedError)
+				-addGrid(p : JUnit_v3.7.javax.swing.JPanel, co : JUnit_v3.7.java.awt.Component, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, w : JavaPrimitiveTypes.int, fill : JavaPrimitiveTypes.int, wx : JavaPrimitiveTypes.double, anchor : JavaPrimitiveTypes.int)
+				-addToHistory(suite : JUnit_v3.7.java.lang.String)
+				-appendFailure(kind : JUnit_v3.7.java.lang.String, test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.java.lang.Throwable)
+				browseTestClasses()
+				#clearStatus()
+				#createBrowseButton(): JUnit_v3.7.java.awt.Component
+				#createCounterPanel(): CounterPanel
+				#createFailedPanel(): JUnit_v3.7.javax.swing.JPanel
+				#createFailureDetailView(): JUnit_v3.7.junit.runner.FailureDetailView
+				#createFrame(title : JUnit_v3.7.java.lang.String): JUnit_v3.7.javax.swing.JFrame
+				'/** 
+				' * Creates the JUnit menu. Clients override this method to add additional menu items.
+				' */
+				#createJUnitMenu(): JUnit_v3.7.javax.swing.JMenu
+				#createLogo(): JUnit_v3.7.javax.swing.JLabel
+				#createMenus(mb : JUnit_v3.7.javax.swing.JMenuBar)
+				#createQuitButton(): JUnit_v3.7.javax.swing.JButton
+				#createRunButton(): JUnit_v3.7.javax.swing.JButton
+				#createStatusLine(): StatusLine
+				#createSuiteCombo(): JUnit_v3.7.javax.swing.JComboBox
+				createTestCollector(): JUnit_v3.7.junit.runner.TestCollector
+				#createTestResult(): JUnit_v3.7.junit.framework.TestResult
+				#createTestRunViews(): JUnit_v3.7.javax.swing.JTabbedPane
+				#createUI(suiteName : JUnit_v3.7.java.lang.String): JUnit_v3.7.javax.swing.JFrame
+				#createUseLoaderCheckBox(): JUnit_v3.7.javax.swing.JCheckBox
+				-doRunTest(testSuite : JUnit_v3.7.junit.framework.Test)
+				endTest(test : JUnit_v3.7.junit.framework.Test)
+				getFailures(): JUnit_v3.7.javax.swing.ListModel
+				{static} getIconResource(clazz : JUnit_v3.7.java.lang.Class, name : JUnit_v3.7.java.lang.String): JUnit_v3.7.javax.swing.Icon
+				-getSettingsFile(): JUnit_v3.7.java.io.File
+				#getSuiteText(): JUnit_v3.7.java.lang.String
+				handleTestSelected(test : JUnit_v3.7.junit.framework.Test)
+				insertUpdate(event : JUnit_v3.7.javax.swing.event.DocumentEvent)
+				-loadFrameIcon(): JUnit_v3.7.java.awt.Image
+				-loadHistory(combo : JUnit_v3.7.javax.swing.JComboBox)
+				{static} main(args : JUnit_v3.7.java.lang.String)
+				-postEndTest(test : JUnit_v3.7.junit.framework.Test)
+				-postInfo(message : JUnit_v3.7.java.lang.String)
+				-postStatus(status : JUnit_v3.7.java.lang.String)
+				-pruneHistory()
+				removeUpdate(event : JUnit_v3.7.javax.swing.event.DocumentEvent)
+				-rerun()
+				-rerunTest(test : JUnit_v3.7.junit.framework.Test)
+				#reset()
+				-revealFailure(test : JUnit_v3.7.junit.framework.Test)
+				{static} run(test : JUnit_v3.7.java.lang.Class)
+				'/** 
+				' * runs a suite.
+				' * @deprecated use runSuite() instead
+				' */
+				run()
+				#runFailed(message : JUnit_v3.7.java.lang.String)
+				#runFinished(testSuite : JUnit_v3.7.junit.framework.Test)
+				runSuite()
+				#runTest(testSuite : JUnit_v3.7.junit.framework.Test)
+				-saveHistory()
+				-setButtonLabel(button : JUnit_v3.7.javax.swing.JButton, label : JUnit_v3.7.java.lang.String)
+				setSuite(suiteName : JUnit_v3.7.java.lang.String)
+				-shouldReload(): JavaPrimitiveTypes.boolean
+				-showFailureDetail(test : JUnit_v3.7.junit.framework.Test)
+				-showInfo(message : JUnit_v3.7.java.lang.String)
+				-showStatus(status : JUnit_v3.7.java.lang.String)
+				'/** 
+				' * Starts the TestRunner
+				' */
+				start(args : JUnit_v3.7.java.lang.String)
+				-start(test : JUnit_v3.7.junit.framework.Test)
+				startTest(test : JUnit_v3.7.junit.framework.Test)
+				'/** 
+				' * Wait until all the events are processed in the event thread
+				' */
+				-synchUI()
+				'/** 
+				' * Terminates the TestRunner
+				' */
+				terminate()
+				testViewChanged()
+				textChanged()
+			}
+			'/** 
+			' * A Panel showing a test suite as a tree. 
+			' */
+			'DP role: concreteObserver
+			class TestSuitePanel {
+				-fModel: TestTreeModel
+				-fScrollTree: JUnit_v3.7.javax.swing.JScrollPane
+				-fTree: JUnit_v3.7.javax.swing.JTree
+				<<Create>> TestSuitePanel()
+				addError(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.java.lang.Throwable)
+				addFailure(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.junit.framework.AssertionFailedError)
+				'/** 
+				' * A test ended.
+				' */
+				endTest(test : JUnit_v3.7.junit.framework.Test)
+				-fireTestChanged(test : JUnit_v3.7.junit.framework.Test, expand : JavaPrimitiveTypes.boolean)
+				'/** 
+				' * Returns the selected test or null if multiple or none is selected
+				' */
+				getSelectedTest(): JUnit_v3.7.junit.framework.Test
+				'/** 
+				' * Returns the Tree
+				' */
+				getTree(): JUnit_v3.7.javax.swing.JTree
+				'/** 
+				' * Shows the test hierarchy starting at the given test
+				' */
+				showTestTree(root : JUnit_v3.7.junit.framework.Test)
+				'/** 
+				' * A test started.
+				' */
+				startTest(test : JUnit_v3.7.junit.framework.Test)
+			}
+			JUnit_v3.7.junit.runner.BaseTestRunner <|-- TestRunner
+			TestRunContext <|.. TestRunner
+			JUnit_v3.7.java.awt.Panel <|-- CounterPanel
+			JUnit_v3.7.javax.swing.JPanel <|-- ProgressBar
+			JUnit_v3.7.javax.swing.JTextField <|-- StatusLine
+			JUnit_v3.7.javax.swing.JPanel <|-- TestSuitePanel
+			JUnit_v3.7.junit.framework.TestListener <|.. TestSuitePanel
+			JUnit_v3.7.javax.swing.tree.TreeModel <|.. TestTreeModel
+			JUnit_v3.7.java.lang.String "FAILUREDETAILVIEW_KEY" <-- TestRunner
+			JavaPrimitiveTypes.int "GAP" <-- TestRunner
+			JavaPrimitiveTypes.int "HISTORY_LENGTH" <-- TestRunner
+			JUnit_v3.7.java.lang.String "TESTCOLLECTOR_KEY" <-- TestRunner
+			JUnit_v3.7.javax.swing.JTextField "fNumberOfErrors" <-- CounterPanel
+			JUnit_v3.7.javax.swing.JTextField "fNumberOfFailures" <-- CounterPanel
+			JUnit_v3.7.javax.swing.JTextField "fNumberOfRuns" <-- CounterPanel
+			JavaPrimitiveTypes.int "fTotal" <-- CounterPanel
+			CounterPanel "fCounterPanel" <-- TestRunner
+			JUnit_v3.7.junit.runner.FailureDetailView "fFailureView" <-- TestRunner
+			JUnit_v3.7.javax.swing.DefaultListModel "fFailures" <-- TestRunner
+			JUnit_v3.7.javax.swing.JFrame "fFrame" <-- TestRunner
+			JUnit_v3.7.javax.swing.JLabel "fLogo" <-- TestRunner
+			JavaPrimitiveTypes.boolean "fError" <-- ProgressBar
+			JavaPrimitiveTypes.int "fProgress" <-- ProgressBar
+			JavaPrimitiveTypes.int "fProgressX" <-- ProgressBar
+			JavaPrimitiveTypes.int "fTotal" <-- ProgressBar
+			ProgressBar "fProgressIndicator" <-- TestRunner
+			JUnit_v3.7.javax.swing.JButton "fQuitButton" <-- TestRunner
+			JUnit_v3.7.javax.swing.JButton "fRerunButton" <-- TestRunner
+			JUnit_v3.7.javax.swing.JButton "fRun" <-- TestRunner
+			JUnit_v3.7.java.lang.Thread "fRunner" <-- TestRunner
+			JUnit_v3.7.java.awt.Font "BOLD_FONT" <-- StatusLine
+			JUnit_v3.7.java.awt.Font "PLAIN_FONT" <-- StatusLine
+			StatusLine "fStatusLine" <-- TestRunner
+			JUnit_v3.7.javax.swing.JComboBox "fSuiteCombo" <-- TestRunner
+			JUnit_v3.7.junit.framework.TestResult "fTestResult" <-- TestRunner
+			JUnit_v3.7.java.util.Vector "fTestRunViews" <-- TestRunner
+			JUnit_v3.7.javax.swing.JTabbedPane "fTestViewTab" <-- TestRunner
+			JUnit_v3.7.javax.swing.JCheckBox "fUseLoadingRunner" <-- TestRunner
+			JUnit_v3.7.java.util.Hashtable "fErrors" <-- TestTreeModel
+			JUnit_v3.7.java.util.Hashtable "fFailures" <-- TestTreeModel
+			JUnit_v3.7.java.util.Vector "fModelListeners" <-- TestTreeModel
+			JUnit_v3.7.junit.framework.Test "fRoot" <-- TestTreeModel
+			JUnit_v3.7.java.util.Hashtable "fRunTests" <-- TestTreeModel
+			TestTreeModel "fModel" <-- TestSuitePanel
+			JUnit_v3.7.javax.swing.JScrollPane "fScrollTree" <-- TestSuitePanel
+			JUnit_v3.7.javax.swing.JTree "fTree" <-- TestSuitePanel
+			JUnit_v3.7.javax.swing.Icon "fErrorIcon" <-- TestTreeCellRenderer
+			JUnit_v3.7.javax.swing.Icon "fFailureIcon" <-- TestTreeCellRenderer
+			JUnit_v3.7.javax.swing.Icon "fOkIcon" <-- TestTreeCellRenderer
+		}
+		package textui {
+			'/** 
+			' * A command line based tool to run tests. <pre> java junit.textui.TestRunner [-wait] TestCaseClass </pre> TestRunner expects the name of a TestCase class as argument. If this class defines a static <code>suite</code> method it  will be invoked and the returned test is run. Otherwise all  the methods starting with "test" having no arguments are run. <p> When the wait command line argument is given TestRunner waits until the users types RETURN. <p> TestRunner prints a trace as the tests are executed followed by a summary at the end. 
+			' */
+			'DP role: concreteObserver
+			class TestRunner {
+				fColumn: JavaPrimitiveTypes.int
+				fWriter: JUnit_v3.7.java.io.PrintStream
+				'/** 
+				' * Constructs a TestRunner.
+				' */
+				<<Create>> TestRunner()
+				'/** 
+				' * Constructs a TestRunner using the given stream for all the output
+				' */
+				<<Create>> TestRunner(writer : JUnit_v3.7.java.io.PrintStream)
+				addError(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.java.lang.Throwable)
+				addFailure(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.junit.framework.AssertionFailedError)
+				'/** 
+				' * Creates the TestResult to be used for the test run.
+				' */
+				#createTestResult(): JUnit_v3.7.junit.framework.TestResult
+				doRun(suite : JUnit_v3.7.junit.framework.Test, wait : JavaPrimitiveTypes.boolean): JUnit_v3.7.junit.framework.TestResult
+				endTest(test : JUnit_v3.7.junit.framework.Test)
+				'/** 
+				' * Always use the StandardTestSuiteLoader. Overridden from BaseTestRunner.
+				' */
+				getLoader(): JUnit_v3.7.junit.runner.TestSuiteLoader
+				{static} main(args : JUnit_v3.7.java.lang.String)
+				#pause(wait : JavaPrimitiveTypes.boolean)
+				'/** 
+				' * Prints failures to the standard output
+				' */
+				print(result : JUnit_v3.7.junit.framework.TestResult)
+				'/** 
+				' * Prints the errors to the standard output
+				' */
+				printErrors(result : JUnit_v3.7.junit.framework.TestResult)
+				'/** 
+				' * Prints failures to the standard output
+				' */
+				printFailures(result : JUnit_v3.7.junit.framework.TestResult)
+				'/** 
+				' * Prints the header of the report
+				' */
+				printHeader(result : JUnit_v3.7.junit.framework.TestResult)
+				'/** 
+				' * Runs a suite extracted from a TestCase subclass.
+				' */
+				{static} run(testClass : JUnit_v3.7.java.lang.Class)
+				'/** 
+				' * Runs a single test and collects its results. This method can be used to start a test run from your program. <pre> public static void main (String[] args) { test.textui.TestRunner.run(suite()); } </pre>
+				' */
+				{static} run(suite : JUnit_v3.7.junit.framework.Test)
+				'/** 
+				' * Runs a single test and waits until the user types RETURN.
+				' */
+				{static} runAndWait(suite : JUnit_v3.7.junit.framework.Test)
+				#runFailed(message : JUnit_v3.7.java.lang.String)
+				'/** 
+				' * Starts a test run. Analyzes the command line arguments and runs the given test suite.
+				' */
+				#start(args : JUnit_v3.7.java.lang.String): JUnit_v3.7.junit.framework.TestResult
+				startTest(test : JUnit_v3.7.junit.framework.Test)
+				#writer(): JUnit_v3.7.java.io.PrintStream
+			}
+			JUnit_v3.7.junit.runner.BaseTestRunner <|-- TestRunner
+			JavaPrimitiveTypes.int "fColumn" <-- TestRunner
+			JUnit_v3.7.java.io.PrintStream "fWriter" <-- TestRunner
+		}
+		package tests {
+			'DP role: concreteObserver
+			class TestListenerTest {
+				-fEndCount: JavaPrimitiveTypes.int
+				-fErrorCount: JavaPrimitiveTypes.int
+				-fFailureCount: JavaPrimitiveTypes.int
+				-fResult: JUnit_v3.7.junit.framework.TestResult
+				-fStartCount: JavaPrimitiveTypes.int
+				<<Create>> TestListenerTest(name : JUnit_v3.7.java.lang.String)
+				addError(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.java.lang.Throwable)
+				addFailure(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.junit.framework.AssertionFailedError)
+				endTest(test : JUnit_v3.7.junit.framework.Test)
+				#setUp()
+				startTest(test : JUnit_v3.7.junit.framework.Test)
+				testError()
+				testFailure()
+				testStartStop()
+			}
+			JUnit_v3.7.junit.framework.TestCase <|-- TestListenerTest
+			JUnit_v3.7.junit.framework.TestListener <|.. TestListenerTest
+			JavaPrimitiveTypes.int "fEndCount" <-- TestListenerTest
+			JavaPrimitiveTypes.int "fErrorCount" <-- TestListenerTest
+			JavaPrimitiveTypes.int "fFailureCount" <-- TestListenerTest
+			JUnit_v3.7.junit.framework.TestResult "fResult" <-- TestListenerTest
+			JavaPrimitiveTypes.int "fStartCount" <-- TestListenerTest
+		}
+	}
+}
+@enduml

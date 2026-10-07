@@ -1,0 +1,40 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			'A tool to create new figures. The figure to be created is specified by a prototype. <hr> <b>Design Patterns</b><P> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a href=../pattlets/sld029.htm>Prototype</a></b><br> CreationTool creates new figures by cloning a prototype. <hr>
+			'@see Figure
+			'@see Object#clone
+			class CreationTool {
+				-fAnchorPoint: java.awt.Point
+				-fCreatedFigure: Figure
+				-fPrototype: Figure
+				'Initializes a CreationTool with the given prototype.
+				<<Create>> CreationTool(view : DrawingView, prototype : Figure)
+				'Constructs a CreationTool without a prototype. This is for subclassers overriding createFigure.
+				#<<Create>> CreationTool(view : DrawingView)
+				'Sets the cross hair cursor.
+				activate()
+				'Creates a new figure by cloning the prototype.
+				#createFigure(): Figure
+				'Gets the currently created figure
+				#createdFigure(): Figure
+				'Creates a new figure by cloning the prototype.
+				mouseDown(e : java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Adjusts the extent of the created figure
+				mouseDrag(e : java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Checks if the created figure is empty. If it is, the figure is removed from the drawing.
+				'@see Figure#isEmpty
+				mouseUp(e : java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	Abstractfactory.non_abstract_factory.AbstractTool <|-- Abstractfactory.non_abstract_factory.CreationTool
+	java.lang.Cloneable <|-- Abstractfactory.non_abstract_factory.Figure
+	java.io.Serializable <|-- Abstractfactory.non_abstract_factory.Figure
+	java.awt.image.ImageObserver <|-- Abstractfactory.non_abstract_factory.DrawingView
+	java.awt.Point "fAnchorPoint" <-- Abstractfactory.non_abstract_factory.CreationTool
+	Abstractfactory.non_abstract_factory.Figure "fCreatedFigure" <-- Abstractfactory.non_abstract_factory.CreationTool
+	Abstractfactory.non_abstract_factory.Figure "fPrototype" <-- Abstractfactory.non_abstract_factory.CreationTool
+}
+@enduml

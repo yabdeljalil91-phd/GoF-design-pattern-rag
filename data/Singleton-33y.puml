@@ -1,0 +1,63 @@
+@startuml
+' Singleton pattern (RAG-enhanced for GoF detection)
+
+package "JRefactory v2.6.24" as JRefactory {
+
+    '========================
+    ' External domain class
+    '========================
+    class Reloader
+    ' DP hint: "managed resource / service object"
+    ' Acts as the SINGLE shared object controlled by Singleton
+
+    '========================
+    ' Singleton class
+    '========================
+    class ReloaderSingleton {
+
+        '--- Singleton core state ---
+        {static} singleton: Reloader
+        ' STATIC GLOBAL INSTANCE HOLDER (strong Singleton signal)
+
+        {static} isFirstTime: boolean
+        ' INITIALIZATION GUARD FLAG (lazy init / lifecycle control indicator)
+
+        '--- Constructor constraint ---
+        -ReloaderSingleton()
+        ' PRIVATE CONSTRUCTOR → prevents external instantiation
+
+        '--- Singleton access / lifecycle control API ---
+        {static} register(init: Reloader)
+        ' Controlled initialization / dependency injection into Singleton
+
+        {static} reload()
+        ' Global operation affecting shared instance state
+    }
+
+    '========================
+    ' Structural relationship
+    '========================
+
+    ReloaderSingleton --> Reloader : manages / controls lifecycle
+
+    '========================
+    ' RAG FEATURE ANNOTATION BLOCK
+    '========================
+    '
+    ' HIGH-CONFIDENCE SINGLETON INDICATORS:
+    ' 1. Static field holding instance: singleton: Reloader
+    ' 2. Private constructor: ReloaderSingleton()
+    ' 3. Static global methods: register(), reload()
+    '
+    ' STRONG SEMANTIC SIGNALS:
+    ' - Lifecycle gating via isFirstTime (lazy initialization pattern)
+    ' - Centralized control over a single shared Reloader instance
+    ' - Global state mutation via static operations
+    '
+    ' PATTERN DISCRIMINATION NOTES:
+    ' - NOT Factory: no polymorphic creation logic
+    ' - NOT Service Locator: no lookup abstraction over multiple services
+    ' - STRONG Singleton variant with external managed instance injection
+    '
+}
+@enduml

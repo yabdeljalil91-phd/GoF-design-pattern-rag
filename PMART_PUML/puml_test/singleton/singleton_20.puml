@@ -1,0 +1,47 @@
+@startuml
+package dpd_jdt {
+	package ressource {
+		package name {
+			'Cache of files - so that it doesn't take so long to get the menu 
+			'@author     Chris Seguin 
+			'@created    June 17, 1999
+			class VersionControlCache {
+				{const} ADD: JavaPrimitiveTypes.int = 0
+				{const} ADD_PROGRESS: JavaPrimitiveTypes.int = 5
+				{const} CHECK_IN: JavaPrimitiveTypes.int = 1
+				{const} CHECK_IN_PROGRESS: JavaPrimitiveTypes.int = 3
+				{const} CHECK_OUT: JavaPrimitiveTypes.int = 2
+				{const} CHECK_OUT_PROGRESS: JavaPrimitiveTypes.int = 4
+				-cache: java.util.Hashtable
+				-{static} ssc: VersionControlCache
+				'Constructor for the VersionControlCache object
+				#<<Create>> VersionControlCache()
+				'Add to the cache 
+				'@param filename  the name of the file 
+				'@param type      the state
+				add(filename : java.lang.String, type : JavaPrimitiveTypes.int)
+				'Return the cache 
+				'@return    the cache
+				{static} getCache(): VersionControlCache
+				'Create a source safe cache
+				-{static} init()
+				'Looks up a file in the cache 
+				'@param filename  Description of Parameter 
+				'@return           The InCache value
+				isInCache(filename : java.lang.String): JavaPrimitiveTypes.boolean
+				'Looks up a file in the cache 
+				'@param filename  Description of Parameter 
+				'@return           Description of the Returned Value
+				lookup(filename : java.lang.String): JavaPrimitiveTypes.int
+			}
+		}
+	}
+	JavaPrimitiveTypes.int "ADD" <-- ressource.name.VersionControlCache
+	JavaPrimitiveTypes.int "ADD_PROGRESS" <-- ressource.name.VersionControlCache
+	JavaPrimitiveTypes.int "CHECK_IN" <-- ressource.name.VersionControlCache
+	JavaPrimitiveTypes.int "CHECK_IN_PROGRESS" <-- ressource.name.VersionControlCache
+	JavaPrimitiveTypes.int "CHECK_OUT" <-- ressource.name.VersionControlCache
+	JavaPrimitiveTypes.int "CHECK_OUT_PROGRESS" <-- ressource.name.VersionControlCache
+	java.util.Hashtable "cache" <-- ressource.name.VersionControlCache
+}
+@enduml

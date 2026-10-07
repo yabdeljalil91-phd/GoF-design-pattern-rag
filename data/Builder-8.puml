@@ -1,0 +1,81 @@
+@startuml
+' --- DESIGN PATTERN ROLES: BUILDER ---
+' The Editor hierarchy functions as a Builder/Factory for different document formats.
+
+package "Lexi v0.1.1 alpha" {
+    
+    package "com.jmonkey.office.lexi.support" {
+        
+        ' Role: Builder (Abstract)
+        ' Responsibility: Defines the interface for creating parts of a product (Document/Editor)
+        abstract class Editor {
+            {static} +getEditorForContentType(type): Editor
+            {static} +getEditorForExtension(ext): Editor
+            +read(file: File)
+            +write(file: File)
+            +insert(file: File, pos: int)
+        }
+        note left: **Role: Builder**\nAbstract interface for document\nconstruction and manipulation.
+
+        package "editors" {
+            ' Role: ConcreteBuilder
+            ' Responsibility: Implements Builder to construct specific document types (HTML).
+            class HTMLEditor {
+                +read(file)
+                +write(file)
+            }
+            note bottom of HTMLEditor: **Role: ConcreteBuilder** (HTML)
+
+            ' Role: ConcreteBuilder
+            ' Responsibility: Implements Builder to construct specific document types (RTF).
+            class RTFEditor {
+                +read(file)
+                +write(file)
+            }
+            note bottom of RTFEditor: **Role: ConcreteBuilder** (RTF)
+
+            ' Role: ConcreteBuilder
+            ' Responsibility: Implements Builder to construct specific document types (Plain Text).
+            class TEXTEditor {
+                +read(file)
+                +write(file)
+            }
+            note bottom of TEXTEditor: **Role: ConcreteBuilder** (Plain Text)
+        }
+    }
+
+    package "com.jmonkey.office.lexi" {
+        ' Role: Director / Client
+        ' Responsibility: Controls the building process through the Editor interface.
+        class DocumentFrame {
+            -_EDITOR: Editor
+        }
+        note right of DocumentFrame: **Role: Director**\nUses the Builder (Editor) to\nmanage document state.
+
+        ' Role: Strategy / Observer Client
+        class Main {
+            -_REGISTRY: Registry
+            +actionPerformed(e: ActionEvent)
+        }
+        note top of Main: **Role: Client / Context**
+    }
+}
+
+' --- KEY RELATIONSHIPS FOR RAG DETECTION ---
+
+' Inheritance: Essential for Builder and Strategy
+Editor <|-- HTMLEditor : "extends (Concrete Implementation)"
+Editor <|-- RTFEditor : "extends (Concrete Implementation)"
+Editor <|-- TEXTEditor : "extends (Concrete Implementation)"
+
+' Composition/Delegation: Essential for Director -> Builder relationship
+DocumentFrame o-- Editor : "delegates document operations to (Builder)"
+
+' Interface Implementation: Key for Observer/Strategy
+HTMLEditor ..|> "java.awt.event.KeyListener" : "implements (Observer/Strategy)"
+HTMLEditor ..|> "java.awt.event.MouseListener" : "implements (Observer/Strategy)"
+
+' Summary for RAG: 
+' This structure represents a Builder Pattern where 'Editor' is the abstract builder, 
+' the specific Editors are ConcreteBuilders, and 'DocumentFrame' acts as the Director.
+@enduml

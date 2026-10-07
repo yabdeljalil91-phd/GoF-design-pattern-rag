@@ -1,0 +1,31 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'The factory interface used for creating instances of DatabaseSpecification class.  DatabaseSpecificationFactory collects information about available database  description files. Then it's able to specify if system can control  the database (specified by product name or live connection). It also provides a list of supported databases.
+			'@author Slavek Psenicka
+			interface DatabaseSpecificationFactory {
+				'Creates instance of DatabaseSpecification class; a database-specification class. This object knows about used database and can be used as factory for db-manipulating commands. It connects to the database  and reads database metadata. Throws DBException if database (obtained from database metadata) is not supported.
+				'@param connection Database connection used to obtain database product namedirectly from the database.
+				'@return Specification object.
+				createSpecification(connection : DBConnection, c : java.sql.Connection): DatabaseSpecification
+				'Creates instance of DatabaseSpecification class; a database-specification class. This object knows about used database and can be used as factory for db-manipulating commands. It connects to database and reads metadata as createSpecification(DBConnection connection), but always uses specified databaseProductName. This is not recommended technique.
+				'@param connection Database connection (is NOT used to obtain database product name)
+				'@return Specification object.
+				createSpecification(connection : DBConnection, databaseProductName : java.lang.String, c : java.sql.Connection): DatabaseSpecification
+				createSpecification(c : java.sql.Connection): DatabaseSpecification
+				'Returns true if database (specified by databaseProductName) is supported by system. Does not throw exception if it doesn't.
+				'@param databaseProductName Database product name as given from DatabaseMetaData
+				'@return True if database product is supported.
+				isDatabaseSupported(databaseProductName : java.lang.String): JavaPrimitiveTypes.boolean
+				'Returns debug-mode flag
+				isDebugMode(): JavaPrimitiveTypes.boolean
+				'Sets debug-mode flag
+				setDebugMode(mode : JavaPrimitiveTypes.boolean)
+				'Returns array of database products supported by system. It returns string array only, not the DatabaseSpecification array.
+				supportedDatabases(): java.util.Set
+			}
+		}
+	}
+}
+@enduml

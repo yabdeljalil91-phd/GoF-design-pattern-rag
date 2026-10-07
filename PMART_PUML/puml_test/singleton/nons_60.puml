@@ -1,0 +1,102 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package nonsingleton {
+			'A text figure.
+			'@see TextTool
+			class TextFigure {
+				-fFont: java.awt.Font
+				-fHeight: JavaPrimitiveTypes.int
+				-fIsReadOnly: JavaPrimitiveTypes.boolean
+				-fLocator: OffsetLocator
+				-fObservedFigure: Figure
+				-fOriginX: JavaPrimitiveTypes.int
+				-fOriginY: JavaPrimitiveTypes.int
+				-fSizeIsDirty: JavaPrimitiveTypes.boolean
+				-fText: java.lang.String
+				-fWidth: JavaPrimitiveTypes.int
+				-{static} fgCurrentFontName: java.lang.String
+				-{static} fgCurrentFontSize: JavaPrimitiveTypes.int
+				-{static} fgCurrentFontStyle: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 4599820785949456124
+				-textFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				<<Create>> TextFigure()
+				'Tests whether the figure accepts typing.
+				acceptsTyping(): JavaPrimitiveTypes.boolean
+				basicDisplayBox(newOrigin : java.awt.Point, newCorner : java.awt.Point)
+				#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Updates the location whenever the figure changes itself.
+				changed()
+				connect(figure : Figure)
+				'Creates the current font to be used for new text figures.
+				{static} createCurrentFont(): java.awt.Font
+				'Disconnects the text figure.
+				disconnect()
+				displayBox(): java.awt.Rectangle
+				drawBackground(g : java.awt.Graphics)
+				drawFrame(g : java.awt.Graphics)
+				figureChanged(e : FigureChangeEvent)
+				figureInvalidated(e : FigureChangeEvent)
+				figureRemoved(e : FigureChangeEvent)
+				figureRequestRemove(e : FigureChangeEvent)
+				figureRequestUpdate(e : FigureChangeEvent)
+				'A text figure understands the "FontSize", "FontStyle", and "FontName" attributes.
+				getAttribute(name : java.lang.String): java.lang.Object
+				'Gets the font.
+				getFont(): java.awt.Font
+				'Gets the text shown by the text figure.
+				getText(): java.lang.String
+				handles(): java.util.Vector
+				-markDirty()
+				moveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Gets the number of columns to be overlaid when the figure is edited.
+				overlayColumns(): JavaPrimitiveTypes.int
+				read(dr : StorableInput)
+				-readObject(s : java.io.ObjectInputStream)
+				'Tests whether this figure is read only.
+				readOnly(): JavaPrimitiveTypes.boolean
+				release()
+				'A text figure understands the "FontSize", "FontStyle", and "FontName" attributes.
+				setAttribute(name : java.lang.String, value : java.lang.Object)
+				'Sets the current font name
+				{static} setCurrentFontName(name : java.lang.String)
+				'Sets the current font size.
+				{static} setCurrentFontSize(size : JavaPrimitiveTypes.int)
+				'Sets the current font style.
+				{static} setCurrentFontStyle(style : JavaPrimitiveTypes.int)
+				'Sets the font.
+				setFont(newFont : java.awt.Font)
+				'Sets the read only status of the text figure.
+				setReadOnly(isReadOnly : JavaPrimitiveTypes.boolean)
+				'Sets the text shown by the text figure.
+				setText(newText : java.lang.String)
+				textDisplayBox(): java.awt.Rectangle
+				-textExtent(): java.awt.Dimension
+				'Updates the location relative to the connected figure. The TextFigure is centered around the located point.
+				#updateLocation()
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	Singleton.nonsingleton.AttributeFigure <|-- Singleton.nonsingleton.TextFigure
+	Singleton.nonsingleton.FigureChangeListener <|-- Singleton.nonsingleton.TextFigure
+	Singleton.nonsingleton.TextHolder <|-- Singleton.nonsingleton.TextFigure
+	java.lang.Cloneable <|-- Singleton.nonsingleton.Figure
+	java.io.Serializable <|-- Singleton.nonsingleton.Figure
+	java.awt.Font "fFont" <-- Singleton.nonsingleton.TextFigure
+	JavaPrimitiveTypes.int "fHeight" <-- Singleton.nonsingleton.TextFigure
+	JavaPrimitiveTypes.boolean "fIsReadOnly" <-- Singleton.nonsingleton.TextFigure
+	Singleton.nonsingleton.OffsetLocator "fLocator" <-- Singleton.nonsingleton.TextFigure
+	Singleton.nonsingleton.Figure "fObservedFigure" <-- Singleton.nonsingleton.TextFigure
+	JavaPrimitiveTypes.int "fOriginX" <-- Singleton.nonsingleton.TextFigure
+	JavaPrimitiveTypes.int "fOriginY" <-- Singleton.nonsingleton.TextFigure
+	JavaPrimitiveTypes.boolean "fSizeIsDirty" <-- Singleton.nonsingleton.TextFigure
+	java.lang.String "fText" <-- Singleton.nonsingleton.TextFigure
+	JavaPrimitiveTypes.int "fWidth" <-- Singleton.nonsingleton.TextFigure
+	java.lang.String "fgCurrentFontName" <-- Singleton.nonsingleton.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontSize" <-- Singleton.nonsingleton.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontStyle" <-- Singleton.nonsingleton.TextFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Singleton.nonsingleton.TextFigure
+	JavaPrimitiveTypes.int "textFigureSerializedDataVersion" <-- Singleton.nonsingleton.TextFigure
+}
+@enduml

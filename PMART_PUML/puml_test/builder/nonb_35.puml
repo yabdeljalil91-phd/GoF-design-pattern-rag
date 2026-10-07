@@ -1,0 +1,39 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Pretty printer for the elixir editor.
+			'@author    Chris Seguin
+			'@date      May 31, 1999
+			class ElixirPrettyPrinter {
+				-bvm: BasicViewManager
+				'Create an ElixirPrettyPrinter object
+				<<Create>> ElixirPrettyPrinter()
+				'Returns the initial line number
+				'@return    The LineNumber value
+				#getLineNumber(): JavaPrimitiveTypes.int
+				'Get the output buffer
+				'@return    a string containing the results
+				#getOutputBuffer(): java.lang.String
+				'Gets the initial string from the IDE
+				'@return    The file in string format
+				#getStringFromIDE(): java.lang.String
+				'Reformats the current source code
+				{static} prettyPrint()
+				'Remove \r from buffer
+				'@param input  Description of Parameter
+				'@return        a string containing the results
+				removeCR(input : java.lang.String): java.lang.String
+				'Sets the line number
+				'@param value  The new LineNumber value
+				#setLineNumber(value : JavaPrimitiveTypes.int)
+				'Sets the string in the IDE
+				'@param value  The new file contained in a string
+				#setStringInIDE(value : java.lang.String)
+			}
+		}
+	}
+	Builder.nonbuilder.PrettyPrintFromIDE <|-- Builder.nonbuilder.ElixirPrettyPrinter
+	Builder.nonbuilder.BasicViewManager "bvm" <-- Builder.nonbuilder.ElixirPrettyPrinter
+}
+@enduml

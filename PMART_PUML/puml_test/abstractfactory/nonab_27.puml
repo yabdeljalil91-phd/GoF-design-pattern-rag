@@ -1,0 +1,16 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			'Responsible for reloading the class diagrams
+			'@author    Chris Seguin
+			class JBuilderClassDiagramLoader {
+				<<Create>> JBuilderClassDiagramLoader()
+				'Reloads the diagrams (and the current jbuilder project)
+				reload()
+			}
+		}
+	}
+	Abstractfactory.non_abstract_factory.MultipleDirClassDiagramReloader <|-- Abstractfactory.non_abstract_factory.JBuilderClassDiagramLoader
+}
+@enduml

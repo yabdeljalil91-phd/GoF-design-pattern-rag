@@ -1,0 +1,927 @@
+@startuml
+'Design pattern Abstract Factory
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package netbeans {
+			package editor {
+				package view {
+					'/** 
+					' * Support for creation of all the known dialogs
+					' * @author Miloslav Metelka
+					' * @version 1.00
+					' */
+					'DP role: client
+					class DialogSupport {
+						-{static} dialogCreator: DialogCreator
+						-{static} findDialogSupport: FindDialogSupport
+						-{static} gotoDialogSupport: GotoDialogSupport
+						<<Create>> DialogSupport()
+						{static} getDialogCreator(): DialogCreator
+						{static} getFindDialogSupport(): FindDialogSupport
+						{static} getGotoDialogSupport(): GotoDialogSupport
+						{static} setDialogCreator(newDialogCreator : DialogCreator)
+						{static} setFindDialogSupport(newFindDialogSupport : FindDialogSupport)
+						{static} setGotoDialogSupport(newGotoDialogSupport : GotoDialogSupport)
+					}
+					'DP role: abstractFactory
+					interface DialogCreator {
+						createFindDialog(findPanel : Netbeans_v1.0.x.javax.swing.JPanel, buttons : Netbeans_v1.0.x.javax.swing.JButton, defaultButtonIndex : JavaPrimitiveTypes.int, cancelButtonIndex : JavaPrimitiveTypes.int, l : Netbeans_v1.0.x.java.awt.event.ActionListener): Netbeans_v1.0.x.java.awt.Dialog
+						createGotoDialog(gotoPanel : Netbeans_v1.0.x.javax.swing.JPanel, buttons : Netbeans_v1.0.x.javax.swing.JButton, defaultButtonIndex : JavaPrimitiveTypes.int, cancelButtonIndex : JavaPrimitiveTypes.int, l : Netbeans_v1.0.x.java.awt.event.ActionListener): Netbeans_v1.0.x.java.awt.Dialog
+					}
+					'/** 
+					' * Default dialog creation methods are located here.
+					' * @author Miloslav Metelka
+					' * @version 1.00
+					' */
+					'DP role: concreteFactory
+					class DefaultDialogCreator {
+						#{const} FIND_TITLE_DEFAULT: Netbeans_v1.0.x.java.lang.String = Find
+						#{const} FIND_TITLE_LOCALE: Netbeans_v1.0.x.java.lang.String = find-title
+						#{const} GOTO_TITLE_DEFAULT: Netbeans_v1.0.x.java.lang.String = Goto Line
+						#{const} GOTO_TITLE_LOCALE: Netbeans_v1.0.x.java.lang.String = goto-title
+						<<Create>> DefaultDialogCreator()
+						#createButtonPanel(buttons : Netbeans_v1.0.x.javax.swing.JButton): Netbeans_v1.0.x.javax.swing.JPanel
+						createFindDialog(findPanel : Netbeans_v1.0.x.javax.swing.JPanel, buttons : Netbeans_v1.0.x.javax.swing.JButton, defaultButtonIndex : JavaPrimitiveTypes.int, cancelButtonIndex : JavaPrimitiveTypes.int, l : Netbeans_v1.0.x.java.awt.event.ActionListener): Netbeans_v1.0.x.java.awt.Dialog
+						createGotoDialog(gotoPanel : Netbeans_v1.0.x.javax.swing.JPanel, buttons : Netbeans_v1.0.x.javax.swing.JButton, defaultButtonIndex : JavaPrimitiveTypes.int, cancelButtonIndex : JavaPrimitiveTypes.int, l : Netbeans_v1.0.x.java.awt.event.ActionListener): Netbeans_v1.0.x.java.awt.Dialog
+					}
+					Netbeans_v1.0.x.java.awt.event.ActionListener <|.. FindDialogSupport
+					Netbeans_v1.0.x.javax.swing.JPanel <|-- FindDialogPanel
+					Netbeans_v1.0.x.java.awt.event.ActionListener <|.. GotoDialogSupport
+					Netbeans_v1.0.x.javax.swing.JPanel <|-- GotoDialogPanel
+					DialogCreator <|.. DefaultDialogCreator
+					DialogCreator "dialogCreator" <-- DialogSupport
+					Netbeans_v1.0.x.java.lang.String "MNEMONIC_SUFFIX" <-- FindDialogSupport
+					Netbeans_v1.0.x.javax.swing.JButton "findButtons 0..*" <-- FindDialogSupport
+					Netbeans_v1.0.x.java.awt.Dialog "findDialog" <-- FindDialogSupport
+					Netbeans_v1.0.x.javax.swing.JCheckBox "bwdSearch" <-- FindDialogPanel
+					Netbeans_v1.0.x.javax.swing.JComboBox "findWhat" <-- FindDialogPanel
+					Netbeans_v1.0.x.javax.swing.JLabel "findWhatLabel" <-- FindDialogPanel
+					Netbeans_v1.0.x.javax.swing.JPanel "findWhatPanel" <-- FindDialogPanel
+					Netbeans_v1.0.x.javax.swing.JCheckBox "highlightSearch" <-- FindDialogPanel
+					Netbeans_v1.0.x.javax.swing.JCheckBox "incSearch" <-- FindDialogPanel
+					Netbeans_v1.0.x.javax.swing.JPanel "mainPanel" <-- FindDialogPanel
+					Netbeans_v1.0.x.javax.swing.JCheckBox "matchCase" <-- FindDialogPanel
+					Netbeans_v1.0.x.javax.swing.JCheckBox "regExp" <-- FindDialogPanel
+					Netbeans_v1.0.x.javax.swing.JComboBox "replaceWith" <-- FindDialogPanel
+					Netbeans_v1.0.x.javax.swing.JLabel "replaceWithLabel" <-- FindDialogPanel
+					JavaPrimitiveTypes.long "serialVersionUID" <-- FindDialogPanel
+					Netbeans_v1.0.x.javax.swing.JCheckBox "smartCase" <-- FindDialogPanel
+					Netbeans_v1.0.x.javax.swing.JCheckBox "wholeWords" <-- FindDialogPanel
+					Netbeans_v1.0.x.javax.swing.JCheckBox "wrapSearch" <-- FindDialogPanel
+					Netbeans_v1.0.x.java.util.Map "findProps" <-- FindPanel
+					Netbeans_v1.0.x.org.netbeans.editor.FindSupport "findSupport" <-- FindPanel
+					Netbeans_v1.0.x.java.util.Map "objToProps" <-- FindPanel
+					JavaPrimitiveTypes.long "serialVersionUID" <-- FindPanel
+					FindPanel "findPanel" <-- FindDialogSupport
+					Netbeans_v1.0.x.javax.swing.Timer "incSearchTimer" <-- FindDialogSupport
+					JavaPrimitiveTypes.boolean "replaceDialog" <-- FindDialogSupport
+					FindDialogSupport "findDialogSupport" <-- DialogSupport
+					Netbeans_v1.0.x.java.lang.String "GOTO_LINE_LOCALE" <-- GotoDialogSupport
+					Netbeans_v1.0.x.java.lang.String "MNEMONIC_SUFFIX" <-- GotoDialogSupport
+					Netbeans_v1.0.x.javax.swing.JButton "gotoButtons 0..*" <-- GotoDialogSupport
+					Netbeans_v1.0.x.java.awt.Dialog "gotoDialog" <-- GotoDialogSupport
+					Netbeans_v1.0.x.javax.swing.JComboBox "gotoCombo" <-- GotoDialogPanel
+					Netbeans_v1.0.x.javax.swing.JLabel "gotoLabel" <-- GotoDialogPanel
+					JavaPrimitiveTypes.long "serialVersionUID" <-- GotoDialogPanel
+					JavaPrimitiveTypes.long "serialVersionUID" <-- GotoPanel
+					GotoPanel "gotoPanel" <-- GotoDialogSupport
+					GotoDialogSupport "gotoDialogSupport" <-- DialogSupport
+					Netbeans_v1.0.x.java.lang.String "FIND_TITLE_DEFAULT" <-- DefaultDialogCreator
+					Netbeans_v1.0.x.java.lang.String "FIND_TITLE_LOCALE" <-- DefaultDialogCreator
+					Netbeans_v1.0.x.java.lang.String "GOTO_TITLE_DEFAULT" <-- DefaultDialogCreator
+					Netbeans_v1.0.x.java.lang.String "GOTO_TITLE_LOCALE" <-- DefaultDialogCreator
+				}
+				Netbeans_v1.0.x.javax.swing.text.AbstractDocument <|-- BaseDocument
+				SettingsChangeListener <|.. BaseDocument
+				Netbeans_v1.0.x.java.util.EventListener <|-- SettingsChangeListener
+				Netbeans_v1.0.x.java.util.EventObject <|-- SettingsChangeEvent
+				TreeMark <|-- Mark
+				Netbeans_v1.0.x.javax.swing.event.ChangeListener <|.. ExtUI
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. ExtUI
+				SettingsChangeListener <|.. ExtUI
+				SettingsChangeListener <|.. Abbrev
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. Abbrev
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. StatusBar
+				SettingsChangeListener <|.. StatusBar
+				Netbeans_v1.0.x.java.io.Serializable <|.. Coloring
+				Netbeans_v1.0.x.java.awt.event.MouseAdapter <|-- ToolTipSupport
+				Netbeans_v1.0.x.java.awt.event.MouseMotionListener <|.. ToolTipSupport
+				Netbeans_v1.0.x.java.awt.event.ActionListener <|.. ToolTipSupport
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. ToolTipSupport
+				SettingsChangeListener <|.. ToolTipSupport
+				AbstractFinder <|-- WordMatch
+				SettingsChangeListener <|.. WordMatch
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. WordMatch
+				Netbeans_v1.0.x.java.util.HashMap <|-- StringMap
+				Netbeans_v1.0.x.javax.swing.text.Element <|.. BaseElement
+				Netbeans_v1.0.x.javax.swing.text.AbstractDocument.Content <|.. DocOp
+				Netbeans_v1.0.x.javax.swing.text.AbstractDocument.DefaultDocumentEvent <|-- BaseDocumentEvent
+				Netbeans_v1.0.x.java.lang.String "FOUND_DEFAULT" <-- FindSupport
+				Netbeans_v1.0.x.java.lang.String "FOUND_LOCALE" <-- FindSupport
+				Netbeans_v1.0.x.java.lang.String "ITEMS_REPLACED_DEFAULT" <-- FindSupport
+				Netbeans_v1.0.x.java.lang.String "ITEMS_REPLACED_LOCALE" <-- FindSupport
+				Netbeans_v1.0.x.java.lang.String "NOT_FOUND_DEFAULT" <-- FindSupport
+				Netbeans_v1.0.x.java.lang.String "NOT_FOUND_LOCALE" <-- FindSupport
+				Netbeans_v1.0.x.java.lang.String "WRAP_END_DEFAULT" <-- FindSupport
+				Netbeans_v1.0.x.java.lang.String "WRAP_END_LOCALE" <-- FindSupport
+				Netbeans_v1.0.x.java.lang.String "WRAP_START_DEFAULT" <-- FindSupport
+				Netbeans_v1.0.x.java.lang.String "WRAP_START_LOCALE" <-- FindSupport
+				Netbeans_v1.0.x.java.util.ArrayList "interestNames" <-- WeakPropertyChangeSupport
+				Netbeans_v1.0.x.java.util.ArrayList "listeners" <-- WeakPropertyChangeSupport
+				WeakPropertyChangeSupport "changeSupport" <-- FindSupport
+				Netbeans_v1.0.x.java.util.Map "findProps" <-- FindSupport
+				JavaPrimitiveTypes.boolean "findPropsInited" <-- FindSupport
+				Netbeans_v1.0.x.java.lang.Class "kitClass" <-- SettingsChangeEvent
+				Netbeans_v1.0.x.java.lang.Object "newValue" <-- SettingsChangeEvent
+				Netbeans_v1.0.x.java.lang.Object "oldValue" <-- SettingsChangeEvent
+				Netbeans_v1.0.x.java.lang.String "settingName" <-- SettingsChangeEvent
+				Netbeans_v1.0.x.java.lang.String "BLOCKS_FINDER_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "FILE_NAME_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "ID_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "KIT_CLASS_PROP" <-- BaseDocument
+				JavaPrimitiveTypes.char "LAYER_ADDED 0..*" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "LINE_BATCH_SIZE" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "LINE_LIMIT_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "LS_CR" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "LS_CRLF" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "LS_LF" <-- BaseDocument
+				JavaPrimitiveTypes.int "MAX_READ_THREADS" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "READ_LINE_SEPARATOR_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "STRING_BWD_FINDER_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "STRING_FINDER_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "UNDO_MANAGER_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "WRAP_SEARCH_MARK_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "WRITE_LINE_SEPARATOR_PROP" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "WRITE_LOCK_MISSING" <-- BaseDocument
+				JavaPrimitiveTypes.int "atomicDepth" <-- BaseDocument
+				Netbeans_v1.0.x.javax.swing.undo.CompoundEdit "atomicEdits" <-- BaseDocument
+				JavaPrimitiveTypes.boolean "insertAfter" <-- TreeMark
+				JavaPrimitiveTypes.int "relLine" <-- TreeMark
+				JavaPrimitiveTypes.int "relPos" <-- TreeMark
+				DocMarks "docMarks" <-- Plane
+				JavaPrimitiveTypes.int "markCnt" <-- Plane
+				TreeMark "marks 0..*" <-- Plane
+				JavaPrimitiveTypes.int "tmpInt" <-- Plane
+				DocMarks "marks" <-- Mark
+				JavaPrimitiveTypes.boolean "valid" <-- Mark
+				JavaPrimitiveTypes.boolean "stayBOL" <-- ContextMark
+				JavaPrimitiveTypes.boolean "activateLayer" <-- DrawMark
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "extUIRef" <-- DrawMark
+				Netbeans_v1.0.x.java.lang.String "layerName" <-- DrawMark
+				Netbeans_v1.0.x.java.lang.String "COMPONENT_PROPERTY" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Dimension "NULL_DIMENSION" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Insets "NULL_INSETS" <-- ExtUI
+				Netbeans_v1.0.x.java.lang.String "OVERWRITE_MODE_PROPERTY" <-- ExtUI
+				Netbeans_v1.0.x.java.lang.String "POPUP_MENU_PROPERTY" <-- ExtUI
+				JavaPrimitiveTypes.int "SCROLL_DEFAULT" <-- ExtUI
+				JavaPrimitiveTypes.int "SCROLL_FIND" <-- ExtUI
+				JavaPrimitiveTypes.int "SCROLL_MOVE" <-- ExtUI
+				JavaPrimitiveTypes.int "SCROLL_SMALLEST" <-- ExtUI
+				JavaPrimitiveTypes.int "STYLE_CNT" <-- ExtUI
+				Netbeans_v1.0.x.java.util.HashMap "abbrevMap" <-- Abbrev
+				Netbeans_v1.0.x.java.lang.StringBuffer "abbrevSB" <-- Abbrev
+				Acceptor "addTypedAcceptor" <-- Abbrev
+				JavaPrimitiveTypes.boolean "checkDocText" <-- Abbrev
+				JavaPrimitiveTypes.boolean "checkTextDelimiter" <-- Abbrev
+				Acceptor "doExpandAcceptor" <-- Abbrev
+				ExtUI "extUI" <-- Abbrev
+				Acceptor "resetAcceptor" <-- Abbrev
+				Abbrev "abbrev" <-- ExtUI
+				JavaPrimitiveTypes.int "ascents 0..*" <-- ExtUI
+				JavaPrimitiveTypes.int "baseLeftMargin" <-- ExtUI
+				JavaPrimitiveTypes.int "charHeight" <-- ExtUI
+				Netbeans_v1.0.x.java.util.Map "coloringMap" <-- ExtUI
+				Netbeans_v1.0.x.javax.swing.text.JTextComponent "component" <-- ExtUI
+				JavaPrimitiveTypes.int "componentID" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Dimension "componentSizeIncrement" <-- ExtUI
+				JavaPrimitiveTypes.int "defaultSpaceWidth" <-- ExtUI
+				JavaPrimitiveTypes.boolean "active" <-- DrawLayer
+				JavaPrimitiveTypes.boolean "extendEOL" <-- DrawLayer
+				JavaPrimitiveTypes.boolean "extendEmptyLine" <-- DrawLayer
+				Netbeans_v1.0.x.java.lang.String "name" <-- DrawLayer
+				JavaPrimitiveTypes.int "nextUpdateStatusPos" <-- DrawLayer
+				JavaPrimitiveTypes.boolean "updateStatusEOL" <-- DrawLayer
+				JavaPrimitiveTypes.int "visibility" <-- DrawLayer
+				DrawLayer "EMPTY 0..*" <-- DrawLayerList
+				DrawLayer "layers 0..*" <-- DrawLayerList
+				DrawLayerList "drawLayerList" <-- ExtUI
+				Netbeans_v1.0.x.javax.swing.JComponent "extComponent" <-- ExtUI
+				JavaPrimitiveTypes.boolean "fixedFont" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.event.FocusAdapter "focusL" <-- ExtUI
+				JavaPrimitiveTypes.boolean "fontsInited" <-- ExtUI
+				JavaPrimitiveTypes.boolean "highlightSearch" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Rectangle "lastExtentBounds" <-- ExtUI
+				JavaPrimitiveTypes.float "lineHeightCorrection" <-- ExtUI
+				JavaPrimitiveTypes.int "lineNumberAscent" <-- ExtUI
+				JavaPrimitiveTypes.int "lineNumberDigitWidth" <-- ExtUI
+				JavaPrimitiveTypes.boolean "lineNumberEnabled" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Insets "lineNumberMargin" <-- ExtUI
+				JavaPrimitiveTypes.int "lineNumberMaxDigitCnt" <-- ExtUI
+				JavaPrimitiveTypes.boolean "lineNumberVisible" <-- ExtUI
+				JavaPrimitiveTypes.boolean "lineNumberVisibleSetting" <-- ExtUI
+				JavaPrimitiveTypes.int "lineNumberWidth" <-- ExtUI
+				BaseDocument "printDoc" <-- ExtUI
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "propertyChangeSupport" <-- ExtUI
+				Netbeans_v1.0.x.java.util.Hashtable "props" <-- ExtUI
+				Netbeans_v1.0.x.java.util.Map "renderingHints" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Insets "scrollFindInsets" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Insets "scrollJumpInsets" <-- ExtUI
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "settingsListener" <-- ExtUI
+				JavaPrimitiveTypes.int "spaceWidths 0..*" <-- ExtUI
+				Netbeans_v1.0.x.javax.swing.border.Border "CELL_BORDER" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "CELL_MAIN" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "CELL_POSITION" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "CELL_TYPING_MODE" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "INSERT_DEFAULT" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "INSERT_LOCALE" <-- StatusBar
+				Netbeans_v1.0.x.java.awt.Insets "NULL_INSETS" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "OVERWRITE_DEFAULT" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "OVERWRITE_LOCALE" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "POS_MAX_STRINGS 0..*" <-- StatusBar
+				Netbeans_v1.0.x.java.awt.Color "backColor" <-- Coloring
+				Netbeans_v1.0.x.java.awt.Font "font" <-- Coloring
+				Netbeans_v1.0.x.java.awt.Color "foreColor" <-- Coloring
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Coloring
+				Coloring "boldColoring" <-- StatusBar
+				JavaPrimitiveTypes.int "caretDelay" <-- StatusBar
+				Netbeans_v1.0.x.javax.swing.Timer "timer" <-- CaretListener
+				CaretListener "caretL" <-- StatusBar
+				Netbeans_v1.0.x.java.util.List "cellList" <-- StatusBar
+				Coloring "coloring" <-- StatusBar
+				ExtUI "extUI" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "insText" <-- StatusBar
+				JavaPrimitiveTypes.boolean "overwriteModeDisplayed" <-- StatusBar
+				Netbeans_v1.0.x.java.lang.String "ovrText" <-- StatusBar
+				Netbeans_v1.0.x.javax.swing.JPanel "panel" <-- StatusBar
+				JavaPrimitiveTypes.long "serialVersionUID" <-- StatusBar
+				JavaPrimitiveTypes.boolean "visible" <-- StatusBar
+				Netbeans_v1.0.x.java.awt.Dimension "maxDimension" <-- Cell
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Cell
+				Netbeans_v1.0.x.java.lang.String "widestStrings 0..*" <-- Cell
+				StatusBar "statusBar" <-- ExtUI
+				JavaPrimitiveTypes.boolean "superFixedFont" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Color "textLimitLineColor" <-- ExtUI
+				JavaPrimitiveTypes.boolean "textLimitLineVisible" <-- ExtUI
+				JavaPrimitiveTypes.int "textLimitWidth" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Insets "textMargin" <-- ExtUI
+				JavaPrimitiveTypes.int "DISMISS_DELAY" <-- ToolTipSupport
+				JavaPrimitiveTypes.int "INITIAL_DELAY" <-- ToolTipSupport
+				Netbeans_v1.0.x.java.lang.String "NO_ROOT_PANE_DEFAULT" <-- ToolTipSupport
+				Netbeans_v1.0.x.java.lang.String "NO_ROOT_PANE_LOCALE" <-- ToolTipSupport
+				Netbeans_v1.0.x.java.lang.String "UI_PREFIX" <-- ToolTipSupport
+				Netbeans_v1.0.x.java.awt.event.ComponentAdapter "componentL" <-- ToolTipSupport
+				JavaPrimitiveTypes.boolean "enabled" <-- ToolTipSupport
+				Netbeans_v1.0.x.javax.swing.Timer "enterTimer" <-- ToolTipSupport
+				Netbeans_v1.0.x.javax.swing.Timer "exitTimer" <-- ToolTipSupport
+				ExtUI "extUI" <-- ToolTipSupport
+				JavaPrimitiveTypes.int "lastMouseX" <-- ToolTipSupport
+				JavaPrimitiveTypes.int "lastMouseY" <-- ToolTipSupport
+				Netbeans_v1.0.x.javax.swing.JLabel "toolTip" <-- ToolTipSupport
+				ToolTipSupport "toolTipSupport" <-- ExtUI
+				Netbeans_v1.0.x.java.awt.Rectangle "virtualSize" <-- ExtUI
+				JavaPrimitiveTypes.boolean "virtualSizeUpdated" <-- ExtUI
+				JavaPrimitiveTypes.boolean "found" <-- AbstractFinder
+				Netbeans_v1.0.x.java.lang.Object "NULL_DOC" <-- WordMatch
+				JavaPrimitiveTypes.char "baseWord 0..*" <-- WordMatch
+				ExtUI "extUI" <-- WordMatch
+				JavaPrimitiveTypes.boolean "forwardSearch" <-- WordMatch
+				Netbeans_v1.0.x.java.lang.String "lastWord" <-- WordMatch
+				JavaPrimitiveTypes.boolean "matchCase" <-- WordMatch
+				JavaPrimitiveTypes.boolean "matchOneChar" <-- WordMatch
+				JavaPrimitiveTypes.int "maxSearchLen" <-- WordMatch
+				Netbeans_v1.0.x.java.lang.String "previousWord" <-- WordMatch
+				JavaPrimitiveTypes.boolean "realMatchCase" <-- WordMatch
+				JavaPrimitiveTypes.int "searchLen" <-- WordMatch
+				JavaPrimitiveTypes.boolean "smartCase" <-- WordMatch
+				BaseDocument "startDoc" <-- WordMatch
+				Netbeans_v1.0.x.java.util.HashMap "staticWordsDocs" <-- WordMatch
+				JavaPrimitiveTypes.char "word 0..*" <-- WordMatch
+				Netbeans_v1.0.x.java.util.ArrayList "wordInfoList" <-- WordMatch
+				JavaPrimitiveTypes.int "wordLen" <-- WordMatch
+				JavaPrimitiveTypes.int "wordsIndex" <-- WordMatch
+				JavaPrimitiveTypes.long "serialVersionUID" <-- StringMap
+				JavaPrimitiveTypes.char "testChars 0..*" <-- StringMap
+				JavaPrimitiveTypes.int "testLen" <-- StringMap
+				JavaPrimitiveTypes.int "testOffset" <-- StringMap
+				StringMap "wordsMap" <-- WordMatch
+				JavaPrimitiveTypes.boolean "wrapSearch" <-- WordMatch
+				BaseDocument "doc" <-- WordInfo
+				Netbeans_v1.0.x.javax.swing.text.Position "pos" <-- WordInfo
+				Netbeans_v1.0.x.java.lang.String "word" <-- WordInfo
+				WordMatch "wordMatch" <-- ExtUI
+				ChainDrawMark "chain" <-- MarkChain
+				ChainDrawMark "curMark" <-- MarkChain
+				BaseDocument "doc" <-- MarkChain
+				Netbeans_v1.0.x.java.lang.String "layerName" <-- MarkChain
+				MarkChain "bookmarkChain" <-- BaseDocument
+				Netbeans_v1.0.x.javax.swing.text.AbstractDocument.LeafElement "composedTextElement" <-- BaseDocument
+				JavaPrimitiveTypes.boolean "debugEditor" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.String "ElementNameAttribute" <-- BaseElement
+				Netbeans_v1.0.x.javax.swing.text.AttributeSet "attrs" <-- BaseElement
+				BaseDocument "doc" <-- BaseElement
+				BaseElement "defaultRootElem" <-- BaseDocument
+				DrawLayerList "drawLayerList" <-- BaseDocument
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "findSupportListener" <-- BaseDocument
+				Acceptor "identifierAcceptor" <-- BaseDocument
+				JavaPrimitiveTypes.boolean "inited" <-- BaseDocument
+				Netbeans_v1.0.x.java.lang.Class "kitClass" <-- BaseDocument
+				LineRootElement "lineRootElement" <-- BaseDocument
+				Netbeans_v1.0.x.javax.swing.event.EventListenerList "listenerList" <-- BaseDocument
+				JavaPrimitiveTypes.boolean "modified" <-- BaseDocument
+				JavaPrimitiveTypes.int "CACHE_LEN" <-- DocOp
+				Netbeans_v1.0.x.java.lang.String "DOC_LEN" <-- DocOp
+				JavaPrimitiveTypes.int "MARK_DISTANCE" <-- DocOp
+				JavaPrimitiveTypes.int "MAX_MARK_DISTANCE" <-- DocOp
+				JavaPrimitiveTypes.int "MIN_MARK_DISTANCE" <-- DocOp
+				JavaPrimitiveTypes.int "SYNTAX_UPDATE_BATCH_SIZE" <-- DocOp
+				Netbeans_v1.0.x.java.lang.String "WRONG_POSITION" <-- DocOp
+				JavaPrimitiveTypes.int "bolPos" <-- BEOLLineFwdFinder
+				JavaPrimitiveTypes.int "fwdLines" <-- BEOLLineFwdFinder
+				BEOLLineFwdFinder "beolLineFwdFinder" <-- DocOp
+				JavaPrimitiveTypes.int "bolPos" <-- BEOLPosFwdFinder
+				JavaPrimitiveTypes.int "line" <-- BEOLPosFwdFinder
+				JavaPrimitiveTypes.int "tgtPos" <-- BEOLPosFwdFinder
+				BEOLPosFwdFinder "beolPosFwdFinder" <-- DocOp
+				BOLBwdFinder "bolBwdFinder" <-- DocOp
+				JavaPrimitiveTypes.int "MIN_FRAGMENT_BACK_OVERLAP_LEN" <-- DocCache
+				JavaPrimitiveTypes.char "buffer 0..*" <-- Fragment
+				JavaPrimitiveTypes.int "firstMod" <-- Fragment
+				JavaPrimitiveTypes.int "fragLen" <-- Fragment
+				JavaPrimitiveTypes.int "lastMod" <-- Fragment
+				JavaPrimitiveTypes.boolean "modified" <-- Fragment
+				JavaPrimitiveTypes.int "origLen" <-- Fragment
+				JavaPrimitiveTypes.int "startPos" <-- Fragment
+				JavaPrimitiveTypes.boolean "valid" <-- Fragment
+				Fragment "defFrag" <-- DocCache
+				JavaPrimitiveTypes.boolean "directMode" <-- DocCache
+				JavaPrimitiveTypes.int "docLenDelta" <-- DocCache
+				Fragment "frags 0..*" <-- DocCache
+				JavaPrimitiveTypes.int "statBackOverlapCnt" <-- DocCache
+				JavaPrimitiveTypes.int "statFragSetEmpty" <-- DocCache
+				JavaPrimitiveTypes.int "statFragSwitchCnt" <-- DocCache
+				JavaPrimitiveTypes.int "statInsert" <-- DocCache
+				JavaPrimitiveTypes.int "statOverlapCnt" <-- DocCache
+				JavaPrimitiveTypes.int "statRead" <-- DocCache
+				JavaPrimitiveTypes.int "statReadFragCnt" <-- DocCache
+				JavaPrimitiveTypes.int "statRemove" <-- DocCache
+				JavaPrimitiveTypes.int "statWriteFragCnt" <-- DocCache
+				JavaPrimitiveTypes.int "SAVE_BUFFER_LEN" <-- DocCacheSupport
+				JavaPrimitiveTypes.int "docLen" <-- DocCacheSupport
+				JavaPrimitiveTypes.long "statCharsRead" <-- DocCacheSupport
+				JavaPrimitiveTypes.long "statCharsWritten" <-- DocCacheSupport
+				DocCacheSupport "support" <-- DocCache
+				DocCache "cache" <-- DocOp
+				DocCacheSupport "cacheSupport" <-- DocOp
+				BaseDocument "doc" <-- DocOp
+				JavaPrimitiveTypes.int "docLen" <-- DocOp
+				Mark "endMark" <-- DocOp
+				EOLFwdFinder "eolFwdFinder" <-- DocOp
+				StateInfo "stateInfo" <-- SyntaxMark
+				SyntaxMark "eolMark" <-- DocOp
+				SyntaxMark "leftUpdateMark" <-- DocOp
+				JavaPrimitiveTypes.int "bol" <-- CacheEntry
+				JavaPrimitiveTypes.int "eol" <-- CacheEntry
+				JavaPrimitiveTypes.int "line" <-- CacheEntry
+				CacheEntry "lineCache 0..*" <-- DocOp
+				DocMarks "marks" <-- DocOp
+				JavaPrimitiveTypes.int "tabSize" <-- PosVisColFwdFinder
+				JavaPrimitiveTypes.int "visCol" <-- PosVisColFwdFinder
+				PosVisColFwdFinder "posVisColFwdFinder" <-- DocOp
+				JavaPrimitiveTypes.int "statCacheHit" <-- DocOp
+				JavaPrimitiveTypes.int "statCacheMiss" <-- DocOp
+				DocMarks "marks" <-- Renderer
+				JavaPrimitiveTypes.boolean "remove" <-- SyntaxUpdateRenderer
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "segDocRef" <-- Slot
+				JavaPrimitiveTypes.int "segLen" <-- Slot
+				JavaPrimitiveTypes.int "segPos" <-- Slot
+				Slot "slot" <-- SyntaxUpdateRenderer
+				Syntax "syntax" <-- SyntaxUpdateRenderer
+				JavaPrimitiveTypes.char "chars 0..*" <-- ModifyUndoEdit
+				JavaPrimitiveTypes.int "lfCount" <-- ModifyUndoEdit
+				JavaPrimitiveTypes.int "line" <-- ModifyUndoEdit
+				JavaPrimitiveTypes.int "offset" <-- ModifyUndoEdit
+				JavaPrimitiveTypes.boolean "remove" <-- ModifyUndoEdit
+				JavaPrimitiveTypes.int "syntaxUpdateOffset" <-- ModifyUndoEdit
+				Netbeans_v1.0.x.java.lang.String "text" <-- ModifyUndoEdit
+				ModifyUndoEdit "undoEdit" <-- SyntaxUpdateRenderer
+				SyntaxUpdateRenderer "suRenderer" <-- DocOp
+				JavaPrimitiveTypes.int "tmpLine 0..*" <-- DocOp
+				JavaPrimitiveTypes.int "curVisCol" <-- VisColPosFwdFinder
+				ExtUI "extUI" <-- VisColPosFwdFinder
+				JavaPrimitiveTypes.int "tabSize" <-- VisColPosFwdFinder
+				JavaPrimitiveTypes.int "visCol" <-- VisColPosFwdFinder
+				VisColPosFwdFinder "visColPosFwdFinder" <-- DocOp
+				DocOp "op" <-- BaseDocument
+				Netbeans_v1.0.x.java.util.ArrayList "posFreeList" <-- BaseDocument
+				Netbeans_v1.0.x.java.util.ArrayList "posList" <-- BaseDocument
+				Netbeans_v1.0.x.java.util.ArrayList "syntaxList" <-- BaseDocument
+				JavaPrimitiveTypes.int "DOT" <-- SyntaxSupport
+				JavaPrimitiveTypes.int "EMPTY_INT_ARRAY 0..*" <-- SyntaxSupport
+				Acceptor "EXPRESSION_ACCEPTORS 0..*" <-- SyntaxSupport
+				JavaPrimitiveTypes.int "ID" <-- SyntaxSupport
+				JavaPrimitiveTypes.int "LAST_COUNT" <-- SyntaxSupport
+				JavaPrimitiveTypes.char "baseLeftBrackets 0..*" <-- SyntaxSupport
+				JavaPrimitiveTypes.char "baseRightBrackets 0..*" <-- SyntaxSupport
+				BaseDocument "doc" <-- SyntaxSupport
+				Acceptor "endVarAcceptor" <-- SyntaxSupport
+				JavaPrimitiveTypes.boolean "lastMatchArrays 0..*" <-- SyntaxSupport
+				JavaPrimitiveTypes.int "lastTokenArrays 0..*" <-- SyntaxSupport
+				JavaPrimitiveTypes.char "leftBrackets 0..*" <-- SyntaxSupport
+				JavaPrimitiveTypes.char "rightBrackets 0..*" <-- SyntaxSupport
+				JavaPrimitiveTypes.int "tokenBlocks 0..*" <-- SyntaxSupport
+				Acceptor "varAcceptor" <-- SyntaxSupport
+				JavaPrimitiveTypes.boolean "forward" <-- GenericFinder
+				JavaPrimitiveTypes.char "bracketChar" <-- BracketFinder
+				JavaPrimitiveTypes.int "depth" <-- BracketFinder
+				JavaPrimitiveTypes.char "matchChar" <-- BracketFinder
+				JavaPrimitiveTypes.int "moveCount" <-- BracketFinder
+				JavaPrimitiveTypes.char "buffer 0..*" <-- CommentOrWhitespaceTP
+				JavaPrimitiveTypes.int "commentTokens 0..*" <-- CommentOrWhitespaceTP
+				JavaPrimitiveTypes.boolean "nonEmpty" <-- CommentOrWhitespaceTP
+				JavaPrimitiveTypes.int "tokenID" <-- TokenIDTP
+				JavaPrimitiveTypes.char "bracketChars 0..*" <-- UnmatchedBracketFinder
+				JavaPrimitiveTypes.int "depths 0..*" <-- UnmatchedBracketFinder
+				JavaPrimitiveTypes.char "matchChars 0..*" <-- UnmatchedBracketFinder
+				JavaPrimitiveTypes.int "moveCount" <-- UnmatchedBracketFinder
+				SyntaxSupport "syntaxSupport" <-- BaseDocument
+				JavaPrimitiveTypes.boolean "undoMergeReset" <-- BaseDocument
+				Acceptor "whitespaceAcceptor" <-- BaseDocument
+				JavaPrimitiveTypes.int "writeDeep" <-- BaseDocument
+				JavaPrimitiveTypes.boolean "inRedo" <-- BaseDocumentEvent
+				JavaPrimitiveTypes.boolean "inUndo" <-- BaseDocumentEvent
+				ModifyUndoEdit "modifyUndoEdit" <-- BaseDocumentEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- BaseDocumentEvent
+				Netbeans_v1.0.x.java.lang.String "drawLayerName" <-- DrawLayerChange
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "lineElemRef" <-- LineMark
+				LineMark "startMark" <-- LineElement
+				FinderCreator "finderCreator" <-- FindSupport
+			}
+			package modules {
+				package editor {
+					'/** 
+					' * NetBeans dialog creation methods
+					' * @author Miloslav Metelka
+					' * @version 1.00
+					' */
+					'DP role: concreteFactory
+					class NbDialogCreator {
+						<<Create>> NbDialogCreator()
+						createFindDialog(findPanel : Netbeans_v1.0.x.javax.swing.JPanel, buttons : Netbeans_v1.0.x.javax.swing.JButton, defaultButtonIndex : JavaPrimitiveTypes.int, cancelButtonIndex : JavaPrimitiveTypes.int, l : Netbeans_v1.0.x.java.awt.event.ActionListener): Netbeans_v1.0.x.java.awt.Dialog
+						createGotoDialog(gotoPanel : Netbeans_v1.0.x.javax.swing.JPanel, buttons : Netbeans_v1.0.x.javax.swing.JButton, defaultButtonIndex : JavaPrimitiveTypes.int, cancelButtonIndex : JavaPrimitiveTypes.int, l : Netbeans_v1.0.x.java.awt.event.ActionListener): Netbeans_v1.0.x.java.awt.Dialog
+					}
+					Netbeans_v1.0.x.org.netbeans.editor.view.DefaultDialogCreator <|-- NbDialogCreator
+				}
+			}
+		}
+	}
+	package javax {
+		package swing {
+			'/** 
+			' * The main class for creating a dialog window. You can use this class to create a custom dialog, or invoke the many class methods in  {@link JOptionPane} to create a variety of standard dialogs.For information about creating dialogs, see <em>The Java Tutorial</em> section <a href="https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html">How to Make Dialogs</a>. <p> The  {@code JDialog} component contains a {@code JRootPane}as its only child. The  {@code contentPane} should be the parent of any children of the{@code JDialog}. As a convenience, the  {@code add},  {@code remove}, and  {@code setLayout}methods of this class are overridden, so that they delegate calls to the corresponding methods of the  {@code ContentPane}. For example, you can add a child component to a dialog as follows: <pre> dialog.add(child); </pre> And the child will be added to the contentPane. The  {@code contentPane} is always non-{@code null}. Attempting to set it to  {@code null} generates an exception.The default  {@code contentPane} has a {@code BorderLayout}manager set on it. Refer to  {@link javax.swing.RootPaneContainer}for details on adding, removing and setting the  {@code LayoutManager}of a  {@code JDialog}. <p> Please see the  {@code JRootPane} documentation for a completedescription of the  {@code contentPane},  {@code glassPane}, and  {@code layeredPane} components.<p> In a multi-screen environment, you can create a  {@code JDialog}on a different screen device than its owner.  See  {@link java.awt.Frame} formore information. <p> <strong>Warning:</strong> Swing is not thread safe. For more information see <a href="package-summary.html#threading">Swing's Threading Policy</a>. <p> <strong>Warning:</strong> Serialized objects of this class will not be compatible with future Swing releases. The current serialization support is appropriate for short term storage or RMI between applications running the same version of Swing.  As of 1.4, support for long term storage of all JavaBeans has been added to the  {@code java.beans} package.Please see  {@link java.beans.XMLEncoder}.
+			' * @see JOptionPane
+			' * @see JRootPane
+			' * @see javax.swing.RootPaneContainer
+			' * @author David Kloba
+			' * @author James Gosling
+			' * @author Scott Violet
+			' * @since 1.2
+			' */
+			'DP role: product
+			class JDialog {
+				#accessibleContext: Netbeans_v1.0.x.javax.accessibility.AccessibleContext
+				-defaultCloseOperation: JavaPrimitiveTypes.int
+				-{const} defaultLookAndFeelDecoratedKey: Netbeans_v1.0.x.java.lang.Object
+				#rootPane: JRootPane
+				#rootPaneCheckingEnabled: JavaPrimitiveTypes.boolean
+				-transferHandler: TransferHandler
+				'/** 
+				' * Creates a modeless dialog without a title and without a specified {@code Frame} owner.  A shared, hidden frame will beset as the owner of the dialog. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}. <p> NOTE: This constructor does not allow you to create an unowned {@code JDialog}. To create an unowned  {@code JDialog}you must use either the  {@code JDialog(Window)} or{@code JDialog(Dialog)} constructor with an argument of{@code null}.
+				' * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless()}returns  {@code true}.
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' */
+				<<Create>> JDialog()
+				'/** 
+				' * Creates a modeless dialog with the specified  {@code Frame}as its owner and an empty title. If  {@code owner}is  {@code null}, a shared, hidden frame will be set as the owner of the dialog. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}. <p> NOTE: This constructor does not allow you to create an unowned {@code JDialog}. To create an unowned  {@code JDialog}you must use either the  {@code JDialog(Window)} or{@code JDialog(Dialog)} constructor with an argument of{@code null}.
+				' * @param owner the {@code Frame} from which the dialog is displayed
+				' * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless()}returns  {@code true}.
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Frame)
+				'/** 
+				' * Creates a dialog with an empty title and the specified modality and {@code Frame} as its owner. If {@code owner} is {@code null}, a shared, hidden frame will be set as the owner of the dialog. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}. <p> NOTE: This constructor does not allow you to create an unowned {@code JDialog}. To create an unowned  {@code JDialog}you must use either the  {@code JDialog(Window)} or{@code JDialog(Dialog)} constructor with an argument of{@code null}.
+				' * @param owner the {@code Frame} from which the dialog is displayed
+				' * @param modal specifies whether dialog blocks user input to other top-levelwindows when shown. If  {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless.
+				' * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless()}returns  {@code true}.
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Frame, modal : JavaPrimitiveTypes.boolean)
+				'/** 
+				' * Creates a modeless dialog with the specified title and with the specified owner frame.  If  {@code owner}is  {@code null}, a shared, hidden frame will be set as the owner of the dialog. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}. <p> NOTE: This constructor does not allow you to create an unowned {@code JDialog}. To create an unowned  {@code JDialog}you must use either the  {@code JDialog(Window)} or{@code JDialog(Dialog)} constructor with an argument of{@code null}.
+				' * @param owner the {@code Frame} from which the dialog is displayed
+				' * @param title  the {@code String} to display in the dialog'stitle bar
+				' * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless()}returns  {@code true}.
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Frame, title : Netbeans_v1.0.x.java.lang.String)
+				'/** 
+				' * Creates a dialog with the specified title, owner  {@code Frame}and modality. If  {@code owner} is {@code null}, a shared, hidden frame will be set as the owner of this dialog. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}. <p> NOTE: Any popup components ( {@code JComboBox}, {@code JPopupMenu},  {@code JMenuBar}) created within a modal dialog will be forced to be lightweight. <p> NOTE: This constructor does not allow you to create an unowned {@code JDialog}. To create an unowned  {@code JDialog}you must use either the  {@code JDialog(Window)} or{@code JDialog(Dialog)} constructor with an argument of{@code null}.
+				' * @param owner the {@code Frame} from which the dialog is displayed
+				' * @param title  the {@code String} to display in the dialog'stitle bar
+				' * @param modal specifies whether dialog blocks user input to other top-levelwindows when shown. If  {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE} otherwise the dialog is modeless
+				' * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless()}returns  {@code true}.
+				' * @see java.awt.Dialog.ModalityType
+				' * @see java.awt.Dialog.ModalityType#MODELESS
+				' * @see java.awt.Dialog#DEFAULT_MODALITY_TYPE
+				' * @see java.awt.Dialog#setModal
+				' * @see java.awt.Dialog#setModalityType
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Frame, title : Netbeans_v1.0.x.java.lang.String, modal : JavaPrimitiveTypes.boolean)
+				'/** 
+				' * Creates a dialog with the specified title, owner  {@code Frame}, modality and  {@code GraphicsConfiguration}. If  {@code owner} is {@code null}, a shared, hidden frame will be set as the owner of this dialog. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}. <p> NOTE: Any popup components ( {@code JComboBox}, {@code JPopupMenu},  {@code JMenuBar}) created within a modal dialog will be forced to be lightweight. <p> NOTE: This constructor does not allow you to create an unowned {@code JDialog}. To create an unowned  {@code JDialog}you must use either the  {@code JDialog(Window)} or{@code JDialog(Dialog)} constructor with an argument of{@code null}.
+				' * @param owner the {@code Frame} from which the dialog is displayed
+				' * @param title  the {@code String} to display in the dialog'stitle bar
+				' * @param modal specifies whether dialog blocks user input to other top-levelwindows when shown. If  {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless.
+				' * @param gc the {@code GraphicsConfiguration} of the target screen device;if  {@code null}, the default system  {@code GraphicsConfiguration}is assumed
+				' * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless()}returns  {@code true}.
+				' * @see java.awt.Dialog.ModalityType
+				' * @see java.awt.Dialog.ModalityType#MODELESS
+				' * @see java.awt.Dialog#DEFAULT_MODALITY_TYPE
+				' * @see java.awt.Dialog#setModal
+				' * @see java.awt.Dialog#setModalityType
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' * @since 1.4
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Frame, title : Netbeans_v1.0.x.java.lang.String, modal : JavaPrimitiveTypes.boolean, gc : Netbeans_v1.0.x.java.awt.GraphicsConfiguration)
+				'/** 
+				' * Creates a modeless dialog with the specified  {@code Dialog}as its owner and an empty title. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}.
+				' * @param owner the owner {@code Dialog} from which the dialog is displayedor  {@code null} if this dialog has no owner
+				' * @throws HeadlessException {@code if GraphicsEnvironment.isHeadless()}returns  {@code true}.
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Dialog)
+				'/** 
+				' * Creates a dialog with an empty title and the specified modality and {@code Dialog} as its owner.<p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}.
+				' * @param owner the owner {@code Dialog} from which the dialog is displayedor  {@code null} if this dialog has no owner
+				' * @param modal specifies whether dialog blocks user input to other top-levelwindows when shown. If  {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless.
+				' * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless()}returns  {@code true}.
+				' * @see java.awt.Dialog.ModalityType
+				' * @see java.awt.Dialog.ModalityType#MODELESS
+				' * @see java.awt.Dialog#DEFAULT_MODALITY_TYPE
+				' * @see java.awt.Dialog#setModal
+				' * @see java.awt.Dialog#setModalityType
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Dialog, modal : JavaPrimitiveTypes.boolean)
+				'/** 
+				' * Creates a modeless dialog with the specified title and with the specified owner dialog. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}.
+				' * @param owner the owner {@code Dialog} from which the dialog is displayedor  {@code null} if this dialog has no owner
+				' * @param title  the {@code String} to display in the dialog'stitle bar
+				' * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless()}returns  {@code true}.
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Dialog, title : Netbeans_v1.0.x.java.lang.String)
+				'/** 
+				' * Creates a dialog with the specified title, modality and the specified owner  {@code Dialog}. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}.
+				' * @param owner the owner {@code Dialog} from which the dialog is displayedor  {@code null} if this dialog has no owner
+				' * @param title  the {@code String} to display in the dialog'stitle bar
+				' * @param modal specifies whether dialog blocks user input to other top-levelwindows when shown. If  {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+				' * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless()}returns  {@code true}.
+				' * @see java.awt.Dialog.ModalityType
+				' * @see java.awt.Dialog.ModalityType#MODELESS
+				' * @see java.awt.Dialog#DEFAULT_MODALITY_TYPE
+				' * @see java.awt.Dialog#setModal
+				' * @see java.awt.Dialog#setModalityType
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Dialog, title : Netbeans_v1.0.x.java.lang.String, modal : JavaPrimitiveTypes.boolean)
+				'/** 
+				' * Creates a dialog with the specified title, owner  {@code Dialog}, modality and  {@code GraphicsConfiguration}. <p> NOTE: Any popup components ( {@code JComboBox}, {@code JPopupMenu},  {@code JMenuBar}) created within a modal dialog will be forced to be lightweight. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}.
+				' * @param owner the owner {@code Dialog} from which the dialog is displayedor  {@code null} if this dialog has no owner
+				' * @param title  the {@code String} to display in the dialog'stitle bar
+				' * @param modal specifies whether dialog blocks user input to other top-levelwindows when shown. If  {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+				' * @param gc the {@code GraphicsConfiguration} of the target screen device;if  {@code null}, the default system  {@code GraphicsConfiguration}is assumed
+				' * @throws HeadlessException if {@code GraphicsEnvironment.isHeadless()}returns  {@code true}.
+				' * @see java.awt.Dialog.ModalityType
+				' * @see java.awt.Dialog.ModalityType#MODELESS
+				' * @see java.awt.Dialog#DEFAULT_MODALITY_TYPE
+				' * @see java.awt.Dialog#setModal
+				' * @see java.awt.Dialog#setModalityType
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' * @since 1.4
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Dialog, title : Netbeans_v1.0.x.java.lang.String, modal : JavaPrimitiveTypes.boolean, gc : Netbeans_v1.0.x.java.awt.GraphicsConfiguration)
+				'/** 
+				' * Creates a modeless dialog with the specified  {@code Window}as its owner and an empty title. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}.
+				' * @param owner the {@code Window} from which the dialog is displayed or{@code null} if this dialog has no owner
+				' * @throws IllegalArgumentException if the  {@code owner} is not an instance of {@link java.awt.Dialog Dialog}or  {@link java.awt.Frame Frame}
+				' * @throws IllegalArgumentException if the  {@code owner}'s  {@code GraphicsConfiguration} is not from a screen device
+				' * @throws HeadlessException when  {@code GraphicsEnvironment.isHeadless()} returns {@code true}
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' * @since 1.6
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Window)
+				'/** 
+				' * Creates a dialog with an empty title and the specified modality and {@code Window} as its owner.<p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}.
+				' * @param owner the {@code Window} from which the dialog is displayed or{@code null} if this dialog has no owner
+				' * @param modalityType specifies whether dialog blocks input to otherwindows when shown.  {@code null} value and unsupported modalitytypes are equivalent to  {@code MODELESS}
+				' * @throws IllegalArgumentException if the  {@code owner} is not an instance of {@link java.awt.Dialog Dialog}or  {@link java.awt.Frame Frame}
+				' * @throws IllegalArgumentException if the  {@code owner}'s  {@code GraphicsConfiguration} is not from a screen device
+				' * @throws HeadlessException when  {@code GraphicsEnvironment.isHeadless()} returns {@code true}
+				' * @throws SecurityException if the calling thread does not have permission to create modal dialogs with the given  {@code modalityType}
+				' * @see java.awt.Dialog.ModalityType
+				' * @see java.awt.Dialog#setModal
+				' * @see java.awt.Dialog#setModalityType
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' * @since 1.6
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Window, modalityType : Netbeans_v1.0.x.java.awt.Dialog.ModalityType)
+				'/** 
+				' * Creates a modeless dialog with the specified title and owner {@code Window}. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}.
+				' * @param owner the {@code Window} from which the dialog is displayed or{@code null} if this dialog has no owner
+				' * @param title the {@code String} to display in the dialog'stitle bar or  {@code null} if the dialog has no title
+				' * @throws IllegalArgumentException if the  {@code owner} is not an instance of {@link java.awt.Dialog Dialog}or  {@link java.awt.Frame Frame}
+				' * @throws IllegalArgumentException if the  {@code owner}'s  {@code GraphicsConfiguration} is not from a screen device
+				' * @throws HeadlessException when  {@code GraphicsEnvironment.isHeadless()} returns {@code true}
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' * @since 1.6
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Window, title : Netbeans_v1.0.x.java.lang.String)
+				'/** 
+				' * Creates a dialog with the specified title, owner  {@code Window} andmodality. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}.
+				' * @param owner the {@code Window} from which the dialog is displayed or{@code null} if this dialog has no owner
+				' * @param title the {@code String} to display in the dialog'stitle bar or  {@code null} if the dialog has no title
+				' * @param modalityType specifies whether dialog blocks input to otherwindows when shown.  {@code null} value and unsupported modalitytypes are equivalent to  {@code MODELESS}
+				' * @throws IllegalArgumentException if the  {@code owner} is not an instance of {@link java.awt.Dialog Dialog}or  {@link java.awt.Frame Frame}
+				' * @throws IllegalArgumentException if the  {@code owner}'s  {@code GraphicsConfiguration} is not from a screen device
+				' * @throws HeadlessException when  {@code GraphicsEnvironment.isHeadless()} returns {@code true}
+				' * @throws SecurityException if the calling thread does not have permission to create modal dialogs with the given  {@code modalityType}
+				' * @see java.awt.Dialog.ModalityType
+				' * @see java.awt.Dialog#setModal
+				' * @see java.awt.Dialog#setModalityType
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' * @since 1.6
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Window, title : Netbeans_v1.0.x.java.lang.String, modalityType : Netbeans_v1.0.x.java.awt.Dialog.ModalityType)
+				'/** 
+				' * Creates a dialog with the specified title, owner  {@code Window}, modality and  {@code GraphicsConfiguration}. <p> NOTE: Any popup components ( {@code JComboBox}, {@code JPopupMenu},  {@code JMenuBar}) created within a modal dialog will be forced to be lightweight. <p> This constructor sets the component's locale property to the value returned by  {@code JComponent.getDefaultLocale}.
+				' * @param owner the {@code Window} from which the dialog is displayed or{@code null} if this dialog has no owner
+				' * @param title the {@code String} to display in the dialog'stitle bar or  {@code null} if the dialog has no title
+				' * @param modalityType specifies whether dialog blocks input to otherwindows when shown.  {@code null} value and unsupported modalitytypes are equivalent to  {@code MODELESS}
+				' * @param gc the {@code GraphicsConfiguration} of the target screen device;if  {@code null}, the default system  {@code GraphicsConfiguration}is assumed
+				' * @throws IllegalArgumentException if the  {@code owner} is not an instance of {@link java.awt.Dialog Dialog}or  {@link java.awt.Frame Frame}
+				' * @throws IllegalArgumentException if the  {@code owner}'s  {@code GraphicsConfiguration} is not from a screen device
+				' * @throws HeadlessException when  {@code GraphicsEnvironment.isHeadless()} returns {@code true}
+				' * @throws SecurityException if the calling thread does not have permission to create modal dialogs with the given  {@code modalityType}
+				' * @see java.awt.Dialog.ModalityType
+				' * @see java.awt.Dialog#setModal
+				' * @see java.awt.Dialog#setModalityType
+				' * @see java.awt.GraphicsEnvironment#isHeadless
+				' * @see JComponent#getDefaultLocale
+				' * @since 1.6
+				' */
+				<<Create>> JDialog(owner : Netbeans_v1.0.x.java.awt.Window, title : Netbeans_v1.0.x.java.lang.String, modalityType : Netbeans_v1.0.x.java.awt.Dialog.ModalityType, gc : Netbeans_v1.0.x.java.awt.GraphicsConfiguration)
+				'/** 
+				' * Adds the specified child  {@code Component}. This method is overridden to conditionally forward calls to the {@code contentPane}. By default, children are added to the  {@code contentPane} insteadof the frame, refer to  {@link javax.swing.RootPaneContainer} fordetails.
+				' * @param comp the component to be enhanced
+				' * @param constraints the constraints to be respected
+				' * @param index the index
+				' * @throws IllegalArgumentException if {@code index} is invalid
+				' * @throws IllegalArgumentException if adding the container's parentto itself
+				' * @throws IllegalArgumentException if adding a window to a container
+				' * @see #setRootPaneCheckingEnabled
+				' * @see javax.swing.RootPaneContainer
+				' */
+				#addImpl(comp : Netbeans_v1.0.x.java.awt.Component, constraints : Netbeans_v1.0.x.java.lang.Object, index : JavaPrimitiveTypes.int)
+				'/** 
+				' * Called by the constructor methods to create the default {@code rootPane}.
+				' * @return  a new {@code JRootPane}
+				' */
+				#createRootPane(): JRootPane
+				'/** 
+				' * Called by the constructors to init the  {@code JDialog} properly.
+				' */
+				#dialogInit()
+				'/** 
+				' * Gets the AccessibleContext associated with this JDialog. For JDialogs, the AccessibleContext takes the form of an AccessibleJDialog. A new AccessibleJDialog instance is created if necessary.
+				' * @return an AccessibleJDialog that serves as theAccessibleContext of this JDialog
+				' */
+				getAccessibleContext(): Netbeans_v1.0.x.javax.accessibility.AccessibleContext
+				'/** 
+				' * Returns the  {@code contentPane} object for this dialog.
+				' * @return the {@code contentPane} property
+				' * @see #setContentPane
+				' * @see RootPaneContainer#getContentPane
+				' */
+				getContentPane(): Netbeans_v1.0.x.java.awt.Container
+				'/** 
+				' * Returns the operation which occurs when the user initiates a "close" on this dialog.
+				' * @return an integer indicating the window-close operation
+				' * @see #setDefaultCloseOperation
+				' */
+				getDefaultCloseOperation(): JavaPrimitiveTypes.int
+				'/** 
+				' * Returns the  {@code glassPane} object for this dialog.
+				' * @return the {@code glassPane} property
+				' * @see #setGlassPane
+				' * @see RootPaneContainer#getGlassPane
+				' */
+				getGlassPane(): Netbeans_v1.0.x.java.awt.Component
+				'/** 
+				' * {@inheritDoc}
+				' * @since 1.6
+				' */
+				getGraphics(): Netbeans_v1.0.x.java.awt.Graphics
+				'/** 
+				' * Returns the menubar set on this dialog.
+				' * @return the menubar set on this dialog
+				' * @see #setJMenuBar
+				' */
+				getJMenuBar(): JMenuBar
+				'/** 
+				' * Returns the  {@code layeredPane} object for this dialog.
+				' * @return the {@code layeredPane} property
+				' * @see #setLayeredPane
+				' * @see RootPaneContainer#getLayeredPane
+				' */
+				getLayeredPane(): JLayeredPane
+				'/** 
+				' * Returns the  {@code rootPane} object for this dialog.
+				' * @see #setRootPane
+				' * @see RootPaneContainer#getRootPane
+				' */
+				getRootPane(): JRootPane
+				'/** 
+				' * Gets the  {@code transferHandler} property.
+				' * @return the value of the {@code transferHandler} property
+				' * @see TransferHandler
+				' * @see #setTransferHandler
+				' * @since 1.6
+				' */
+				getTransferHandler(): TransferHandler
+				'/** 
+				' * Returns true if newly created  {@code JDialog}s should have their Window decorations provided by the current look and feel. This is only a hint, as certain look and feels may not support this feature.
+				' * @return true if look and feel should provide Window decorations.
+				' * @since 1.4
+				' */
+				{static} isDefaultLookAndFeelDecorated(): JavaPrimitiveTypes.boolean
+				'/** 
+				' * Returns whether calls to  {@code add} and{@code setLayout} are forwarded to the {@code contentPane}.
+				' * @return true if {@code add} and {@code setLayout}are forwarded; false otherwise
+				' * @see #addImpl
+				' * @see #setLayout
+				' * @see #setRootPaneCheckingEnabled
+				' * @see javax.swing.RootPaneContainer
+				' */
+				#isRootPaneCheckingEnabled(): JavaPrimitiveTypes.boolean
+				'/** 
+				' * Returns a string representation of this  {@code JDialog}. This method is intended to be used only for debugging purposes, and the content and format of the returned string may vary between implementations. The returned string may be empty but may not be  {@code null}.
+				' * @return  a string representation of this {@code JDialog}.
+				' */
+				#paramString(): Netbeans_v1.0.x.java.lang.String
+				'/** 
+				' * Handles window events depending on the state of the {@code defaultCloseOperation} property.
+				' * @see #setDefaultCloseOperation
+				' */
+				#processWindowEvent(e : Netbeans_v1.0.x.java.awt.event.WindowEvent)
+				'/** 
+				' * Removes the specified component from the container. If {@code comp} is not the {@code rootPane}, this will forward the call to the  {@code contentPane}. This will do nothing if {@code comp} is not a child of the {@code JDialog} or{@code contentPane}.
+				' * @param comp the component to be removed
+				' * @throws NullPointerException if {@code comp} is null
+				' * @see #add
+				' * @see javax.swing.RootPaneContainer
+				' */
+				remove(comp : Netbeans_v1.0.x.java.awt.Component)
+				'/** 
+				' * Repaints the specified rectangle of this component within {@code time} milliseconds.  Refer to {@code RepaintManager}for details on how the repaint is handled.
+				' * @param time   maximum time in milliseconds before update
+				' * @param x    the <i>x</i> coordinate
+				' * @param y    the <i>y</i> coordinate
+				' * @param width    the width
+				' * @param height   the height
+				' * @see RepaintManager
+				' * @since     1.6
+				' */
+				repaint(time : JavaPrimitiveTypes.long, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, width : JavaPrimitiveTypes.int, height : JavaPrimitiveTypes.int)
+				'/** 
+				' * Sets the  {@code contentPane} property.This method is called by the constructor. <p> Swing's painting architecture requires an opaque  {@code JComponent}in the containment hierarchy. This is typically provided by the content pane. If you replace the content pane it is recommended you replace it with an opaque  {@code JComponent}.
+				' * @see JRootPane
+				' * @param contentPane the {@code contentPane} object for this dialog
+				' * @throws java.awt.IllegalComponentStateException (a runtimeexception) if the content pane parameter is  {@code null}
+				' * @see #getContentPane
+				' * @see RootPaneContainer#setContentPane
+				' */
+				setContentPane(contentPane : Netbeans_v1.0.x.java.awt.Container)
+				'/** 
+				' * Sets the operation that will happen by default when the user initiates a "close" on this dialog. You must specify one of the following choices: <br><br> <ul> <li> {@code DO_NOTHING_ON_CLOSE}(defined in  {@code WindowConstants}): Don't do anything; require the program to handle the operation in the  {@code windowClosing}method of a registered  {@code WindowListener} object.<li> {@code HIDE_ON_CLOSE}(defined in  {@code WindowConstants}): Automatically hide the dialog after invoking any registered  {@code WindowListener}objects. <li> {@code DISPOSE_ON_CLOSE}(defined in  {@code WindowConstants}): Automatically hide and dispose the dialog after invoking any registered  {@code WindowListener}objects. </ul> <p> The value is set to  {@code HIDE_ON_CLOSE} by default. Changesto the value of this property cause the firing of a property change event, with property name "defaultCloseOperation". <p> <b>Note</b>: When the last displayable window within the Java virtual machine (VM) is disposed of, the VM may terminate.  See <a href="../../java/awt/doc-files/AWTThreadIssues.html"> AWT Threading Issues</a> for more information.
+				' * @param operation the operation which should be performed when theuser closes the dialog
+				' * @throws IllegalArgumentException if defaultCloseOperation valueisn't one of the above valid values
+				' * @see #addWindowListener
+				' * @see #getDefaultCloseOperation
+				' * @see WindowConstants
+				' */
+				setDefaultCloseOperation(operation : JavaPrimitiveTypes.int)
+				'/** 
+				' * Provides a hint as to whether or not newly created  {@code JDialog}s should have their Window decorations (such as borders, widgets to close the window, title...) provided by the current look and feel. If  {@code defaultLookAndFeelDecorated} is true,the current  {@code LookAndFeel} supports providing windowdecorations, and the current window manager supports undecorated windows, then newly created  {@code JDialog}s will have their Window decorations provided by the current  {@code LookAndFeel}. Otherwise, newly created  {@code JDialog}s will have their Window decorations provided by the current window manager. <p> You can get the same effect on a single JDialog by doing the following: <pre> JDialog dialog = new JDialog(); dialog.setUndecorated(true); dialog.getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG); </pre>
+				' * @param defaultLookAndFeelDecorated A hint as to whether or not currentlook and feel should provide window decorations
+				' * @see javax.swing.LookAndFeel#getSupportsWindowDecorations
+				' * @since 1.4
+				' */
+				{static} setDefaultLookAndFeelDecorated(defaultLookAndFeelDecorated : JavaPrimitiveTypes.boolean)
+				'/** 
+				' * Sets the  {@code glassPane} property.This method is called by the constructor.
+				' * @param glassPane the {@code glassPane} object for this dialog
+				' * @see #getGlassPane
+				' * @see RootPaneContainer#setGlassPane
+				' */
+				setGlassPane(glassPane : Netbeans_v1.0.x.java.awt.Component)
+				'/** 
+				' * Sets the menubar for this dialog.
+				' * @param menu the menubar being placed in the dialog
+				' * @see #getJMenuBar
+				' */
+				setJMenuBar(menu : JMenuBar)
+				'/** 
+				' * Sets the  {@code layeredPane} property.This method is called by the constructor.
+				' * @param layeredPane the new {@code layeredPane} property
+				' * @throws java.awt.IllegalComponentStateException (a runtimeexception) if the layered pane parameter is null
+				' * @see #getLayeredPane
+				' * @see RootPaneContainer#setLayeredPane
+				' */
+				setLayeredPane(layeredPane : JLayeredPane)
+				'/** 
+				' * Sets the  {@code LayoutManager}. Overridden to conditionally forward the call to the {@code contentPane}. Refer to  {@link javax.swing.RootPaneContainer} formore information.
+				' * @param manager the {@code LayoutManager}
+				' * @see #setRootPaneCheckingEnabled
+				' * @see javax.swing.RootPaneContainer
+				' */
+				setLayout(manager : Netbeans_v1.0.x.java.awt.LayoutManager)
+				'/** 
+				' * Sets the  {@code rootPane} property.This method is called by the constructor.
+				' * @param root the {@code rootPane} object for this dialog
+				' * @see #getRootPane
+				' */
+				#setRootPane(root : JRootPane)
+				'/** 
+				' * Sets whether calls to  {@code add} and{@code setLayout} are forwarded to the {@code contentPane}.
+				' * @param enabled  true if {@code add} and {@code setLayout}are forwarded, false if they should operate directly on the {@code JDialog}.
+				' * @see #addImpl
+				' * @see #setLayout
+				' * @see #isRootPaneCheckingEnabled
+				' * @see javax.swing.RootPaneContainer
+				' */
+				#setRootPaneCheckingEnabled(enabled : JavaPrimitiveTypes.boolean)
+				'/** 
+				' * Sets the  {@code transferHandler} property, which is a mechanism tosupport transfer of data into this component. Use  {@code null}if the component does not support data transfer operations. <p> If the system property  {@code suppressSwingDropSupport} is {@code false}(the default) and the current drop target on this component is either {@code null} or not a user-set drop target, this method will change thedrop target as follows: If  {@code newHandler} is {@code null} it willclear the drop target. If not  {@code null} it will install a new{@code DropTarget}. <p> Note: When used with  {@code JDialog},  {@code TransferHandler} onlyprovides data import capability, as the data export related methods are currently typed to  {@code JComponent}. <p> Please see <a href="https://docs.oracle.com/javase/tutorial/uiswing/dnd/index.html"> How to Use Drag and Drop and Data Transfer</a>, a section in <em>The Java Tutorial</em>, for more information.
+				' * @param newHandler the new {@code TransferHandler}
+				' * @see TransferHandler
+				' * @see #getTransferHandler
+				' * @see java.awt.Component#setDropTarget
+				' * @since 1.6
+				' */
+				setTransferHandler(newHandler : TransferHandler)
+				'/** 
+				' * Calls  {@code paint(g)}.  This method was overridden to prevent an unnecessary call to clear the background.
+				' * @param g  the {@code Graphics} context in which to paint
+				' */
+				update(g : Netbeans_v1.0.x.java.awt.Graphics)
+			}
+			Netbeans_v1.0.x.java.awt.Dialog <|-- JDialog
+			WindowConstants <|.. JDialog
+			Netbeans_v1.0.x.javax.accessibility.Accessible <|.. JDialog
+			RootPaneContainer <|.. JDialog
+			HasGetTransferHandler <|.. JDialog
+			Netbeans_v1.0.x.javax.accessibility.AccessibleContext "accessibleContext" <-- JDialog
+			JavaPrimitiveTypes.int "defaultCloseOperation" <-- JDialog
+			Netbeans_v1.0.x.java.lang.Object "defaultLookAndFeelDecoratedKey" <-- JDialog
+			JRootPane "rootPane" <-- JDialog
+			JavaPrimitiveTypes.boolean "rootPaneCheckingEnabled" <-- JDialog
+			TransferHandler "transferHandler" <-- JDialog
+		}
+	}
+	package java {
+		package awt {
+			'DP role: abstractProduct
+			class Dialog {
+				enum ModalityType {
+				}
+			}
+		}
+	}
+}
+@enduml

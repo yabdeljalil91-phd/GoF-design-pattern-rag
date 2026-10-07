@@ -1,0 +1,18 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'Singleton Writable with no data.
+			class NullWritable {
+				-{const} THIS: NullWritable
+				-<<Create>> NullWritable()
+				'Returns the single instance of this class.
+				{static} get(): NullWritable
+				readFields(in : java.io.DataInput)
+				write(out : java.io.DataOutput)
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.Writable <|-- Factory_method.nonfactorymethod.NullWritable
+}
+@enduml

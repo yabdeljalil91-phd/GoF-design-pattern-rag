@@ -1,0 +1,34 @@
+@startuml
+package dpd_jdt {
+	package Prototype {
+		package nonprototype {
+			'Builder interface for creating parse results. This inteface allows a parser engine to create some items of implementation unknown to the engine. The engine is provided with opaque Item reference and can communicate with the factory using those references. The ElementFactory is focused on creating and connecting Java Source elements and provides the only way how to access JavaLoader's internals from the parser engine.
+			interface ElementFactory {
+				createClass(isInterface : JavaPrimitiveTypes.boolean, modifiers : JavaPrimitiveTypes.int, name : Identifier, superclass : Identifier, interfaces : Identifier): Item
+				createConstructor(modifiers : JavaPrimitiveTypes.int, id : Identifier, params : MethodParameter, exceptions : Identifier): Item
+				createField(modifiers : JavaPrimitiveTypes.int, name : Identifier, type : Type, initializer : java.lang.String): Item
+				createImport(im : Import, begin : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int)
+				createInitializer(modifiers : JavaPrimitiveTypes.int): Item
+				createMethod(modifiers : JavaPrimitiveTypes.int, name : Identifier, returnType : Type, params : MethodParameter, exceptions : Identifier): Item
+				createPackage(name : Identifier, begin : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int)
+				markError(item : Item)
+				'Sets bounds for the body of the element.
+				setBodyBounds(item : Item, begin : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int)
+				'Sets bounds for the whole element. Begin is offset of first character of the element, end is the offset of the last one.
+				setBounds(item : Item, begin : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int)
+				'Sets a documentation for the element.
+				'@param begin offset of doc comment start
+				'@param end offset of doc comment end
+				'@param text documentation comment content
+				setDocumentation(item : Item, begin : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int, text : java.lang.String)
+				'Sets bounds for the identifier only.
+				setFieldTypeBounds(item : Item, begin : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int)
+				setHeaderBounds(item : Item, begin : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int)
+				setParent(child : Item, parent : Item)
+				'Sets name of the field that precedes this one in a declaration statement.
+				setPrecedingField(item : Item, previous : Item)
+			}
+		}
+	}
+}
+@enduml

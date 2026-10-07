@@ -1,0 +1,47 @@
+@startuml
+package dpd_jdt {
+	package service {
+		package name {
+			'The stack of refactorings that we can undo. This stack holds all the refactorings that have occurred in the system. <P> This object is a service object because we only want one object responsible for storing the refactorings that can be undone.
+			'@author    Chris Seguin
+			class UndoStack {
+				-{static} service: UndoStack
+				-stack: java.util.Stack
+				'Constructor for the UndoStack object
+				<<Create>> UndoStack()
+				'Adds a refactoring to the undo stack. You provide the refactoring, this method provides the undo action.
+				'@param ref  the refactoring about to be performed
+				'@return      an undo action
+				add(ref : Refactoring): UndoAction
+				'Deletes the undo stack
+				delete()
+				'Description of the Method
+				done()
+				'Gets the service undo operation
+				'@return    the undo stack for the system
+				{static} get(): UndoStack
+				'Gets the stack file
+				'@return    The File value
+				-getFile(): java.io.File
+				'Gets the StackEmpty attribute of the UndoStack object
+				'@return    The StackEmpty value
+				isStackEmpty(): JavaPrimitiveTypes.boolean
+				'Lists the undo actions in the stack
+				'@return    an iterator of undo actions
+				list(): java.util.Iterator
+				'Loads the undo stack from the disk
+				'@return    Description of the Returned Value
+				-load(): JavaPrimitiveTypes.boolean
+				'Return the top option without removing it from the stack
+				'@return    the top object
+				peek(): UndoAction
+				'Saves the undo stack to the disk
+				-save()
+				'Performs an undo of the top action
+				undo()
+			}
+		}
+	}
+	java.util.Stack "stack" <-- service.name.UndoStack
+}
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Responsible for reloading the class diagrams
+			'@author    Chris Seguin
+			class JBuilderClassDiagramLoader {
+				<<Create>> JBuilderClassDiagramLoader()
+				'Reloads the diagrams (and the current jbuilder project)
+				reload()
+			}
+		}
+	}
+	Builder.nonbuilder.MultipleDirClassDiagramReloader <|-- Builder.nonbuilder.JBuilderClassDiagramLoader
+}
+@enduml

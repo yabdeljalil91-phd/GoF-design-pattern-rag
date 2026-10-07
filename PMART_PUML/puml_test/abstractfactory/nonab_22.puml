@@ -1,0 +1,18 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			'This is the default filter that is currently being used by the system. It allows all packages that have at least one type summary to be included in the list.
+			'@author    Chris Seguin
+			class DefaultPackageListFilter {
+				<<Create>> DefaultPackageListFilter()
+				'Returns true if we should include it
+				'@param summary  the summary in question
+				'@return          true if it should be included
+				isIncluded(summary : PackageSummary): JavaPrimitiveTypes.boolean
+			}
+		}
+	}
+	Abstractfactory.non_abstract_factory.PackageListFilter <|-- Abstractfactory.non_abstract_factory.DefaultPackageListFilter
+}
+@enduml

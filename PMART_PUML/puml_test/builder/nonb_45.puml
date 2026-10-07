@@ -1,0 +1,40 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'The implementation of the editor operations for JBuilder
+			'@author    Chris Seguin
+			class JBuilderEditorOperations {
+				-buffer: Buffer
+				<<Create>> JBuilderEditorOperations()
+				'Returns the frame that contains the editor. If this is not available or you want dialog boxes to be centered on the screen return null from this operation.
+				'@return    the frame
+				getEditorFrame(): javax.swing.JFrame
+				'Gets the file that is being edited
+				'@return    The File value
+				getFile(): java.io.File
+				'Returns the initial line number
+				'@return    The LineNumber value
+				getLineNumber(): JavaPrimitiveTypes.int
+				'Gets the SelectionFromIDE attribute of the JBuilderExtractMethod object
+				'@return    The SelectionFromIDE value
+				getSelectionFromIDE(): java.lang.String
+				'Gets the initial string from the IDE
+				'@return    The file in string format
+				getStringFromIDE(): java.lang.String
+				'Returns true if the current file being edited is a java file
+				'@return    true if the current file is a java file
+				isJavaFile(): JavaPrimitiveTypes.boolean
+				'Sets the line number
+				'@param value  The new LineNumber value
+				setLineNumber(value : JavaPrimitiveTypes.int)
+				'Sets the string in the IDE
+				'@param value  The new file contained in a string
+				setStringInIDE(value : java.lang.String)
+			}
+		}
+	}
+	Builder.nonbuilder.EditorOperations <|-- Builder.nonbuilder.JBuilderEditorOperations
+	Builder.nonbuilder.Buffer "buffer" <-- Builder.nonbuilder.JBuilderEditorOperations
+}
+@enduml

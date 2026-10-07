@@ -1,0 +1,723 @@
+@startuml
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package netbeans {
+			package modules {
+				package db {
+					package explorer {
+						package dlg {
+							class AddTableColumnDialog {
+								checkcheckbox: Netbeans_v1.0.x.javax.swing.JCheckBox
+								checkfield: Netbeans_v1.0.x.javax.swing.JTextArea
+								colname: Netbeans_v1.0.x.java.lang.String
+								colnamefield: Netbeans_v1.0.x.javax.swing.JTextField
+								colscalefield: Netbeans_v1.0.x.javax.swing.JTextField
+								colsizefield: Netbeans_v1.0.x.javax.swing.JTextField
+								coltypecombo: Netbeans_v1.0.x.javax.swing.JComboBox
+								defvalfield: Netbeans_v1.0.x.javax.swing.JTextField
+								dialog: Netbeans_v1.0.x.java.awt.Dialog
+								dmodel: DataModel
+								idxcombo: Netbeans_v1.0.x.javax.swing.JComboBox
+								ixcheckbox: Netbeans_v1.0.x.javax.swing.JCheckBox
+								ixmap: Netbeans_v1.0.x.java.util.Map
+								nullcheckbox: Netbeans_v1.0.x.javax.swing.JCheckBox
+								pkcheckbox: Netbeans_v1.0.x.javax.swing.JCheckBox
+								result: JavaPrimitiveTypes.boolean
+								spec: Netbeans_v1.0.x.org.netbeans.lib.ddl.impl.Specification
+								uniquecheckbox: Netbeans_v1.0.x.javax.swing.JCheckBox
+								<<Create>> AddTableColumnDialog(spe : Netbeans_v1.0.x.org.netbeans.lib.ddl.impl.Specification, nfo : Netbeans_v1.0.x.org.netbeans.modules.db.explorer.infos.DatabaseNodeInfo)
+								getColumnName(): Netbeans_v1.0.x.java.lang.String
+								run(): JavaPrimitiveTypes.boolean
+								-validate(): JavaPrimitiveTypes.boolean
+							}
+							class CreateTableDialog {
+								addbtn: Netbeans_v1.0.x.javax.swing.JButton
+								dbnamefield: Netbeans_v1.0.x.javax.swing.JTextField
+								dbownerfield: Netbeans_v1.0.x.javax.swing.JTextField
+								delbtn: Netbeans_v1.0.x.javax.swing.JButton
+								dialog: Netbeans_v1.0.x.java.awt.Dialog
+								-{static} dlgtab: Netbeans_v1.0.x.java.util.Map
+								-{const} filename: Netbeans_v1.0.x.java.lang.String = org/netbeans/modules/db/resources/CreateTableDialog.plist
+								ownercombo: Netbeans_v1.0.x.javax.swing.JComboBox
+								result: JavaPrimitiveTypes.boolean
+								spec: Netbeans_v1.0.x.org.netbeans.lib.ddl.impl.Specification
+								table: Netbeans_v1.0.x.javax.swing.JTable
+								-ttab: Netbeans_v1.0.x.java.util.Vector
+								<<Create>> CreateTableDialog(spe : Netbeans_v1.0.x.org.netbeans.lib.ddl.impl.Specification, nfo : Netbeans_v1.0.x.org.netbeans.modules.db.explorer.infos.DatabaseNodeInfo)
+								{const} getProperties(): Netbeans_v1.0.x.java.util.Map
+								getTableName(): Netbeans_v1.0.x.java.lang.String
+								run(): JavaPrimitiveTypes.boolean
+								-validate(): JavaPrimitiveTypes.boolean
+							}
+							Netbeans_v1.0.x.javax.swing.table.AbstractTableModel <|-- DataModel
+							Netbeans_v1.0.x.javax.swing.JCheckBox "checkcheckbox" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.javax.swing.JTextArea "checkfield" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.java.lang.String "colname" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.javax.swing.JTextField "colnamefield" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.javax.swing.JTextField "colscalefield" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.javax.swing.JTextField "colsizefield" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.javax.swing.JComboBox "coltypecombo" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.javax.swing.JTextField "defvalfield" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.java.awt.Dialog "dialog" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.java.util.Vector "data" <-- DataModel
+							JavaPrimitiveTypes.long "serialVersionUID" <-- DataModel
+							DataModel "dmodel" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.javax.swing.JComboBox "idxcombo" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.javax.swing.JCheckBox "ixcheckbox" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.java.util.Map "ixmap" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.javax.swing.JCheckBox "nullcheckbox" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.javax.swing.JCheckBox "pkcheckbox" <-- AddTableColumnDialog
+							JavaPrimitiveTypes.boolean "result" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.org.netbeans.lib.ddl.impl.Specification "spec" <-- AddTableColumnDialog
+							Netbeans_v1.0.x.javax.swing.JCheckBox "uniquecheckbox" <-- AddTableColumnDialog
+							DataModel "data" <-- CheckBoxListener
+							DataModel "data" <-- ComboBoxListener
+							DataModel "data" <-- IntegerFieldListener
+							DataModel "data" <-- TextFieldListener
+							Netbeans_v1.0.x.javax.swing.JButton "addbtn" <-- CreateTableDialog
+							Netbeans_v1.0.x.javax.swing.JTextField "dbnamefield" <-- CreateTableDialog
+							Netbeans_v1.0.x.javax.swing.JTextField "dbownerfield" <-- CreateTableDialog
+							Netbeans_v1.0.x.javax.swing.JButton "delbtn" <-- CreateTableDialog
+							Netbeans_v1.0.x.java.awt.Dialog "dialog" <-- CreateTableDialog
+							Netbeans_v1.0.x.java.util.Map "dlgtab" <-- CreateTableDialog
+							Netbeans_v1.0.x.java.lang.String "filename" <-- CreateTableDialog
+							Netbeans_v1.0.x.javax.swing.JComboBox "ownercombo" <-- CreateTableDialog
+							JavaPrimitiveTypes.boolean "result" <-- CreateTableDialog
+							Netbeans_v1.0.x.org.netbeans.lib.ddl.impl.Specification "spec" <-- CreateTableDialog
+							Netbeans_v1.0.x.javax.swing.JTable "table" <-- CreateTableDialog
+							Netbeans_v1.0.x.java.util.Vector "ttab" <-- CreateTableDialog
+							JavaPrimitiveTypes.long "serialVersionUID" <-- DataCellEditor
+							JavaPrimitiveTypes.long "serialVersionUID" <-- DataTable
+							Netbeans_v1.0.x.javax.swing.JTextField "xxx" <-- FocusInvoker
+						}
+						package infos {
+							class ColumnNodeInfo {
+								{const} serialVersionUID: JavaPrimitiveTypes.long = -1470704512178901918
+								<<Create>> ColumnNodeInfo()
+								canAdd(propmap : Netbeans_v1.0.x.java.util.Map, propname : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+								delete()
+								getColumnSpecification(): Netbeans_v1.0.x.org.netbeans.lib.ddl.impl.TableColumn
+								getProperty(key : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.Object
+								setColumnSize(size : Netbeans_v1.0.x.java.lang.Integer)
+								setDataType(type : Netbeans_v1.0.x.java.lang.Integer)
+								setDecimalDigits(size : Netbeans_v1.0.x.java.lang.Integer)
+								setDefaultValue(val : Netbeans_v1.0.x.java.lang.String)
+								setNullAllowed(flag : JavaPrimitiveTypes.boolean)
+								setProperty(key : Netbeans_v1.0.x.java.lang.String, obj : Netbeans_v1.0.x.java.lang.Object)
+								setRemarks(rem : Netbeans_v1.0.x.java.lang.String)
+							}
+							class TableNodeInfo {
+								{const} serialVersionUID: JavaPrimitiveTypes.long = -632875098783935367
+								<<Create>> TableNodeInfo()
+								addColumn(tname : Netbeans_v1.0.x.java.lang.String)
+								delete()
+								dropIndex(tinfo : DatabaseNodeInfo)
+								getChildrenColumnInfo(info : ColumnNodeInfo): ColumnNodeInfo
+								initChildren(children : Netbeans_v1.0.x.java.util.Vector)
+								-initChildren(children : Netbeans_v1.0.x.java.util.Vector, columnname : Netbeans_v1.0.x.java.lang.String)
+								setProperty(key : Netbeans_v1.0.x.java.lang.String, obj : Netbeans_v1.0.x.java.lang.Object)
+								setRemarks(rem : Netbeans_v1.0.x.java.lang.String)
+							}
+							class ViewNodeInfo {
+								{const} serialVersionUID: JavaPrimitiveTypes.long = 8370676447530973161
+								<<Create>> ViewNodeInfo()
+								delete()
+								initChildren(children : Netbeans_v1.0.x.java.util.Vector)
+								setProperty(key : Netbeans_v1.0.x.java.lang.String, obj : Netbeans_v1.0.x.java.lang.Object)
+								setRemarks(rem : Netbeans_v1.0.x.java.lang.String)
+							}
+							class IndexNodeInfo {
+								{const} serialVersionUID: JavaPrimitiveTypes.long = -8633867970381524742
+								<<Create>> IndexNodeInfo()
+								delete()
+								initChildren(children : Netbeans_v1.0.x.java.util.Vector)
+								refreshChildren()
+							}
+							class ProcedureListNodeInfo {
+								{const} serialVersionUID: JavaPrimitiveTypes.long = -7911927402768472443
+								<<Create>> ProcedureListNodeInfo()
+								dropProcedure(tinfo : DatabaseNodeInfo)
+								initChildren(children : Netbeans_v1.0.x.java.util.Vector)
+								refreshChildren()
+							}
+							Netbeans_v1.0.x.java.util.Hashtable <|-- DatabaseNodeInfo
+							Netbeans_v1.0.x.org.openide.nodes.Node.Cookie <|.. DatabaseNodeInfo
+							DatabaseNodeInfo <|-- ColumnNodeInfo
+							DatabaseNodeInfo <|-- TableNodeInfo
+							DatabaseNodeInfo <|-- ViewNodeInfo
+							TableNodeInfo <|-- IndexNodeInfo
+							DatabaseNodeInfo <|-- ProcedureListNodeInfo
+							ProcedureOwnerOperations <|.. ProcedureListNodeInfo
+							Netbeans_v1.0.x.java.lang.String "ACTIONS" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "ADAPTOR" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "ADAPTOR_CLASSNAME" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "CHILDREN" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "CHILDREN_ORDERING" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "CLASS" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "CODE" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "CONNECTION" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DATABASE" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DBDRIVER" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DBPRODUCT" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DBVERSION" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DELETABLE" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DESCRIPTION" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DRIVER" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DRIVER_SPECIFICATION" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "GROUPSUP" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "ICONBASE" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "INFOCLASS" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "NAME" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "NODE" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "OJOINSUP" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "PASSWORD" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "PERM" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "PREFIX" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "PROPERTIES" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "READONLY" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "READONLYDB" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "REMEMBER_PWD" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "RESULTSET" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "SPECIFICATION" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "SPECIFICATION_FACTORY" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "SUPPORTED_DBS" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "SYSTEM_ACTION" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "UNIONSUP" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "URL" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "USER" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "WRITABLE" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.beans.PropertyChangeSupport "driverpcs" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.util.Set "driverpcsKeys" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.util.Map "gtab" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "gtabfile" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.ref.WeakReference "nodewr" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.beans.PropertyChangeSupport "pcs" <-- DatabaseNodeInfo
+							JavaPrimitiveTypes.long "serialVersionUID" <-- DatabaseNodeInfo
+							JavaPrimitiveTypes.long "serialVersionUID" <-- ColumnNodeInfo
+							JavaPrimitiveTypes.long "serialVersionUID" <-- TableNodeInfo
+							JavaPrimitiveTypes.long "serialVersionUID" <-- ViewNodeInfo
+							JavaPrimitiveTypes.long "serialVersionUID" <-- IndexNodeInfo
+							JavaPrimitiveTypes.long "serialVersionUID" <-- ProcedureListNodeInfo
+						}
+						package nodes {
+							class TableNode {
+								<<Create>> TableNode()
+								#createPasteTypes(t : Netbeans_v1.0.x.java.awt.datatransfer.Transferable, s : Netbeans_v1.0.x.java.util.List)
+								instanceClass(): Netbeans_v1.0.x.java.lang.Class
+								instanceCreate(): Netbeans_v1.0.x.java.lang.Object
+								instanceName(): Netbeans_v1.0.x.java.lang.String
+								setInfo(nodeinfo : Netbeans_v1.0.x.org.netbeans.modules.db.explorer.infos.DatabaseNodeInfo)
+								setName(newname : Netbeans_v1.0.x.java.lang.String)
+							}
+							class ColumnNode {
+								<<Create>> ColumnNode()
+								#createPropertySupport(name : Netbeans_v1.0.x.java.lang.String, type : Netbeans_v1.0.x.java.lang.Class, displayName : Netbeans_v1.0.x.java.lang.String, shortDescription : Netbeans_v1.0.x.java.lang.String, rep : Netbeans_v1.0.x.org.netbeans.modules.db.explorer.infos.DatabaseNodeInfo, writable : JavaPrimitiveTypes.boolean, expert : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.PropertySupport
+								setName(newname : Netbeans_v1.0.x.java.lang.String)
+							}
+							class ViewNode {
+								<<Create>> ViewNode()
+								setName(newname : Netbeans_v1.0.x.java.lang.String)
+							}
+							Netbeans_v1.0.x.org.openide.nodes.AbstractNode <|-- DatabaseNode
+							Netbeans_v1.0.x.org.openide.nodes.Node.Cookie <|.. DatabaseNode
+							DatabaseNode <|-- TableNode
+							Netbeans_v1.0.x.org.openide.cookies.InstanceCookie <|.. TableNode
+							DatabaseNode <|-- IndexNode
+							LeafNode <|-- ColumnNode
+							DatabaseNode <|-- LeafNode
+							DatabaseNode <|-- ViewNode
+							Netbeans_v1.0.x.java.lang.String "CATALOG" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "COLUMN" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "CONNECTION" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "DRIVER" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "DRIVER_LIST" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "EXPORTED_KEY" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "FOREIGN_KEY" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "INDEX" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "INDEXCOLUMN" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "INDEXED_COLUMN" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "PRIMARY_KEY" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "PROCEDURE" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "PROCEDURELIST" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "PROCEDURE_COLUMN" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "ROOT" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "TABLE" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "TABLELIST" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "VIEW" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "VIEWCOLUMN" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "VIEWLIST" <-- DatabaseNode
+							JavaPrimitiveTypes.boolean "copyflag" <-- DatabaseNode
+							JavaPrimitiveTypes.boolean "cutflag" <-- DatabaseNode
+							JavaPrimitiveTypes.boolean "delflag" <-- DatabaseNode
+							Netbeans_v1.0.x.org.netbeans.modules.db.explorer.infos.DatabaseNodeInfo "info" <-- DatabaseNode
+							JavaPrimitiveTypes.boolean "writable" <-- DatabaseNode
+							Netbeans_v1.0.x.org.netbeans.modules.db.explorer.infos.DatabaseNodeInfo "info" <-- ColumnPasteType
+							Netbeans_v1.0.x.org.openide.nodes.Node "node" <-- ColumnPasteType
+							Netbeans_v1.0.x.org.netbeans.modules.db.explorer.infos.DatabaseNodeInfo "info" <-- TablePasteType
+							Netbeans_v1.0.x.org.openide.nodes.Node "node" <-- TablePasteType
+							Netbeans_v1.0.x.org.netbeans.modules.db.explorer.infos.DatabaseNodeInfo "info" <-- IndexPasteType
+							Netbeans_v1.0.x.org.openide.nodes.Node "node" <-- IndexPasteType
+						}
+						package actions {
+							class AddIndexAction {
+								<<Create>> AddIndexAction()
+								performAction(activatedNodes : Netbeans_v1.0.x.org.openide.nodes.Node)
+							}
+							class AddToIndexAction {
+								{const} serialVersionUID: JavaPrimitiveTypes.long = -1416260930649261633
+								<<Create>> AddToIndexAction()
+								performAction(activatedNodes : Netbeans_v1.0.x.org.openide.nodes.Node)
+							}
+							class GrabTableAction {
+								{const} serialVersionUID: JavaPrimitiveTypes.long = -7685449970256732671
+								<<Create>> GrabTableAction()
+								performAction(activatedNodes : Netbeans_v1.0.x.org.openide.nodes.Node)
+							}
+							class CreateViewAction {
+								{const} serialVersionUID: JavaPrimitiveTypes.long = -1640355770860785644
+								<<Create>> CreateViewAction()
+								performAction(activatedNodes : Netbeans_v1.0.x.org.openide.nodes.Node)
+							}
+							DatabaseAction <|-- AddIndexAction
+							Netbeans_v1.0.x.org.openide.util.actions.CookieAction <|-- DatabaseAction
+							DatabaseAction <|-- AddToIndexAction
+							DatabaseAction <|-- GrabTableAction
+							DatabaseAction <|-- CreateViewAction
+							Netbeans_v1.0.x.java.lang.String "aname" <-- DatabaseAction
+							Netbeans_v1.0.x.java.lang.String "nodename" <-- DatabaseAction
+							JavaPrimitiveTypes.long "serialVersionUID" <-- DatabaseAction
+							JavaPrimitiveTypes.long "serialVersionUID" <-- AddToIndexAction
+							JavaPrimitiveTypes.long "serialVersionUID" <-- GrabTableAction
+							JavaPrimitiveTypes.long "serialVersionUID" <-- CreateViewAction
+						}
+						Netbeans_v1.0.x.java.io.Externalizable <|.. DatabaseDriver
+						Netbeans_v1.0.x.java.lang.String "adaptor" <-- DatabaseDriver
+						Netbeans_v1.0.x.java.lang.String "name" <-- DatabaseDriver
+						Netbeans_v1.0.x.java.lang.String "prefix" <-- DatabaseDriver
+						JavaPrimitiveTypes.long "serialVersionUID" <-- DatabaseDriver
+						Netbeans_v1.0.x.java.lang.String "url" <-- DatabaseDriver
+					}
+				}
+			}
+			package lib {
+				package ddl {
+					package impl {
+						class Specification {
+							{const} ADD_COLUMN: Netbeans_v1.0.x.java.lang.String = AddColumnCommand
+							{const} ADD_CONSTRAINT: Netbeans_v1.0.x.java.lang.String = AddConstraintCommand
+							{const} COMMENT_TABLE: Netbeans_v1.0.x.java.lang.String = CommentTableCommand
+							{const} COMMENT_VIEW: Netbeans_v1.0.x.java.lang.String = CommentViewCommand
+							{const} CREATE_FUNCTION: Netbeans_v1.0.x.java.lang.String = CreateFunctionCommand
+							{const} CREATE_INDEX: Netbeans_v1.0.x.java.lang.String = CreateIndexCommand
+							{const} CREATE_PROCEDURE: Netbeans_v1.0.x.java.lang.String = CreateProcedureCommand
+							{const} CREATE_TABLE: Netbeans_v1.0.x.java.lang.String = CreateTableCommand
+							{const} CREATE_TRIGGER: Netbeans_v1.0.x.java.lang.String = CreateTriggerCommand
+							{const} CREATE_VIEW: Netbeans_v1.0.x.java.lang.String = CreateViewCommand
+							{const} DROP_CONSTRAINT: Netbeans_v1.0.x.java.lang.String = DropConstraintCommand
+							{const} DROP_FUNCTION: Netbeans_v1.0.x.java.lang.String = DropFunctionCommand
+							{const} DROP_INDEX: Netbeans_v1.0.x.java.lang.String = DropIndexCommand
+							{const} DROP_PROCEDURE: Netbeans_v1.0.x.java.lang.String = DropProcedureCommand
+							{const} DROP_TABLE: Netbeans_v1.0.x.java.lang.String = DropTableCommand
+							{const} DROP_TRIGGER: Netbeans_v1.0.x.java.lang.String = DropTriggerCommand
+							{const} DROP_VIEW: Netbeans_v1.0.x.java.lang.String = DropViewCommand
+							{const} MODIFY_COLUMN: Netbeans_v1.0.x.java.lang.String = ModifyColumnCommand
+							{const} REMOVE_COLUMN: Netbeans_v1.0.x.java.lang.String = RemoveColumnCommand
+							{const} RENAME_COLUMN: Netbeans_v1.0.x.java.lang.String = RenameColumnCommand
+							{const} RENAME_TABLE: Netbeans_v1.0.x.java.lang.String = RenameTableCommand
+							{const} RENAME_VIEW: Netbeans_v1.0.x.java.lang.String = RenameViewCommand
+							adaptorClass: Netbeans_v1.0.x.java.lang.String
+							-desc: Netbeans_v1.0.x.java.util.HashMap
+							dmdAdaptor: Netbeans_v1.0.x.java.sql.DatabaseMetaData
+							factory: SpecificationFactory
+							-jdbccon: Netbeans_v1.0.x.java.sql.Connection
+							<<Create>> Specification(description : Netbeans_v1.0.x.java.util.HashMap)
+							<<Create>> Specification(description : Netbeans_v1.0.x.java.util.HashMap, c : Netbeans_v1.0.x.java.sql.Connection)
+							closeJDBCConnection()
+							createCommand(commandName : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.org.netbeans.lib.ddl.DDLCommand
+							createCommand(commandName : Netbeans_v1.0.x.java.lang.String, tableName : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.org.netbeans.lib.ddl.DDLCommand
+							createCommandAddColumn(tableName : Netbeans_v1.0.x.java.lang.String): AddColumn
+							createCommandCommentTable(tableName : Netbeans_v1.0.x.java.lang.String, comment : Netbeans_v1.0.x.java.lang.String): CommentTable
+							createCommandCommentView(viewName : Netbeans_v1.0.x.java.lang.String, comment : Netbeans_v1.0.x.java.lang.String): CommentView
+							createCommandCreateFunction(name : Netbeans_v1.0.x.java.lang.String): CreateFunction
+							createCommandCreateIndex(tableName : Netbeans_v1.0.x.java.lang.String): CreateIndex
+							createCommandCreateProcedure(name : Netbeans_v1.0.x.java.lang.String): CreateProcedure
+							createCommandCreateTable(tableName : Netbeans_v1.0.x.java.lang.String): CreateTable
+							createCommandCreateTrigger(name : Netbeans_v1.0.x.java.lang.String, tablename : Netbeans_v1.0.x.java.lang.String, timing : JavaPrimitiveTypes.int): CreateTrigger
+							createCommandCreateView(viewname : Netbeans_v1.0.x.java.lang.String): CreateView
+							createCommandDropFunction(name : Netbeans_v1.0.x.java.lang.String): AbstractCommand
+							createCommandDropIndex(indexName : Netbeans_v1.0.x.java.lang.String): AbstractCommand
+							createCommandDropProcedure(name : Netbeans_v1.0.x.java.lang.String): AbstractCommand
+							createCommandDropTable(tableName : Netbeans_v1.0.x.java.lang.String): AbstractCommand
+							createCommandDropTrigger(name : Netbeans_v1.0.x.java.lang.String): AbstractCommand
+							createCommandDropView(viewname : Netbeans_v1.0.x.java.lang.String): AbstractCommand
+							createCommandModifyColumn(tableName : Netbeans_v1.0.x.java.lang.String): ModifyColumn
+							createCommandRemoveColumn(tableName : Netbeans_v1.0.x.java.lang.String): RemoveColumn
+							createCommandRenameColumn(tableName : Netbeans_v1.0.x.java.lang.String): RenameColumn
+							createCommandRenameTable(tableName : Netbeans_v1.0.x.java.lang.String, newName : Netbeans_v1.0.x.java.lang.String): RenameTable
+							createCommandRenameView(tableName : Netbeans_v1.0.x.java.lang.String, newName : Netbeans_v1.0.x.java.lang.String): RenameView
+							getCommandProperties(command : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.util.Map
+							getConnection(): Netbeans_v1.0.x.org.netbeans.lib.ddl.DBConnection
+							getJDBCConnection(): Netbeans_v1.0.x.java.sql.Connection
+							getMetaData(): Netbeans_v1.0.x.java.sql.DatabaseMetaData
+							getMetaDataAdaptorClassName(): Netbeans_v1.0.x.java.lang.String
+							getProperties(): Netbeans_v1.0.x.java.util.Map
+							getSpecificationFactory(): Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecificationFactory
+							getType(type : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.lang.String
+							{static} getType(type : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.int
+							getTypeMap(): Netbeans_v1.0.x.java.util.Map
+							openJDBCConnection(): Netbeans_v1.0.x.java.sql.Connection
+							setMetaDataAdaptorClassName(name : Netbeans_v1.0.x.java.lang.String)
+							setSpecificationFactory(fac : Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecificationFactory)
+						}
+						class AddColumn {
+							{const} serialVersionUID: JavaPrimitiveTypes.long = 8822373040877885121
+							<<Create>> AddColumn()
+							createCheckColumn(name : Netbeans_v1.0.x.java.lang.String, expression : Netbeans_v1.0.x.java.lang.String): TableColumn
+							createCheckConstraint(name : Netbeans_v1.0.x.java.lang.String, expression : Netbeans_v1.0.x.java.lang.String): TableColumn
+							createColumn(name : Netbeans_v1.0.x.java.lang.String): AbstractTableColumn
+							createPrimaryKeyColumn(name : Netbeans_v1.0.x.java.lang.String): TableColumn
+							createUniqueColumn(name : Netbeans_v1.0.x.java.lang.String): TableColumn
+							specifyColumn(type : Netbeans_v1.0.x.java.lang.String, name : Netbeans_v1.0.x.java.lang.String): AbstractTableColumn
+						}
+						class ColumnListCommand {
+							-columns: Netbeans_v1.0.x.java.util.Vector
+							{const} serialVersionUID: JavaPrimitiveTypes.long = 3646663278680222131
+							<<Create>> ColumnListCommand()
+							getColumns(): Netbeans_v1.0.x.java.util.Vector
+							getCommandProperties(): Netbeans_v1.0.x.java.util.Map
+							readObject(in : Netbeans_v1.0.x.java.io.ObjectInputStream)
+							specifyColumn(type : Netbeans_v1.0.x.java.lang.String, name : Netbeans_v1.0.x.java.lang.String, cmd : Netbeans_v1.0.x.java.lang.String): TableColumn
+							writeObject(out : Netbeans_v1.0.x.java.io.ObjectOutputStream)
+						}
+						class AbstractCommand {
+							-addprops: Netbeans_v1.0.x.java.util.Map
+							-format: Netbeans_v1.0.x.java.lang.String
+							-name: Netbeans_v1.0.x.java.lang.String
+							-owner: Netbeans_v1.0.x.java.lang.String
+							{const} serialVersionUID: JavaPrimitiveTypes.long = -560515030304320086
+							-spec: Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecification
+							<<Create>> AbstractCommand()
+							execute()
+							getCommand(): Netbeans_v1.0.x.java.lang.String
+							getCommandProperties(): Netbeans_v1.0.x.java.util.Map
+							getObjectName(): Netbeans_v1.0.x.java.lang.String
+							getObjectOwner(): Netbeans_v1.0.x.java.lang.String
+							getProperty(pname : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.Object
+							getSpecification(): Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecification
+							readObject(in : Netbeans_v1.0.x.java.io.ObjectInputStream)
+							setFormat(fmt : Netbeans_v1.0.x.java.lang.String)
+							setObjectName(nam : Netbeans_v1.0.x.java.lang.String)
+							setObjectOwner(objectowner : Netbeans_v1.0.x.java.lang.String)
+							setProperty(pname : Netbeans_v1.0.x.java.lang.String, pval : Netbeans_v1.0.x.java.lang.Object)
+							setSpecification(specification : Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecification)
+							writeObject(out : Netbeans_v1.0.x.java.io.ObjectOutputStream)
+						}
+						class CommentTable {
+							-comment: Netbeans_v1.0.x.java.lang.String
+							{const} serialVersionUID: JavaPrimitiveTypes.long = 2058860037972661389
+							<<Create>> CommentTable()
+							getCommandProperties(): Netbeans_v1.0.x.java.util.Map
+							getComment(): Netbeans_v1.0.x.java.lang.String
+							setComment(comm : Netbeans_v1.0.x.java.lang.String)
+						}
+						class CommentView {
+							-comment: Netbeans_v1.0.x.java.lang.String
+							{const} serialVersionUID: JavaPrimitiveTypes.long = -3070595900954150762
+							<<Create>> CommentView()
+							getCommandProperties(): Netbeans_v1.0.x.java.util.Map
+							getComment(): Netbeans_v1.0.x.java.lang.String
+							setComment(comm : Netbeans_v1.0.x.java.lang.String)
+						}
+						class CreateFunction {
+							-rarg: JavaPrimitiveTypes.int
+							{const} serialVersionUID: JavaPrimitiveTypes.long = -7554675717309349130
+							<<Create>> CreateFunction()
+							getCommandProperties(): Netbeans_v1.0.x.java.util.Map
+							getReturnType(): JavaPrimitiveTypes.int
+							setReturnType(aval : JavaPrimitiveTypes.int)
+						}
+						class CreateProcedure {
+							-args: Netbeans_v1.0.x.java.util.Vector
+							-body: Netbeans_v1.0.x.java.lang.String
+							-cat: Netbeans_v1.0.x.java.lang.String
+							{const} serialVersionUID: JavaPrimitiveTypes.long = 1316633286943440734
+							<<Create>> CreateProcedure()
+							addArgument(name : Netbeans_v1.0.x.java.lang.String, type : JavaPrimitiveTypes.int, datatype : JavaPrimitiveTypes.int)
+							createArgument(name : Netbeans_v1.0.x.java.lang.String, type : JavaPrimitiveTypes.int, datatype : JavaPrimitiveTypes.int): Netbeans_v1.0.x.org.netbeans.lib.ddl.Argument
+							getArgument(index : JavaPrimitiveTypes.int): Netbeans_v1.0.x.org.netbeans.lib.ddl.Argument
+							getArguments(): Netbeans_v1.0.x.java.util.Vector
+							getCatalog(): Netbeans_v1.0.x.java.lang.String
+							getCommandProperties(): Netbeans_v1.0.x.java.util.Map
+							getText(): Netbeans_v1.0.x.java.lang.String
+							setArgument(index : JavaPrimitiveTypes.int, arg : Netbeans_v1.0.x.org.netbeans.lib.ddl.Argument)
+							setArguments(argarr : Netbeans_v1.0.x.java.util.Vector)
+							setCatalog(cname : Netbeans_v1.0.x.java.lang.String)
+							setText(text : Netbeans_v1.0.x.java.lang.String)
+						}
+						class CreateIndex {
+							{const} serialVersionUID: JavaPrimitiveTypes.long = 1899024699690380782
+							-tablename: Netbeans_v1.0.x.java.lang.String
+							<<Create>> CreateIndex()
+							getCommandProperties(): Netbeans_v1.0.x.java.util.Map
+							getIndexName(): Netbeans_v1.0.x.java.lang.String
+							setIndexName(tname : Netbeans_v1.0.x.java.lang.String)
+							specifyColumn(name : Netbeans_v1.0.x.java.lang.String): TableColumn
+						}
+						class CreateTable {
+							{const} serialVersionUID: JavaPrimitiveTypes.long = -6731725400393279232
+							<<Create>> CreateTable()
+							createCheckColumn(name : Netbeans_v1.0.x.java.lang.String, expression : Netbeans_v1.0.x.java.lang.String): TableColumn
+							createCheckConstraint(name : Netbeans_v1.0.x.java.lang.String, expression : Netbeans_v1.0.x.java.lang.String): TableColumn
+							createColumn(name : Netbeans_v1.0.x.java.lang.String): TableColumn
+							createColumn(type : Netbeans_v1.0.x.java.lang.String, name : Netbeans_v1.0.x.java.lang.String): TableColumn
+							createForeignKeyColumn(name : Netbeans_v1.0.x.java.lang.String, rtablename : Netbeans_v1.0.x.java.lang.String, rcolumnname : Netbeans_v1.0.x.java.lang.String): TableColumn
+							createForeignKeyConstraint(columnname : Netbeans_v1.0.x.java.lang.String, rtablename : Netbeans_v1.0.x.java.lang.String, rcolumnname : Netbeans_v1.0.x.java.lang.String): TableColumn
+							createPrimaryKeyColumn(name : Netbeans_v1.0.x.java.lang.String): TableColumn
+							createPrimaryKeyConstraint(columnname : Netbeans_v1.0.x.java.lang.String): TableColumn
+							createUniqueColumn(name : Netbeans_v1.0.x.java.lang.String): TableColumn
+							createUniqueConstraint(columnname : Netbeans_v1.0.x.java.lang.String): TableColumn
+						}
+						class CreateTrigger {
+							{const} AFTER: JavaPrimitiveTypes.int = 2
+							{const} BEFORE: JavaPrimitiveTypes.int = 1
+							-body: Netbeans_v1.0.x.java.lang.String
+							-cond: Netbeans_v1.0.x.java.lang.String
+							eachrow: JavaPrimitiveTypes.boolean
+							-events: Netbeans_v1.0.x.java.util.Vector
+							{const} serialVersionUID: JavaPrimitiveTypes.long = -2217362040968396712
+							-table: Netbeans_v1.0.x.java.lang.String
+							timing: JavaPrimitiveTypes.int
+							<<Create>> CreateTrigger()
+							addTriggerEvent(when : JavaPrimitiveTypes.int)
+							addTriggerEvent(when : JavaPrimitiveTypes.int, columnname : Netbeans_v1.0.x.java.lang.String)
+							createTriggerEvent(when : JavaPrimitiveTypes.int, columnname : Netbeans_v1.0.x.java.lang.String): TriggerEvent
+							getCommandProperties(): Netbeans_v1.0.x.java.util.Map
+							getCondition(): Netbeans_v1.0.x.java.lang.String
+							getEvent(index : JavaPrimitiveTypes.int): TriggerEvent
+							getEvents(): Netbeans_v1.0.x.java.util.Vector
+							getForEachRow(): JavaPrimitiveTypes.boolean
+							getTableName(): Netbeans_v1.0.x.java.lang.String
+							getText(): Netbeans_v1.0.x.java.lang.String
+							getTiming(): JavaPrimitiveTypes.int
+							{static} getTimingName(code : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.lang.String
+							setCondition(con : Netbeans_v1.0.x.java.lang.String)
+							setEvent(index : JavaPrimitiveTypes.int, arg : TriggerEvent)
+							setEvents(argarr : Netbeans_v1.0.x.java.util.Vector)
+							setForEachRow(flag : JavaPrimitiveTypes.boolean)
+							setTableName(tab : Netbeans_v1.0.x.java.lang.String)
+							setText(text : Netbeans_v1.0.x.java.lang.String)
+							setTiming(time : JavaPrimitiveTypes.int)
+						}
+						class CreateView {
+							query: Netbeans_v1.0.x.java.lang.String
+							{const} serialVersionUID: JavaPrimitiveTypes.long = -3890617111076632936
+							<<Create>> CreateView()
+							getCommandProperties(): Netbeans_v1.0.x.java.util.Map
+							getQuery(): Netbeans_v1.0.x.java.lang.String
+							setQuery(qry : Netbeans_v1.0.x.java.lang.String)
+						}
+						class ModifyColumn {
+							{const} serialVersionUID: JavaPrimitiveTypes.long = 2870433389508513811
+							<<Create>> ModifyColumn()
+							specifyColumn(type : Netbeans_v1.0.x.java.lang.String, name : Netbeans_v1.0.x.java.lang.String): AbstractTableColumn
+							specifyColumn(name : Netbeans_v1.0.x.java.lang.String): AbstractTableColumn
+						}
+						class ColumnCommand {
+							-column: TableColumn
+							{const} serialVersionUID: JavaPrimitiveTypes.long = -4554975764392047624
+							<<Create>> ColumnCommand()
+							getColumn(): TableColumn
+							getCommandProperties(): Netbeans_v1.0.x.java.util.Map
+							setColumn(col : TableColumn)
+							specifyColumn(type : Netbeans_v1.0.x.java.lang.String, name : Netbeans_v1.0.x.java.lang.String, cmd : Netbeans_v1.0.x.java.lang.String): TableColumn
+						}
+						class RemoveColumn {
+							{const} serialVersionUID: JavaPrimitiveTypes.long = 2845249943586553892
+							<<Create>> RemoveColumn()
+							removeCheckColumn(name : Netbeans_v1.0.x.java.lang.String): TableColumn
+							removeColumn(name : Netbeans_v1.0.x.java.lang.String): TableColumn
+							removeForeignKeyColumn(name : Netbeans_v1.0.x.java.lang.String): TableColumn
+							removePrimaryKeyColumn(name : Netbeans_v1.0.x.java.lang.String): TableColumn
+							removeUniqueColumn(name : Netbeans_v1.0.x.java.lang.String): TableColumn
+						}
+						class RenameColumn {
+							-newname: Netbeans_v1.0.x.java.lang.String
+							{const} serialVersionUID: JavaPrimitiveTypes.long = 7150074600789999024
+							<<Create>> RenameColumn()
+							getCommandProperties(): Netbeans_v1.0.x.java.util.Map
+							renameColumn(name : Netbeans_v1.0.x.java.lang.String, nname : Netbeans_v1.0.x.java.lang.String): TableColumn
+						}
+						class RenameTable {
+							{const} NEW_NAME: Netbeans_v1.0.x.java.lang.String = object.newname
+							-newname: Netbeans_v1.0.x.java.lang.String
+							{const} serialVersionUID: JavaPrimitiveTypes.long = -4410972392441335153
+							<<Create>> RenameTable()
+							getCommandProperties(): Netbeans_v1.0.x.java.util.Map
+							getNewName(): Netbeans_v1.0.x.java.lang.String
+							setNewName(name : Netbeans_v1.0.x.java.lang.String)
+						}
+						class RenameView {
+							-newname: Netbeans_v1.0.x.java.lang.String
+							{const} serialVersionUID: JavaPrimitiveTypes.long = -223515979547554815
+							<<Create>> RenameView()
+							getCommandProperties(): Netbeans_v1.0.x.java.util.Map
+							getNewName(): Netbeans_v1.0.x.java.lang.String
+							setNewName(name : Netbeans_v1.0.x.java.lang.String)
+						}
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecification <|.. Specification
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecificationFactory <|.. SpecificationFactory
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.DriverSpecificationFactory <|.. SpecificationFactory
+						ColumnListCommand <|-- AddColumn
+						AbstractCommand <|-- ColumnListCommand
+						Netbeans_v1.0.x.java.io.Serializable <|.. AbstractCommand
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.DDLCommand <|.. AbstractCommand
+						AbstractTableColumn <|-- TableColumn
+						Netbeans_v1.0.x.java.io.Serializable <|.. TableColumn
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.TableColumnDescriptor <|.. TableColumn
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.CheckConstraintDescriptor <|.. TableColumn
+						Netbeans_v1.0.x.java.io.Serializable <|.. AbstractTableColumn
+						AbstractCommand <|-- CommentTable
+						AbstractCommand <|-- CommentView
+						CreateProcedure <|-- CreateFunction
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.FunctionDescriptor <|.. CreateFunction
+						AbstractCommand <|-- CreateProcedure
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.ProcedureDescriptor <|.. CreateProcedure
+						ColumnListCommand <|-- CreateIndex
+						ColumnListCommand <|-- CreateTable
+						AbstractCommand <|-- CreateTrigger
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.CreateTriggerCommand <|.. CreateTrigger
+						AbstractCommand <|-- CreateView
+						ColumnCommand <|-- ModifyColumn
+						AbstractCommand <|-- ColumnCommand
+						ColumnCommand <|-- RemoveColumn
+						ColumnCommand <|-- RenameColumn
+						AbstractCommand <|-- RenameTable
+						AbstractCommand <|-- RenameView
+						Netbeans_v1.0.x.java.lang.String "ADD_COLUMN" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "ADD_CONSTRAINT" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "COMMENT_TABLE" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "COMMENT_VIEW" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "CREATE_FUNCTION" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "CREATE_INDEX" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "CREATE_PROCEDURE" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "CREATE_TABLE" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "CREATE_TRIGGER" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "CREATE_VIEW" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_CONSTRAINT" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_FUNCTION" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_INDEX" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_PROCEDURE" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_TABLE" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_TRIGGER" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_VIEW" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "MODIFY_COLUMN" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "REMOVE_COLUMN" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "RENAME_COLUMN" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "RENAME_TABLE" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "RENAME_VIEW" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "adaptorClass" <-- Specification
+						Netbeans_v1.0.x.java.util.HashMap "desc" <-- Specification
+						Netbeans_v1.0.x.java.sql.DatabaseMetaData "dmdAdaptor" <-- Specification
+						Netbeans_v1.0.x.java.util.HashMap "desc" <-- DriverSpecification
+						SpecificationFactory "factory" <-- DriverSpecification
+						Netbeans_v1.0.x.java.sql.ResultSet "rs" <-- DriverSpecification
+						Netbeans_v1.0.x.java.sql.ResultSet "rsTemp" <-- DriverSpecification
+						Netbeans_v1.0.x.java.lang.String "dbFile" <-- SpecificationFactory
+						Netbeans_v1.0.x.java.util.HashMap "dbSpecs" <-- SpecificationFactory
+						JavaPrimitiveTypes.boolean "debug" <-- SpecificationFactory
+						Netbeans_v1.0.x.java.lang.String "drvFile" <-- SpecificationFactory
+						Netbeans_v1.0.x.java.util.HashMap "drvSpecs" <-- SpecificationFactory
+						SpecificationFactory "factory" <-- Specification
+						Netbeans_v1.0.x.java.sql.Connection "jdbccon" <-- Specification
+						Netbeans_v1.0.x.java.util.Map "addprops" <-- AbstractCommand
+						Netbeans_v1.0.x.java.lang.String "format" <-- AbstractCommand
+						Netbeans_v1.0.x.java.lang.String "name" <-- AbstractCommand
+						Netbeans_v1.0.x.java.lang.String "owner" <-- AbstractCommand
+						JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractCommand
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecification "spec" <-- AbstractCommand
+						Netbeans_v1.0.x.java.util.Vector "columns" <-- ColumnListCommand
+						JavaPrimitiveTypes.long "serialVersionUID" <-- ColumnListCommand
+						Netbeans_v1.0.x.java.util.Map "addprops" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "cname" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "format" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "name" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "otype" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "refcol" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "reftab" <-- AbstractTableColumn
+						JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "CHECK" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "CHECK_CONSTRAINT" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "COLUMN" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "FOREIGN_KEY" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "FOREIGN_KEY_CONSTRAINT" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "PRIMARY_KEY" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "PRIMARY_KEY_CONSTRAINT" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "UNIQUE" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "UNIQUE_CONSTRAINT" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "checke" <-- TableColumn
+						JavaPrimitiveTypes.int "decsize" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "defval" <-- TableColumn
+						JavaPrimitiveTypes.boolean "nullable" <-- TableColumn
+						JavaPrimitiveTypes.long "serialVersionUID" <-- TableColumn
+						JavaPrimitiveTypes.int "size" <-- TableColumn
+						JavaPrimitiveTypes.int "type" <-- TableColumn
+						JavaPrimitiveTypes.long "serialVersionUID" <-- AddColumn
+						Netbeans_v1.0.x.java.lang.String "comment" <-- CommentTable
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CommentTable
+						Netbeans_v1.0.x.java.lang.String "comment" <-- CommentView
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CommentView
+						Netbeans_v1.0.x.java.util.Vector "args" <-- CreateProcedure
+						Netbeans_v1.0.x.java.lang.String "body" <-- CreateProcedure
+						Netbeans_v1.0.x.java.lang.String "cat" <-- CreateProcedure
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CreateProcedure
+						JavaPrimitiveTypes.int "rarg" <-- CreateFunction
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CreateFunction
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CreateIndex
+						Netbeans_v1.0.x.java.lang.String "tablename" <-- CreateIndex
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CreateTable
+						JavaPrimitiveTypes.int "AFTER" <-- CreateTrigger
+						JavaPrimitiveTypes.int "BEFORE" <-- CreateTrigger
+						Netbeans_v1.0.x.java.lang.String "body" <-- CreateTrigger
+						Netbeans_v1.0.x.java.lang.String "cond" <-- CreateTrigger
+						JavaPrimitiveTypes.boolean "eachrow" <-- CreateTrigger
+						Netbeans_v1.0.x.java.util.Vector "events" <-- CreateTrigger
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CreateTrigger
+						Netbeans_v1.0.x.java.lang.String "table" <-- CreateTrigger
+						JavaPrimitiveTypes.int "timing" <-- CreateTrigger
+						JavaPrimitiveTypes.int "DELETE" <-- TriggerEvent
+						JavaPrimitiveTypes.int "INSERT" <-- TriggerEvent
+						JavaPrimitiveTypes.int "UPDATE" <-- TriggerEvent
+						Netbeans_v1.0.x.java.lang.String "col" <-- TriggerEvent
+						Netbeans_v1.0.x.java.lang.String "format" <-- TriggerEvent
+						Netbeans_v1.0.x.java.lang.String "name" <-- TriggerEvent
+						Netbeans_v1.0.x.java.lang.String "query" <-- CreateView
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CreateView
+						TableColumn "column" <-- ColumnCommand
+						JavaPrimitiveTypes.long "serialVersionUID" <-- ColumnCommand
+						JavaPrimitiveTypes.long "serialVersionUID" <-- ModifyColumn
+						JavaPrimitiveTypes.long "serialVersionUID" <-- RemoveColumn
+						Netbeans_v1.0.x.java.lang.String "newname" <-- RenameColumn
+						JavaPrimitiveTypes.long "serialVersionUID" <-- RenameColumn
+						Netbeans_v1.0.x.java.lang.String "NEW_NAME" <-- RenameTable
+						Netbeans_v1.0.x.java.lang.String "newname" <-- RenameTable
+						JavaPrimitiveTypes.long "serialVersionUID" <-- RenameTable
+						Netbeans_v1.0.x.java.lang.String "newname" <-- RenameView
+						JavaPrimitiveTypes.long "serialVersionUID" <-- RenameView
+					}
+					interface DDLCommand {
+						execute()
+						getCommand(): Netbeans_v1.0.x.java.lang.String
+						getObjectName(): Netbeans_v1.0.x.java.lang.String
+						getSpecification(): DatabaseSpecification
+						setObjectName(name : Netbeans_v1.0.x.java.lang.String)
+					}
+					Netbeans_v1.0.x.java.io.Serializable <|-- DBConnection
+					TableConstraintDescriptor <|-- CheckConstraintDescriptor
+					ProcedureDescriptor <|-- FunctionDescriptor
+					DDLCommand <|-- CreateTriggerCommand
+				}
+			}
+		}
+	}
+}
+@enduml

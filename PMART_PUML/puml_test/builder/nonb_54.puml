@@ -1,0 +1,33 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Pretty Printer extension mechanism for Elixir 2.4
+			'@author    Chris Seguin
+			class PrettyPrinterExtension {
+				<<Create>> PrettyPrinterExtension()
+				'Removes the extension mechanism
+				'@return    Always returns true
+				destroy(): JavaPrimitiveTypes.boolean
+				'Gets the CardName attribute of the PrettyPrinterExtension object
+				'@return    The CardName value
+				getCardName(): java.lang.String
+				'Gets the Name attribute of the PrettyPrinterExtension object
+				'@return    The Name value
+				getName(): java.lang.String
+				'Gets the ReleaseNo attribute of the PrettyPrinterExtension object
+				'@return    The ReleaseNo value
+				getReleaseNo(): JavaPrimitiveTypes.int
+				'Gets the Version attribute of the PrettyPrinterExtension object
+				'@return    The Version value
+				getVersion(): java.lang.String
+				'Initializes the extension
+				'@param args  the arguments
+				'@return       true if installed
+				init(args : java.lang.String): JavaPrimitiveTypes.boolean
+			}
+		}
+	}
+	Builder.nonbuilder.IExtension <|-- Builder.nonbuilder.PrettyPrinterExtension
+}
+@enduml

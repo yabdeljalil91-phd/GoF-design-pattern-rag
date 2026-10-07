@@ -1,0 +1,38 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			class TokenEntry {
+				{const} EOF: TokenEntry
+				-{static} TokenCount: JavaPrimitiveTypes.int
+				-{const} Tokens: java.util.Map
+				-beginLine: JavaPrimitiveTypes.int
+				-hashCode: JavaPrimitiveTypes.int
+				-identifier: JavaPrimitiveTypes.int
+				-index: JavaPrimitiveTypes.int
+				-tokenSrcID: java.lang.String
+				-<<Create>> TokenEntry()
+				<<Create>> TokenEntry(image : java.lang.String, tokenSrcID : java.lang.String, beginLine : JavaPrimitiveTypes.int)
+				{static} clearImages()
+				compareTo(o : java.lang.Object): JavaPrimitiveTypes.int
+				equals(o : java.lang.Object): JavaPrimitiveTypes.boolean
+				getBeginLine(): JavaPrimitiveTypes.int
+				{static} getEOF(): TokenEntry
+				getIdentifier(): JavaPrimitiveTypes.int
+				getIndex(): JavaPrimitiveTypes.int
+				getTokenSrcID(): java.lang.String
+				hashCode(): JavaPrimitiveTypes.int
+				setHashCode(hashCode : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	java.lang.Comparable <|.. Factory_method.nonfactorymethod.TokenEntry
+	JavaPrimitiveTypes.int "TokenCount" <-- Factory_method.nonfactorymethod.TokenEntry
+	java.util.Map "Tokens" <-- Factory_method.nonfactorymethod.TokenEntry
+	JavaPrimitiveTypes.int "beginLine" <-- Factory_method.nonfactorymethod.TokenEntry
+	JavaPrimitiveTypes.int "hashCode" <-- Factory_method.nonfactorymethod.TokenEntry
+	JavaPrimitiveTypes.int "identifier" <-- Factory_method.nonfactorymethod.TokenEntry
+	JavaPrimitiveTypes.int "index" <-- Factory_method.nonfactorymethod.TokenEntry
+	java.lang.String "tokenSrcID" <-- Factory_method.nonfactorymethod.TokenEntry
+}
+@enduml

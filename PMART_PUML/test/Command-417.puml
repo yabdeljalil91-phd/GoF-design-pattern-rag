@@ -1,0 +1,166 @@
+@startuml
+package "DrJava v20030203" as DrJava_v20030203 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package definitions {
+							class DefinitionsDocument {
+								{const} DOCSTART: JavaPrimitiveTypes.int = 0
+								{const} ERROR_INDEX: JavaPrimitiveTypes.int = -1
+								-{const} MAX_CACHE_SIZE: JavaPrimitiveTypes.int = 10000
+								-_cacheInUse: JavaPrimitiveTypes.boolean
+								-_cachedLineNum: JavaPrimitiveTypes.int
+								-_cachedLocation: JavaPrimitiveTypes.int
+								-_cachedNextLineLoc: JavaPrimitiveTypes.int
+								-_cachedPrevLineLoc: JavaPrimitiveTypes.int
+								-_classFile: DrJava_v20030203.java.io.File
+								-_classFileInSync: JavaPrimitiveTypes.boolean
+								-_currentLocation: JavaPrimitiveTypes.int
+								-_file: DrJava_v20030203.java.io.File
+								-_helperCache: DrJava_v20030203.java.util.Hashtable
+								-_indent: JavaPrimitiveTypes.int
+								-_indenter: DrJava_v20030203.edu.rice.cs.drjava.model.definitions.indent.Indenter
+								-{static} _keywords: DrJava_v20030203.java.util.HashSet
+								-_modifiedSinceSave: JavaPrimitiveTypes.boolean
+								-{static} _normEndings: DrJava_v20030203.java.util.HashSet
+								-{static} _primTypes: DrJava_v20030203.java.util.HashSet
+								-_reduced: DrJava_v20030203.edu.rice.cs.drjava.model.definitions.reducedmodel.BraceReduction
+								-{static} _tabsRemoved: JavaPrimitiveTypes.boolean
+								-_timestamp: JavaPrimitiveTypes.long
+								<<Create>> DefinitionsDocument()
+								<<Create>> DefinitionsDocument(i : DrJava_v20030203.edu.rice.cs.drjava.model.definitions.indent.Indenter)
+								-_addCharToReducedModel(curChar : JavaPrimitiveTypes.char)
+								#_checkCache(key : DrJava_v20030203.java.lang.String): DrJava_v20030203.java.lang.Object
+								#_clearCache()
+								-_findKeywordAtToplevel(keyword : DrJava_v20030203.java.lang.String, text : DrJava_v20030203.java.lang.String, textOffset : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								#_getPackageQualifier(): DrJava_v20030203.java.lang.String
+								-_getRelativeLine(): JavaPrimitiveTypes.int
+								-_hasOnlySpaces(text : DrJava_v20030203.java.lang.String): JavaPrimitiveTypes.boolean
+								-_indentBlock(start : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int)
+								-_indentLine()
+								-_isCommentedOrSpace(i : JavaPrimitiveTypes.int, text : DrJava_v20030203.java.lang.String): JavaPrimitiveTypes.boolean
+								#_isEndOfComment(text : DrJava_v20030203.java.lang.String, pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								-_isNum(x : DrJava_v20030203.java.lang.String): JavaPrimitiveTypes.boolean
+								#_isStartOfComment(text : DrJava_v20030203.java.lang.String, pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								-_isType(x : DrJava_v20030203.java.lang.String): JavaPrimitiveTypes.boolean
+								-{static} _makeKeywords(): DrJava_v20030203.java.util.HashSet
+								-{static} _makeNormEndings(): DrJava_v20030203.java.util.HashSet
+								-{static} _makePrimTypes(): DrJava_v20030203.java.util.HashSet
+								_removeTabs(source : DrJava_v20030203.java.lang.String): DrJava_v20030203.java.lang.String
+								#_storeInCache(key : DrJava_v20030203.java.lang.String, result : DrJava_v20030203.java.lang.Object)
+								-_styleChanged()
+								balanceBackward(): JavaPrimitiveTypes.int
+								balanceForward(): JavaPrimitiveTypes.int
+								findCharOnLine(pos : JavaPrimitiveTypes.int, findChar : JavaPrimitiveTypes.char): JavaPrimitiveTypes.int
+								findPrevCharPos(pos : JavaPrimitiveTypes.int, whitespace : JavaPrimitiveTypes.char): JavaPrimitiveTypes.int
+								findPrevDelimiter(pos : JavaPrimitiveTypes.int, delims : JavaPrimitiveTypes.char): JavaPrimitiveTypes.int
+								findPrevDelimiter(pos : JavaPrimitiveTypes.int, delims : JavaPrimitiveTypes.char, skipParenPhrases : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.int
+								findPrevNonWSCharPos(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								getCachedClassFile(): DrJava_v20030203.java.io.File
+								getClassFileInSync(): JavaPrimitiveTypes.boolean
+								getCurrentCol(): JavaPrimitiveTypes.int
+								getCurrentLine(): JavaPrimitiveTypes.int
+								getCurrentLocation(): JavaPrimitiveTypes.int
+								getEnclosingTopLevelClassName(pos : JavaPrimitiveTypes.int): DrJava_v20030203.java.lang.String
+								getFile(): DrJava_v20030203.java.io.File
+								getFilename(): DrJava_v20030203.java.lang.String
+								getFirstNonWSCharPos(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								getFirstNonWSCharPos(pos : JavaPrimitiveTypes.int, whitespace : JavaPrimitiveTypes.char): JavaPrimitiveTypes.int
+								getFirstTopLevelClassName(): DrJava_v20030203.java.lang.String
+								getIndent(): JavaPrimitiveTypes.int
+								getIndentInformation(): DrJava_v20030203.edu.rice.cs.drjava.model.definitions.reducedmodel.IndentInfo
+								getIndentOfCurrStmt(pos : JavaPrimitiveTypes.int): DrJava_v20030203.java.lang.String
+								getIndentOfCurrStmt(pos : JavaPrimitiveTypes.int, delims : JavaPrimitiveTypes.char): DrJava_v20030203.java.lang.String
+								getLineEndPos(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								getLineFirstCharPos(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								getLineStartPos(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								getNextTopLevelClassName(startPos : JavaPrimitiveTypes.int, endPos : JavaPrimitiveTypes.int): DrJava_v20030203.java.lang.String
+								getOffset(lineNum : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								getPackageName(): DrJava_v20030203.java.lang.String
+								getQualifiedClassName(): DrJava_v20030203.java.lang.String
+								getQualifiedClassName(pos : JavaPrimitiveTypes.int): DrJava_v20030203.java.lang.String
+								getReduced(): DrJava_v20030203.edu.rice.cs.drjava.model.definitions.reducedmodel.BraceReduction
+								getStateAtCurrent(): DrJava_v20030203.edu.rice.cs.drjava.model.definitions.reducedmodel.ReducedModelState
+								getTimestamp(): JavaPrimitiveTypes.long
+								getWhiteSpace(): JavaPrimitiveTypes.int
+								-getWhiteSpaceBetween(relStart : JavaPrimitiveTypes.int, relEnd : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								gotoLine(line : JavaPrimitiveTypes.int)
+								indentLines(selStart : JavaPrimitiveTypes.int, selEnd : JavaPrimitiveTypes.int)
+								insertString(offset : JavaPrimitiveTypes.int, str : DrJava_v20030203.java.lang.String, a : DrJava_v20030203.javax.swing.text.AttributeSet)
+								#insertUpdate(chng : DrJava_v20030203.javax.swing.text.AbstractDocument.DefaultDocumentEvent, attr : DrJava_v20030203.javax.swing.text.AttributeSet)
+								isModifiedOnDisk(): JavaPrimitiveTypes.boolean
+								isModifiedSinceSave(): JavaPrimitiveTypes.boolean
+								isUntitled(): JavaPrimitiveTypes.boolean
+								move(dist : JavaPrimitiveTypes.int)
+								posInParenPhrase(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								posInParenPhrase(): JavaPrimitiveTypes.boolean
+								#posNotInBlock(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								remove(offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int)
+								#removeUpdate(chng : DrJava_v20030203.javax.swing.text.AbstractDocument.DefaultDocumentEvent)
+								resetModification()
+								resetReducedModelLocation()
+								setCachedClassFile(classFile : DrJava_v20030203.java.io.File)
+								setClassFileInSync(inSync : JavaPrimitiveTypes.boolean)
+								setCurrentLocation(loc : JavaPrimitiveTypes.int)
+								setFile(file : DrJava_v20030203.java.io.File)
+								setIndent(indent : JavaPrimitiveTypes.int)
+								setModifiedSinceSave()
+								setTab(tab : DrJava_v20030203.java.lang.String, pos : JavaPrimitiveTypes.int)
+								stateAtRelLocation(dist : JavaPrimitiveTypes.int): DrJava_v20030203.edu.rice.cs.drjava.model.definitions.reducedmodel.ReducedModelState
+								tab(tab : JavaPrimitiveTypes.int, distToPrevNewline : JavaPrimitiveTypes.int)
+								tabsRemoved(): JavaPrimitiveTypes.boolean
+							}
+							DrJava_v20030203.javax.swing.text.PlainDocument <|-- DefinitionsDocument
+							DrJava_v20030203.edu.rice.cs.drjava.config.OptionConstants <|.. DefinitionsDocument
+							JavaPrimitiveTypes.int "DOCSTART" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "ERROR_INDEX" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "MAX_CACHE_SIZE" <-- DefinitionsDocument
+							JavaPrimitiveTypes.boolean "_cacheInUse" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_cachedLineNum" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_cachedLocation" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_cachedNextLineLoc" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_cachedPrevLineLoc" <-- DefinitionsDocument
+							DrJava_v20030203.java.io.File "_classFile" <-- DefinitionsDocument
+							JavaPrimitiveTypes.boolean "_classFileInSync" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_currentLocation" <-- DefinitionsDocument
+							DrJava_v20030203.java.io.File "_file" <-- DefinitionsDocument
+							DrJava_v20030203.java.util.Hashtable "_helperCache" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_indent" <-- DefinitionsDocument
+							DrJava_v20030203.edu.rice.cs.drjava.model.definitions.indent.Indenter "_indenter" <-- DefinitionsDocument
+							DrJava_v20030203.java.util.HashSet "_keywords" <-- DefinitionsDocument
+							JavaPrimitiveTypes.boolean "_modifiedSinceSave" <-- DefinitionsDocument
+							DrJava_v20030203.java.util.HashSet "_normEndings" <-- DefinitionsDocument
+							DrJava_v20030203.java.util.HashSet "_primTypes" <-- DefinitionsDocument
+							DrJava_v20030203.edu.rice.cs.drjava.model.definitions.reducedmodel.BraceReduction "_reduced" <-- DefinitionsDocument
+							JavaPrimitiveTypes.boolean "_tabsRemoved" <-- DefinitionsDocument
+							JavaPrimitiveTypes.long "_timestamp" <-- DefinitionsDocument
+							DrJava_v20030203.java.lang.Runnable "_redoCommand" <-- CommandUndoableEdit
+							DrJava_v20030203.java.lang.Runnable "_undoCommand" <-- CommandUndoableEdit
+							JavaPrimitiveTypes.int "_offset" <-- InsertCommand
+							DrJava_v20030203.java.lang.String "_text" <-- InsertCommand
+							JavaPrimitiveTypes.int "_length" <-- RemoveCommand
+							JavaPrimitiveTypes.int "_offset" <-- RemoveCommand
+						}
+					}
+				}
+			}
+		}
+	}
+	package javax {
+		package swing {
+			package undo {
+				class AbstractUndoableEdit {
+				}
+			}
+		}
+	}
+	package java {
+		package lang {
+			interface Runnable {
+			}
+		}
+	}
+}
+@enduml

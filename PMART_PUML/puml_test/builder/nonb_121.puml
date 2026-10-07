@@ -1,0 +1,38 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Adds the tags as they are required by the pretty.settings file.
+			'@author    Chris Seguin
+			class RequiredTags {
+				arguments: java.lang.Object [*]
+				-{static} tags: RequiredTags
+				'Constructor for the RequiredTags object
+				-<<Create>> RequiredTags()
+				'Adds a particular tag
+				'@param bundle  the file settings
+				'@param tag     the tag we are about to add
+				'@param name    the name of the object
+				'@param jdi     the java doc holder
+				-add(bundle : FileSettings, tag : java.lang.String, name : java.lang.String, jdi : JavaDocableImpl)
+				'Adds a normal tag to the javadoc comment
+				'@param bundle  the pretty.settings bundle
+				'@param tag     the tag we are adding
+				'@param name    the name of the object
+				'@param jdi     the javadoc comment holder
+				-addNormalTag(bundle : FileSettings, tag : java.lang.String, name : java.lang.String, jdi : JavaDocableImpl)
+				'Adds the tags that are required for this object
+				'@param bundle  the pretty printer bundle
+				'@param key     the key for this object (class for classes and interfaces,method for methods and constructors, or field)
+				'@param name    the name of the object
+				'@param jdi     the javadoc tag holder
+				addTags(bundle : FileSettings, key : java.lang.String, name : java.lang.String, jdi : JavaDocableImpl)
+				'Gets the Tagger attribute of the RequiredTags class
+				'@return    The Tagger value
+				{static} getTagger(): RequiredTags
+			}
+		}
+	}
+	java.lang.Object "arguments 0..*" <-- Builder.nonbuilder.RequiredTags
+}
+@enduml

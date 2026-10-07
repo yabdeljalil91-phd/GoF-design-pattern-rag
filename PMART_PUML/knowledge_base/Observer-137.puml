@@ -1,0 +1,111 @@
+@startuml
+'Design pattern Observer
+package "PMD v1.8" as PMD_v1.8 {
+	package net {
+		package sourceforge {
+			package pmd {
+				'DP role: observer
+				interface ReportListener {
+					metricAdded(metric : PMD_v1.8.net.sourceforge.pmd.stat.Metric)
+					ruleViolationAdded(ruleViolation : RuleViolation)
+				}
+				'DP role: concreteSubject
+				class Report {
+					-errors: PMD_v1.8.java.util.List
+					-listeners: PMD_v1.8.java.util.List
+					-metrics: PMD_v1.8.java.util.Set
+					-violations: PMD_v1.8.java.util.Set
+					<<Create>> Report()
+					addError(error : ProcessingError)
+					addListener(listener : ReportListener)
+					addMetric(metric : PMD_v1.8.net.sourceforge.pmd.stat.Metric)
+					addRuleViolation(violation : RuleViolation)
+					errors(): PMD_v1.8.java.util.Iterator
+					getSummary(): PMD_v1.8.java.util.Map
+					hasMetrics(): JavaPrimitiveTypes.boolean
+					isEmpty(): JavaPrimitiveTypes.boolean
+					iterator(): PMD_v1.8.java.util.Iterator
+					metrics(): PMD_v1.8.java.util.Iterator
+					size(): JavaPrimitiveTypes.int
+				}
+				PMD_v1.8.java.lang.String "description" <-- RuleViolation
+				PMD_v1.8.java.lang.String "filename" <-- RuleViolation
+				JavaPrimitiveTypes.int "line" <-- RuleViolation
+				JavaPrimitiveTypes.int "LOWEST_PRIORITY" <-- Rule
+				PMD_v1.8.java.lang.String "PRIORITIES 0..*" <-- Rule
+				PMD_v1.8.java.util.List "errors" <-- Report
+				PMD_v1.8.java.util.List "listeners" <-- Report
+				PMD_v1.8.java.util.Set "metrics" <-- Report
+				PMD_v1.8.java.util.Set "violations" <-- Report
+				PMD_v1.8.java.lang.String "file" <-- ProcessingError
+				PMD_v1.8.java.lang.String "msg" <-- ProcessingError
+				Report "report" <-- RuleContext
+				PMD_v1.8.java.lang.String "sourceCodeFilename" <-- RuleContext
+				Rule "rule" <-- RuleViolation
+				PMD_v1.8.java.lang.ClassLoader "classLoader" <-- RuleSetFactory
+				PMD_v1.8.java.lang.String "description" <-- RuleSet
+				PMD_v1.8.java.lang.String "m_fileName" <-- RuleSet
+				JavaPrimitiveTypes.boolean "m_include" <-- RuleSet
+				PMD_v1.8.java.lang.String "name" <-- RuleSet
+				PMD_v1.8.java.util.Set "rules" <-- RuleSet
+			}
+		}
+	}
+	package test {
+		package net {
+			package sourceforge {
+				package pmd {
+					package rules {
+						package design {
+							'DP role: concreteObserver
+							class UseSingletonRuleTest {
+								-{const} TEST1: PMD_v1.8.java.lang.String
+								-{const} TEST2: PMD_v1.8.java.lang.String
+								-{const} TEST3: PMD_v1.8.java.lang.String
+								-{const} TEST4: PMD_v1.8.java.lang.String
+								-{const} TEST5: PMD_v1.8.java.lang.String
+								-{const} TEST6: PMD_v1.8.java.lang.String
+								-{const} TEST7: PMD_v1.8.java.lang.String
+								-callbacks: JavaPrimitiveTypes.int
+								<<Create>> UseSingletonRuleTest()
+								metricAdded(metric : PMD_v1.8.net.sourceforge.pmd.stat.Metric)
+								ruleViolationAdded(ruleViolation : PMD_v1.8.net.sourceforge.pmd.RuleViolation)
+								testAll()
+								testResetState()
+							}
+							PMD_v1.8.test.net.sourceforge.pmd.testframework.SimpleAggregatorTst <|-- UseSingletonRuleTest
+							PMD_v1.8.net.sourceforge.pmd.ReportListener <|.. UseSingletonRuleTest
+							PMD_v1.8.java.lang.String "TEST1" <-- UseSingletonRuleTest
+							PMD_v1.8.java.lang.String "TEST2" <-- UseSingletonRuleTest
+							PMD_v1.8.java.lang.String "TEST3" <-- UseSingletonRuleTest
+							PMD_v1.8.java.lang.String "TEST4" <-- UseSingletonRuleTest
+							PMD_v1.8.java.lang.String "TEST5" <-- UseSingletonRuleTest
+							PMD_v1.8.java.lang.String "TEST6" <-- UseSingletonRuleTest
+							PMD_v1.8.java.lang.String "TEST7" <-- UseSingletonRuleTest
+							JavaPrimitiveTypes.int "callbacks" <-- UseSingletonRuleTest
+						}
+					}
+					'DP role: concreteObserver
+					class ReportTest {
+						-metricSemaphore: JavaPrimitiveTypes.boolean
+						-violationSemaphore: JavaPrimitiveTypes.boolean
+						<<Create>> ReportTest()
+						metricAdded(metric : PMD_v1.8.net.sourceforge.pmd.stat.Metric)
+						ruleViolationAdded(ruleViolation : PMD_v1.8.net.sourceforge.pmd.RuleViolation)
+						testBasic()
+						testListener()
+						testMetric0()
+						testMetric1()
+						testSortedReport_File()
+						testSortedReport_Line()
+						testSummary()
+					}
+					PMD_v1.8.net.sourceforge.pmd.ReportListener <|.. ReportTest
+					JavaPrimitiveTypes.boolean "metricSemaphore" <-- ReportTest
+					JavaPrimitiveTypes.boolean "violationSemaphore" <-- ReportTest
+				}
+			}
+		}
+	}
+}
+@enduml

@@ -1,0 +1,134 @@
+@startuml
+' Design pattern: Adapter (primary instance + contextual noise separated)
+
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+
+	package org {
+		package acm {
+			package seguin {
+
+				package uml {
+
+					'========================
+					' CLIENT (UI CONTEXT)
+					'========================
+					class UMLPopupMenu {
+						' DP role: Client (contextual)
+						' Responsibility: Builds popup menu and triggers actions (indirect use of adapters)
+						-activeComponent: JRefactory_v2.6.24.javax.swing.JPanel
+						-current: UMLPackage
+						-popupMenu: JRefactory_v2.6.24.javax.swing.JPopupMenu
+
+						<<Create>> UMLPopupMenu(top : UMLPackage, init : JRefactory_v2.6.24.javax.swing.JPanel)
+
+						-addFieldRefactorings(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu)
+						-addMethodRefactorings(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu)
+						#addRefactorings(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu)
+						-addTypeRefactorings(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu)
+
+						#createPopupMenu(): JRefactory_v2.6.24.javax.swing.JPopupMenu
+						getMenu(): JRefactory_v2.6.24.javax.swing.JPopupMenu
+
+						#getMetricsMenu(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu): JRefactory_v2.6.24.javax.swing.JMenuItem
+
+						-getType(): UMLType
+						-getTypeSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+					}
+
+					'========================
+					' CONTEXTUAL ADAPTEE (NOT CORE ADAPTER INSTANCE)
+					'========================
+					class UMLPackage {
+						' DP role: Adaptee (contextual subsystem)
+						' Responsibility: UML model manipulation and navigation
+					}
+
+					' Key relations (context)
+					UMLPackage "current" <-- UMLPopupMenu : client uses UML model
+					JRefactory_v2.6.24.javax.swing.JPanel "activeComponent" <-- UMLPopupMenu
+					JRefactory_v2.6.24.javax.swing.JPopupMenu "popupMenu" <-- UMLPopupMenu
+
+					' Structural inheritance (kept for graph completeness)
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.LinedPanel <|-- UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.io.Saveable <|.. UMLPackage
+
+				}
+
+				package ide {
+					package common {
+
+						'========================
+						' ADAPTER (CORE PATTERN)
+						'========================
+						class SourceBrowserAdapter {
+							' DP role: Adapter
+							' Responsibility: Converts ActionListener events into source navigation operations
+							-activeComponent: JRefactory_v2.6.24.org.acm.seguin.uml.ISourceful
+
+							<<Create>> SourceBrowserAdapter(component : JRefactory_v2.6.24.org.acm.seguin.uml.ISourceful)
+
+							' Key adaptation: event -> SourceBrowser.gotoSource(file, line)
+							actionPerformed(evt : JRefactory_v2.6.24.java.awt.event.ActionEvent)
+
+							#findFile(): JRefactory_v2.6.24.java.io.File
+							#getLine(): JavaPrimitiveTypes.int
+							#getSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.Summary
+						}
+
+						'========================
+						' ADAPTEE
+						'========================
+						abstract class SourceBrowser {
+							' DP role: Adaptee
+							' Responsibility: Low-level service for browsing source files
+							-{static} singleton: SourceBrowser
+
+							<<Create>> SourceBrowser()
+
+							canBrowseSource(): JavaPrimitiveTypes.boolean
+							{static} get(): SourceBrowser
+
+							' Core operation used by Adapter
+							gotoSource(file : JRefactory_v2.6.24.java.io.File, line : JavaPrimitiveTypes.int)
+
+							{static} set(value : SourceBrowser)
+						}
+
+						'========================
+						' TARGET INTERFACE RELATION
+						'========================
+						JRefactory_v2.6.24.java.awt.event.ActionListener <|.. SourceBrowserAdapter 
+						: implements Target (strong Adapter signal)
+
+						'========================
+						' DELEGATION LINKS
+						'========================
+						JRefactory_v2.6.24.org.acm.seguin.uml.ISourceful "activeComponent" <-- SourceBrowserAdapter 
+						: context object for adaptation
+
+					}
+				}
+			}
+		}
+	}
+
+	package java {
+		package awt {
+			package event {
+
+				'========================
+				' TARGET
+				'========================
+				interface ActionListener {
+					' DP role: Target
+					' Responsibility: Defines expected interface for event handling
+					actionPerformed(e : ActionEvent)
+				}
+
+				JRefactory_v2.6.24.java.util.EventListener <|-- ActionListener
+
+			}
+		}
+	}
+}
+@enduml

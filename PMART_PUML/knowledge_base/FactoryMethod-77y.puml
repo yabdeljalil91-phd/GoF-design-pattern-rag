@@ -1,0 +1,188 @@
+@startuml
+'------------------------------------------------------
+' Factory Method & Template Method - JHotDraw v5.1
+' Optimized for Design Pattern Detection by LLM
+'------------------------------------------------------
+
+package "JHotDraw v5.1" {
+
+    '---------------------------
+    ' Framework
+    '---------------------------
+    package framework {
+        interface Connector <<product>> {
+            +containsPoint(x:int, y:int): boolean
+            +displayBox(): Rectangle
+            +draw(g:Graphics)
+            +findEnd(connection:ConnectionFigure): Point
+            +findStart(connection:ConnectionFigure): Point
+            +owner(): Figure
+        }
+
+        interface Figure <<creator>> {
+            +connectorAt(x:int, y:int): Connector <<FactoryMethod>>
+            +addFigureChangeListener(l:FigureChangeListener)
+            +addToContainer(c:FigureChangeListener)
+            +basicDisplayBox(origin:Point, corner:Point)
+            +canConnect(): boolean
+            +center(): Point
+            +changed()
+            +clone(): Object
+            +connectedTextLocator(text:Figure): Locator
+            +connectionInsets(): Insets
+            +connectorVisibility(isVisible:boolean)
+            +containsPoint(x:int, y:int): boolean
+            +decompose(): FigureEnumeration
+            +displayBox(): Rectangle
+            +displayBox(origin:Point, corner:Point)
+            +displayBox(r:Rectangle)
+            +draw(g:Graphics)
+            +figures(): FigureEnumeration
+            +findFigureInside(x:int, y:int): Figure
+            +getAttribute(name:String): Object
+            +handles(): Vector
+            +includes(figure:Figure): boolean
+            +invalidate()
+            +isEmpty(): boolean
+            +listener(): FigureChangeListener
+            +moveBy(dx:int, dy:int)
+            +release()
+            +removeFigureChangeListener(l:FigureChangeListener)
+            +removeFromContainer(c:FigureChangeListener)
+            +setAttribute(name:String, value:Object)
+            +size(): Dimension
+            +willChange()
+        }
+
+        abstract class AbstractConnector <<abstractProduct>> {
+            -serialVersionUID: long
+            #fOwner: Figure
+        }
+
+        abstract class AbstractFigure <<abstractCreator>> {
+            -abstractFigureSerializedDataVersion: int
+            #fListener: FigureChangeListener
+            -serialVersionUID: long
+            #basicMoveBy(dx:int, dy:int) <<TemplateMethod>>
+            +basicDisplayBox(origin:Point, corner:Point) <<TemplateMethod>>
+        }
+
+        interface FigureChangeListener
+        interface FigureChangeEvent
+        interface Locator
+        interface FigureEnumeration
+    }
+
+    '---------------------------
+    ' Standard Connectors and Figures
+    '---------------------------
+    package standard {
+
+        class ChopBoxConnector <<concreteProduct>> {
+            -serialVersionUID: long
+            +ChopBoxConnector()
+            +ChopBoxConnector(owner:Figure)
+            #chop(target:Figure, from:Point): Point
+            +findEnd(connection:ConnectionFigure): Point
+            +findStart(connection:ConnectionFigure): Point
+        }
+
+        class LocatorConnector <<concreteProduct>> {
+            -fLocator: Locator
+            -locatorConnectorSerializedDataVersion: int
+            -serialVersionUID: long
+            +LocatorConnector()
+            +LocatorConnector(owner:Figure, l:Locator)
+            +containsPoint(x:int, y:int): boolean
+            +displayBox(): Rectangle
+            +draw(g:Graphics)
+            #locate(connection:ConnectionFigure): Point
+            +read(dr:StorableInput)
+            +write(dw:StorableOutput)
+        }
+
+        abstract class AttributeFigure <<concreteCreator>> {
+        }
+
+        class EllipseFigure <<concreteCreator>> {
+            -ellipseFigureSerializedDataVersion: int
+            -fDisplayBox: Rectangle
+            -serialVersionUID: long
+            +EllipseFigure()
+            +EllipseFigure(origin:Point, corner:Point)
+        }
+
+        class RoundRectangleFigure <<concreteCreator>> {
+            -DEFAULT_ARC: int
+            -fArcHeight: int
+            -fArcWidth: int
+            -fDisplayBox: Rectangle
+            -roundRectangleSerializedDataVersion: int
+            -serialVersionUID: long
+            +RoundRectangleFigure()
+            +RoundRectangleFigure(origin:Point, corner:Point)
+        }
+
+        class PolyLineFigure <<concreteCreator>> {
+            -ARROW_TIP_BOTH: int
+            -ARROW_TIP_END: int
+            -ARROW_TIP_NONE: int
+            -ARROW_TIP_START: int
+            -fEndDecoration: LineDecoration
+            -fFrameColor: Color
+            -fPoints: Vector
+            -fStartDecoration: LineDecoration
+            -polyLineFigureSerializedDataVersion: int
+            -serialVersionUID: long
+            +PolyLineFigure()
+            +PolyLineFigure(size:int)
+            +PolyLineFigure(x:int, y:int)
+            +addPoint(x:int, y:int)
+        }
+    }
+
+    '---------------------------
+    ' Contrib (Polygons)
+    '---------------------------
+    package contrib {
+        class ChopPolygonConnector <<concreteProduct>> {
+            -serialVersionUID: long
+            +ChopPolygonConnector()
+            +ChopPolygonConnector(owner:Figure)
+            #chop(target:Figure, from:Point): Point
+        }
+
+        class PolygonFigure <<concreteCreator>> {
+            -TOO_CLOSE: int
+            -fPoly: Polygon
+            -polygonFigureSerializedDataVersion: int
+            -serialVersionUID: long
+            +PolygonFigure()
+            +PolygonFigure(x:int, y:int)
+            +PolygonFigure(p:Polygon)
+            +addPoint(x:int, y:int)
+        }
+    }
+
+    '---------------------------
+    ' Inheritance & Realizations
+    '---------------------------
+    AbstractConnector <|-- ChopBoxConnector
+    AbstractConnector <|-- LocatorConnector
+    AbstractFigure <|-- AttributeFigure
+    AttributeFigure <|-- EllipseFigure
+    AttributeFigure <|-- RoundRectangleFigure
+    AbstractFigure <|-- PolyLineFigure
+    ChopBoxConnector <|-- ChopPolygonConnector
+    Figure <|.. AbstractConnector
+    Figure <|.. AbstractFigure
+    AttributeFigure <|-- PolygonFigure
+
+    '---------------------------
+    ' Factory Associations (explicit)
+    '---------------------------
+    Figure "1" o-- "0..*" Connector : creates
+    AbstractFigure "1" o-- "0..*" AbstractConnector : creates
+    Figure "1" o-- "0..*" LocatorConnector : creates
+}
+@enduml

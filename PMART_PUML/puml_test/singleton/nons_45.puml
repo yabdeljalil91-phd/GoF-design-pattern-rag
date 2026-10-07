@@ -1,0 +1,40 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package nonsingleton {
+			'A Figure that shows an Image. Images shown by an image figure are shared by using the Iconkit.
+			'@see Iconkit
+			class ImageFigure {
+				-fDisplayBox: java.awt.Rectangle
+				-fFileName: java.lang.String
+				-fImage: java.awt.Image
+				-imageFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 148012030121282439
+				<<Create>> ImageFigure()
+				<<Create>> ImageFigure(image : java.awt.Image, fileName : java.lang.String, origin : java.awt.Point)
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				displayBox(): java.awt.Rectangle
+				draw(g : java.awt.Graphics)
+				-drawGhost(g : java.awt.Graphics)
+				handles(): java.util.Vector
+				'Handles asynchroneous image updates.
+				imageUpdate(img : java.awt.Image, flags : JavaPrimitiveTypes.int, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, w : JavaPrimitiveTypes.int, h : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				'Reads the ImageFigure from a StorableInput. It registers the referenced figure to be loaded from the Iconkit.
+				'@see Iconkit#registerImage
+				read(dr : StorableInput)
+				-readObject(s : java.io.ObjectInputStream)
+				'Writes the ImageFigure to a StorableOutput. Only a reference to the image, that is its pathname is saved.
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	java.awt.image.ImageObserver <|.. Singleton.nonsingleton.ImageFigure
+	Singleton.nonsingleton.AttributeFigure <|-- Singleton.nonsingleton.ImageFigure
+	java.awt.Rectangle "fDisplayBox" <-- Singleton.nonsingleton.ImageFigure
+	java.lang.String "fFileName" <-- Singleton.nonsingleton.ImageFigure
+	java.awt.Image "fImage" <-- Singleton.nonsingleton.ImageFigure
+	JavaPrimitiveTypes.int "imageFigureSerializedDataVersion" <-- Singleton.nonsingleton.ImageFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Singleton.nonsingleton.ImageFigure
+}
+@enduml

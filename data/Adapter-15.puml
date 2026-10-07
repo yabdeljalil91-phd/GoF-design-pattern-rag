@@ -1,0 +1,173 @@
+@startuml
+' Design pattern: Adapter (explicit and strengthened for RAG)
+
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+
+	package org {
+		package acm {
+			package seguin {
+
+				package ide {
+					package command {
+
+						'========================
+						' CLIENT
+						'========================
+						class CommandLineMenu {
+							' DP role: Client
+							' Responsibility: Builds UI menus and binds actions (uses adapters)
+							<<Create>> CommandLineMenu()
+
+							-createEditMenu(): JRefactory_v2.6.24.javax.swing.JMenu
+							-createFileMenu(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenu
+							-createZoomMenu(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenu
+
+							' Entry point for attaching ActionListener (Adapter)
+							getMenuBar(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenuBar
+						}
+
+						'========================
+						' ADAPTER
+						'========================
+						class ZoomAdapter {
+							' DP role: Adapter
+							' Responsibility: Translates ActionListener events into scaling operations on LinedPanel (Adaptee)
+							-panel: JRefactory_v2.6.24.org.acm.seguin.uml.line.LinedPanel
+							-scale: JavaPrimitiveTypes.double
+
+							<<Create>> ZoomAdapter(panel : JRefactory_v2.6.24.org.acm.seguin.uml.line.LinedPanel, scale : JavaPrimitiveTypes.double)
+
+							' Key adaptation method: event -> panel.scale()
+							actionPerformed(evt : JRefactory_v2.6.24.java.awt.event.ActionEvent)
+						}
+
+						'========================
+						' TARGET RELATION
+						'========================
+						JRefactory_v2.6.24.java.awt.event.ActionListener <|.. ZoomAdapter : implements Target (Adapter pattern)
+
+						'========================
+						' ASSOCIATION / DELEGATION
+						'========================
+						JRefactory_v2.6.24.org.acm.seguin.uml.line.LinedPanel "panel" <-- ZoomAdapter : delegates to Adaptee
+						JavaPrimitiveTypes.double "scale" <-- ZoomAdapter : parameter for adaptation
+
+					}
+				}
+
+				package uml {
+					package line {
+
+						'========================
+						' ADAPTEE
+						'========================
+						abstract class LinedPanel {
+							' DP role: Adaptee
+							' Responsibility: Provides scaling and graphical manipulation operations
+							-endPoints: JRefactory_v2.6.24.java.util.LinkedList
+							-lineList: JRefactory_v2.6.24.java.util.LinkedList
+
+							<<Create>> LinedPanel()
+							<<Create>> LinedPanel(doubleBuffered : JavaPrimitiveTypes.boolean)
+							<<Create>> LinedPanel(layout : JRefactory_v2.6.24.java.awt.LayoutManager)
+							<<Create>> LinedPanel(layout : JRefactory_v2.6.24.java.awt.LayoutManager, doubleBuffered : JavaPrimitiveTypes.boolean)
+
+							add(panel : EndPointPanel)
+							add(value : SegmentedLine)
+							clear()
+							deselectAll()
+
+							' Interaction logic
+							drag(point : JRefactory_v2.6.24.java.awt.Point)
+							drop()
+
+							#getEndPoints(): JRefactory_v2.6.24.java.util.Iterator
+							#getLines(): JRefactory_v2.6.24.java.util.Iterator
+
+							hit(point : JRefactory_v2.6.24.java.awt.Point)
+
+							' Core behavior used by Adapter
+							scale(value : JavaPrimitiveTypes.double)
+
+							shift(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						}
+
+						'========================
+						' INHERITANCE STRUCTURE
+						'========================
+						JRefactory_v2.6.24.javax.swing.JPanel <|-- LinedPanel : UI specialization (Adaptee hierarchy)
+						JRefactory_v2.6.24.javax.swing.JPanel <|-- ScalablePanel
+						ScalablePanel <|-- EndPointPanel
+
+						'========================
+						' OTHER RELATIONS (context)
+						'========================
+						JRefactory_v2.6.24.java.awt.event.ComponentListener <|.. SegmentedLine
+
+						JRefactory_v2.6.24.java.util.LinkedList "endPoints" <-- LinedPanel : aggregation
+						JRefactory_v2.6.24.java.util.LinkedList "lineList" <-- LinedPanel : aggregation
+
+						JavaPrimitiveTypes.int "absoluteHeight" <-- ScalablePanel
+						JavaPrimitiveTypes.int "absoluteWidth" <-- ScalablePanel
+						JavaPrimitiveTypes.int "absoluteX" <-- ScalablePanel
+						JavaPrimitiveTypes.int "absoluteY" <-- ScalablePanel
+
+						JavaPrimitiveTypes.boolean "inScaling" <-- ScalablePanel
+						JavaPrimitiveTypes.boolean "inShapeChange" <-- ScalablePanel
+						JavaPrimitiveTypes.double "scale" <-- ScalablePanel
+
+						JavaPrimitiveTypes.double "SHORT_BACK" <-- SegmentedLine
+						JavaPrimitiveTypes.int "Xs 0..*" <-- SegmentedLine
+						JavaPrimitiveTypes.int "Ys 0..*" <-- SegmentedLine
+						JavaPrimitiveTypes.int "activeVertex" <-- SegmentedLine
+
+						EndPointPanel "endPanel" <-- SegmentedLine
+						EndPointPanel "startPanel" <-- SegmentedLine
+
+						JavaPrimitiveTypes.double "scalingFactor" <-- SegmentedLine
+
+						Vertex "vertices 0..*" <-- SegmentedLine
+						Segment "workingSegment" <-- SegmentedLine
+
+						JavaPrimitiveTypes.boolean "activated" <-- Vertex
+						JRefactory_v2.6.24.java.awt.Point "computed" <-- Vertex
+						JavaPrimitiveTypes.double "near" <-- Vertex
+						JRefactory_v2.6.24.java.awt.Point "point" <-- Vertex
+						JavaPrimitiveTypes.boolean "rescaled" <-- Vertex
+						JavaPrimitiveTypes.double "scale" <-- Vertex
+						JavaPrimitiveTypes.boolean "selected" <-- Vertex
+						JavaPrimitiveTypes.int "vertexSize" <-- Vertex
+						JavaPrimitiveTypes.int "vertexSizeHalf" <-- Vertex
+
+						JavaPrimitiveTypes.double "A0" <-- Segment
+						JavaPrimitiveTypes.double "A1" <-- Segment
+						JavaPrimitiveTypes.double "B0" <-- Segment
+						JavaPrimitiveTypes.double "B1" <-- Segment
+						JavaPrimitiveTypes.double "m" <-- Segment
+
+					}
+				}
+			}
+		}
+	}
+
+	package java {
+		package awt {
+			package event {
+
+				'========================
+				' TARGET INTERFACE
+				'========================
+				interface ActionListener {
+					' DP role: Target
+					' Responsibility: Defines event-handling interface expected by UI
+					actionPerformed(e : ActionEvent)
+				}
+
+				JRefactory_v2.6.24.java.util.EventListener <|-- ActionListener
+
+			}
+		}
+	}
+}
+@enduml

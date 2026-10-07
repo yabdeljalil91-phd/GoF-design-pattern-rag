@@ -1,0 +1,27 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Factory for node viewers for Refactoring editor
+			'@author    Chris Seguin
+			class RefactoryNodeViewerFactory {
+				-{static} factory: RefactoryNodeViewerFactory
+				'Constructor for the RefactoryNodeViewerFactory object
+				-<<Create>> RefactoryNodeViewerFactory()
+				'Determines if this factory can view this type of file
+				'@param node  the type of file
+				'@return       true if it can be displayed
+				canDisplayNode(node : Node): JavaPrimitiveTypes.boolean
+				'Creates the node viewer
+				'@param context  the information about what is to be displayed
+				'@return          the viewer
+				createNodeViewer(context : Context): NodeViewer
+				'Gets the Factory attribute of the RefactoryNodeViewerFactory class
+				'@return    The Factory value
+				{static} getFactory(): RefactoryNodeViewerFactory
+			}
+		}
+	}
+	Builder.nonbuilder.NodeViewerFactory <|-- Builder.nonbuilder.RefactoryNodeViewerFactory
+}
+@enduml

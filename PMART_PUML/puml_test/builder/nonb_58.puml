@@ -1,0 +1,24 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Insert the type's description here. Creation date: (18/05/2000 1:30:33 AM)
+			'@author :
+			class Runtime {
+				'Runtime constructor comment.
+				<<Create>> Runtime()
+				'This method checks a directory to make sure it  exists. If it doesn't, it is created.
+				'@return java.io.File the ensured directory object.
+				'@param directory java.io.File the directory to ensure.
+				{const} ensureDirectory(directory : java.io.File): java.io.File
+				'This method checks a directory to make sure it  exists. If it doesn't, it is created.
+				'@return java.lang.String the absolute path to the ensured directory.
+				'@param directory java.lang.String the directory to ensure.
+				{const} ensureDirectory(directory : java.lang.String): java.lang.String
+				'Given any color, return white or black; whichever contrasts   better.  Constants taken from question 9 of the color faq at http://www.inforamp.net/~poynton/notes/colour_and_gamma/ColorFAQ.html
+				{const} getContrastingTextColor(c : java.awt.Color): java.awt.Color
+			}
+		}
+	}
+}
+@enduml

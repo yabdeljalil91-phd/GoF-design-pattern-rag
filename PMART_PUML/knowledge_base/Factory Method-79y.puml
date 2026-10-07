@@ -1,0 +1,115 @@
+@startuml
+'------------------------------------------------------
+' Factory Method & State - JHotDraw v5.1
+' Optimized for Design Pattern Detection by LLM
+'------------------------------------------------------
+
+package "JHotDraw v5.1" {
+
+    '---------------------------
+    ' Framework
+    '---------------------------
+    package framework {
+
+        interface Tool <<product>> {
+            +activate()
+            +deactivate()
+            +keyDown(evt:KeyEvent, key:int)
+            +mouseDown(e:MouseEvent, x:int, y:int)
+            +mouseDrag(e:MouseEvent, x:int, y:int)
+            +mouseMove(evt:MouseEvent, x:int, y:int)
+            +mouseUp(e:MouseEvent, x:int, y:int)
+        }
+
+        abstract class AbstractTool <<abstractProduct>> {
+            -fAnchorX:int
+            -fAnchorY:int
+            -fView:DrawingView
+        }
+
+        class DrawingView <<creator>> {
+        }
+
+        class DrawingChangeListener
+        class DrawingChangeEvent
+        class FigureChangeListener
+        class FigureChangeEvent
+        class Figure
+        class Locator
+        class Connector
+        class ConnectionFigure
+        class FigureEnumeration
+        class Painter
+
+    }
+
+    '---------------------------
+    ' Standard Tools
+    '---------------------------
+    package standard {
+
+        class HandleTracker <<concreteProduct>> {
+            -fAnchorHandle: Handle
+            <<Create>> HandleTracker(view:DrawingView, anchorHandle:Handle)
+            +mouseDown(e:MouseEvent, x:int, y:int)
+            +mouseDrag(e:MouseEvent, x:int, y:int)
+            +mouseUp(e:MouseEvent, x:int, y:int)
+        }
+
+        class DragTracker <<concreteProduct>> {
+            -fAnchorFigure: Figure
+            -fLastX:int
+            -fLastY:int
+            -fMoved:boolean
+            <<Create>> DragTracker(view:DrawingView, anchor:Figure)
+            +mouseDown(e:MouseEvent, x:int, y:int)
+            +mouseDrag(e:MouseEvent, x:int, y:int)
+        }
+
+        class SelectAreaTracker <<concreteProduct>> {
+            -fSelectGroup: Rectangle
+            <<Create>> SelectAreaTracker(view:DrawingView)
+            -drawXORRect(r:Rectangle)
+            -eraseRubberBand()
+            +mouseDown(e:MouseEvent, x:int, y:int)
+            +mouseDrag(e:MouseEvent, x:int, y:int)
+            +mouseUp(e:MouseEvent, x:int, y:int)
+            -rubberBand(x1:int, y1:int, x2:int, y2:int)
+            -selectGroup(toggle:boolean)
+        }
+
+        class SelectionTool <<concreteCreator>> {
+            -fChild: Tool
+            <<Create>> SelectionTool(view:DrawingView)
+            +createAreaTracker(view:DrawingView): Tool <<FactoryMethod>>
+            +createDragTracker(view:DrawingView, f:Figure): Tool <<FactoryMethod>>
+            +createHandleTracker(view:DrawingView, handle:Handle): Tool <<FactoryMethod>>
+            +mouseDown(e:MouseEvent, x:int, y:int)
+            +mouseDrag(e:MouseEvent, x:int, y:int)
+            +mouseUp(e:MouseEvent, x:int, y:int)
+        }
+
+    }
+
+    '---------------------------
+    ' Inheritance & Realizations
+    '---------------------------
+    AbstractTool <|-- HandleTracker
+    AbstractTool <|-- DragTracker
+    AbstractTool <|-- SelectAreaTracker
+    AbstractTool <|-- SelectionTool
+    Tool <|.. AbstractTool
+
+    '---------------------------
+    ' Associations (explicit creations)
+    '---------------------------
+    SelectionTool "1" o-- "0..*" Tool : creates
+    AbstractTool "1" o-- "0..*" Tool : creates
+    HandleTracker "1" o-- Handle
+    DragTracker "1" o-- Figure
+    SelectAreaTracker "1" o-- Rectangle
+    SelectionTool "1" o-- Tool : fChild
+    AbstractTool "1" o-- DrawingView : fView
+
+}
+@enduml

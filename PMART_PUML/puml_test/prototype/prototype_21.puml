@@ -1,0 +1,41 @@
+@startuml
+package dpd_jdt {
+	package Figure {
+		package name {
+			'A round rectangle figure.
+			'@see RadiusHandle
+			class RoundRectangleFigure {
+				-{const} DEFAULT_ARC: JavaPrimitiveTypes.int = 8
+				-fArcHeight: JavaPrimitiveTypes.int
+				-fArcWidth: JavaPrimitiveTypes.int
+				-fDisplayBox: java.awt.Rectangle
+				-roundRectangleSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 7907900248924036885
+				<<Create>> RoundRectangleFigure()
+				<<Create>> RoundRectangleFigure(origin : java.awt.Point, corner : java.awt.Point)
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				connectionInsets(): java.awt.Insets
+				connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Connector
+				displayBox(): java.awt.Rectangle
+				drawBackground(g : java.awt.Graphics)
+				drawFrame(g : java.awt.Graphics)
+				'Gets the arc's width and height.
+				getArc(): java.awt.Point
+				handles(): java.util.Vector
+				read(dr : StorableInput)
+				'Sets the arc's witdh and height.
+				setArc(width : JavaPrimitiveTypes.int, height : JavaPrimitiveTypes.int)
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	Figure.name.AttributeFigure <|-- Figure.name.RoundRectangleFigure
+	JavaPrimitiveTypes.int "DEFAULT_ARC" <-- Figure.name.RoundRectangleFigure
+	JavaPrimitiveTypes.int "fArcHeight" <-- Figure.name.RoundRectangleFigure
+	JavaPrimitiveTypes.int "fArcWidth" <-- Figure.name.RoundRectangleFigure
+	java.awt.Rectangle "fDisplayBox" <-- Figure.name.RoundRectangleFigure
+	JavaPrimitiveTypes.int "roundRectangleSerializedDataVersion" <-- Figure.name.RoundRectangleFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Figure.name.RoundRectangleFigure
+}
+@enduml

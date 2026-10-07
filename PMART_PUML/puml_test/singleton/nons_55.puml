@@ -1,0 +1,78 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package nonsingleton {
+			'A poly line figure consists of a list of points. It has an optional line decoration at the start and end.
+			'@see LineDecoration
+			class PolyLineFigure {
+				{const} ARROW_TIP_BOTH: JavaPrimitiveTypes.int = 3
+				{const} ARROW_TIP_END: JavaPrimitiveTypes.int = 2
+				{const} ARROW_TIP_NONE: JavaPrimitiveTypes.int = 0
+				{const} ARROW_TIP_START: JavaPrimitiveTypes.int = 1
+				#fEndDecoration: LineDecoration
+				#fFrameColor: java.awt.Color
+				#fPoints: java.util.Vector
+				#fStartDecoration: LineDecoration
+				-polyLineFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -7951352179906577773
+				<<Create>> PolyLineFigure()
+				<<Create>> PolyLineFigure(size : JavaPrimitiveTypes.int)
+				<<Create>> PolyLineFigure(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Adds a node to the list of points.
+				addPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				#basicMoveBy(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int)
+				connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Connector
+				containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				-decorate(g : java.awt.Graphics)
+				displayBox(): java.awt.Rectangle
+				draw(g : java.awt.Graphics)
+				'Gets the segment of the polyline that is hit by the given point.
+				'@return the index of the segment or -1 if no segment was hit.
+				findSegment(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+				'Gets the attribute with the given name. PolyLineFigure maps "ArrowMode"to a line decoration.
+				getAttribute(name : java.lang.String): java.lang.Object
+				#getFrameColor(): java.awt.Color
+				handles(): java.util.Vector
+				'Insert a node at the given point.
+				insertPointAt(p : java.awt.Point, i : JavaPrimitiveTypes.int)
+				isEmpty(): JavaPrimitiveTypes.boolean
+				'Joins to segments into one if the given point hits a node of the polyline.
+				'@return true if the two segments were joined.
+				joinSegments(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				'Creates a locator for the point with the given index.
+				{static} locator(pointIndex : JavaPrimitiveTypes.int): Locator
+				pointAt(i : JavaPrimitiveTypes.int): java.awt.Point
+				pointCount(): JavaPrimitiveTypes.int
+				points(): java.util.Enumeration
+				read(dr : StorableInput)
+				removePointAt(i : JavaPrimitiveTypes.int)
+				'Sets the attribute with the given name. PolyLineFigure interprets "ArrowMode"to set the line decoration.
+				setAttribute(name : java.lang.String, value : java.lang.Object)
+				'Sets the end decoration.
+				setEndDecoration(l : LineDecoration)
+				#setFrameColor(c : java.awt.Color)
+				'Changes the position of a node.
+				setPointAt(p : java.awt.Point, i : JavaPrimitiveTypes.int)
+				'Sets the start decoration.
+				setStartDecoration(l : LineDecoration)
+				'Splits the segment at the given point if a segment was hit.
+				'@return the index of the segment or -1 if no segment was hit.
+				splitSegment(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	Singleton.nonsingleton.AbstractFigure <|-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_BOTH" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_END" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_NONE" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_START" <-- Singleton.nonsingleton.PolyLineFigure
+	Singleton.nonsingleton.LineDecoration "fEndDecoration" <-- Singleton.nonsingleton.PolyLineFigure
+	java.awt.Color "fFrameColor" <-- Singleton.nonsingleton.PolyLineFigure
+	java.util.Vector "fPoints" <-- Singleton.nonsingleton.PolyLineFigure
+	Singleton.nonsingleton.LineDecoration "fStartDecoration" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "polyLineFigureSerializedDataVersion" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Singleton.nonsingleton.PolyLineFigure
+}
+@enduml

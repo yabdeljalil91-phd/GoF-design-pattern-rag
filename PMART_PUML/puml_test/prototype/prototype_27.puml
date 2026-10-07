@@ -1,0 +1,28 @@
+@startuml
+package dpd_jdt {
+	package Loader {
+		package name {
+			'BorderDecorator decorates an arbitrary Figure with a border.
+			class BorderDecorator {
+				-borderDecoratorSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 1205601808259084917
+				<<Create>> BorderDecorator()
+				<<Create>> BorderDecorator(figure : Figure)
+				-border(): java.awt.Point
+				connectionInsets(): java.awt.Insets
+				'Gets the displaybox including the border.
+				displayBox(): java.awt.Rectangle
+				'Draws a the figure and decorates it with a border.
+				draw(g : java.awt.Graphics)
+				'Invalidates the figure extended by its border.
+				figureInvalidated(e : FigureChangeEvent)
+			}
+		}
+	}
+	Loader.name.DecoratorFigure <|-- Loader.name.BorderDecorator
+	java.lang.Cloneable <|-- Loader.name.Figure
+	java.io.Serializable <|-- Loader.name.Figure
+	JavaPrimitiveTypes.int "borderDecoratorSerializedDataVersion" <-- Loader.name.BorderDecorator
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Loader.name.BorderDecorator
+}
+@enduml

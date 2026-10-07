@@ -1,0 +1,42 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'@class IconManager
+			'@date 08-20-2001
+			'@author Eric Crahen
+			'@version 1.0The IconManager provides a common way to relate and load images for any Component. Responisble for finding, resolving and loading the Images & Icons.
+			class IconManager {
+				-imageMap: java.util.HashMap
+				-{static} instance: IconManager
+				-resourceMap: java.util.WeakHashMap
+				-<<Create>> IconManager()
+				'Get an Icon for a Component. 
+				'@param String
+				'@return Image
+				getIconResource(comp : java.awt.Component, resourceName : java.lang.String): javax.swing.Icon
+				'Get an Image for a Component. Lazily start to load all registered images as well.
+				'@param String
+				'@return Image
+				getImageResource(comp : java.awt.Component, resourceName : java.lang.String): java.awt.Image
+				'Get an instance of the IconManager
+				'@return IconManager
+				{static} getInstance(): IconManager
+				'Given a resource name, load an image.
+				'@param String
+				'@return Image
+				#loadImageResource(resourceName : java.lang.String): java.awt.Image
+				'Register an image resource for this component. 
+				'@param Component 
+				'@param String
+				registerImageResource(comp : java.awt.Component, resourceName : java.lang.String)
+				'Start resolving the image with the given MediaTracker
+				'@post Images added to the tracker are moved to the image map
+				-trackImage(tracker : java.awt.MediaTracker, resourceName : java.lang.String): java.awt.Image
+			}
+		}
+	}
+	java.util.HashMap "imageMap" <-- Factory_method.nonfactorymethod.IconManager
+	java.util.WeakHashMap "resourceMap" <-- Factory_method.nonfactorymethod.IconManager
+}
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'ExtractMethod for the elixir editor.
+			'@author    Chris Seguin
+			'@date      May 31, 1999
+			class ElixirExtractMethod {
+				-bvm: BasicViewManager
+				'Create an ElixirPrettyPrinter object
+				<<Create>> ElixirExtractMethod()
+				'Reformats the current source code
+				{static} extractMethod()
+				'Gets the SelectionFromIDE attribute of the ElixirExtractMethod object
+				'@return    The SelectionFromIDE value
+				#getSelectionFromIDE(): java.lang.String
+				'Gets the initial string from the IDE
+				'@return    The file in string format
+				#getStringFromIDE(): java.lang.String
+				'Remove \r from buffer
+				'@param input  Description of Parameter
+				'@return        a string containing the results
+				removeCR(input : java.lang.String): java.lang.String
+				'Useful program that searches through the different panels to find the text panel that we can get the selected code from.
+				'@param jPanel  Description of Parameter
+				'@param prefix  Description of Parameter
+				'@return         Description of the Returned Value
+				-searchPanels(jPanel : java.awt.Container, prefix : java.lang.String): java.awt.Component
+				'Sets the string in the IDE
+				'@param value  The new file contained in a string
+				#setStringInIDE(value : java.lang.String)
+			}
+		}
+	}
+	Builder.nonbuilder.ExtractMethodDialog <|-- Builder.nonbuilder.ElixirExtractMethod
+	Builder.nonbuilder.BasicViewManager "bvm" <-- Builder.nonbuilder.ElixirExtractMethod
+}
+@enduml

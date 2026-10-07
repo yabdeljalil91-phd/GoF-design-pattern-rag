@@ -1,0 +1,22 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'@author     Ara Abrahamian (ara_e@email.com)
+			'@created    June 21, 2001
+			'@version	   $Revision: 1.1 $
+			class CVSUtil {
+				-entries: java.util.HashMap
+				-{static} tz: java.util.TimeZone
+				<<Create>> CVSUtil()
+				isFileModified(file : java.io.File): JavaPrimitiveTypes.boolean
+				-loadEntriesFileFor(file : java.io.File): CVSEntry
+			}
+		}
+	}
+	java.util.HashMap "entries" <-- Builder.nonbuilder.CVSUtil
+	java.util.TimeZone "tz" <-- Builder.nonbuilder.CVSUtil
+	java.util.Date "date" <-- Builder.nonbuilder.CVSUtil.CVSEntry
+	java.lang.String "fileName" <-- Builder.nonbuilder.CVSUtil.CVSEntry
+}
+@enduml

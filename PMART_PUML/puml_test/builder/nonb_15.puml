@@ -1,0 +1,58 @@
+@startuml
+package dpd_jdt {
+	package Context {
+		package nonContext {
+			'The implementation of hierarchy nodes factory for the java loader.
+			'@author Petr Hamernik
+			class JavaElementNodeFactory {
+				-{const} CLASS_ACTIONS: SystemAction [*]
+				{const} DEFAULT: DefaultFactory
+				-{const} DEFAULT_ACTIONS: SystemAction [*]
+				-FACTORY_GETTER_NODE: Node
+				-{const} INITIALIZER_ACTIONS: SystemAction [*]
+				-tree: JavaPrimitiveTypes.boolean
+				'Creates new factory.
+				<<Create>> JavaElementNodeFactory()
+				#createClassChildren(element : ClassElement): Children
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createClassNode(element : ClassElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createConstructorNode(element : ConstructorElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createFieldNode(element : FieldElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createInitializerNode(element : InitializerElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createMethodNode(element : MethodElement): Node
+				'Returns true if generate nodes for tree.
+				'@returns true if generate nodes for tree.
+				getGenerateForTree(): JavaPrimitiveTypes.boolean
+				'If true generate nodes for tree.
+				setGenerateForTree(tree : JavaPrimitiveTypes.boolean)
+			}
+		}
+	}
+	Context.nonContext.DefaultFactory <|-- Context.nonContext.JavaElementNodeFactory
+	Context.nonContext.ElementNodeFactory <|.. Context.nonContext.DefaultFactory
+	Context.nonContext.IconStrings <|-- Context.nonContext.DefaultFactory
+	Context.nonContext.SystemAction "CATEGORY_ACTIONS 0..*" <-- Context.nonContext.DefaultFactory
+	java.lang.String "CATEGORY_ICONS 0..*" <-- Context.nonContext.DefaultFactory
+	JavaPrimitiveTypes.int "FILTERS 0..*" <-- Context.nonContext.DefaultFactory
+	java.lang.String "NAMES 0..*" <-- Context.nonContext.DefaultFactory
+	java.lang.String "SHORTDESCRS 0..*" <-- Context.nonContext.DefaultFactory
+	JavaPrimitiveTypes.boolean "writeable" <-- Context.nonContext.DefaultFactory
+	Context.nonContext.ClassElement "element" <-- Context.nonContext.DefaultFactory.ElementCategoryNode
+	JavaPrimitiveTypes.int "newTypeIndex" <-- Context.nonContext.DefaultFactory.ElementCategoryNode
+	Context.nonContext.SystemAction "CLASS_ACTIONS 0..*" <-- Context.nonContext.JavaElementNodeFactory
+	Context.nonContext.DefaultFactory "DEFAULT" <-- Context.nonContext.JavaElementNodeFactory
+	Context.nonContext.SystemAction "DEFAULT_ACTIONS 0..*" <-- Context.nonContext.JavaElementNodeFactory
+	Context.nonContext.Node "FACTORY_GETTER_NODE" <-- Context.nonContext.JavaElementNodeFactory
+	Context.nonContext.SystemAction "INITIALIZER_ACTIONS 0..*" <-- Context.nonContext.JavaElementNodeFactory
+	JavaPrimitiveTypes.boolean "tree" <-- Context.nonContext.JavaElementNodeFactory
+}
+@enduml

@@ -1,0 +1,160 @@
+@startuml
+package "DrJava v20040326" as DrJava_v20040326 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package definitions {
+							package reducedmodel {
+								abstract class ReducedToken {
+									-_state: ReducedModelState
+									<<Create>> ReducedToken(state : ReducedModelState)
+									flip()
+									getHighlightState(): JavaPrimitiveTypes.int
+									getSize(): JavaPrimitiveTypes.int
+									getState(): ReducedModelState
+									getType(): DrJava_v20040326.java.lang.String
+									grow(delta : JavaPrimitiveTypes.int)
+									isBlockCommentEnd(): JavaPrimitiveTypes.boolean
+									isBlockCommentStart(): JavaPrimitiveTypes.boolean
+									isClosed(): JavaPrimitiveTypes.boolean
+									isClosedBrace(): JavaPrimitiveTypes.boolean
+									isCommented(): JavaPrimitiveTypes.boolean
+									isDoubleEscape(): JavaPrimitiveTypes.boolean
+									isDoubleEscapeSequence(): JavaPrimitiveTypes.boolean
+									isDoubleQuote(): JavaPrimitiveTypes.boolean
+									isEscapedDoubleQuote(): JavaPrimitiveTypes.boolean
+									isEscapedSingleQuote(): JavaPrimitiveTypes.boolean
+									isGap(): JavaPrimitiveTypes.boolean
+									isInBlockComment(): JavaPrimitiveTypes.boolean
+									isInLineComment(): JavaPrimitiveTypes.boolean
+									isLineComment(): JavaPrimitiveTypes.boolean
+									isMatch(other : ReducedToken): JavaPrimitiveTypes.boolean
+									isMultipleCharBrace(): JavaPrimitiveTypes.boolean
+									isNewline(): JavaPrimitiveTypes.boolean
+									isOpen(): JavaPrimitiveTypes.boolean
+									isOpenBrace(): JavaPrimitiveTypes.boolean
+									isQuoted(): JavaPrimitiveTypes.boolean
+									isShadowed(): JavaPrimitiveTypes.boolean
+									isSingleQuote(): JavaPrimitiveTypes.boolean
+									isSlash(): JavaPrimitiveTypes.boolean
+									isStar(): JavaPrimitiveTypes.boolean
+									setState(state : ReducedModelState)
+									setType(type : DrJava_v20040326.java.lang.String)
+									shrink(delta : JavaPrimitiveTypes.int)
+								}
+								class Brace {
+									{const} BLK_CMT_BEG: DrJava_v20040326.java.lang.String = /*
+									{const} BLK_CMT_END: DrJava_v20040326.java.lang.String = */
+									{const} DOUBLE_QUOTE: DrJava_v20040326.java.lang.String = "
+									{const} EOLN: DrJava_v20040326.java.lang.String
+									{const} LINE_CMT: DrJava_v20040326.java.lang.String = //
+									{const} SINGLE_QUOTE: DrJava_v20040326.java.lang.String = '
+									{const} SLASH: DrJava_v20040326.java.lang.String = /
+									{const} STAR: DrJava_v20040326.java.lang.String = *
+									#_type: JavaPrimitiveTypes.int
+									{const} braces: DrJava_v20040326.java.lang.String [*]
+									-<<Create>> Brace(type : JavaPrimitiveTypes.int, state : ReducedModelState)
+									{static} MakeBrace(type : DrJava_v20040326.java.lang.String, state : ReducedModelState): Brace
+									#{static} findBrace(type : DrJava_v20040326.java.lang.String): JavaPrimitiveTypes.int
+									flip()
+									getSize(): JavaPrimitiveTypes.int
+									getType(): DrJava_v20040326.java.lang.String
+									grow(delta : JavaPrimitiveTypes.int)
+									isBlockCommentEnd(): JavaPrimitiveTypes.boolean
+									isBlockCommentStart(): JavaPrimitiveTypes.boolean
+									isClosed(): JavaPrimitiveTypes.boolean
+									isClosedBrace(): JavaPrimitiveTypes.boolean
+									isDoubleEscape(): JavaPrimitiveTypes.boolean
+									isDoubleEscapeSequence(): JavaPrimitiveTypes.boolean
+									isDoubleQuote(): JavaPrimitiveTypes.boolean
+									isEscapedDoubleQuote(): JavaPrimitiveTypes.boolean
+									isEscapedSingleQuote(): JavaPrimitiveTypes.boolean
+									isGap(): JavaPrimitiveTypes.boolean
+									isLineComment(): JavaPrimitiveTypes.boolean
+									isMatch(other : ReducedToken): JavaPrimitiveTypes.boolean
+									isMultipleCharBrace(): JavaPrimitiveTypes.boolean
+									isNewline(): JavaPrimitiveTypes.boolean
+									isOpen(): JavaPrimitiveTypes.boolean
+									isOpenBrace(): JavaPrimitiveTypes.boolean
+									isSingleQuote(): JavaPrimitiveTypes.boolean
+									isSlash(): JavaPrimitiveTypes.boolean
+									isStar(): JavaPrimitiveTypes.boolean
+									setType(type : DrJava_v20040326.java.lang.String)
+									shrink(delta : JavaPrimitiveTypes.int)
+									toString(): DrJava_v20040326.java.lang.String
+								}
+								class Gap {
+									-_size: JavaPrimitiveTypes.int
+									<<Create>> Gap(size : JavaPrimitiveTypes.int, state : ReducedModelState)
+									flip()
+									getSize(): JavaPrimitiveTypes.int
+									getType(): DrJava_v20040326.java.lang.String
+									grow(delta : JavaPrimitiveTypes.int)
+									isBlockCommentEnd(): JavaPrimitiveTypes.boolean
+									isBlockCommentStart(): JavaPrimitiveTypes.boolean
+									isClosed(): JavaPrimitiveTypes.boolean
+									isClosedBrace(): JavaPrimitiveTypes.boolean
+									isDoubleEscape(): JavaPrimitiveTypes.boolean
+									isDoubleEscapeSequence(): JavaPrimitiveTypes.boolean
+									isDoubleQuote(): JavaPrimitiveTypes.boolean
+									isEscapedDoubleQuote(): JavaPrimitiveTypes.boolean
+									isEscapedSingleQuote(): JavaPrimitiveTypes.boolean
+									isGap(): JavaPrimitiveTypes.boolean
+									isLineComment(): JavaPrimitiveTypes.boolean
+									isMatch(other : ReducedToken): JavaPrimitiveTypes.boolean
+									isMultipleCharBrace(): JavaPrimitiveTypes.boolean
+									isNewline(): JavaPrimitiveTypes.boolean
+									isOpen(): JavaPrimitiveTypes.boolean
+									isOpenBrace(): JavaPrimitiveTypes.boolean
+									isSingleQuote(): JavaPrimitiveTypes.boolean
+									isSlash(): JavaPrimitiveTypes.boolean
+									isStar(): JavaPrimitiveTypes.boolean
+									setType(type : DrJava_v20040326.java.lang.String)
+									shrink(delta : JavaPrimitiveTypes.int)
+									toString(): DrJava_v20040326.java.lang.String
+								}
+								ReducedModelStates <|.. ReducedToken
+								ReducedModelState <|-- Free
+								ReducedModelStates <|.. ReducedModelState
+								ReducedModelState <|-- InsideBlockComment
+								ReducedModelState <|-- InsideDoubleQuote
+								ReducedModelState <|-- InsideLineComment
+								ReducedModelState <|-- InsideSingleQuote
+								ReducedModelState <|-- Stutter
+								ReducedToken <|-- Brace
+								ReducedModelStates <|.. Brace
+								DrJava_v20040326.java.lang.RuntimeException <|-- BraceException
+								ReducedToken <|-- Gap
+								ReducedToken "_item" <-- Node
+								Node "_point" <-- Iterator
+								JavaPrimitiveTypes.int "_pos" <-- Iterator
+								JavaPrimitiveTypes.int "_offset" <-- Iterator
+								Free "FREE" <-- ReducedModelStates
+								InsideBlockComment "INSIDE_BLOCK_COMMENT" <-- ReducedModelStates
+								InsideDoubleQuote "INSIDE_DOUBLE_QUOTE" <-- ReducedModelStates
+								InsideLineComment "INSIDE_LINE_COMMENT" <-- ReducedModelStates
+								InsideSingleQuote "INSIDE_SINGLE_QUOTE" <-- ReducedModelStates
+								Stutter "STUTTER" <-- ReducedModelStates
+								ReducedModelState "_state" <-- ReducedToken
+								DrJava_v20040326.java.lang.String "BLK_CMT_BEG" <-- Brace
+								DrJava_v20040326.java.lang.String "BLK_CMT_END" <-- Brace
+								DrJava_v20040326.java.lang.String "DOUBLE_QUOTE" <-- Brace
+								DrJava_v20040326.java.lang.String "EOLN" <-- Brace
+								DrJava_v20040326.java.lang.String "LINE_CMT" <-- Brace
+								DrJava_v20040326.java.lang.String "SINGLE_QUOTE" <-- Brace
+								DrJava_v20040326.java.lang.String "SLASH" <-- Brace
+								DrJava_v20040326.java.lang.String "STAR" <-- Brace
+								JavaPrimitiveTypes.int "_type" <-- Brace
+								DrJava_v20040326.java.lang.String "braces 0..*" <-- Brace
+								JavaPrimitiveTypes.int "_size" <-- Gap
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

@@ -1,0 +1,277 @@
+@startuml
+package "DrJava v20040326" as DrJava_v20040326 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package ui {
+						package config {
+							class ConfigPanel {
+								#<<TemplateBinding>> _components: DrJava_v20040326.java.util.Vector
+								#_title: DrJava_v20040326.java.lang.String
+								<<Create>> ConfigPanel(title : DrJava_v20040326.java.lang.String)
+								addComponent(oc : OptionComponent)
+								displayComponents()
+								getTitle(): DrJava_v20040326.java.lang.String
+								resetToCurrent()
+								resetToDefault()
+								update(): JavaPrimitiveTypes.boolean
+							}
+							abstract class OptionComponent {
+								#_label: DrJava_v20040326.javax.swing.JLabel
+								#_option: DrJava_v20040326.edu.rice.cs.drjava.config.Option
+								#_parent: DrJava_v20040326.java.awt.Frame
+								<<Create>> OptionComponent(option : DrJava_v20040326.edu.rice.cs.drjava.config.Option, labelText : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame)
+								<<Create>> OptionComponent(labelText : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame)
+								getComponent(): DrJava_v20040326.javax.swing.JComponent
+								getLabel(): DrJava_v20040326.javax.swing.JLabel
+								getLabelText(): DrJava_v20040326.java.lang.String
+								getOption(): DrJava_v20040326.edu.rice.cs.drjava.config.Option
+								resetToCurrent()
+								resetToDefault()
+								setDescription(description : DrJava_v20040326.java.lang.String)
+								setValue(value : DrJava_v20040326.java.lang.Object)
+								showErrorMessage(title : DrJava_v20040326.java.lang.String, e : DrJava_v20040326.edu.rice.cs.drjava.config.OptionParseException)
+								showErrorMessage(title : DrJava_v20040326.java.lang.String, value : DrJava_v20040326.java.lang.String, message : DrJava_v20040326.java.lang.String)
+								updateConfig(): JavaPrimitiveTypes.boolean
+							}
+							class IntegerOptionComponent {
+								-_jtf: DrJava_v20040326.javax.swing.JTextField
+								<<Create>> IntegerOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.IntegerOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame)
+								<<Create>> IntegerOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.IntegerOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, description : DrJava_v20040326.java.lang.String)
+								getComponent(): DrJava_v20040326.javax.swing.JComponent
+								setDescription(description : DrJava_v20040326.java.lang.String)
+								setValue(value : DrJava_v20040326.java.lang.Integer)
+								updateConfig(): JavaPrimitiveTypes.boolean
+							}
+							class FileOptionComponent {
+								-_button: DrJava_v20040326.javax.swing.JButton
+								-_file: DrJava_v20040326.java.io.File
+								-_fileFilter: DrJava_v20040326.javax.swing.filechooser.FileFilter
+								-_jfc: DrJava_v20040326.javax.swing.JFileChooser
+								-_jtf: DrJava_v20040326.javax.swing.JTextField
+								-_panel: DrJava_v20040326.javax.swing.JPanel
+								<<Create>> FileOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.FileOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, jfc : DrJava_v20040326.javax.swing.JFileChooser)
+								<<Create>> FileOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.FileOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, description : DrJava_v20040326.java.lang.String, jfc : DrJava_v20040326.javax.swing.JFileChooser)
+								-_updateTextField(c : DrJava_v20040326.java.io.File)
+								chooseFile()
+								chooseFileFromField(): JavaPrimitiveTypes.boolean
+								getComponent(): DrJava_v20040326.javax.swing.JComponent
+								setDescription(description : DrJava_v20040326.java.lang.String)
+								setFileFilter(fileFilter : DrJava_v20040326.javax.swing.filechooser.FileFilter)
+								setValue(value : DrJava_v20040326.java.io.File)
+								updateConfig(): JavaPrimitiveTypes.boolean
+							}
+							class BooleanOptionComponent {
+								#_jcb: DrJava_v20040326.javax.swing.JCheckBox
+								<<Create>> BooleanOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.BooleanOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame)
+								<<Create>> BooleanOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.BooleanOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, description : DrJava_v20040326.java.lang.String)
+								getComponent(): DrJava_v20040326.javax.swing.JComponent
+								setDescription(description : DrJava_v20040326.java.lang.String)
+								setValue(value : DrJava_v20040326.java.lang.Boolean)
+								updateConfig(): JavaPrimitiveTypes.boolean
+							}
+							class KeyStrokeOptionComponent {
+								-{const} DIALOG_HEIGHT: JavaPrimitiveTypes.int = 185
+								-_button: DrJava_v20040326.javax.swing.JButton
+								-{static} _getKeyDialog: GetKeyDialog
+								-_key: DrJava_v20040326.javax.swing.KeyStroke
+								-_keyField: DrJava_v20040326.javax.swing.JTextField
+								{static} <<TemplateBinding>> _keyToKSOC: DrJava_v20040326.java.util.Hashtable
+								-_panel: DrJava_v20040326.javax.swing.JPanel
+								<<Create>> KeyStrokeOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.KeyStrokeOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame)
+								<<Create>> KeyStrokeOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.KeyStrokeOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, description : DrJava_v20040326.java.lang.String)
+								compareTo(o : DrJava_v20040326.java.lang.Object): JavaPrimitiveTypes.int
+								getComponent(): DrJava_v20040326.javax.swing.JComponent
+								getConfigKeyStroke(): DrJava_v20040326.javax.swing.KeyStroke
+								getKeyStroke(): DrJava_v20040326.javax.swing.KeyStroke
+								setDescription(description : DrJava_v20040326.java.lang.String)
+								setValue(value : DrJava_v20040326.javax.swing.KeyStroke)
+								toString(): DrJava_v20040326.java.lang.String
+								updateConfig(): JavaPrimitiveTypes.boolean
+							}
+							class StringOptionComponent {
+								-_jtf: DrJava_v20040326.javax.swing.JTextField
+								<<Create>> StringOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.StringOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame)
+								<<Create>> StringOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.StringOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, description : DrJava_v20040326.java.lang.String)
+								getComponent(): DrJava_v20040326.javax.swing.JComponent
+								setDescription(description : DrJava_v20040326.java.lang.String)
+								setValue(value : DrJava_v20040326.java.lang.String)
+								updateConfig(): JavaPrimitiveTypes.boolean
+							}
+							class FontOptionComponent {
+								-_button: DrJava_v20040326.javax.swing.JButton
+								-_font: DrJava_v20040326.java.awt.Font
+								-_fontField: DrJava_v20040326.javax.swing.JTextField
+								-_panel: DrJava_v20040326.javax.swing.JPanel
+								<<Create>> FontOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.FontOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame)
+								<<Create>> FontOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.FontOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, description : DrJava_v20040326.java.lang.String)
+								-_updateField(f : DrJava_v20040326.java.awt.Font)
+								chooseFont()
+								getComponent(): DrJava_v20040326.javax.swing.JComponent
+								setDescription(description : DrJava_v20040326.java.lang.String)
+								setValue(value : DrJava_v20040326.java.awt.Font)
+								updateConfig(): JavaPrimitiveTypes.boolean
+							}
+							class ColorOptionComponent {
+								-_button: DrJava_v20040326.javax.swing.JButton
+								-_color: DrJava_v20040326.java.awt.Color
+								-_colorField: DrJava_v20040326.javax.swing.JTextField
+								-_isBackgroundColor: JavaPrimitiveTypes.boolean
+								-_isBoldText: JavaPrimitiveTypes.boolean
+								-_panel: DrJava_v20040326.javax.swing.JPanel
+								<<Create>> ColorOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.ColorOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame)
+								<<Create>> ColorOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.ColorOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, isBackgroundColor : JavaPrimitiveTypes.boolean)
+								<<Create>> ColorOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.ColorOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, isBackgroundColor : JavaPrimitiveTypes.boolean, isBoldText : JavaPrimitiveTypes.boolean)
+								<<Create>> ColorOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.ColorOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, description : DrJava_v20040326.java.lang.String)
+								<<Create>> ColorOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.ColorOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, description : DrJava_v20040326.java.lang.String, isBackgroundColor : JavaPrimitiveTypes.boolean)
+								<<Create>> ColorOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.ColorOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, description : DrJava_v20040326.java.lang.String, isBackgroundColor : JavaPrimitiveTypes.boolean, isBoldText : JavaPrimitiveTypes.boolean)
+								-_updateField(c : DrJava_v20040326.java.awt.Color)
+								chooseColor()
+								getComponent(): DrJava_v20040326.javax.swing.JComponent
+								setDescription(description : DrJava_v20040326.java.lang.String)
+								setValue(value : DrJava_v20040326.java.awt.Color)
+								updateConfig(): JavaPrimitiveTypes.boolean
+							}
+							class ToolbarOptionComponent {
+								{const} ICONS_ONLY: DrJava_v20040326.java.lang.String = icons only
+								{const} TEXT_AND_ICONS: DrJava_v20040326.java.lang.String = text and icons
+								{const} TEXT_ONLY: DrJava_v20040326.java.lang.String = text only
+								-_buttonPanel: DrJava_v20040326.javax.swing.JPanel
+								-_group: DrJava_v20040326.javax.swing.ButtonGroup
+								-_iconsButton: DrJava_v20040326.javax.swing.JRadioButton
+								-_textAndIconsButton: DrJava_v20040326.javax.swing.JRadioButton
+								-_textButton: DrJava_v20040326.javax.swing.JRadioButton
+								<<Create>> ToolbarOptionComponent(title : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame)
+								<<Create>> ToolbarOptionComponent(title : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, description : DrJava_v20040326.java.lang.String)
+								-_setSelected(textEnabled : JavaPrimitiveTypes.boolean, iconsEnabled : JavaPrimitiveTypes.boolean)
+								getComponent(): DrJava_v20040326.javax.swing.JComponent
+								resetToCurrent()
+								resetToDefault()
+								setDescription(description : DrJava_v20040326.java.lang.String)
+								setValue(value : DrJava_v20040326.java.lang.Boolean)
+								updateConfig(): JavaPrimitiveTypes.boolean
+							}
+							abstract class VectorOptionComponent {
+								#{const} NUM_ROWS: JavaPrimitiveTypes.int = 5
+								#{const} PIXELS_PER_ROW: JavaPrimitiveTypes.int = 18
+								#_addButton: DrJava_v20040326.javax.swing.JButton
+								#_buttonPanel: DrJava_v20040326.javax.swing.JPanel
+								#_list: DrJava_v20040326.javax.swing.JList
+								#_listModel: DrJava_v20040326.javax.swing.DefaultListModel
+								#_listScrollPane: DrJava_v20040326.javax.swing.JScrollPane
+								#_panel: DrJava_v20040326.javax.swing.JPanel
+								#_removeButton: DrJava_v20040326.javax.swing.JButton
+								<<Create>> VectorOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.VectorOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame)
+								<<Create>> VectorOptionComponent(opt : DrJava_v20040326.edu.rice.cs.drjava.config.VectorOption, text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, description : DrJava_v20040326.java.lang.String)
+								#_getAddAction(): DrJava_v20040326.javax.swing.Action
+								getComponent(): DrJava_v20040326.javax.swing.JComponent
+								setDescription(description : DrJava_v20040326.java.lang.String)
+								setValue(value : DrJava_v20040326.java.util.Vector)
+								updateConfig(): JavaPrimitiveTypes.boolean
+							}
+							class LabelComponent {
+								-_text: DrJava_v20040326.javax.swing.JTextArea
+								<<Create>> LabelComponent(text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame)
+								<<Create>> LabelComponent(text : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, description : DrJava_v20040326.java.lang.String)
+								getComponent(): DrJava_v20040326.javax.swing.JComponent
+								setDescription(description : DrJava_v20040326.java.lang.String)
+								setValue(value : DrJava_v20040326.java.lang.Object)
+								updateConfig(): JavaPrimitiveTypes.boolean
+							}
+							class ForcedChoiceOptionComponent {
+								-_comboBox: DrJava_v20040326.javax.swing.JComboBox
+								<<Create>> ForcedChoiceOptionComponent(option : DrJava_v20040326.edu.rice.cs.drjava.config.ForcedChoiceOption, labelText : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame)
+								<<Create>> ForcedChoiceOptionComponent(option : DrJava_v20040326.edu.rice.cs.drjava.config.ForcedChoiceOption, labelText : DrJava_v20040326.java.lang.String, parent : DrJava_v20040326.java.awt.Frame, description : DrJava_v20040326.java.lang.String)
+								getComponent(): DrJava_v20040326.javax.swing.JComponent
+								resetToCurrent(current : DrJava_v20040326.java.lang.String)
+								setDescription(description : DrJava_v20040326.java.lang.String)
+								setValue(value : DrJava_v20040326.java.lang.String)
+								updateConfig(): JavaPrimitiveTypes.boolean
+							}
+							DrJava_v20040326.javax.swing.JPanel <|-- ConfigPanel
+							OptionComponent <|-- IntegerOptionComponent
+							OptionComponent <|-- FileOptionComponent
+							DrJava_v20040326.edu.rice.cs.drjava.config.OptionConstants <|.. FileOptionComponent
+							OptionComponent <|-- BooleanOptionComponent
+							OptionComponent <|-- KeyStrokeOptionComponent
+							DrJava_v20040326.java.lang.Comparable <|.. KeyStrokeOptionComponent
+							OptionComponent <|-- StringOptionComponent
+							OptionComponent <|-- FontOptionComponent
+							OptionComponent <|-- ColorOptionComponent
+							OptionComponent <|-- ToolbarOptionComponent
+							OptionComponent <|-- VectorOptionComponent
+							DrJava_v20040326.edu.rice.cs.drjava.config.OptionConstants <|.. VectorOptionComponent
+							OptionComponent <|-- LabelComponent
+							OptionComponent <|-- ForcedChoiceOptionComponent
+							DrJava_v20040326.javax.swing.JLabel "_label" <-- OptionComponent
+							DrJava_v20040326.edu.rice.cs.drjava.config.Option "_option" <-- OptionComponent
+							DrJava_v20040326.java.awt.Frame "_parent" <-- OptionComponent
+							DrJava_v20040326.java.util.Vector "_components" <-- ConfigPanel
+							DrJava_v20040326.java.lang.String "_title" <-- ConfigPanel
+							DrJava_v20040326.javax.swing.JTextField "_jtf" <-- IntegerOptionComponent
+							DrJava_v20040326.javax.swing.JButton "_button" <-- FileOptionComponent
+							DrJava_v20040326.java.io.File "_file" <-- FileOptionComponent
+							DrJava_v20040326.javax.swing.filechooser.FileFilter "_fileFilter" <-- FileOptionComponent
+							DrJava_v20040326.javax.swing.JFileChooser "_jfc" <-- FileOptionComponent
+							DrJava_v20040326.javax.swing.JTextField "_jtf" <-- FileOptionComponent
+							DrJava_v20040326.javax.swing.JPanel "_panel" <-- FileOptionComponent
+							DrJava_v20040326.javax.swing.JCheckBox "_jcb" <-- BooleanOptionComponent
+							JavaPrimitiveTypes.int "DIALOG_HEIGHT" <-- KeyStrokeOptionComponent
+							DrJava_v20040326.javax.swing.JButton "_button" <-- KeyStrokeOptionComponent
+							DrJava_v20040326.javax.swing.JLabel "_actionLabel" <-- GetKeyDialog
+							DrJava_v20040326.javax.swing.JPanel "_cancelAndOKPanel" <-- GetKeyDialog
+							DrJava_v20040326.javax.swing.JButton "_cancelButton" <-- GetKeyDialog
+							DrJava_v20040326.javax.swing.JButton "_clearButton" <-- GetKeyDialog
+							DrJava_v20040326.javax.swing.KeyStroke "_currentKeyStroke" <-- GetKeyDialog
+							DrJava_v20040326.javax.swing.JLabel "_currentLabel" <-- GetKeyDialog
+							DrJava_v20040326.javax.swing.JPanel "_inputAndClearPanel" <-- GetKeyDialog
+							InputField "_inputField" <-- GetKeyDialog
+							DrJava_v20040326.javax.swing.JLabel "_instructionLabel" <-- GetKeyDialog
+							KeyStrokeOptionComponent "_ksoc" <-- GetKeyDialog
+							DrJava_v20040326.javax.swing.JPanel "_labelsPanel" <-- GetKeyDialog
+							DrJava_v20040326.javax.swing.JButton "_okButton" <-- GetKeyDialog
+							DrJava_v20040326.java.awt.Frame "frame" <-- GetKeyDialog
+							GetKeyDialog "_getKeyDialog" <-- KeyStrokeOptionComponent
+							DrJava_v20040326.javax.swing.KeyStroke "_key" <-- KeyStrokeOptionComponent
+							DrJava_v20040326.javax.swing.JTextField "_keyField" <-- KeyStrokeOptionComponent
+							DrJava_v20040326.java.util.Hashtable "_keyToKSOC" <-- KeyStrokeOptionComponent
+							DrJava_v20040326.javax.swing.JPanel "_panel" <-- KeyStrokeOptionComponent
+							DrJava_v20040326.javax.swing.JTextField "_jtf" <-- StringOptionComponent
+							DrJava_v20040326.javax.swing.JButton "_button" <-- FontOptionComponent
+							DrJava_v20040326.java.awt.Font "_font" <-- FontOptionComponent
+							DrJava_v20040326.javax.swing.JTextField "_fontField" <-- FontOptionComponent
+							DrJava_v20040326.javax.swing.JPanel "_panel" <-- FontOptionComponent
+							DrJava_v20040326.javax.swing.JButton "_button" <-- ColorOptionComponent
+							DrJava_v20040326.java.awt.Color "_color" <-- ColorOptionComponent
+							DrJava_v20040326.javax.swing.JTextField "_colorField" <-- ColorOptionComponent
+							JavaPrimitiveTypes.boolean "_isBackgroundColor" <-- ColorOptionComponent
+							JavaPrimitiveTypes.boolean "_isBoldText" <-- ColorOptionComponent
+							DrJava_v20040326.javax.swing.JPanel "_panel" <-- ColorOptionComponent
+							DrJava_v20040326.java.lang.String "ICONS_ONLY" <-- ToolbarOptionComponent
+							DrJava_v20040326.java.lang.String "TEXT_AND_ICONS" <-- ToolbarOptionComponent
+							DrJava_v20040326.java.lang.String "TEXT_ONLY" <-- ToolbarOptionComponent
+							DrJava_v20040326.javax.swing.JPanel "_buttonPanel" <-- ToolbarOptionComponent
+							DrJava_v20040326.javax.swing.ButtonGroup "_group" <-- ToolbarOptionComponent
+							DrJava_v20040326.javax.swing.JRadioButton "_iconsButton" <-- ToolbarOptionComponent
+							DrJava_v20040326.javax.swing.JRadioButton "_textAndIconsButton" <-- ToolbarOptionComponent
+							DrJava_v20040326.javax.swing.JRadioButton "_textButton" <-- ToolbarOptionComponent
+							JavaPrimitiveTypes.int "NUM_ROWS" <-- VectorOptionComponent
+							JavaPrimitiveTypes.int "PIXELS_PER_ROW" <-- VectorOptionComponent
+							DrJava_v20040326.javax.swing.JButton "_addButton" <-- VectorOptionComponent
+							DrJava_v20040326.javax.swing.JPanel "_buttonPanel" <-- VectorOptionComponent
+							DrJava_v20040326.javax.swing.JList "_list" <-- VectorOptionComponent
+							DrJava_v20040326.javax.swing.DefaultListModel "_listModel" <-- VectorOptionComponent
+							DrJava_v20040326.javax.swing.JScrollPane "_listScrollPane" <-- VectorOptionComponent
+							DrJava_v20040326.javax.swing.JPanel "_panel" <-- VectorOptionComponent
+							DrJava_v20040326.javax.swing.JButton "_removeButton" <-- VectorOptionComponent
+							DrJava_v20040326.javax.swing.JTextArea "_text" <-- LabelComponent
+							DrJava_v20040326.javax.swing.JComboBox "_comboBox" <-- ForcedChoiceOptionComponent
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

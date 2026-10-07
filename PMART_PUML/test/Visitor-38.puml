@@ -1,0 +1,637 @@
+@startuml
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+	package org {
+		package acm {
+			package seguin {
+				package summary {
+					package query {
+						class ChildClassSearcher {
+							<<Create>> ChildClassSearcher()
+							{static} query(type : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary): JRefactory_v2.6.24.java.util.Iterator
+							visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						}
+						JRefactory_v2.6.24.org.acm.seguin.summary.TraversalVisitor <|-- ChildClassSearcher
+					}
+					interface SummaryVisitor {
+						visit(node : Summary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : PackageSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : FileSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : ImportSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : TypeSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : MethodSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : FieldSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : ParameterSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : LocalVariableSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : VariableSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : TypeDeclSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : MessageSendSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : FieldAccessSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+					}
+					abstract class Summary {
+						-end: JavaPrimitiveTypes.int
+						-parent: Summary
+						-start: JavaPrimitiveTypes.int
+						<<Create>> Summary(initParent : Summary)
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						getDeclarationLine(): JavaPrimitiveTypes.int
+						getEndLine(): JavaPrimitiveTypes.int
+						getName(): JRefactory_v2.6.24.java.lang.String
+						getParent(): Summary
+						getStartLine(): JavaPrimitiveTypes.int
+						#setEndLine(value : JavaPrimitiveTypes.int)
+						#setStartLine(value : JavaPrimitiveTypes.int)
+					}
+					class PackageSummary {
+						-fileList: JRefactory_v2.6.24.java.util.LinkedList
+						-name: JRefactory_v2.6.24.java.lang.String
+						-{static} packageMap: JRefactory_v2.6.24.java.util.HashMap
+						#<<Create>> PackageSummary(packageName : JRefactory_v2.6.24.java.lang.String)
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						#addFileSummary(fileSummary : FileSummary)
+						deleteFileSummary(fileSummary : FileSummary)
+						{static} getAllPackages(): JRefactory_v2.6.24.java.util.Iterator
+						getDirectory(): JRefactory_v2.6.24.java.io.File
+						getFileSummaries(): JRefactory_v2.6.24.java.util.Iterator
+						getFileSummary(name : JRefactory_v2.6.24.java.lang.String): FileSummary
+						getName(): JRefactory_v2.6.24.java.lang.String
+						{static} getPackageSummary(name : JRefactory_v2.6.24.java.lang.String): PackageSummary
+						-{static} init()
+						-initFileList()
+						isTopLevel(): JavaPrimitiveTypes.boolean
+						{static} loadAll(in : JRefactory_v2.6.24.java.io.ObjectInputStream)
+						{static} saveAll(out : JRefactory_v2.6.24.java.io.ObjectOutputStream)
+						toString(): JRefactory_v2.6.24.java.lang.String
+					}
+					class FileSummary {
+						-delete: JavaPrimitiveTypes.boolean
+						-{static} fileMap: JRefactory_v2.6.24.java.util.HashMap
+						-importList: JRefactory_v2.6.24.java.util.ArrayList
+						-isMoving: JavaPrimitiveTypes.boolean
+						-lastModified: JRefactory_v2.6.24.java.util.Date
+						-theFile: JRefactory_v2.6.24.java.io.File
+						-typeList: JRefactory_v2.6.24.java.util.LinkedList
+						#<<Create>> FileSummary(parentSummary : Summary, initFile : JRefactory_v2.6.24.java.io.File)
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						#add(importSummary : ImportSummary)
+						#add(typeSummary : TypeSummary)
+						getFile(): JRefactory_v2.6.24.java.io.File
+						{static} getFileSummary(file : JRefactory_v2.6.24.java.io.File): FileSummary
+						{static} getFileSummary(buffer : JRefactory_v2.6.24.java.lang.String): FileSummary
+						getImports(): JRefactory_v2.6.24.java.util.Iterator
+						#{static} getKey(file : JRefactory_v2.6.24.java.io.File): JRefactory_v2.6.24.java.lang.String
+						getName(): JRefactory_v2.6.24.java.lang.String
+						getTypeCount(): JavaPrimitiveTypes.int
+						getTypes(): JRefactory_v2.6.24.java.util.Iterator
+						-{static} hasType(root : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode): JavaPrimitiveTypes.boolean
+						-{static} init()
+						-initImportList()
+						-initTypeList()
+						isDeleted(): JavaPrimitiveTypes.boolean
+						isMoving(): JavaPrimitiveTypes.boolean
+						-{static} linkFileSummary(state : SummaryLoaderState, file : JRefactory_v2.6.24.java.io.File): FileSummary
+						-{static} loadNewFileSummary(file : JRefactory_v2.6.24.java.io.File): SummaryLoaderState
+						{static} register(summary : FileSummary)
+						-{static} reloadFileSummary(file : JRefactory_v2.6.24.java.io.File, result : FileSummary, root : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode)
+						{static} reloadFromBuffer(file : JRefactory_v2.6.24.java.io.File, input : JRefactory_v2.6.24.java.io.InputStream): FileSummary
+						{static} removeDeletedSummaries()
+						{static} removeFileSummary(file : JRefactory_v2.6.24.java.io.File)
+						-{static} resetFileSummary(file : JRefactory_v2.6.24.java.io.File, result : FileSummary)
+						setDeleted(way : JavaPrimitiveTypes.boolean)
+						setMoving(way : JavaPrimitiveTypes.boolean)
+						toString(): JRefactory_v2.6.24.java.lang.String
+					}
+					class ImportSummary {
+						-packageSummary: PackageSummary
+						-type: JRefactory_v2.6.24.java.lang.String
+						<<Create>> ImportSummary(parentSummary : Summary, importDecl : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTImportDeclaration)
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						getName(): JRefactory_v2.6.24.java.lang.String
+						getPackage(): PackageSummary
+						-getPackageName(last : JavaPrimitiveTypes.int, name : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName): JRefactory_v2.6.24.java.lang.String
+						getType(): JRefactory_v2.6.24.java.lang.String
+						toString(): JRefactory_v2.6.24.java.lang.String
+					}
+					class TypeSummary {
+						-bInterface: JavaPrimitiveTypes.boolean
+						-fieldList: JRefactory_v2.6.24.java.util.LinkedList
+						-interfaceList: JRefactory_v2.6.24.java.util.LinkedList
+						-methodList: JRefactory_v2.6.24.java.util.LinkedList
+						-modifiers: JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder
+						-name: JRefactory_v2.6.24.java.lang.String
+						-parentClass: TypeDeclSummary
+						-typeList: JRefactory_v2.6.24.java.util.LinkedList
+						<<Create>> TypeSummary(parentSummary : Summary, typeDecl : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode)
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						#add(methodSummary : MethodSummary)
+						#add(fieldSummary : FieldSummary)
+						#add(typeSummary : TypeSummary)
+						#add(typeDeclSummary : TypeDeclSummary)
+						-createInitializer(isStatic : JavaPrimitiveTypes.boolean): MethodSummary
+						getField(name : JRefactory_v2.6.24.java.lang.String): FieldSummary
+						getFieldCount(): JavaPrimitiveTypes.int
+						getFields(): JRefactory_v2.6.24.java.util.Iterator
+						getImplementedInterfaces(): JRefactory_v2.6.24.java.util.Iterator
+						getInitializer(isStatic : JavaPrimitiveTypes.boolean): MethodSummary
+						getMethodCount(): JavaPrimitiveTypes.int
+						getMethods(): JRefactory_v2.6.24.java.util.Iterator
+						getModifiers(): JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder
+						getName(): JRefactory_v2.6.24.java.lang.String
+						getPackageSummary(): PackageSummary
+						getParentClass(): TypeDeclSummary
+						getTypeCount(): JavaPrimitiveTypes.int
+						getTypes(): JRefactory_v2.6.24.java.util.Iterator
+						-initFieldList()
+						-initInterfaceList()
+						-initMethodList()
+						-initTypeList()
+						isInterface(): JavaPrimitiveTypes.boolean
+						setInterface(way : JavaPrimitiveTypes.boolean)
+						#setModifiers(mod : JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder)
+						setName(newName : JRefactory_v2.6.24.java.lang.String)
+						setParentClass(tds : TypeDeclSummary)
+						toString(): JRefactory_v2.6.24.java.lang.String
+					}
+					class TypeDeclSummary {
+						-arrayCount: JavaPrimitiveTypes.int
+						-packageName: JRefactory_v2.6.24.java.lang.String
+						-primitive: JavaPrimitiveTypes.boolean
+						-typeName: JRefactory_v2.6.24.java.lang.String
+						<<Create>> TypeDeclSummary(parentSummary : Summary)
+						<<Create>> TypeDeclSummary(parentSummary : Summary, nameNode : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName)
+						<<Create>> TypeDeclSummary(parentSummary : Summary, primitiveType : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTPrimitiveType)
+						<<Create>> TypeDeclSummary(parentSummary : Summary, initPackage : JRefactory_v2.6.24.java.lang.String, initType : JRefactory_v2.6.24.java.lang.String)
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						equals(other : JRefactory_v2.6.24.java.lang.Object): JavaPrimitiveTypes.boolean
+						getArrayCount(): JavaPrimitiveTypes.int
+						getLongName(): JRefactory_v2.6.24.java.lang.String
+						getName(): JRefactory_v2.6.24.java.lang.String
+						getPackage(): JRefactory_v2.6.24.java.lang.String
+						getType(): JRefactory_v2.6.24.java.lang.String
+						{static} getTypeDeclSummary(parentSummary : Summary, typeNode : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTType): TypeDeclSummary
+						{static} getTypeDeclSummary(parentSummary : Summary, typeNode : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTResultType): TypeDeclSummary
+						isArray(): JavaPrimitiveTypes.boolean
+						isPrimitive(): JavaPrimitiveTypes.boolean
+						isSame(other : TypeDeclSummary): JavaPrimitiveTypes.boolean
+						setArrayCount(count : JavaPrimitiveTypes.int)
+						toString(): JRefactory_v2.6.24.java.lang.String
+					}
+					class MethodSummary {
+						-blockDepth: JavaPrimitiveTypes.int
+						-declarationLine: JavaPrimitiveTypes.int
+						-dependencyList: JRefactory_v2.6.24.java.util.LinkedList
+						-exceptionList: JRefactory_v2.6.24.java.util.LinkedList
+						-maxBlockDepth: JavaPrimitiveTypes.int
+						-modifiers: JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder
+						-name: JRefactory_v2.6.24.java.lang.String
+						-parameterList: JRefactory_v2.6.24.java.util.LinkedList
+						-returnType: TypeDeclSummary
+						-statementCount: JavaPrimitiveTypes.int
+						<<Create>> MethodSummary(parent : Summary)
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						#add(except : TypeDeclSummary)
+						#add(param : ParameterSummary)
+						#addDependency(dependsOn : Summary)
+						beginBlock()
+						-checkProtection(other : MethodSummary): JavaPrimitiveTypes.boolean
+						-checkReturn(other : MethodSummary): JavaPrimitiveTypes.boolean
+						checkSignature(other : MethodSummary): JavaPrimitiveTypes.boolean
+						endBlock()
+						equals(other : JRefactory_v2.6.24.java.lang.Object): JavaPrimitiveTypes.boolean
+						getDeclarationLine(): JavaPrimitiveTypes.int
+						getDependencies(): JRefactory_v2.6.24.java.util.Iterator
+						getExceptions(): JRefactory_v2.6.24.java.util.Iterator
+						getMaxBlockDepth(): JavaPrimitiveTypes.int
+						getModifiers(): JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder
+						getName(): JRefactory_v2.6.24.java.lang.String
+						getParameterCount(): JavaPrimitiveTypes.int
+						getParameters(): JRefactory_v2.6.24.java.util.Iterator
+						getReturnType(): TypeDeclSummary
+						getStatementCount(): JavaPrimitiveTypes.int
+						incrStatementCount()
+						-initDependencyList()
+						-initExceptionList()
+						-initParameterList()
+						isConstructor(): JavaPrimitiveTypes.boolean
+						isInitializer(): JavaPrimitiveTypes.boolean
+						isNearMiss(other : MethodSummary): JavaPrimitiveTypes.boolean
+						setDeclarationLine(value : JavaPrimitiveTypes.int)
+						#setModifiers(mod : JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder)
+						setName(newName : JRefactory_v2.6.24.java.lang.String)
+						setReturnType(type : TypeDeclSummary)
+						toString(): JRefactory_v2.6.24.java.lang.String
+					}
+					class ParameterSummary {
+						<<Create>> ParameterSummary(parentSummary : Summary, typeNode : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTType, id : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTVariableDeclaratorId)
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+					}
+					class VariableSummary {
+						-declaration: JRefactory_v2.6.24.java.lang.StringBuffer
+						-name: JRefactory_v2.6.24.java.lang.String
+						-type: TypeDeclSummary
+						<<Create>> VariableSummary(parentSummary : Summary, typeNode : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTType, id : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTVariableDeclaratorId)
+						<<Create>> VariableSummary(parentSummary : Summary, type : TypeDeclSummary, name : JRefactory_v2.6.24.java.lang.String)
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						getDeclaration(): JRefactory_v2.6.24.java.lang.String
+						getName(): JRefactory_v2.6.24.java.lang.String
+						getType(): JRefactory_v2.6.24.java.lang.String
+						getTypeDecl(): TypeDeclSummary
+						setName(value : JRefactory_v2.6.24.java.lang.String)
+						toString(): JRefactory_v2.6.24.java.lang.String
+					}
+					class FieldSummary {
+						-modifiers: JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder
+						<<Create>> FieldSummary(parentSummary : Summary, typeNode : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTType, id : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTVariableDeclaratorId)
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						getModifiers(): JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder
+						#setModifiers(mod : JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder)
+					}
+					class LocalVariableSummary {
+						<<Create>> LocalVariableSummary(parentSummary : Summary, typeNode : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTType, id : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTVariableDeclaratorId)
+						<<Create>> LocalVariableSummary(parentSummary : Summary, type : TypeDeclSummary, name : JRefactory_v2.6.24.java.lang.String)
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						{static} createNew(parentSummary : Summary, field : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTLocalVariableDeclaration): LocalVariableSummary
+					}
+					class MessageSendSummary {
+						-first: JRefactory_v2.6.24.java.lang.String
+						-messageName: JRefactory_v2.6.24.java.lang.String
+						-objectName: JRefactory_v2.6.24.java.lang.String
+						-packageName: JRefactory_v2.6.24.java.lang.String
+						<<Create>> MessageSendSummary(parentSummary : Summary, nameNode : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName)
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						equals(other : JRefactory_v2.6.24.java.lang.Object): JavaPrimitiveTypes.boolean
+						getFirstObject(): JRefactory_v2.6.24.java.lang.String
+						getMessageName(): JRefactory_v2.6.24.java.lang.String
+						getName(): JRefactory_v2.6.24.java.lang.String
+						getObjectName(): JRefactory_v2.6.24.java.lang.String
+						getPackageName(): JRefactory_v2.6.24.java.lang.String
+						getTypeDecl(): TypeDeclSummary
+						toString(): JRefactory_v2.6.24.java.lang.String
+					}
+					class FieldAccessSummary {
+						-fieldName: JRefactory_v2.6.24.java.lang.String
+						-isAssignment: JavaPrimitiveTypes.boolean
+						-objectName: JRefactory_v2.6.24.java.lang.String
+						-packageName: JRefactory_v2.6.24.java.lang.String
+						<<Create>> FieldAccessSummary(parentSummary : Summary, nameNode : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName)
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						-checkAssignment(node : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode): JavaPrimitiveTypes.boolean
+						equals(other : JRefactory_v2.6.24.java.lang.Object): JavaPrimitiveTypes.boolean
+						-getChildIndex(parent : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode, child : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode): JavaPrimitiveTypes.int
+						getFieldName(): JRefactory_v2.6.24.java.lang.String
+						getFirstObject(): JRefactory_v2.6.24.java.lang.String
+						getName(): JRefactory_v2.6.24.java.lang.String
+						getObjectName(): JRefactory_v2.6.24.java.lang.String
+						getPackageName(): JRefactory_v2.6.24.java.lang.String
+						getTypeDecl(): TypeDeclSummary
+						isAssignment(): JavaPrimitiveTypes.boolean
+						toString(): JRefactory_v2.6.24.java.lang.String
+					}
+					class TraversalVisitor {
+						<<Create>> TraversalVisitor()
+						visit(node : Summary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(data : JRefactory_v2.6.24.java.lang.Object)
+						visit(node : PackageSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : FileSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : ImportSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : TypeSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : MethodSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : FieldSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : ParameterSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : LocalVariableSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : VariableSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : TypeDeclSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : MessageSendSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : FieldAccessSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+					}
+					class PrintVisitor {
+						<<Create>> PrintVisitor()
+						visit(node : Summary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : PackageSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : FileSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : ImportSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : TypeSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : MethodSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : FieldSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : ParameterSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : LocalVariableSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : VariableSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : TypeDeclSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : MessageSendSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : FieldAccessSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+					}
+					JRefactory_v2.6.24.java.io.Serializable <|.. Summary
+					Summary <|-- PackageSummary
+					Summary <|-- FileSummary
+					Summary <|-- ImportSummary
+					Summary <|-- TypeSummary
+					Summary <|-- TypeDeclSummary
+					Summary <|-- MethodSummary
+					VariableSummary <|-- ParameterSummary
+					Summary <|-- VariableSummary
+					VariableSummary <|-- FieldSummary
+					VariableSummary <|-- LocalVariableSummary
+					Summary <|-- MessageSendSummary
+					Summary <|-- FieldAccessSummary
+					SummaryVisitor <|.. TraversalVisitor
+					TraversalVisitor <|-- PrintVisitor
+					JavaPrimitiveTypes.int "end" <-- Summary
+					JavaPrimitiveTypes.int "start" <-- Summary
+					JRefactory_v2.6.24.java.util.LinkedList "fileList" <-- PackageSummary
+					JRefactory_v2.6.24.java.lang.String "name" <-- PackageSummary
+					JRefactory_v2.6.24.java.util.HashMap "packageMap" <-- PackageSummary
+					JavaPrimitiveTypes.boolean "delete" <-- FileSummary
+					JRefactory_v2.6.24.java.util.HashMap "fileMap" <-- FileSummary
+					JRefactory_v2.6.24.java.util.ArrayList "importList" <-- FileSummary
+					JavaPrimitiveTypes.boolean "isMoving" <-- FileSummary
+					JRefactory_v2.6.24.java.util.Date "lastModified" <-- FileSummary
+					JRefactory_v2.6.24.java.io.File "theFile" <-- FileSummary
+					JRefactory_v2.6.24.java.util.LinkedList "typeList" <-- FileSummary
+					PackageSummary "packageSummary" <-- ImportSummary
+					JRefactory_v2.6.24.java.lang.String "type" <-- ImportSummary
+					JavaPrimitiveTypes.boolean "bInterface" <-- TypeSummary
+					JRefactory_v2.6.24.java.util.LinkedList "fieldList" <-- TypeSummary
+					JRefactory_v2.6.24.java.util.LinkedList "interfaceList" <-- TypeSummary
+					JRefactory_v2.6.24.java.util.LinkedList "methodList" <-- TypeSummary
+					JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder "modifiers" <-- TypeSummary
+					JRefactory_v2.6.24.java.lang.String "name" <-- TypeSummary
+					JavaPrimitiveTypes.int "arrayCount" <-- TypeDeclSummary
+					JRefactory_v2.6.24.java.lang.String "packageName" <-- TypeDeclSummary
+					JavaPrimitiveTypes.boolean "primitive" <-- TypeDeclSummary
+					JRefactory_v2.6.24.java.lang.String "typeName" <-- TypeDeclSummary
+					TypeDeclSummary "parentClass" <-- TypeSummary
+					JRefactory_v2.6.24.java.util.LinkedList "typeList" <-- TypeSummary
+					JavaPrimitiveTypes.int "blockDepth" <-- MethodSummary
+					JavaPrimitiveTypes.int "declarationLine" <-- MethodSummary
+					JRefactory_v2.6.24.java.util.LinkedList "dependencyList" <-- MethodSummary
+					JRefactory_v2.6.24.java.util.LinkedList "exceptionList" <-- MethodSummary
+					JavaPrimitiveTypes.int "maxBlockDepth" <-- MethodSummary
+					JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder "modifiers" <-- MethodSummary
+					JRefactory_v2.6.24.java.lang.String "name" <-- MethodSummary
+					JRefactory_v2.6.24.java.util.LinkedList "parameterList" <-- MethodSummary
+					TypeDeclSummary "returnType" <-- MethodSummary
+					JavaPrimitiveTypes.int "statementCount" <-- MethodSummary
+					JRefactory_v2.6.24.java.lang.StringBuffer "declaration" <-- VariableSummary
+					JRefactory_v2.6.24.java.lang.String "name" <-- VariableSummary
+					TypeDeclSummary "type" <-- VariableSummary
+					JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder "modifiers" <-- FieldSummary
+					JavaPrimitiveTypes.int "IGNORE" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "INITIALIZE" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_CLASSBODY" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_EXCEPTIONS" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_FILE" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_INTERFACE_LIST" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_METHODBODY" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_PARAMETERS" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_TYPE" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "code" <-- SummaryLoaderState
+					JRefactory_v2.6.24.java.io.File "file" <-- SummaryLoaderState
+					JRefactory_v2.6.24.java.util.Stack "stack" <-- SummaryLoaderState
+					JRefactory_v2.6.24.java.lang.String "first" <-- MessageSendSummary
+					JRefactory_v2.6.24.java.lang.String "messageName" <-- MessageSendSummary
+					JRefactory_v2.6.24.java.lang.String "objectName" <-- MessageSendSummary
+					JRefactory_v2.6.24.java.lang.String "packageName" <-- MessageSendSummary
+					JRefactory_v2.6.24.java.lang.String "fieldName" <-- FieldAccessSummary
+					JavaPrimitiveTypes.boolean "isAssignment" <-- FieldAccessSummary
+					JRefactory_v2.6.24.java.lang.String "objectName" <-- FieldAccessSummary
+					JRefactory_v2.6.24.java.lang.String "packageName" <-- FieldAccessSummary
+				}
+				package metrics {
+					class GatherData {
+						-metricsReport: MetricsReport
+						<<Create>> GatherData(init : MetricsReport)
+						{static} main(args : JRefactory_v2.6.24.java.lang.String)
+						visit(data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.Summary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.ImportSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.ParameterSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.LocalVariableSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.VariableSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.TypeDeclSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.MessageSendSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.FieldAccessSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+					}
+					JRefactory_v2.6.24.org.acm.seguin.summary.SummaryVisitor <|.. GatherData
+					JavaPrimitiveTypes.int "abstractClassTotal" <-- ProjectMetrics
+					JavaPrimitiveTypes.int "classMethodTotal" <-- ProjectMetrics
+					JavaPrimitiveTypes.int "classTotal" <-- ProjectMetrics
+					JavaPrimitiveTypes.int "classVariableTotal" <-- ProjectMetrics
+					JavaPrimitiveTypes.int "instanceVariableTotal" <-- ProjectMetrics
+					JavaPrimitiveTypes.int "interfaceTotal" <-- ProjectMetrics
+					JavaPrimitiveTypes.int "otherMethodTotal" <-- ProjectMetrics
+					JavaPrimitiveTypes.int "parameterTotal" <-- ProjectMetrics
+					JavaPrimitiveTypes.int "publicMethodTotal" <-- ProjectMetrics
+					JavaPrimitiveTypes.int "statementTotal" <-- ProjectMetrics
+					JavaPrimitiveTypes.int "abstractClassCount" <-- PackageMetrics
+					JavaPrimitiveTypes.int "blockDepthTotal" <-- PackageMetrics
+					JavaPrimitiveTypes.int "classMethodTotal" <-- PackageMetrics
+					JavaPrimitiveTypes.int "classTotal" <-- PackageMetrics
+					JavaPrimitiveTypes.int "classVariableTotal" <-- PackageMetrics
+					JavaPrimitiveTypes.int "instanceVariableTotal" <-- PackageMetrics
+					JavaPrimitiveTypes.int "interfaceCount" <-- PackageMetrics
+					JavaPrimitiveTypes.int "lineCountTotal" <-- PackageMetrics
+					JavaPrimitiveTypes.int "otherMethodTotal" <-- PackageMetrics
+					JRefactory_v2.6.24.java.lang.String "packageName" <-- PackageMetrics
+					JavaPrimitiveTypes.int "parameterTotal" <-- PackageMetrics
+					JavaPrimitiveTypes.int "publicMethodTotal" <-- PackageMetrics
+					JavaPrimitiveTypes.int "statementTotal" <-- PackageMetrics
+					JavaPrimitiveTypes.int "blockDepthTotal" <-- TypeMetrics
+					JavaPrimitiveTypes.int "classMethodCount" <-- TypeMetrics
+					JavaPrimitiveTypes.int "classVariableCount" <-- TypeMetrics
+					JavaPrimitiveTypes.int "instanceVariableCount" <-- TypeMetrics
+					JavaPrimitiveTypes.int "lineCountTotal" <-- TypeMetrics
+					JavaPrimitiveTypes.int "otherMethodCount" <-- TypeMetrics
+					JRefactory_v2.6.24.java.lang.String "packageName" <-- TypeMetrics
+					JavaPrimitiveTypes.int "parameterTotal" <-- TypeMetrics
+					JavaPrimitiveTypes.int "publicMethodCount" <-- TypeMetrics
+					JavaPrimitiveTypes.int "statementTotal" <-- TypeMetrics
+					JRefactory_v2.6.24.java.lang.String "typeName" <-- TypeMetrics
+					JavaPrimitiveTypes.int "blockDepth" <-- MethodMetrics
+					JavaPrimitiveTypes.int "lines" <-- MethodMetrics
+					JRefactory_v2.6.24.java.lang.String "methodName" <-- MethodMetrics
+					JRefactory_v2.6.24.java.lang.String "packageName" <-- MethodMetrics
+					JavaPrimitiveTypes.int "parameterCount" <-- MethodMetrics
+					JavaPrimitiveTypes.int "statementCount" <-- MethodMetrics
+					JRefactory_v2.6.24.java.lang.String "typeName" <-- MethodMetrics
+					MetricsReport "metricsReport" <-- GatherData
+				}
+				package refactor {
+					package method {
+						class AddMethodTypeVisitor {
+							-methodContents: JavaPrimitiveTypes.boolean
+							<<Create>> AddMethodTypeVisitor()
+							<<Create>> AddMethodTypeVisitor(traverseDependencies : JavaPrimitiveTypes.boolean)
+							-addTransform(data : JRefactory_v2.6.24.java.lang.Object, transform : JRefactory_v2.6.24.org.acm.seguin.refactor.AddImportTransform)
+							visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.TypeDeclSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						}
+						class NearMissVisitor {
+							-ancestor: JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+							-notHere: JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+							-problem: JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary
+							-target: JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary
+							<<Create>> NearMissVisitor(type : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, init : JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary, notThisOne : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary)
+							getProblem(): JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary
+							visit(typeSummary : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(methodSummary : JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						}
+						class RemoveMethodFromSubclassVisitor {
+							-ancestor: JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+							-complex: JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform
+							-notHere: JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+							-target: JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary
+							<<Create>> RemoveMethodFromSubclassVisitor(type : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, init : JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary, notThisOne : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, initComplex : JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform)
+							visit(fileSummary : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(typeSummary : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(methodSummary : JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						}
+						JRefactory_v2.6.24.org.acm.seguin.summary.TraversalVisitor <|-- AddMethodTypeVisitor
+						JRefactory_v2.6.24.org.acm.seguin.summary.TraversalVisitor <|-- NearMissVisitor
+						JRefactory_v2.6.24.org.acm.seguin.summary.TraversalVisitor <|-- RemoveMethodFromSubclassVisitor
+						JavaPrimitiveTypes.boolean "methodContents" <-- AddMethodTypeVisitor
+						JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary "ancestor" <-- NearMissVisitor
+						JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary "notHere" <-- NearMissVisitor
+						JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary "problem" <-- NearMissVisitor
+						JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary "target" <-- NearMissVisitor
+						JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary "ancestor" <-- RemoveMethodFromSubclassVisitor
+						JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform "complex" <-- RemoveMethodFromSubclassVisitor
+						JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary "notHere" <-- RemoveMethodFromSubclassVisitor
+						JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary "target" <-- RemoveMethodFromSubclassVisitor
+					}
+					package field {
+						class RemoveFieldFromSubclassVisitor {
+							-ancestor: JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+							-complex: JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform
+							-notHere: JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+							-target: JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary
+							<<Create>> RemoveFieldFromSubclassVisitor(type : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, init : JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary, notThisOne : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, transform : JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform)
+							visit(fileSummary : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(typeSummary : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(fieldSummary : JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						}
+						class RenameSystemTraversal {
+							<<Create>> RenameSystemTraversal()
+							-transform(fileSummary : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, oldField : JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary, newName : JRefactory_v2.6.24.java.lang.String, transform : JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform)
+							visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.ParameterSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.LocalVariableSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.VariableSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.TypeDeclSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.MessageSendSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+							visit(node : JRefactory_v2.6.24.org.acm.seguin.summary.FieldAccessSummary, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						}
+						JRefactory_v2.6.24.org.acm.seguin.summary.TraversalVisitor <|-- RemoveFieldFromSubclassVisitor
+						JRefactory_v2.6.24.org.acm.seguin.summary.TraversalVisitor <|-- RenameSystemTraversal
+						JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary "ancestor" <-- RemoveFieldFromSubclassVisitor
+						JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform "complex" <-- RemoveFieldFromSubclassVisitor
+						JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary "notHere" <-- RemoveFieldFromSubclassVisitor
+						JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary "target" <-- RemoveFieldFromSubclassVisitor
+					}
+					package type {
+						class MoveClassVisitor {
+							-base: JRefactory_v2.6.24.java.io.File
+							-newPackageName: JRefactory_v2.6.24.java.lang.String
+							-oldPackageName: JRefactory_v2.6.24.java.lang.String
+							<<Create>> MoveClassVisitor(oldPackage : JRefactory_v2.6.24.java.lang.String, newPackage : JRefactory_v2.6.24.java.lang.String, base : JRefactory_v2.6.24.java.io.File, complex : JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform)
+							#add(newClassName : JRefactory_v2.6.24.java.lang.String)
+							#addRenamingTransforms(refactoring : JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform, node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, className : JRefactory_v2.6.24.java.lang.String)
+							#getAppropriateClasses(node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary): JRefactory_v2.6.24.java.util.LinkedList
+							#getCurrentPackage(): JRefactory_v2.6.24.java.lang.String
+							#getFileSpecificTransform(summary : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary): JRefactory_v2.6.24.org.acm.seguin.refactor.TransformAST
+							#getNewFile(node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary): JRefactory_v2.6.24.java.io.File
+							#getNewImports(node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, className : JRefactory_v2.6.24.java.lang.String): JRefactory_v2.6.24.org.acm.seguin.refactor.AddImportTransform
+							#getRemoveImportTransform(node : JRefactory_v2.6.24.org.acm.seguin.summary.ImportSummary): JRefactory_v2.6.24.org.acm.seguin.refactor.RemoveImportTransform
+						}
+						class RenameClassVisitor {
+							-base: JRefactory_v2.6.24.java.io.File
+							#newClassName: JRefactory_v2.6.24.java.lang.String
+							#oldClassName: JRefactory_v2.6.24.java.lang.String
+							#packageName: JRefactory_v2.6.24.java.lang.String
+							-targetFile: JRefactory_v2.6.24.java.io.File
+							<<Create>> RenameClassVisitor(packageName : JRefactory_v2.6.24.java.lang.String, oldClass : JRefactory_v2.6.24.java.lang.String, newClass : JRefactory_v2.6.24.java.lang.String, base : JRefactory_v2.6.24.java.io.File, complex : JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform)
+							#addRenamingTransforms(refactoring : JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform, node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, className : JRefactory_v2.6.24.java.lang.String)
+							#alreadyImportsType(refactoring : JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform, oldOne : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName, node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, importedType : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary)
+							-checkFiles(file1 : JRefactory_v2.6.24.java.io.File, file2 : JRefactory_v2.6.24.java.io.File): JavaPrimitiveTypes.boolean
+							#getAppropriateClasses(node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary): JRefactory_v2.6.24.java.util.LinkedList
+							#getCurrentPackage(): JRefactory_v2.6.24.java.lang.String
+							#getFileSpecificTransform(summary : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary): JRefactory_v2.6.24.org.acm.seguin.refactor.TransformAST
+							-getImport(summary : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary): JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName
+							#getNewFile(node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary): JRefactory_v2.6.24.java.io.File
+							#getNewImports(node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, className : JRefactory_v2.6.24.java.lang.String): JRefactory_v2.6.24.org.acm.seguin.refactor.AddImportTransform
+							#getNewName(): JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName
+							-getOldName(): JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName
+							#getRemoveImportTransform(node : JRefactory_v2.6.24.org.acm.seguin.summary.ImportSummary): JRefactory_v2.6.24.org.acm.seguin.refactor.RemoveImportTransform
+							-isRenamingTarget(summary : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary): JavaPrimitiveTypes.boolean
+							-renameRefactoringTarget(refactoring : JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform, node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, className : JRefactory_v2.6.24.java.lang.String, oldOne : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName, importedType : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary)
+							-simpleRename(refactoring : JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform, oldOne : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName)
+						}
+						class RemoveClassVisitor {
+							-oldPackage: JRefactory_v2.6.24.java.lang.String
+							-parentPackage: JRefactory_v2.6.24.java.lang.String
+							<<Create>> RemoveClassVisitor(packageName : JRefactory_v2.6.24.java.lang.String, oldClass : JRefactory_v2.6.24.java.lang.String, initParentPackage : JRefactory_v2.6.24.java.lang.String, newClass : JRefactory_v2.6.24.java.lang.String, base : JRefactory_v2.6.24.java.io.File, complex : JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform)
+							#alreadyImportsType(refactoring : JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform, oldOne : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName, node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, importedType : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary)
+							#getNewImports(node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, className : JRefactory_v2.6.24.java.lang.String): JRefactory_v2.6.24.org.acm.seguin.refactor.AddImportTransform
+							#getNewName(): JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName
+							-isParent(typeSummary : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary): JavaPrimitiveTypes.boolean
+							-isSamePackage(fileSummary : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, typeSummary : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary): JavaPrimitiveTypes.boolean
+						}
+						JRefactory_v2.6.24.org.acm.seguin.summary.TraversalVisitor <|-- TypeChangeVisitor
+						TypeChangeVisitor <|-- MoveClassVisitor
+						TypeChangeVisitor <|-- RenameClassVisitor
+						RenameClassVisitor <|-- RemoveClassVisitor
+						JRefactory_v2.6.24.org.acm.seguin.refactor.ComplexTransform "refactoring" <-- TypeChangeVisitor
+						JRefactory_v2.6.24.java.lang.String "className" <-- State
+						JavaPrimitiveTypes.boolean "packageRequired" <-- State
+						JRefactory_v2.6.24.java.io.File "base" <-- MoveClassVisitor
+						JRefactory_v2.6.24.java.lang.String "newPackageName" <-- MoveClassVisitor
+						JRefactory_v2.6.24.java.lang.String "oldPackageName" <-- MoveClassVisitor
+						JRefactory_v2.6.24.java.io.File "base" <-- RenameClassVisitor
+						JRefactory_v2.6.24.java.lang.String "newClassName" <-- RenameClassVisitor
+						JRefactory_v2.6.24.java.lang.String "oldClassName" <-- RenameClassVisitor
+						JRefactory_v2.6.24.java.lang.String "packageName" <-- RenameClassVisitor
+						JRefactory_v2.6.24.java.io.File "targetFile" <-- RenameClassVisitor
+						JRefactory_v2.6.24.java.lang.String "oldPackage" <-- RemoveClassVisitor
+						JRefactory_v2.6.24.java.lang.String "parentPackage" <-- RemoveClassVisitor
+					}
+					class EliminatePackageImportVisitor {
+						-filterList: JRefactory_v2.6.24.java.util.LinkedList
+						-packageSummary: JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary
+						<<Create>> EliminatePackageImportVisitor(complex : ComplexTransform)
+						addFilterClass(name : JRefactory_v2.6.24.java.lang.String)
+						#addRenamingTransforms(refactoring : ComplexTransform, node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, className : JRefactory_v2.6.24.java.lang.String)
+						-addTypesFromFile(fileSummary : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, list : JRefactory_v2.6.24.java.util.LinkedList)
+						#getAppropriateClasses(node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary): JRefactory_v2.6.24.java.util.LinkedList
+						#getCurrentPackage(): JRefactory_v2.6.24.java.lang.String
+						#getFileSpecificTransform(summary : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary): TransformAST
+						#getNewFile(node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary): JRefactory_v2.6.24.java.io.File
+						#getNewImports(node : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary, className : JRefactory_v2.6.24.java.lang.String): AddImportTransform
+						#getRemoveImportTransform(node : JRefactory_v2.6.24.org.acm.seguin.summary.ImportSummary): RemoveImportTransform
+						-isImportingPackage(next : JRefactory_v2.6.24.org.acm.seguin.summary.ImportSummary): JavaPrimitiveTypes.boolean
+						-isInFilter(type : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary): JavaPrimitiveTypes.boolean
+						#preconditions(summary : JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary): JavaPrimitiveTypes.boolean
+						setPackageSummary(summary : JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary)
+					}
+					TransformAST <|-- AddImportTransform
+					JRefactory_v2.6.24.org.acm.seguin.refactor.type.TypeChangeVisitor <|-- EliminatePackageImportVisitor
+					TransformAST <|-- RemoveImportTransform
+					JavaPrimitiveTypes.boolean "ignorePackageName" <-- AddImportTransform
+					JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName "name" <-- AddImportTransform
+					JRefactory_v2.6.24.java.util.ArrayList "transforms" <-- ComplexTransform
+					JRefactory_v2.6.24.org.acm.seguin.refactor.undo.UndoAction "undo" <-- ComplexTransform
+					JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTName "name" <-- RemoveImportTransform
+					JavaPrimitiveTypes.boolean "packageImport" <-- RemoveImportTransform
+					JRefactory_v2.6.24.java.util.LinkedList "filterList" <-- EliminatePackageImportVisitor
+					JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary "packageSummary" <-- EliminatePackageImportVisitor
+				}
+			}
+		}
+	}
+}
+@enduml

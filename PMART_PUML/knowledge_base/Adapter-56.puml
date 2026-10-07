@@ -1,0 +1,412 @@
+@startuml
+'Design pattern Adapter
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package netbeans {
+			package modules {
+				package debugger {
+					package support {
+						package nodes {
+							'/** 
+							' * This class representates threads and threadGroups as a Node. This class is final only for performance reasons, can be happily unfinaled if desired.
+							' * @author   Jan Jancura
+							' */
+							'DP role: client
+							'DP role: adaptee
+							class ThreadNode {
+								#{static} ICON_CURRENT: Netbeans_v1.0.x.java.lang.String
+								#{static} ICON_RUNNING: Netbeans_v1.0.x.java.lang.String
+								#{static} ICON_SUSPENDED: Netbeans_v1.0.x.java.lang.String
+								{const} PROP_THREAD_CLASS: Netbeans_v1.0.x.java.lang.String = threadClass
+								{const} PROP_THREAD_FRAME_INDEX: Netbeans_v1.0.x.java.lang.String = threadFrameIndex
+								{const} PROP_THREAD_LINE: Netbeans_v1.0.x.java.lang.String = threadLine
+								{const} PROP_THREAD_METHOD: Netbeans_v1.0.x.java.lang.String = threadMethod
+								{const} PROP_THREAD_NAME: Netbeans_v1.0.x.java.lang.String = threadName
+								{const} PROP_THREAD_STACK_DEPTH: Netbeans_v1.0.x.java.lang.String = threadStackDepth
+								{const} PROP_THREAD_STATE: Netbeans_v1.0.x.java.lang.String = threadState
+								{const} PROP_THREAD_SUSPENDED: Netbeans_v1.0.x.java.lang.String = threadSuspended
+								{const} STATE_MAIN: JavaPrimitiveTypes.int = 1
+								{const} STATE_STOPPED: JavaPrimitiveTypes.int = 2
+								-{static} bundle: Netbeans_v1.0.x.java.util.ResourceBundle
+								-callStack: CallStackNode
+								-children: Netbeans_v1.0.x.org.openide.nodes.Node [*]
+								-debugger: Netbeans_v1.0.x.org.netbeans.modules.debugger.support.AbstractDebugger
+								-locales: LocalesRootNode
+								-oldSuspended: JavaPrimitiveTypes.boolean
+								{const} serialVersionUID: JavaPrimitiveTypes.long = 2202990736781011814
+								-state: JavaPrimitiveTypes.int
+								-{static} staticActions: Netbeans_v1.0.x.org.openide.util.actions.SystemAction [*]
+								-thread: Netbeans_v1.0.x.org.netbeans.modules.debugger.support.AbstractThread
+								#{static} threadCurrentIcon: Netbeans_v1.0.x.java.awt.Image
+								#{static} threadCurrentIcon32: Netbeans_v1.0.x.java.awt.Image
+								#{static} threadFolderIcon: Netbeans_v1.0.x.java.awt.Image
+								#{static} threadFolderIcon32: Netbeans_v1.0.x.java.awt.Image
+								-threadListener: ThreadListener
+								#{static} threadRunningIcon: Netbeans_v1.0.x.java.awt.Image
+								#{static} threadRunningIcon32: Netbeans_v1.0.x.java.awt.Image
+								-variableHome: VariableHome
+								'/** 
+								' * Creates ThreadNode.
+								' */
+								<<Create>> ThreadNode(variableHome : VariableHome, thread : Netbeans_v1.0.x.org.netbeans.modules.debugger.support.AbstractThread)
+								'/** 
+								' * Returns true if source is availabled.
+								' */
+								canGoToSource(): JavaPrimitiveTypes.boolean
+								'/** 
+								' * Sets this thread to be suspended.
+								' */
+								canSetCurrent(): JavaPrimitiveTypes.boolean
+								'/** 
+								' * Refresh locales & callstack.
+								' */
+								changeChildren()
+								'/** 
+								' * Updates name & icon, and fires change.
+								' */
+								changeProperties()
+								'/** 
+								' * Method that prepares properties. Called from initialize.
+								' */
+								-createProperties()
+								destroy()
+								'/** 
+								' * equals if thread equals o.thread
+								' * @param o
+								' */
+								equals(o : Netbeans_v1.0.x.java.lang.Object): JavaPrimitiveTypes.boolean
+								'/** 
+								' * Remove listeners.
+								' */
+								#finalize()
+								'/** 
+								' * Getter for set of actions that should be present in the popup menu of this node. This set is used in construction of menu returned from getContextMenu and specially when a menu for more nodes is constructed.
+								' * @return array of system actions that should be in popup menu
+								' */
+								getActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+								getDebuggerThread(): Netbeans_v1.0.x.org.netbeans.modules.debugger.support.AbstractThread
+								'/** 
+								' * Returns default action.
+								' */
+								getDefaultAction(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+								'/** 
+								' * @return localized string.
+								' */
+								{static} getLocalizedString(s : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+								'/** 
+								' * Goes to source.
+								' */
+								goToSource()
+								'/** 
+								' * @return hashCode of thread
+								' */
+								hashCode(): JavaPrimitiveTypes.int
+								'/** 
+								' * Performs basic initialization of children, listeners, etc. 
+								' */
+								-initialize()
+								'/** 
+								' * Initializes children (subnodes) of this node 
+								' */
+								-initializeChildren()
+								'/** 
+								' * Sets this thread to be suspended.
+								' */
+								isSuspended(): JavaPrimitiveTypes.boolean
+								'/** 
+								' * Sets curent icon (running thread, current thread, suspended thread).
+								' */
+								refreshIcon()
+								'/** 
+								' * Sets this thread to be current.
+								' */
+								setCurrent()
+								'/** 
+								' * Updates name & icon.
+								' */
+								setName()
+								'/** 
+								' * Sets this thread to be suspended.
+								' */
+								setSuspended(b : JavaPrimitiveTypes.boolean)
+							}
+							Netbeans_v1.0.x.org.openide.nodes.AbstractNode <|-- ThreadNode
+							Netbeans_v1.0.x.org.netbeans.modules.debugger.support.actions.SuspendCookie <|.. ThreadNode
+							Netbeans_v1.0.x.org.netbeans.modules.debugger.support.actions.SwitchOnCookie <|.. ThreadNode
+							Netbeans_v1.0.x.org.netbeans.modules.debugger.support.actions.GoToSourceCookie <|.. ThreadNode
+							Netbeans_v1.0.x.org.openide.nodes.AbstractNode <|-- CallStackNode
+							Netbeans_v1.0.x.org.openide.nodes.AbstractNode <|-- LocalesRootNode
+							Netbeans_v1.0.x.java.lang.String "ICON_CURRENT" <-- ThreadNode
+							Netbeans_v1.0.x.java.lang.String "ICON_RUNNING" <-- ThreadNode
+							Netbeans_v1.0.x.java.lang.String "ICON_SUSPENDED" <-- ThreadNode
+							Netbeans_v1.0.x.java.lang.String "PROP_THREAD_CLASS" <-- ThreadNode
+							Netbeans_v1.0.x.java.lang.String "PROP_THREAD_FRAME_INDEX" <-- ThreadNode
+							Netbeans_v1.0.x.java.lang.String "PROP_THREAD_LINE" <-- ThreadNode
+							Netbeans_v1.0.x.java.lang.String "PROP_THREAD_METHOD" <-- ThreadNode
+							Netbeans_v1.0.x.java.lang.String "PROP_THREAD_NAME" <-- ThreadNode
+							Netbeans_v1.0.x.java.lang.String "PROP_THREAD_STACK_DEPTH" <-- ThreadNode
+							Netbeans_v1.0.x.java.lang.String "PROP_THREAD_STATE" <-- ThreadNode
+							Netbeans_v1.0.x.java.lang.String "PROP_THREAD_SUSPENDED" <-- ThreadNode
+							JavaPrimitiveTypes.int "STATE_MAIN" <-- ThreadNode
+							JavaPrimitiveTypes.int "STATE_STOPPED" <-- ThreadNode
+							Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- ThreadNode
+							Netbeans_v1.0.x.java.lang.String "ICON_BASE" <-- CallStackNode
+							Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- CallStackNode
+							JavaPrimitiveTypes.long "serialVersionUID" <-- CallStackNode
+							Netbeans_v1.0.x.org.netbeans.modules.debugger.support.AbstractThread "thread" <-- CallStackNode
+							VariableHome "variableHome" <-- CallStackChildren
+							CallStackNode "callStack" <-- ThreadNode
+							Netbeans_v1.0.x.org.openide.nodes.Node "children 0..*" <-- ThreadNode
+							Netbeans_v1.0.x.org.netbeans.modules.debugger.support.AbstractDebugger "debugger" <-- ThreadNode
+							Netbeans_v1.0.x.java.lang.String "ICON_BASE" <-- LocalesRootNode
+							Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- LocalesRootNode
+							JavaPrimitiveTypes.long "serialVersionUID" <-- LocalesRootNode
+							Netbeans_v1.0.x.org.netbeans.modules.debugger.support.AbstractThread "thread" <-- LocalesRootNode
+							VariableHome "variableHome" <-- LocalesRootChildren
+							LocalesRootNode "locales" <-- ThreadNode
+							JavaPrimitiveTypes.boolean "oldSuspended" <-- ThreadNode
+							JavaPrimitiveTypes.long "serialVersionUID" <-- ThreadNode
+							JavaPrimitiveTypes.int "state" <-- ThreadNode
+							Netbeans_v1.0.x.org.openide.util.actions.SystemAction "staticActions 0..*" <-- ThreadNode
+							Netbeans_v1.0.x.org.netbeans.modules.debugger.support.AbstractThread "thread" <-- ThreadNode
+							Netbeans_v1.0.x.java.awt.Image "threadCurrentIcon" <-- ThreadNode
+							Netbeans_v1.0.x.java.awt.Image "threadCurrentIcon32" <-- ThreadNode
+							Netbeans_v1.0.x.java.awt.Image "threadFolderIcon" <-- ThreadNode
+							Netbeans_v1.0.x.java.awt.Image "threadFolderIcon32" <-- ThreadNode
+							Netbeans_v1.0.x.org.netbeans.modules.debugger.support.AbstractDebugger "debugger" <-- ThreadListener
+							Netbeans_v1.0.x.java.lang.ref.WeakReference "node" <-- ThreadListener
+							Netbeans_v1.0.x.org.netbeans.modules.debugger.support.AbstractThread "thread" <-- ThreadListener
+							ThreadListener "threadListener" <-- ThreadNode
+							Netbeans_v1.0.x.java.awt.Image "threadRunningIcon" <-- ThreadNode
+							Netbeans_v1.0.x.java.awt.Image "threadRunningIcon32" <-- ThreadNode
+							VariableHome "variableHome" <-- ThreadNode
+						}
+						'DP role: adaptee
+						abstract class AbstractThread {
+							-current: JavaPrimitiveTypes.boolean
+							#debugger: AbstractDebugger
+							-parentThreadGroup: AbstractThreadGroup
+							-pcs: Netbeans_v1.0.x.java.beans.PropertyChangeSupport
+							#<<Create>> AbstractThread(debugger : AbstractDebugger, parentThreadGroup : AbstractThreadGroup)
+							addPropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+							#firePropertyChange(s : Netbeans_v1.0.x.java.lang.String, o : Netbeans_v1.0.x.java.lang.Object, n : Netbeans_v1.0.x.java.lang.Object)
+							getCallStack(): CallStackFrame
+							getClassName(): Netbeans_v1.0.x.java.lang.String
+							getLine(): Netbeans_v1.0.x.org.openide.text.Line
+							getLineNumber(): JavaPrimitiveTypes.int
+							getLocales(): AbstractVariable
+							getMethod(): Netbeans_v1.0.x.java.lang.String
+							getName(): Netbeans_v1.0.x.java.lang.String
+							getParentThreadGroup(): AbstractThreadGroup
+							getSourceName(): Netbeans_v1.0.x.java.lang.String
+							getStackDepth(): JavaPrimitiveTypes.int
+							getState(): Netbeans_v1.0.x.java.lang.String
+							isCurrent(): JavaPrimitiveTypes.boolean
+							isSuspended(): JavaPrimitiveTypes.boolean
+							removePropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+							setCurrent(current : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.boolean
+							setSuspended(suspend : JavaPrimitiveTypes.boolean)
+							stop()
+							toString(): Netbeans_v1.0.x.java.lang.String
+						}
+						'DP role: adaptee
+						abstract class AbstractDebugger {
+							{const} ACTION_BREAKPOINT_HIT: JavaPrimitiveTypes.int = 1
+							{const} ACTION_GO: JavaPrimitiveTypes.int = 5
+							{const} ACTION_START: JavaPrimitiveTypes.int = 6
+							{const} ACTION_STEP_OUT: JavaPrimitiveTypes.int = 4
+							{const} ACTION_TRACE_INTO: JavaPrimitiveTypes.int = 3
+							{const} ACTION_TRACE_OVER: JavaPrimitiveTypes.int = 2
+							{const} ALL_OUT: JavaPrimitiveTypes.int = 7
+							{const} ERR_OUT: JavaPrimitiveTypes.int = 1
+							{const} PROP_CURRENT_THREAD: Netbeans_v1.0.x.java.lang.String = currentThread
+							{const} PROP_LAST_ACTION: Netbeans_v1.0.x.java.lang.String = lastAction
+							{const} STD_OUT: JavaPrimitiveTypes.int = 2
+							{const} STL_OUT: JavaPrimitiveTypes.int = 4
+							#breakpoint: Netbeans_v1.0.x.java.util.Vector
+							{static} bundle: Netbeans_v1.0.x.java.util.ResourceBundle
+							-currentLine: Netbeans_v1.0.x.org.openide.text.Line
+							-debuggerState: JavaPrimitiveTypes.int
+							-error: Netbeans_v1.0.x.org.openide.windows.OutputWriter
+							followedByEditor: JavaPrimitiveTypes.boolean
+							#hiddenBreakpoint: Netbeans_v1.0.x.java.util.Vector
+							#io: Netbeans_v1.0.x.org.openide.windows.InputOutput
+							-lastAction: JavaPrimitiveTypes.int
+							-listener: Netbeans_v1.0.x.java.util.Vector
+							-multisession: JavaPrimitiveTypes.boolean
+							-output: Netbeans_v1.0.x.org.openide.windows.OutputWriter
+							-owThread: Netbeans_v1.0.x.java.lang.Thread
+							-pcs: Netbeans_v1.0.x.java.beans.PropertyChangeSupport
+							{const} serialVersionUID: JavaPrimitiveTypes.long = 2791304615739651906
+							#{const} settings: DebuggerSettings
+							showMessages: JavaPrimitiveTypes.boolean
+							-validator: Netbeans_v1.0.x.org.netbeans.modules.debugger.support.util.Validator
+							#watch: Netbeans_v1.0.x.java.util.Vector
+							<<Create>> AbstractDebugger(multisession : JavaPrimitiveTypes.boolean, validator : Netbeans_v1.0.x.org.netbeans.modules.debugger.support.util.Validator)
+							addDebuggerListener(l : DebuggerListener)
+							addPropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+							canBeCurrent(l : Netbeans_v1.0.x.org.openide.text.Line, onBreakpoint : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.boolean
+							#changeHidden(b : CoreBreakpoint)
+							connectInput(process : Netbeans_v1.0.x.java.lang.Process)
+							createBreakpoint(hidden : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.debugger.Breakpoint
+							createBreakpoint(l : Netbeans_v1.0.x.org.openide.text.Line): Netbeans_v1.0.x.org.openide.debugger.Breakpoint
+							createBreakpoint(l : Netbeans_v1.0.x.org.openide.text.Line, hidden : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.debugger.Breakpoint
+							createBreakpoint(method : Netbeans_v1.0.x.org.openide.src.ConstructorElement): Netbeans_v1.0.x.org.openide.debugger.Breakpoint
+							createBreakpoint(method : Netbeans_v1.0.x.org.openide.src.ConstructorElement, hidden : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.debugger.Breakpoint
+							disconnect()
+							findBreakpoint(l : Netbeans_v1.0.x.org.openide.text.Line): Netbeans_v1.0.x.org.openide.debugger.Breakpoint
+							findBreakpoint(method : Netbeans_v1.0.x.org.openide.src.ConstructorElement): Netbeans_v1.0.x.org.openide.debugger.Breakpoint
+							findBreakpoint(className : Netbeans_v1.0.x.java.lang.String, lineNumber : JavaPrimitiveTypes.int): CoreBreakpoint
+							findBreakpoint(className : Netbeans_v1.0.x.java.lang.String, methodName : Netbeans_v1.0.x.java.lang.String): CoreBreakpoint
+							findBreakpoints(className : Netbeans_v1.0.x.java.lang.String): CoreBreakpoint
+							finishDebugger()
+							#fireBreakpointCreated(breakpoint : CoreBreakpoint)
+							#fireBreakpointRemoved(breakpoint : CoreBreakpoint)
+							#firePropertyChange(name : Netbeans_v1.0.x.java.lang.String, o : Netbeans_v1.0.x.java.lang.Object, n : Netbeans_v1.0.x.java.lang.Object)
+							#fireThreadCreated(thread : AbstractThread)
+							#fireThreadDeath(thread : AbstractThread)
+							#fireWatchCreated(watch : AbstractWatch)
+							#fireWatchRemoved(watch : AbstractWatch)
+							getBreakpointActions(): Action
+							getBreakpointEvent(name : Netbeans_v1.0.x.java.lang.String): Event
+							getBreakpointEvents(): Event
+							getBreakpoints(): Netbeans_v1.0.x.org.openide.debugger.Breakpoint
+							getClasspath(): Netbeans_v1.0.x.java.lang.String
+							getConnectPanel(): Netbeans_v1.0.x.javax.swing.JComponent
+							getCurrentLine(): Netbeans_v1.0.x.org.openide.text.Line
+							getCurrentThread(): AbstractThread
+							getFreeMemory(): JavaPrimitiveTypes.int
+							getHiddenBreakpoints(): Netbeans_v1.0.x.org.openide.debugger.Breakpoint
+							getInputOutput(): Netbeans_v1.0.x.org.openide.windows.InputOutput
+							getLastAction(): JavaPrimitiveTypes.int
+							getLocationName(info : Netbeans_v1.0.x.org.openide.debugger.DebuggerInfo): Netbeans_v1.0.x.java.lang.String
+							getProcessName(info : Netbeans_v1.0.x.org.openide.debugger.DebuggerInfo): Netbeans_v1.0.x.java.lang.String
+							getState(): JavaPrimitiveTypes.int
+							getThreadGroupRoot(): AbstractThreadGroup
+							getTotalMemory(): JavaPrimitiveTypes.int
+							getValidator(): Netbeans_v1.0.x.org.netbeans.modules.debugger.support.util.Validator
+							getVersion(): Netbeans_v1.0.x.java.lang.String
+							getWatches(): Netbeans_v1.0.x.org.openide.debugger.Watch
+							go()
+							isFollowedByEditor(): JavaPrimitiveTypes.boolean
+							isMultiSession(): JavaPrimitiveTypes.boolean
+							isShowMessages(): JavaPrimitiveTypes.boolean
+							markCurrent(l : Netbeans_v1.0.x.org.openide.text.Line)
+							print(text : Netbeans_v1.0.x.java.lang.String, where : JavaPrimitiveTypes.int)
+							println(text : Netbeans_v1.0.x.java.lang.String, where : JavaPrimitiveTypes.int)
+							reconnect()
+							removeAllBreakpoints()
+							removeAllWatches()
+							removeBreakpoint(b : CoreBreakpoint)
+							removeDebuggerListener(l : DebuggerListener)
+							removePropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+							removeWatch(w : AbstractWatch)
+							#setBreakpoints()
+							setCurrentThread(thread : AbstractThread)
+							#setDebugger(debugger : AbstractDebugger)
+							setDebuggerState(newState : JavaPrimitiveTypes.int)
+							setFollowedByEditor(followedByEditor : JavaPrimitiveTypes.boolean)
+							#setLastAction(lastAction : JavaPrimitiveTypes.int)
+							setShowMessages(showMessages : JavaPrimitiveTypes.boolean)
+							setSuspended(suspended : JavaPrimitiveTypes.boolean)
+							showOutput(process : Netbeans_v1.0.x.java.lang.Process, what : JavaPrimitiveTypes.int, where : JavaPrimitiveTypes.int)
+							startDebugger(info : Netbeans_v1.0.x.org.openide.debugger.DebuggerInfo)
+							startDebugger(info : Netbeans_v1.0.x.org.openide.debugger.DebuggerInfo, io : Netbeans_v1.0.x.org.openide.windows.InputOutput)
+							stepOut()
+							supportsExpressions(): JavaPrimitiveTypes.boolean
+							traceInto()
+							traceOver()
+							unmarkCurrent()
+							updateWatches()
+						}
+						Netbeans_v1.0.x.org.openide.debugger.Debugger <|-- AbstractDebugger
+						Netbeans_v1.0.x.java.io.Serializable <|.. AbstractDebugger
+						Netbeans_v1.0.x.org.openide.options.SystemOption <|-- DebuggerSettings
+						Netbeans_v1.0.x.org.openide.debugger.Breakpoint <|-- CoreBreakpoint
+						Netbeans_v1.0.x.java.io.Serializable <|.. CoreBreakpoint
+						Netbeans_v1.0.x.java.io.Serializable <|-- AbstractVariable
+						Netbeans_v1.0.x.java.lang.Cloneable <|-- AbstractVariable
+						Netbeans_v1.0.x.org.netbeans.modules.debugger.support.util.Validator.Object <|-- AbstractVariable
+						Netbeans_v1.0.x.java.beans.PropertyChangeListener <|-- ThreadGroupListener
+						Netbeans_v1.0.x.org.openide.debugger.Watch <|-- AbstractWatch
+						AbstractVariable <|.. AbstractWatch
+						JavaPrimitiveTypes.boolean "current" <-- AbstractThread
+						JavaPrimitiveTypes.int "ACTION_BREAKPOINT_HIT" <-- AbstractDebugger
+						JavaPrimitiveTypes.int "ACTION_GO" <-- AbstractDebugger
+						JavaPrimitiveTypes.int "ACTION_START" <-- AbstractDebugger
+						JavaPrimitiveTypes.int "ACTION_STEP_OUT" <-- AbstractDebugger
+						JavaPrimitiveTypes.int "ACTION_TRACE_INTO" <-- AbstractDebugger
+						JavaPrimitiveTypes.int "ACTION_TRACE_OVER" <-- AbstractDebugger
+						JavaPrimitiveTypes.int "ALL_OUT" <-- AbstractDebugger
+						JavaPrimitiveTypes.int "ERR_OUT" <-- AbstractDebugger
+						Netbeans_v1.0.x.java.lang.String "PROP_CURRENT_THREAD" <-- AbstractDebugger
+						Netbeans_v1.0.x.java.lang.String "PROP_LAST_ACTION" <-- AbstractDebugger
+						JavaPrimitiveTypes.int "STD_OUT" <-- AbstractDebugger
+						JavaPrimitiveTypes.int "STL_OUT" <-- AbstractDebugger
+						Netbeans_v1.0.x.java.util.Vector "breakpoint" <-- AbstractDebugger
+						Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- AbstractDebugger
+						Netbeans_v1.0.x.org.openide.text.Line "currentLine" <-- AbstractDebugger
+						JavaPrimitiveTypes.int "debuggerState" <-- AbstractDebugger
+						Netbeans_v1.0.x.org.openide.windows.OutputWriter "error" <-- AbstractDebugger
+						JavaPrimitiveTypes.boolean "followedByEditor" <-- AbstractDebugger
+						Netbeans_v1.0.x.java.util.Vector "hiddenBreakpoint" <-- AbstractDebugger
+						Netbeans_v1.0.x.org.openide.windows.InputOutput "io" <-- AbstractDebugger
+						JavaPrimitiveTypes.int "lastAction" <-- AbstractDebugger
+						Netbeans_v1.0.x.java.util.Vector "listener" <-- AbstractDebugger
+						JavaPrimitiveTypes.boolean "multisession" <-- AbstractDebugger
+						Netbeans_v1.0.x.org.openide.windows.OutputWriter "output" <-- AbstractDebugger
+						Netbeans_v1.0.x.java.lang.Thread "owThread" <-- AbstractDebugger
+						Netbeans_v1.0.x.java.beans.PropertyChangeSupport "pcs" <-- AbstractDebugger
+						JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractDebugger
+						JavaPrimitiveTypes.int "ACTION_ON_TI_STOP" <-- DebuggerSettings
+						JavaPrimitiveTypes.int "ACTION_ON_TI_TRACE_OUT" <-- DebuggerSettings
+						Netbeans_v1.0.x.java.lang.String "PROP_ACTION_ON_TRACE_INTO" <-- DebuggerSettings
+						Netbeans_v1.0.x.java.lang.String "PROP_ACTION_ON_TRACE_INTO_SET" <-- DebuggerSettings
+						Netbeans_v1.0.x.java.lang.String "PROP_DESKTOP" <-- DebuggerSettings
+						Netbeans_v1.0.x.java.lang.String "PROP_REMOTE_DEBUGGER" <-- DebuggerSettings
+						Netbeans_v1.0.x.java.lang.String "PROP_RUN_COMPILATION" <-- DebuggerSettings
+						JavaPrimitiveTypes.long "serialVersionUID" <-- DebuggerSettings
+						DebuggerSettings "settings" <-- AbstractDebugger
+						JavaPrimitiveTypes.boolean "showMessages" <-- AbstractDebugger
+						Netbeans_v1.0.x.org.netbeans.modules.debugger.support.util.Validator "validator" <-- AbstractDebugger
+						Netbeans_v1.0.x.java.util.Vector "watch" <-- AbstractDebugger
+						Netbeans_v1.0.x.java.lang.String "PROP_ACTIONS" <-- CoreBreakpoint
+						Netbeans_v1.0.x.java.lang.String "PROP_CLASS_NAME" <-- CoreBreakpoint
+						Netbeans_v1.0.x.java.lang.String "PROP_CONDITION" <-- CoreBreakpoint
+						Netbeans_v1.0.x.java.lang.String "PROP_EVENT" <-- CoreBreakpoint
+						Netbeans_v1.0.x.java.lang.String "PROP_HIDDEN" <-- CoreBreakpoint
+						Netbeans_v1.0.x.java.lang.String "PROP_LINE_NUMBER" <-- CoreBreakpoint
+						Netbeans_v1.0.x.java.lang.String "PROP_METHOD_NAME" <-- CoreBreakpoint
+						CoreBreakpoint "breakpoint" <-- Action
+						JavaPrimitiveTypes.long "serialVersionUID" <-- Action
+						CoreBreakpoint "breakpoint" <-- Event
+						AbstractDebugger "debugger" <-- Event
+						JavaPrimitiveTypes.long "serialVersionUID" <-- Event
+						Action "actions 0..*" <-- CoreBreakpoint
+						Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- CoreBreakpoint
+						Netbeans_v1.0.x.java.lang.String "condition" <-- CoreBreakpoint
+						AbstractDebugger "debugger" <-- CoreBreakpoint
+						JavaPrimitiveTypes.boolean "enabled" <-- CoreBreakpoint
+						Event "event" <-- CoreBreakpoint
+						JavaPrimitiveTypes.boolean "hidden" <-- CoreBreakpoint
+						Netbeans_v1.0.x.java.util.ArrayList "lines" <-- CoreBreakpoint
+						Netbeans_v1.0.x.java.beans.PropertyChangeSupport "pcs" <-- CoreBreakpoint
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CoreBreakpoint
+						JavaPrimitiveTypes.boolean "valid" <-- CoreBreakpoint
+						Netbeans_v1.0.x.java.lang.String "PROP_CURRENT" <-- AbstractThreadGroup
+						JavaPrimitiveTypes.boolean "current" <-- AbstractThreadGroup
+						Netbeans_v1.0.x.java.util.Vector "listener" <-- AbstractThreadGroup
+						Netbeans_v1.0.x.java.util.ArrayList "threadGroups" <-- AbstractThreadGroup
+						Netbeans_v1.0.x.java.util.ArrayList "threads" <-- AbstractThreadGroup
+						Netbeans_v1.0.x.java.lang.String "PROP_IN_SCOPE" <-- AbstractWatch
+						JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractWatch
+						AbstractDebugger "debugger" <-- AbstractThread
+						AbstractThreadGroup "parentThreadGroup" <-- AbstractThread
+						Netbeans_v1.0.x.java.beans.PropertyChangeSupport "pcs" <-- AbstractThread
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

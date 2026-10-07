@@ -1,0 +1,51 @@
+@startuml
+package dpd_jdt {
+	package Prototype {
+		package nonprototype {
+			'The default implementation of the hierarchy nodes factory. Uses the standard node implementations in this package.
+			'@author Petr Hamernik
+			class DefaultFactory {
+				-{const} CATEGORY_ACTIONS: SystemAction [*]
+				{const} CATEGORY_ICONS: java.lang.String [*]
+				{const} FILTERS: JavaPrimitiveTypes.int [*]
+				{const} NAMES: java.lang.String [*]
+				{const} READ_ONLY: DefaultFactory
+				{const} READ_WRITE: DefaultFactory
+				{const} SHORTDESCRS: java.lang.String [*]
+				-writeable: JavaPrimitiveTypes.boolean
+				'Create a new factory.
+				'@param writeable <code>true</code> if the produced nodesshould have writable properties
+				'@see ElementNode#writeable
+				<<Create>> DefaultFactory(writeable : JavaPrimitiveTypes.boolean)
+				'Create children for a class node. Could be subclassed to customize, e.g., the ordering of children. The default implementation used  {@link ClassChildren}.
+				'@param element a class element
+				'@return children for the class element
+				#createClassChildren(element : ClassElement): Children
+				'Create children for a class node, with specified factory. The default implementation used  {@link ClassChildren}.
+				'@param element a class element
+				'@param factory the factory which will be used to create children
+				'@return children for the class element
+				#createClassChildren(element : ClassElement, factory : ElementNodeFactory): Children
+				createClassNode(element : ClassElement): Node
+				createConstructorNode(element : ConstructorElement): Node
+				createErrorNode(): Node
+				createFieldNode(element : FieldElement): Node
+				createInitializerNode(element : InitializerElement): Node
+				createMethodNode(element : MethodElement): Node
+				createWaitNode(): Node
+				isWriteable(): JavaPrimitiveTypes.boolean
+			}
+		}
+	}
+	Prototype.nonprototype.ElementNodeFactory <|.. Prototype.nonprototype.DefaultFactory
+	Prototype.nonprototype.IconStrings <|-- Prototype.nonprototype.DefaultFactory
+	Prototype.nonprototype.SystemAction "CATEGORY_ACTIONS 0..*" <-- Prototype.nonprototype.DefaultFactory
+	java.lang.String "CATEGORY_ICONS 0..*" <-- Prototype.nonprototype.DefaultFactory
+	JavaPrimitiveTypes.int "FILTERS 0..*" <-- Prototype.nonprototype.DefaultFactory
+	java.lang.String "NAMES 0..*" <-- Prototype.nonprototype.DefaultFactory
+	java.lang.String "SHORTDESCRS 0..*" <-- Prototype.nonprototype.DefaultFactory
+	JavaPrimitiveTypes.boolean "writeable" <-- Prototype.nonprototype.DefaultFactory
+	Prototype.nonprototype.ClassElement "element" <-- Prototype.nonprototype.DefaultFactory.ElementCategoryNode
+	JavaPrimitiveTypes.int "newTypeIndex" <-- Prototype.nonprototype.DefaultFactory.ElementCategoryNode
+}
+@enduml

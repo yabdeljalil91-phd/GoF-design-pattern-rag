@@ -1,0 +1,355 @@
+@startuml
+'Design pattern Builder
+package "QuickUML 2001" as QuickUML_2001 {
+	package uml {
+		package ui {
+			'/** 
+			' * @class BuildAction
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: director
+			class BuildAction {
+				#container: DiagramContainer
+				<<Create>> BuildAction(container : DiagramContainer)
+				actionPerformed(e : QuickUML_2001.java.awt.event.ActionEvent)
+			}
+			QuickUML_2001.javax.swing.AbstractAction <|-- BuildAction
+			QuickUML_2001.javax.swing.JScrollPane <|-- DiagramContainer
+			QuickUML_2001.javax.swing.JMenuBar <|-- FlatMenuBar
+			FileAction <|-- ExportAction
+			QuickUML_2001.javax.swing.AbstractAction <|-- FileAction
+			QuickUML_2001.javax.swing.AbstractAction <|-- PrintableAction
+			QuickUML_2001.java.awt.print.Printable <|.. PrintableAction
+			PrintableAction <|-- ScaledPrintableAction
+			QuickUML_2001.javax.swing.Action "closeAction" <-- DiagramContainer
+			QuickUML_2001.java.lang.String "colorProperties 0..*" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "copyAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "cutAction" <-- DiagramContainer
+			QuickUML_2001.java.awt.Dimension "defaultSize" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "exportAction" <-- DiagramContainer
+			QuickUML_2001.java.lang.String "fontProperties 0..*" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "pasteAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "printAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "resizeAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "saveAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "scaledPrintAction" <-- DiagramContainer
+			JavaPrimitiveTypes.int "nextInsert" <-- FlatMenuBar
+			QuickUML_2001.java.awt.Insets "noInsets" <-- FlatMenuBar
+			QuickUML_2001.java.io.File "lastDirectory" <-- SmartChooser
+			SmartChooser "chooser" <-- FileAction
+			QuickUML_2001.java.lang.String "description" <-- SimpleFilter
+			QuickUML_2001.java.lang.String "extensions 0..*" <-- SimpleFilter
+			SimpleFilter "filter" <-- ExportGIFAction
+			SimpleFilter "filter" <-- OpenAction
+			SimpleFilter "filter" <-- SaveAction
+			DiagramContainer "container" <-- BuildAction
+			BrowseAction "browseAction" <-- BuildDialog
+			QuickUML_2001.java.lang.String "currentLanguage" <-- BuildDialog
+			QuickUML_2001.javax.swing.JTextField "currentPath" <-- BuildDialog
+			QuickUML_2001.javax.swing.JTextArea "textArea" <-- BuildDialog
+			QuickUML_2001.javax.swing.JCheckBox "useArrays" <-- BuildDialog
+		}
+		package builder {
+			'DP role: builder
+			interface CodeBuilder {
+				build(ctx : Context)
+			}
+			'DP role: product
+			class MetaClass {
+				-anInterface: JavaPrimitiveTypes.boolean
+				-attributeList: QuickUML_2001.java.util.Vector
+				-attributeNamingComponent: NamingComponent
+				-interfaceList: QuickUML_2001.java.util.Vector
+				-methodList: QuickUML_2001.java.util.Vector
+				-superClass: MetaClass
+				<<Create>> MetaClass(name : QuickUML_2001.java.lang.String, anInterface : JavaPrimitiveTypes.boolean)
+				addAttribute(attr : MetaAttribute)
+				addInterface(c : MetaClass)
+				addInterface(c : MetaClass, validate : JavaPrimitiveTypes.boolean)
+				addMethod(m : MetaMethod)
+				addMethod(m : MetaMethod, replace : JavaPrimitiveTypes.boolean)
+				compareTo(o : QuickUML_2001.java.lang.Object): JavaPrimitiveTypes.int
+				getAttributes(): QuickUML_2001.java.util.Iterator
+				#getAttributes(readOnly : JavaPrimitiveTypes.boolean): QuickUML_2001.java.util.Iterator
+				getCompatibleInterface(metaClass : MetaClass): MetaClass
+				getInterfaces(): QuickUML_2001.java.util.Iterator
+				#getInterfaces(readOnly : JavaPrimitiveTypes.boolean): QuickUML_2001.java.util.Iterator
+				getMethods(): QuickUML_2001.java.util.Iterator
+				#getMethods(readOnly : JavaPrimitiveTypes.boolean): QuickUML_2001.java.util.Iterator
+				#getNamingComponent(): NamingComponent
+				getProperName(): QuickUML_2001.java.lang.String
+				getSuperClass(): MetaClass
+				getType(): QuickUML_2001.java.lang.String
+				hasInterface(metaClass : MetaClass): JavaPrimitiveTypes.boolean
+				hasInterface(metaClass : MetaClass, checkParents : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.boolean
+				isAncestorOf(c : MetaClass): JavaPrimitiveTypes.boolean
+				isInterface(): JavaPrimitiveTypes.boolean
+				isInterface(anInterface : JavaPrimitiveTypes.boolean)
+				removeInterface(c : MetaClass)
+				setName(name : QuickUML_2001.java.lang.String)
+				setSuperClass(c : MetaClass)
+				setSuperClass(c : MetaClass, validate : JavaPrimitiveTypes.boolean)
+				toString(): QuickUML_2001.java.lang.String
+			}
+			'/** 
+			' * @class AssociationBuilder
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0Scan the DiagramModel in the Context for all AssociationLink figures. Using this information, inheritance information will be added to all the MetaClasses that have been previously place in the Contex.
+			' */
+			'DP role: concreteBuilder
+			class AssociationBuilder {
+				<<Create>> AssociationBuilder()
+				'/** 
+				' * Assemble the code based on the information represented as a DiagramModel
+				' */
+				build(ctx : Context)
+				'/** 
+				' * Create the generalization if possible. Finer grain checks for cyclical inheritance and for mulitple inheritance are performed.
+				' */
+				#buildAssociation(ctx : Context, sourceClass : MetaClass, sinkClass : MetaClass)
+				'/** 
+				' * Check compatiblility
+				' */
+				#compatibleFigures(ctx : Context, source : QuickUML_2001.diagram.Figure, sink : QuickUML_2001.diagram.Figure): JavaPrimitiveTypes.boolean
+				'/** 
+				' */
+				#identifyAssociations(ctx : Context)
+				#validFigure(source : QuickUML_2001.diagram.Figure): JavaPrimitiveTypes.boolean
+			}
+			'/** 
+			' * @class ClassBuilder
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0This code builder scans the DiagramModel in the Context to identify all classes  (both regular and interface classes). Any errors and warning detected by the  Context or by the MetaClasses that are created will be added to the context.
+			' */
+			'DP role: concreteBuilder
+			class ClassBuilder {
+				<<Create>> ClassBuilder()
+				'/** 
+				' * Assemble the code based on the information represented as a DiagramModel
+				' */
+				build(ctx : Context)
+				'/** 
+				' * Handle any errors that were detected
+				' */
+				#checkContext(ctx : Context)
+				#identifyAttributes(ctx : Context, metaClass : MetaClass, attributes : QuickUML_2001.java.lang.String)
+				'/** 
+				' * Locate all the classes in the diagram. course-grained validation is performed. Warning are are generated for obvious bad names and errors for duplicate classes.
+				' */
+				#identifyClasses(ctx : Context)
+				'/** 
+				' * Locate all the interfaces in the diagram. course-grained validation is performed. Warning are are generated for obvious bad names and errors for duplicate classes.
+				' */
+				#identifyInterfaces(ctx : Context)
+				#identifyMethods(ctx : Context, metaClass : MetaClass, methods : QuickUML_2001.java.lang.String)
+			}
+			'/** 
+			' * @class CompositionBuilder
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0Scan the DiagramModel in the Context for all CompositionLink figures. Using this information, inheritance information will be added to all the MetaClasses that have been previously place in the Contex.
+			' */
+			'DP role: concreteBuilder
+			class CompositionBuilder {
+				<<Create>> CompositionBuilder()
+				'/** 
+				' * Assemble the code based on the information represented as a DiagramModel
+				' */
+				build(ctx : Context)
+				'/** 
+				' * Check compatiblility
+				' */
+				#compatibleFigures(ctx : Context, source : QuickUML_2001.diagram.Figure, sink : QuickUML_2001.diagram.Figure): JavaPrimitiveTypes.boolean
+				'/** 
+				' */
+				#identifyCompositions(ctx : Context)
+				#validFigure(source : QuickUML_2001.diagram.Figure): JavaPrimitiveTypes.boolean
+			}
+			'/** 
+			' * @class InheritanceBuilder
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0Scan the DiagramModel in the Context for all GeneralizationLink figures. Using this information, inheritance information will be added to all the MetaClasses that have been previously place in the Contex.
+			' */
+			'DP role: concreteBuilder
+			class InheritanceBuilder {
+				<<Create>> InheritanceBuilder()
+				'/** 
+				' * Assemble the code based on the information represented as a DiagramModel
+				' */
+				build(ctx : Context)
+				'/** 
+				' * Create the generalization if possible. Finer grain checks for cyclical inheritance and for mulitple inheritance are performed.
+				' */
+				#buildGeneralization(ctx : Context, sourceClass : MetaClass, sinkClass : MetaClass)
+				'/** 
+				' * Course-grained check to determine if the two figures are compatible and valid candidates for a generalization
+				' */
+				#compatibleFigures(ctx : Context, source : QuickUML_2001.diagram.Figure, sink : QuickUML_2001.diagram.Figure): JavaPrimitiveTypes.boolean
+				'/** 
+				' */
+				#identifyGeneralizations(ctx : Context)
+			}
+			'/** 
+			' * @class CPlusPlusBuilder
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: concreteBuilder
+			class CPlusPlusBuilder {
+				#{const} attributeComparator: MetaAccessComparator
+				#prefix: QuickUML_2001.java.lang.String
+				'/** 
+				' */
+				<<Create>> CPlusPlusBuilder(prefix : QuickUML_2001.java.lang.String)
+				'/** 
+				' */
+				build(ctx : Context)
+				'/** 
+				' * Get an output stream for a class
+				' */
+				#getWriter(meta : MetaClass, ext : QuickUML_2001.java.lang.String): QuickUML_2001.java.io.PrintWriter
+				'/** 
+				' * Write the header
+				' */
+				#writeHeader(metaClass : MetaClass, out : QuickUML_2001.java.io.PrintWriter)
+				'/** 
+				' * Write the attributes
+				' */
+				#writeHeaderAttributes(metaClass : MetaClass, out : QuickUML_2001.java.io.PrintWriter)
+				'/** 
+				' */
+				#writeHeaderConstructor(metaClass : MetaClass, cons : MetaConstructor, out : QuickUML_2001.java.io.PrintWriter)
+				'/** 
+				' */
+				#writeHeaderDestructor(metaClass : MetaClass, out : QuickUML_2001.java.io.PrintWriter)
+				'/** 
+				' * Write the attributes section, with a little space in between top and bottom
+				' */
+				#writeHeaderMethods(metaClass : MetaClass, out : QuickUML_2001.java.io.PrintWriter)
+				'/** 
+				' */
+				#writeSource(metaClass : MetaClass, out : QuickUML_2001.java.io.PrintWriter)
+				'/** 
+				' */
+				#writeSourceConstructor(metaClass : MetaClass, cons : MetaConstructor, out : QuickUML_2001.java.io.PrintWriter)
+				'/** 
+				' */
+				#writeSourceDestructor(metaClass : MetaClass, out : QuickUML_2001.java.io.PrintWriter)
+			}
+			'DP role: concreteBuilder
+			class RealizationBuilder {
+				<<Create>> RealizationBuilder()
+				build(ctx : Context)
+				#buildRealization(ctx : Context, sourceClass : MetaClass, sinkClass : MetaClass)
+				#checkContext(ctx : Context)
+				#compatibleFigures(ctx : Context, source : QuickUML_2001.diagram.Figure, sink : QuickUML_2001.diagram.Figure): JavaPrimitiveTypes.boolean
+				#getName(ctx : Context, figure : QuickUML_2001.diagram.Figure): QuickUML_2001.java.lang.String
+				#identifyRealizations(ctx : Context)
+			}
+			'/** 
+			' * @class JavaBuilder
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: concreteBuilder
+			class JavaBuilder {
+				#prefix: QuickUML_2001.java.lang.String
+				'/** 
+				' */
+				<<Create>> JavaBuilder(prefix : QuickUML_2001.java.lang.String)
+				'/** 
+				' */
+				build(ctx : Context)
+				'/** 
+				' * Get an output stream for a class
+				' */
+				#getWriter(meta : MetaClass): QuickUML_2001.java.io.PrintWriter
+				'/** 
+				' * Write the attributes section, with a little space in between top and bottom
+				' */
+				#writeAttributes(metaClass : MetaClass, out : QuickUML_2001.java.io.PrintWriter)
+				#writeConstructor(metaClass : MetaClass, cons : MetaConstructor, out : QuickUML_2001.java.io.PrintWriter)
+				'/** 
+				' * Write the attributes section, with a little space in between top and bottom
+				' */
+				#writeMethods(metaClass : MetaClass, out : QuickUML_2001.java.io.PrintWriter, withBody : JavaPrimitiveTypes.boolean)
+			}
+			'/** 
+			' * @class MetaAssociation
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: product
+			'DP role: product
+			class MetaAssociation {
+				<<Create>> MetaAssociation(description : QuickUML_2001.java.lang.String)
+			}
+			'/** 
+			' * @class MetaComposition
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: product
+			class MetaComposition {
+				<<Create>> MetaComposition(description : QuickUML_2001.java.lang.String)
+			}
+			MetaComponent <|-- MetaClass
+			QuickUML_2001.java.lang.Comparable <|.. MetaComponent
+			MetaComponent <|-- MetaAttribute
+			MetaAttribute <|-- MetaMethod
+			MetaComponent <|-- MetaParameter
+			AbstractBuilder <|-- AssociationBuilder
+			CodeBuilder <|.. AbstractBuilder
+			AbstractBuilder <|-- ClassBuilder
+			AbstractBuilder <|-- CompositionBuilder
+			AbstractBuilder <|-- InheritanceBuilder
+			ObjectBuilder <|-- CPlusPlusBuilder
+			CodeBuilder <|.. ObjectBuilder
+			CodeBuilder <|.. RealizationBuilder
+			QuickUML_2001.java.util.Comparator <|.. MetaAccessComparator
+			MetaMethod <|-- MetaConstructor
+			ObjectBuilder <|-- JavaBuilder
+			MetaAttribute <|-- MetaAssociation
+			MetaAttribute <|-- MetaComposition
+			QuickUML_2001.java.util.Vector "classes" <-- Context
+			MetaClassComparator "comparator" <-- Context
+			QuickUML_2001.java.util.Vector "errors" <-- Context
+			QuickUML_2001.diagram.DiagramModel "model" <-- Context
+			JavaPrimitiveTypes.boolean "wantArrays" <-- Context
+			QuickUML_2001.java.util.Vector "warnings" <-- Context
+			QuickUML_2001.java.lang.String "name" <-- MetaComponent
+			QuickUML_2001.java.lang.String "type" <-- MetaComponent
+			JavaPrimitiveTypes.boolean "anInterface" <-- MetaClass
+			QuickUML_2001.java.util.Vector "attributeList" <-- MetaClass
+			QuickUML_2001.java.util.Vector "names" <-- NamingComponent
+			NamingComponent "attributeNamingComponent" <-- MetaClass
+			QuickUML_2001.java.util.Vector "interfaceList" <-- MetaClass
+			QuickUML_2001.java.util.Vector "methodList" <-- MetaClass
+			JavaPrimitiveTypes.int "access" <-- MetaAttribute
+			QuickUML_2001.java.util.Vector "exceptions" <-- MetaMethod
+			NamingComponent "parameterNamingComponent" <-- MetaMethod
+			QuickUML_2001.java.util.Vector "params" <-- MetaMethod
+			QuickUML_2001.java.lang.String "type" <-- TypeFilter
+			AssociationBuilder "associationBuilder" <-- ObjectBuilder
+			ClassBuilder "classBuilder" <-- ObjectBuilder
+			CompositionBuilder "compositionBuilder" <-- ObjectBuilder
+			InheritanceBuilder "inheritanceBuilder" <-- ObjectBuilder
+			RealizationBuilder "realizationBuilder" <-- ObjectBuilder
+			MetaAccessComparator "attributeComparator" <-- CPlusPlusBuilder
+			QuickUML_2001.java.lang.String "prefix" <-- CPlusPlusBuilder
+			MetaAttribute "associations 0..*" <-- MetaConstructor
+			MetaAttribute "compositions 0..*" <-- MetaConstructor
+			QuickUML_2001.java.lang.String "prefix" <-- JavaBuilder
+		}
+	}
+}
+@enduml

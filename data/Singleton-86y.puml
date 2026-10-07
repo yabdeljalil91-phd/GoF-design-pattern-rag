@@ -1,0 +1,84 @@
+@startuml
+' Singleton class UML for Iconkit (JHotDraw 5.1)
+' Enhanced for RAG + GoF pattern precision (Lazy Singleton / Resource Manager hybrid)
+
+package "JHotDraw v5.1" as JHotDraw {
+
+    class Iconkit {
+
+        '====================================================
+        ' CONSTANT / CONFIGURATION LAYER
+        '====================================================
+        - {const} ID: int = 123
+
+        '====================================================
+        ' SINGLETON STATE (global instance control)
+        '====================================================
+        - fComponent: java.awt.Component
+        - fMap: java.util.Hashtable
+        - fRegisteredImages: java.util.Vector
+
+        {static} fgDebug: boolean
+        {static} fgIconkit: Iconkit
+
+        '====================================================
+        ' CONSTRUCTION (controlled instantiation)
+        '====================================================
+        ' Non-public instantiation path (implied controlled lifecycle)
+        <<Create>> Iconkit(component: java.awt.Component)
+
+        '====================================================
+        ' CORE RESOURCE MANAGEMENT (image lifecycle API)
+        '====================================================
+
+        - basicGetImage(filename: String): java.awt.Image
+        - getImage(filename: String): java.awt.Image
+        - loadImage(filename: String): java.awt.Image
+        - loadImageResource(resourcename: String): java.awt.Image
+
+        - loadRegisteredImages(component: java.awt.Component)
+        - registerAndLoadImage(component: java.awt.Component, fileName: String): java.awt.Image
+        - registerImage(fileName: String)
+
+        '====================================================
+        ' SINGLETON ACCESS POINT
+        '====================================================
+        {static} instance(): Iconkit
+    }
+
+    '========================================================
+    ' RAG-ORIENTED DESIGN PATTERN INTERPRETATION LAYER
+    '========================================================
+    '
+    ' Pattern classification: Lazy Singleton + Resource Manager
+    '
+    '========================================================
+    ' SINGLETON EVIDENCE
+    '========================================================
+    ' 1. Static instance holder:
+    '    fgIconkit: Iconkit
+    '
+    ' 2. Static accessor:
+    '    instance(): Iconkit
+    '
+    ' 3. Controlled constructor:
+    '    Iconkit(component)
+    '
+    '========================================================
+    ' RESPONSIBILITY SHIFT (important for MDE/RAG)
+    '========================================================
+    ' This class is NOT a pure Singleton:
+    '
+    ' - It acts as:
+    '   -> Singleton (global access control)
+    '   -> Resource Manager (image caching/loading)
+    '   -> Registry Manager (registered images tracking)
+    '
+    '========================================================
+    ' ARCHITECTURAL INSIGHT
+    '========================================================
+    ' High cohesion around "icon/image lifecycle management"
+    ' but mixed responsibilities → potential violation of SRP
+    '
+}
+@enduml

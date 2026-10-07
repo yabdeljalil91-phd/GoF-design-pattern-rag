@@ -1,0 +1,125 @@
+@startuml
+'Design pattern Adapter (enhanced for RAG detection)
+
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+
+	package org {
+		package acm {
+			package seguin {
+
+				package ide {
+					package command {
+
+						'DP role: client
+						'Client triggers UI actions and relies on ActionListener abstraction
+						class CommandLineMenu {
+							<<Create>> CommandLineMenu()
+
+							'Creates menu elements that will bind ActionListener implementations (adapters)
+							-createEditMenu(): JRefactory_v2.6.24.javax.swing.JMenu
+
+							'Associates UI panel with menu actions
+							-createFileMenu(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenu
+
+							'Creates zoom menu that likely binds adapters (e.g., ZoomAdapter)
+							-createZoomMenu(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenu
+
+							'Entry point assembling UI → uses ActionListener implementations
+							getMenuBar(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenuBar
+						}
+					}
+
+					package common {
+
+						'DP role: adapter
+						'Adapter: translates ActionListener events into undo behavior
+						class UndoAdapter {
+
+							<<Create>> UndoAdapter()
+
+							'Delegates UI event (target interface) to undo logic (adaptee)
+							actionPerformed(evt : JRefactory_v2.6.24.java.awt.event.ActionEvent)
+						}
+
+						'--- Key Adapter relationship ---
+						'Realization: Adapter implements Target interface
+						JRefactory_v2.6.24.java.awt.event.ActionListener <|.. UndoAdapter
+					}
+				}
+
+				package refactor {
+					package undo {
+
+						'DP role: adaptee
+						'Adaptee: provides domain-specific undo logic not matching ActionListener
+						class UndoAction {
+
+							-description: JRefactory_v2.6.24.java.lang.String
+							-list: JRefactory_v2.6.24.java.util.LinkedList
+
+							<<Create>> UndoAction(init : JRefactory_v2.6.24.java.lang.String)
+
+							'Stores undo operations (business logic)
+							add(oldFile : JRefactory_v2.6.24.java.io.File, newFile : JRefactory_v2.6.24.java.io.File)
+
+							'Internal helper for file versioning
+							-findNextStorageSlot(dir : JRefactory_v2.6.24.java.io.File, name : JRefactory_v2.6.24.java.lang.String): JRefactory_v2.6.24.java.io.File
+
+							'Returns description of undo action
+							getDescription(): JRefactory_v2.6.24.java.lang.String
+
+							'Helper for naming versions
+							-getNextName(name : JRefactory_v2.6.24.java.lang.String, index : JavaPrimitiveTypes.int, pattern : JRefactory_v2.6.24.java.lang.String): JRefactory_v2.6.24.java.lang.String
+
+							'Core business operation: undo changes
+							undo()
+						}
+
+						'--- Structural relationships ---
+						'Implements Serializable (not pattern-related but structural)
+						JRefactory_v2.6.24.java.io.Serializable <|.. UndoAction
+
+						'Aggregation: UndoAction manages a list of file changes
+						JRefactory_v2.6.24.java.lang.String "description" <-- UndoAction
+						JRefactory_v2.6.24.java.util.LinkedList "list" <-- UndoAction
+					}
+				}
+			}
+		}
+	}
+
+	package java {
+		package awt {
+			package event {
+
+				'DP role: target
+				'Target interface expected by the client (UI framework)
+				interface ActionListener {
+
+					'Standard callback expected by UI components
+					actionPerformed(e : ActionEvent)
+				}
+
+				'Inheritance hierarchy
+				JRefactory_v2.6.24.java.util.EventListener <|-- ActionListener
+			}
+		}
+	}
+}
+
+'========================
+' Pattern Summary (for RAG)
+'========================
+'
+' Adapter Pattern Mapping:
+' - Client: CommandLineMenu (binds actions to UI)
+' - Target: ActionListener (expected interface)
+' - Adapter: UndoAdapter (implements ActionListener)
+' - Adaptee: UndoAction (business undo logic)
+'
+' Key detection signals:
+' - Realization: UndoAdapter <|.. ActionListener
+' - Semantic gap: ActionListener vs UndoAction.undo()
+' - Delegation (implicit): actionPerformed() → undo()
+'
+@enduml

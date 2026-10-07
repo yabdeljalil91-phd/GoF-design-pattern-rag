@@ -1,0 +1,62 @@
+@startuml
+' Simplified Singleton UML for EditorActionManager
+
+package "Lexi v0.1.1 alpha" as Lexi {
+
+    ' Superclass
+    class ActionManager {
+    }
+
+    ' Editor class
+    class Editor {
+        -_FILE: File
+        -_UNDO_MANAGER: javax.swing.undo.UndoManager
+        -_OPTION_REGISTRY: com.jmonkey.export.Registry
+        -_POPUP_LISTENER: java.awt.event.ActionListener
+        -VALID_CONTENT_TYPES: String[0..*]
+    }
+
+    ' Singleton class
+    class EditorActionManager {
+        {static} _INSTANCE: EditorActionManager
+        {static} _EDITOR: Editor
+        {static} _ACTIONS: java.util.Map
+
+        ' Key constants
+        {const} BOLD_ACTION_PREFIX: String
+        {const} ITALIC_ACTION_PREFIX: String
+        {const} UNDERLINE_ACTION_PREFIX: String
+        {const} UNDO_ACTION_PREFIX: String
+        {const} REDO_ACTION_PREFIX: String
+
+        ' Constructor
+        -EditorActionManager()
+
+        ' Singleton access
+        {static} instance(): EditorActionManager
+
+        ' Editor management
+        {static} activate(editor: Editor)
+        {static} deactivate(editor: Editor)
+        {const} getActiveEditor(): Editor
+        {const} isActiveEditor(): boolean
+
+        ' Action getters
+        getBoldAction(): javax.swing.Action
+        getItalicAction(): javax.swing.Action
+        getUnderlineAction(): javax.swing.Action
+        getUndoAction(): javax.swing.Action
+        getRedoAction(): javax.swing.Action
+
+        ' Font & colour actions
+        createDefaultFontFaceActions(): javax.swing.Action[]
+        createFontSizeActionRange(begin: int, end: int, granularity: int): javax.swing.Action[]
+        createDefaultColourActions(): javax.swing.Action[]
+        getColourAction(name: String, colour: java.awt.Color): javax.swing.Action
+    }
+
+    ' Relationships
+    ActionManager <|-- EditorActionManager
+    EditorActionManager --> Editor : manages
+}
+@enduml

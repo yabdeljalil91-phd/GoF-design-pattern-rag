@@ -1,0 +1,43 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			'A LineConnection that constrains a connection to orthogonal lines.
+			class ElbowConnection {
+				-elbowConnectionSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 2193968743082078559
+				<<Create>> ElbowConnection()
+				connectedTextLocator(f : Figure): Locator
+				'Gets the handles of the figure.
+				handles(): java.util.Vector
+				layoutConnection()
+				updateConnection()
+				#updatePoints()
+			}
+		}
+	}
+	Abstractfactory.non_abstract_factory.LineConnection <|-- Abstractfactory.non_abstract_factory.ElbowConnection
+	Abstractfactory.non_abstract_factory.ConnectionFigure <|.. Abstractfactory.non_abstract_factory.LineConnection
+	Abstractfactory.non_abstract_factory.PolyLineFigure <|-- Abstractfactory.non_abstract_factory.LineConnection
+	Abstractfactory.non_abstract_factory.AbstractFigure <|-- Abstractfactory.non_abstract_factory.PolyLineFigure
+	Abstractfactory.non_abstract_factory.Figure <|-- Abstractfactory.non_abstract_factory.ConnectionFigure
+	java.lang.Cloneable <|-- Abstractfactory.non_abstract_factory.Figure
+	java.io.Serializable <|-- Abstractfactory.non_abstract_factory.Figure
+	JavaPrimitiveTypes.int "ARROW_TIP_BOTH" <-- Abstractfactory.non_abstract_factory.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_END" <-- Abstractfactory.non_abstract_factory.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_NONE" <-- Abstractfactory.non_abstract_factory.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_START" <-- Abstractfactory.non_abstract_factory.PolyLineFigure
+	Abstractfactory.non_abstract_factory.LineDecoration "fEndDecoration" <-- Abstractfactory.non_abstract_factory.PolyLineFigure
+	java.awt.Color "fFrameColor" <-- Abstractfactory.non_abstract_factory.PolyLineFigure
+	java.util.Vector "fPoints" <-- Abstractfactory.non_abstract_factory.PolyLineFigure
+	Abstractfactory.non_abstract_factory.LineDecoration "fStartDecoration" <-- Abstractfactory.non_abstract_factory.PolyLineFigure
+	JavaPrimitiveTypes.int "polyLineFigureSerializedDataVersion" <-- Abstractfactory.non_abstract_factory.PolyLineFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Abstractfactory.non_abstract_factory.PolyLineFigure
+	Abstractfactory.non_abstract_factory.Connector "fEnd" <-- Abstractfactory.non_abstract_factory.LineConnection
+	Abstractfactory.non_abstract_factory.Connector "fStart" <-- Abstractfactory.non_abstract_factory.LineConnection
+	JavaPrimitiveTypes.int "lineConnectionSerializedDataVersion" <-- Abstractfactory.non_abstract_factory.LineConnection
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Abstractfactory.non_abstract_factory.LineConnection
+	JavaPrimitiveTypes.int "elbowConnectionSerializedDataVersion" <-- Abstractfactory.non_abstract_factory.ElbowConnection
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Abstractfactory.non_abstract_factory.ElbowConnection
+}
+@enduml

@@ -1,0 +1,645 @@
+@startuml
+package "PMD v1.8" as PMD_v1.8 {
+	package net {
+		package sourceforge {
+			package pmd {
+				package ast {
+					class JavaParserVisitorAdapter {
+						<<Create>> JavaParserVisitorAdapter()
+						visit(node : SimpleNode, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTCompilationUnit, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTEnumDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTEnumElement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTAssertStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTPackageDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTImportDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTTypeDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTClassDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTUnmodifiedClassDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTClassBody, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTNestedClassDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTClassBodyDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTMethodDeclarationLookahead, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTInterfaceDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTNestedInterfaceDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTUnmodifiedInterfaceDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTInterfaceMemberDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTFieldDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTVariableDeclarator, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTVariableDeclaratorId, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTVariableInitializer, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTArrayInitializer, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTMethodDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTMethodDeclarator, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTFormalParameters, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTFormalParameter, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTConstructorDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTExplicitConstructorInvocation, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTInitializer, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTType, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTPrimitiveType, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTResultType, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTName, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTNameList, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTAssignmentOperator, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTConditionalExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTConditionalOrExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTConditionalAndExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTInclusiveOrExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTExclusiveOrExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTAndExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTEqualityExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTInstanceOfExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTRelationalExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTShiftExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTAdditiveExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTMultiplicativeExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTUnaryExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTPreIncrementExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTPreDecrementExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTUnaryExpressionNotPlusMinus, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTCastLookahead, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTPostfixExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTCastExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTPrimaryExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTPrimaryPrefix, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTPrimarySuffix, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTLiteral, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTBooleanLiteral, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTNullLiteral, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTArguments, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTArgumentList, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTAllocationExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTArrayDimsAndInits, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTLabeledStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTBlock, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTBlockStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTLocalVariableDeclaration, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTEmptyStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTStatementExpression, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTSwitchStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTSwitchLabel, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTIfStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTWhileStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTDoStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTForStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTForInit, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTStatementExpressionList, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTForUpdate, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTBreakStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTContinueStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTReturnStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTThrowStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTSynchronizedStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						visit(node : ASTTryStatement, data : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+					}
+					JavaParserVisitor <|.. JavaParserVisitorAdapter
+					Node <|.. SimpleNode
+					JavaParserTreeConstants <|.. JavaParser
+					JavaParserConstants <|.. JavaParser
+					JavaParserConstants <|.. JavaParserTokenManager
+					SimpleNode <|-- ASTCompilationUnit
+					PMD_v1.8.java.lang.RuntimeException <|-- ParseException
+					SimpleNode <|-- ASTVariableDeclaratorId
+					SimpleNode <|-- ASTType
+					SimpleNode <|-- AccessNode
+					AccessFlags <|.. AccessNode
+					SimpleNode <|-- ASTMethodDeclarator
+					SimpleNode <|-- ASTPackageDeclaration
+					SimpleNode <|-- ASTImportDeclaration
+					SimpleNode <|-- ASTName
+					SimpleNode <|-- ASTTypeDeclaration
+					AccessNode <|-- ASTClassDeclaration
+					SimpleNode <|-- ASTUnmodifiedClassDeclaration
+					SimpleNode <|-- ASTClassBody
+					AccessNode <|-- ASTNestedClassDeclaration
+					SimpleNode <|-- ASTClassBodyDeclaration
+					AccessNode <|-- ASTEnumDeclaration
+					SimpleNode <|-- ASTEnumElement
+					SimpleNode <|-- ASTMethodDeclarationLookahead
+					AccessNode <|-- ASTInterfaceDeclaration
+					SimpleNode <|-- ASTUnmodifiedInterfaceDeclaration
+					AccessNode <|-- ASTNestedInterfaceDeclaration
+					SimpleNode <|-- ASTInterfaceMemberDeclaration
+					AccessNode <|-- ASTFieldDeclaration
+					SimpleNode <|-- ASTVariableDeclarator
+					SimpleNode <|-- ASTVariableInitializer
+					SimpleNode <|-- ASTArrayInitializer
+					AccessNode <|-- ASTMethodDeclaration
+					SimpleNode <|-- ASTFormalParameters
+					AccessNode <|-- ASTFormalParameter
+					AccessNode <|-- ASTConstructorDeclaration
+					SimpleNode <|-- ASTExplicitConstructorInvocation
+					SimpleNode <|-- ASTInitializer
+					SimpleNode <|-- ASTPrimitiveType
+					SimpleNode <|-- ASTResultType
+					SimpleNode <|-- ASTNameList
+					SimpleNode <|-- ASTExpression
+					SimpleNode <|-- ASTAssignmentOperator
+					SimpleNode <|-- ASTConditionalExpression
+					SimpleNode <|-- ASTConditionalOrExpression
+					SimpleNode <|-- ASTConditionalAndExpression
+					SimpleNode <|-- ASTInclusiveOrExpression
+					SimpleNode <|-- ASTExclusiveOrExpression
+					SimpleNode <|-- ASTAndExpression
+					SimpleNode <|-- ASTEqualityExpression
+					SimpleNode <|-- ASTInstanceOfExpression
+					SimpleNode <|-- ASTRelationalExpression
+					SimpleNode <|-- ASTShiftExpression
+					SimpleNode <|-- ASTAdditiveExpression
+					SimpleNode <|-- ASTMultiplicativeExpression
+					SimpleNode <|-- ASTUnaryExpression
+					SimpleNode <|-- ASTPreIncrementExpression
+					SimpleNode <|-- ASTPreDecrementExpression
+					SimpleNode <|-- ASTUnaryExpressionNotPlusMinus
+					SimpleNode <|-- ASTCastLookahead
+					SimpleNode <|-- ASTPostfixExpression
+					SimpleNode <|-- ASTCastExpression
+					SimpleNode <|-- ASTPrimaryExpression
+					SimpleNode <|-- ASTPrimaryPrefix
+					SimpleNode <|-- ASTPrimarySuffix
+					SimpleNode <|-- ASTLiteral
+					SimpleNode <|-- ASTBooleanLiteral
+					SimpleNode <|-- ASTNullLiteral
+					SimpleNode <|-- ASTArguments
+					SimpleNode <|-- ASTArgumentList
+					SimpleNode <|-- ASTAllocationExpression
+					SimpleNode <|-- ASTArrayDimsAndInits
+					SimpleNode <|-- ASTStatement
+					SimpleNode <|-- ASTLabeledStatement
+					SimpleNode <|-- ASTBlock
+					SimpleNode <|-- ASTBlockStatement
+					AccessNode <|-- ASTLocalVariableDeclaration
+					SimpleNode <|-- ASTEmptyStatement
+					SimpleNode <|-- ASTStatementExpression
+					SimpleNode <|-- ASTSwitchStatement
+					SimpleNode <|-- ASTSwitchLabel
+					SimpleNode <|-- ASTIfStatement
+					SimpleNode <|-- ASTWhileStatement
+					SimpleNode <|-- ASTDoStatement
+					SimpleNode <|-- ASTForStatement
+					SimpleNode <|-- ASTForInit
+					SimpleNode <|-- ASTStatementExpressionList
+					SimpleNode <|-- ASTForUpdate
+					SimpleNode <|-- ASTBreakStatement
+					SimpleNode <|-- ASTContinueStatement
+					SimpleNode <|-- ASTReturnStatement
+					SimpleNode <|-- ASTThrowStatement
+					SimpleNode <|-- ASTSynchronizedStatement
+					SimpleNode <|-- ASTTryStatement
+					SimpleNode <|-- ASTAssertStatement
+					JavaPrimitiveTypes.int "beginColumn" <-- SimpleNode
+					JavaPrimitiveTypes.int "beginLine" <-- SimpleNode
+					Node "children 0..*" <-- SimpleNode
+					JavaPrimitiveTypes.boolean "discardable" <-- SimpleNode
+					JavaPrimitiveTypes.int "endColumn" <-- SimpleNode
+					JavaPrimitiveTypes.int "endLine" <-- SimpleNode
+					JavaPrimitiveTypes.int "id" <-- SimpleNode
+					PMD_v1.8.java.lang.String "image" <-- SimpleNode
+					Node "parent" <-- SimpleNode
+					JavaPrimitiveTypes.int "JJTADDITIVEEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTALLOCATIONEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTANDEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTARGUMENTLIST" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTARGUMENTS" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTARRAYDIMSANDINITS" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTARRAYINITIALIZER" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTASSERTSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTASSIGNMENTOPERATOR" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTBLOCK" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTBLOCKSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTBOOLEANLITERAL" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTBREAKSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCASTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCASTLOOKAHEAD" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCLASSBODY" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCLASSBODYDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCLASSDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCOMPILATIONUNIT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONDITIONALANDEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONDITIONALEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONDITIONALOREXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONSTRUCTORDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONTINUESTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTDOSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEMPTYSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTENUMDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTENUMELEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEQUALITYEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEXCLUSIVEOREXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEXPLICITCONSTRUCTORINVOCATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFIELDDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORINIT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORMALPARAMETER" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORMALPARAMETERS" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORUPDATE" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTIFSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTIMPORTDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINCLUSIVEOREXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINITIALIZER" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINSTANCEOFEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINTERFACEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINTERFACEMEMBERDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTLABELEDSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTLITERAL" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTLOCALVARIABLEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTMETHODDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTMETHODDECLARATIONLOOKAHEAD" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTMETHODDECLARATOR" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTMULTIPLICATIVEEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNAME" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNAMELIST" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNESTEDCLASSDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNESTEDINTERFACEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNULLLITERAL" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPACKAGEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPOSTFIXEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPREDECREMENTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPREINCREMENTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPRIMARYEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPRIMARYPREFIX" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPRIMARYSUFFIX" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPRIMITIVETYPE" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTRELATIONALEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTRESULTTYPE" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTRETURNSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSHIFTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSTATEMENTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSTATEMENTEXPRESSIONLIST" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSWITCHLABEL" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSWITCHSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSYNCHRONIZEDSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTTHROWSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTTRYSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTTYPE" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTTYPEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTUNARYEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTUNARYEXPRESSIONNOTPLUSMINUS" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTUNMODIFIEDCLASSDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTUNMODIFIEDINTERFACEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTVARIABLEDECLARATOR" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTVARIABLEDECLARATORID" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTVARIABLEINITIALIZER" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTWHILESTATEMENT" <-- JavaParserTreeConstants
+					PMD_v1.8.java.lang.String "jjtNodeName 0..*" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "ABSTRACT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "ANDASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "ASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BANG" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BIT_AND" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BIT_OR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BOOLEAN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BREAK" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BYTE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CASE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CATCH" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CHAR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CHARACTER_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CLASS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "COLON" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "COMMA" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CONST" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CONTINUE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DECIMAL_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DECR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DEFAULT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DIGIT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DO" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DOT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DOUBLE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "ELSE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "EOF" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "EQ" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "EXPONENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "EXTENDS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FALSE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FINAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FINALLY" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FLOAT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FLOATING_POINT_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FOR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FORMAL_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "GE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "GOTO" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "GT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "HEX_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "HOOK" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IDENTIFIER" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IF" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IMPLEMENTS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IMPORT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INCR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INSTANCEOF" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INTEGER_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INTERFACE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IN_FORMAL_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IN_MULTI_LINE_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LBRACE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LBRACKET" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LETTER" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LONG" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LPAREN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LSHIFT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LSHIFTASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "MINUS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "MINUSASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "MULTI_LINE_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "NATIVE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "NE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "NEW" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "NULL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "OCTAL_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "ORASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PACKAGE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PLUS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PLUSASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PRIVATE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PROTECTED" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PUBLIC" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RBRACE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RBRACKET" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "REM" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "REMASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RETURN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RPAREN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RSIGNEDSHIFT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RSIGNEDSHIFTASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RUNSIGNEDSHIFT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RUNSIGNEDSHIFTASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SC_AND" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SC_OR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SEMICOLON" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SHORT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SINGLE_LINE_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SLASH" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SLASHASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STAR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STARASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STATIC" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STRICTFP" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STRING_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SUPER" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SWITCH" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SYNCHRONIZED" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "THIS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "THROW" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "THROWS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "TILDE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "TRANSIENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "TRUE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "TRY" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "VOID" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "VOLATILE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "WHILE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "XOR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "XORASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "_DEFAULT" <-- JavaParserConstants
+					PMD_v1.8.java.lang.String "tokenImage 0..*" <-- JavaParserConstants
+					JavaPrimitiveTypes.boolean "isJDK15" <-- JavaParser
+					JavaPrimitiveTypes.int "arg" <-- JJCalls
+					JavaPrimitiveTypes.int "beginColumn" <-- Token
+					JavaPrimitiveTypes.int "beginLine" <-- Token
+					JavaPrimitiveTypes.int "endColumn" <-- Token
+					JavaPrimitiveTypes.int "endLine" <-- Token
+					PMD_v1.8.java.lang.String "image" <-- Token
+					JavaPrimitiveTypes.int "kind" <-- Token
+					Token "first" <-- JJCalls
+					JavaPrimitiveTypes.int "gen" <-- JJCalls
+					JJCalls "jj_2_rtns 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_endpos" <-- JavaParser
+					PMD_v1.8.java.util.Vector "jj_expentries" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_expentry 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_gc" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_gen" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_kind" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1_0 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1_1 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1_2 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1_3 0..*" <-- JavaParser
+					Token "jj_lastpos" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_lasttokens 0..*" <-- JavaParser
+					LookaheadSuccess "jj_ls" <-- JavaParser
+					Token "jj_nt" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_ntk" <-- JavaParser
+					JavaPrimitiveTypes.boolean "jj_rescan" <-- JavaParser
+					Token "jj_scanpos" <-- JavaParser
+					JavaPrimitiveTypes.boolean "jj_semLA" <-- JavaParser
+					PMD_v1.8.java.util.Stack "marks" <-- JJTJavaParserState
+					JavaPrimitiveTypes.int "mk" <-- JJTJavaParserState
+					JavaPrimitiveTypes.boolean "node_created" <-- JJTJavaParserState
+					PMD_v1.8.java.util.Stack "nodes" <-- JJTJavaParserState
+					JavaPrimitiveTypes.int "sp" <-- JJTJavaParserState
+					JJTJavaParserState "jjtree" <-- JavaParser
+					JavaPrimitiveTypes.boolean "lookingAhead" <-- JavaParser
+					Token "token" <-- JavaParser
+					JavaPrimitiveTypes.char "curChar" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "curLexState" <-- JavaParserTokenManager
+					PMD_v1.8.java.io.PrintStream "debugStream" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "defaultLexState" <-- JavaParserTokenManager
+					PMD_v1.8.java.lang.StringBuffer "image" <-- JavaParserTokenManager
+					CharStream "input_stream" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec0 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec2 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec3 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec4 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec5 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec6 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec7 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec8 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjimageLen" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjmatchedKind" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjmatchedPos" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjnewLexState 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjnewStateCnt" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjnextStates 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjround" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjrounds 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjstateSet 0..*" <-- JavaParserTokenManager
+					PMD_v1.8.java.lang.String "jjstrLiteralImages 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjtoMore 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjtoSkip 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjtoSpecial 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjtoToken 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "lengthOfMatch" <-- JavaParserTokenManager
+					PMD_v1.8.java.lang.String "lexStateNames 0..*" <-- JavaParserTokenManager
+					JavaParserTokenManager "token_source" <-- JavaParser
+					JavaPrimitiveTypes.boolean "usingAssertAsIdentifier" <-- JavaParser
+					Token "currentToken" <-- ParseException
+					PMD_v1.8.java.lang.String "eol" <-- ParseException
+					JavaPrimitiveTypes.int "expectedTokenSequences 0..*" <-- ParseException
+					JavaPrimitiveTypes.boolean "specialConstructor" <-- ParseException
+					PMD_v1.8.java.lang.String "tokenImage 0..*" <-- ParseException
+					JavaParser "parser" <-- SimpleNode
+					JavaPrimitiveTypes.int "dimensions" <-- ASTType
+					JavaPrimitiveTypes.boolean "isArray" <-- ASTType
+					JavaPrimitiveTypes.short "ACC_ABSTRACT" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_FINAL" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_INTERFACE" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_NATIVE" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_PRIVATE" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_PROTECTED" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_PUBLIC" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_STATIC" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_STRICT" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_SUPER" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_SYNCHRONIZED" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_TRANSIENT" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_VOLATILE" <-- AccessFlags
+					JavaPrimitiveTypes.short "accessFlags" <-- AccessNode
+					PMD_v1.8.net.sourceforge.pmd.symboltable.Scope "scope" <-- SimpleNode
+					JavaPrimitiveTypes.boolean "isImportOnDemand" <-- ASTImportDeclaration
+					JavaPrimitiveTypes.boolean "hasExplicitExtends" <-- ASTUnmodifiedClassDeclaration
+					JavaPrimitiveTypes.boolean "hasExplicitImplements" <-- ASTUnmodifiedClassDeclaration
+					PMD_v1.8.java.lang.String "thisOrSuper" <-- ASTExplicitConstructorInvocation
+					JavaPrimitiveTypes.boolean "isStatic" <-- ASTInitializer
+					JavaPrimitiveTypes.boolean "usesSuperModifier" <-- ASTPrimaryPrefix
+					JavaPrimitiveTypes.boolean "usesThisModifier" <-- ASTPrimaryPrefix
+					JavaPrimitiveTypes.boolean "isArguments" <-- ASTPrimarySuffix
+					JavaPrimitiveTypes.boolean "isTrue" <-- ASTBooleanLiteral
+					JavaPrimitiveTypes.boolean "hasElse" <-- ASTIfStatement
+					JavaPrimitiveTypes.boolean "hasCatch" <-- ASTTryStatement
+					JavaPrimitiveTypes.boolean "hasFinally" <-- ASTTryStatement
+				}
+				package ant {
+					class PMDTask {
+						#EOL: PMD_v1.8.java.lang.String
+						-encoding: PMD_v1.8.java.lang.String
+						-failOnError: JavaPrimitiveTypes.boolean
+						-failOnRuleViolation: JavaPrimitiveTypes.boolean
+						-failuresPropertyName: PMD_v1.8.java.lang.String
+						-filesets: PMD_v1.8.java.util.List
+						-formatters: PMD_v1.8.java.util.List
+						-printToConsole: JavaPrimitiveTypes.boolean
+						-ruleSetFiles: PMD_v1.8.java.lang.String
+						-shortFilenames: JavaPrimitiveTypes.boolean
+						-targetJDK13: JavaPrimitiveTypes.boolean
+						<<Create>> PMDTask()
+						addFormatter(f : Formatter)
+						-logRulesUsed(rules : PMD_v1.8.net.sourceforge.pmd.RuleSet)
+						setEncoding(encoding : PMD_v1.8.java.lang.String)
+						setFailOnError(fail : JavaPrimitiveTypes.boolean)
+						setFailOnRuleViolation(fail : JavaPrimitiveTypes.boolean)
+						setFailuresPropertyName(failuresPropertyName : PMD_v1.8.java.lang.String)
+						setPrintToConsole(printToConsole : JavaPrimitiveTypes.boolean)
+						setRuleSetFiles(ruleSetFiles : PMD_v1.8.java.lang.String)
+						setShortFilenames(value : JavaPrimitiveTypes.boolean)
+						setTargetJDK13(value : JavaPrimitiveTypes.boolean)
+					}
+					PMD_v1.8.java.lang.String "EOL" <-- PMDTask
+					PMD_v1.8.java.lang.String "encoding" <-- PMDTask
+					JavaPrimitiveTypes.boolean "failOnError" <-- PMDTask
+					JavaPrimitiveTypes.boolean "failOnRuleViolation" <-- PMDTask
+					PMD_v1.8.java.lang.String "failuresPropertyName" <-- PMDTask
+					PMD_v1.8.java.util.List "filesets" <-- PMDTask
+					PMD_v1.8.java.util.List "formatters" <-- PMDTask
+					JavaPrimitiveTypes.boolean "printToConsole" <-- PMDTask
+					PMD_v1.8.java.lang.String "ruleSetFiles" <-- PMDTask
+					JavaPrimitiveTypes.boolean "shortFilenames" <-- PMDTask
+					JavaPrimitiveTypes.boolean "targetJDK13" <-- PMDTask
+					PMD_v1.8.net.sourceforge.pmd.renderers.Renderer "renderer" <-- Formatter
+					PMD_v1.8.java.io.File "toFile" <-- Formatter
+				}
+				abstract class AbstractRule {
+					-description: PMD_v1.8.java.lang.String
+					-example: PMD_v1.8.java.lang.String
+					-m_include: JavaPrimitiveTypes.boolean
+					-m_priority: JavaPrimitiveTypes.int
+					-message: PMD_v1.8.java.lang.String
+					-name: PMD_v1.8.java.lang.String
+					-properties: PMD_v1.8.java.util.Properties
+					<<Create>> AbstractRule()
+					addProperty(name : PMD_v1.8.java.lang.String, value : PMD_v1.8.java.lang.String)
+					apply(acus : PMD_v1.8.java.util.List, ctx : RuleContext)
+					createRuleViolation(ctx : RuleContext, lineNumber : JavaPrimitiveTypes.int): RuleViolation
+					createRuleViolation(ctx : RuleContext, lineNumber : JavaPrimitiveTypes.int, specificDescription : PMD_v1.8.java.lang.String): RuleViolation
+					equals(o : PMD_v1.8.java.lang.Object): JavaPrimitiveTypes.boolean
+					getBooleanProperty(name : PMD_v1.8.java.lang.String): JavaPrimitiveTypes.boolean
+					getDescription(): PMD_v1.8.java.lang.String
+					getDoubleProperty(name : PMD_v1.8.java.lang.String): JavaPrimitiveTypes.double
+					getExample(): PMD_v1.8.java.lang.String
+					getIntProperty(name : PMD_v1.8.java.lang.String): JavaPrimitiveTypes.int
+					getMessage(): PMD_v1.8.java.lang.String
+					getName(): PMD_v1.8.java.lang.String
+					getPriority(): JavaPrimitiveTypes.int
+					getPriorityName(): PMD_v1.8.java.lang.String
+					getProperties(): PMD_v1.8.java.util.Properties
+					getStringProperty(name : PMD_v1.8.java.lang.String): PMD_v1.8.java.lang.String
+					hasProperty(name : PMD_v1.8.java.lang.String): JavaPrimitiveTypes.boolean
+					hashCode(): JavaPrimitiveTypes.int
+					include(): JavaPrimitiveTypes.boolean
+					setDescription(description : PMD_v1.8.java.lang.String)
+					setExample(example : PMD_v1.8.java.lang.String)
+					setInclude(include : JavaPrimitiveTypes.boolean)
+					setMessage(message : PMD_v1.8.java.lang.String)
+					setName(name : PMD_v1.8.java.lang.String)
+					setPriority(priority : JavaPrimitiveTypes.int)
+					#visitAll(acus : PMD_v1.8.java.util.List, ctx : RuleContext)
+				}
+				interface Rule {
+					{const} LOWEST_PRIORITY: JavaPrimitiveTypes.int = 5
+					{const} PRIORITIES: PMD_v1.8.java.lang.String [*]
+					addProperty(name : PMD_v1.8.java.lang.String, property : PMD_v1.8.java.lang.String)
+					apply(astCompilationUnits : PMD_v1.8.java.util.List, ctx : RuleContext)
+					getBooleanProperty(name : PMD_v1.8.java.lang.String): JavaPrimitiveTypes.boolean
+					getDescription(): PMD_v1.8.java.lang.String
+					getDoubleProperty(name : PMD_v1.8.java.lang.String): JavaPrimitiveTypes.double
+					getExample(): PMD_v1.8.java.lang.String
+					getIntProperty(name : PMD_v1.8.java.lang.String): JavaPrimitiveTypes.int
+					getMessage(): PMD_v1.8.java.lang.String
+					getName(): PMD_v1.8.java.lang.String
+					getPriority(): JavaPrimitiveTypes.int
+					getPriorityName(): PMD_v1.8.java.lang.String
+					getProperties(): PMD_v1.8.java.util.Properties
+					getStringProperty(name : PMD_v1.8.java.lang.String): PMD_v1.8.java.lang.String
+					hasProperty(name : PMD_v1.8.java.lang.String): JavaPrimitiveTypes.boolean
+					include(): JavaPrimitiveTypes.boolean
+					setDescription(description : PMD_v1.8.java.lang.String)
+					setExample(example : PMD_v1.8.java.lang.String)
+					setInclude(include : JavaPrimitiveTypes.boolean)
+					setMessage(message : PMD_v1.8.java.lang.String)
+					setName(name : PMD_v1.8.java.lang.String)
+					setPriority(priority : JavaPrimitiveTypes.int)
+				}
+				PMD_v1.8.net.sourceforge.pmd.ast.JavaParserVisitorAdapter <|-- AbstractRule
+				Rule <|.. AbstractRule
+				JavaPrimitiveTypes.int "LOWEST_PRIORITY" <-- Rule
+				PMD_v1.8.java.lang.String "PRIORITIES 0..*" <-- Rule
+				PMD_v1.8.java.util.List "errors" <-- Report
+				PMD_v1.8.java.util.List "listeners" <-- Report
+				PMD_v1.8.java.util.Set "metrics" <-- Report
+				PMD_v1.8.java.util.Set "violations" <-- Report
+				PMD_v1.8.java.lang.String "file" <-- ProcessingError
+				PMD_v1.8.java.lang.String "msg" <-- ProcessingError
+				PMD_v1.8.java.lang.String "description" <-- RuleViolation
+				PMD_v1.8.java.lang.String "filename" <-- RuleViolation
+				JavaPrimitiveTypes.int "line" <-- RuleViolation
+				Rule "rule" <-- RuleViolation
+				Report "report" <-- RuleContext
+				PMD_v1.8.java.lang.String "sourceCodeFilename" <-- RuleContext
+				PMD_v1.8.java.lang.String "description" <-- AbstractRule
+				PMD_v1.8.java.lang.String "example" <-- AbstractRule
+				JavaPrimitiveTypes.boolean "m_include" <-- AbstractRule
+				JavaPrimitiveTypes.int "m_priority" <-- AbstractRule
+				PMD_v1.8.java.lang.String "message" <-- AbstractRule
+				PMD_v1.8.java.lang.String "name" <-- AbstractRule
+				PMD_v1.8.java.util.Properties "properties" <-- AbstractRule
+				PMD_v1.8.java.lang.String "description" <-- RuleSet
+				PMD_v1.8.java.lang.String "m_fileName" <-- RuleSet
+				JavaPrimitiveTypes.boolean "m_include" <-- RuleSet
+				PMD_v1.8.java.lang.String "name" <-- RuleSet
+				PMD_v1.8.java.util.Set "rules" <-- RuleSet
+			}
+		}
+	}
+}
+@enduml

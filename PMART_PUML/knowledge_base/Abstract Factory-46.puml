@@ -1,0 +1,251 @@
+@startuml
+'Design pattern Abstract Factory
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package openide {
+			package filesystems {
+				'/** 
+				' * This singleton object contains all  {@link FileSystem}s in the IDE. <P> At any given time, no two file systems in the pool may share the same  {@link FileSystem#getSystemName name}(unless all but one are  {@link FileSystem#isValid invalid}). <p>Use  {@link TopManager#getRepository} to retrieve the singleton.
+				' * @author Jaroslav Tulach, Petr Hamernik
+				' */
+				'DP role: client
+				class Repository {
+					-{static} defaultPool: Repository
+					-fileSystems: Netbeans_v1.0.x.java.util.ArrayList
+					-listeners: Netbeans_v1.0.x.java.util.Hashtable
+					-names: Netbeans_v1.0.x.java.util.Hashtable
+					-propListener: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					{const} serialVersionUID: JavaPrimitiveTypes.long = -6344768369160069704
+					-system: FileSystem
+					-vetoListener: Netbeans_v1.0.x.java.beans.VetoableChangeListener
+					'/** 
+					' * Creates new instance of file system pool and registers it as the default one. Also registers the default file system.
+					' * @param def the default filesystem
+					' */
+					<<Create>> Repository(def : FileSystem)
+					'/** 
+					' * Adds new file system to the pool. <em>Note</em> that a file system cannot be assigned to more than one file system pool at one time (though currently there is only one pool anyway).
+					' * @param fs file system to add
+					' */
+					addFileSystem(fs : FileSystem)
+					'/** 
+					' * Adds new listener.
+					' * @param list the listener
+					' */
+					addRepositoryListener(list : RepositoryListener)
+					'/** 
+					' * Returns enumeration of all file systems.
+					' * @return enumeration of type {@link FileSystem}
+					' */
+					fileSystems(): Netbeans_v1.0.x.java.util.Enumeration
+					'/** 
+					' * Finds file when its name is provided. It scans in the list of file systems and asks them for the specified file by a call to {@link FileSystem#find find}. The first object that is found is returned or <CODE>null</CODE> if none of the file systems contain such a file.
+					' * @param aPackage package name where each package is separated by a dot
+					' * @param name name of the file (without dots) or <CODE>null</CODE> ifone wants to obtain the name of a package and not a file in it
+					' * @param ext extension of the file or <CODE>null</CODE> if one needsa package and not a file name
+					' * @return {@link FileObject} that represents file with given name or<CODE>null</CODE> if the file does not exist
+					' */
+					find(aPackage : Netbeans_v1.0.x.java.lang.String, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					'/** 
+					' * Finds all files among all file systems matching a given name, returning all matches. All file systems are queried with  {@link FileSystem#find}.
+					' * @param aPackage package name where each package is separated by a dot
+					' * @param name name of the file (without dots) or <CODE>null</CODE> ifone wants to obtain the name of a package and not a file in it
+					' * @param ext extension of the file or <CODE>null</CODE> if one needsa package and not a file name
+					' * @return enumeration of {@link FileObject}s
+					' */
+					findAll(aPackage : Netbeans_v1.0.x.java.lang.String, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.util.Enumeration
+					'/** 
+					' * Searches for the given resource among all file systems, returning all matches.
+					' * @param name name of the resource
+					' * @return enumeration of {@link FileObject}s
+					' */
+					findAllResources(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.util.Enumeration
+					'/** 
+					' * Finds file system when only its system name is known.
+					' * @param systemName {@link FileSystem#getSystemName name} of the file system
+					' * @return the file system or <CODE>null</CODE> if there is no suchfile system
+					' */
+					findFileSystem(systemName : Netbeans_v1.0.x.java.lang.String): FileSystem
+					'/** 
+					' * Searches for the given resource among all file systems.
+					' * @see FileSystem#findResource
+					' * @param name a name of the resource
+					' * @return file object or <code>null</code> if the resource can not be found
+					' */
+					findResource(name : Netbeans_v1.0.x.java.lang.String): FileObject
+					'/** 
+					' * Fire info about changes in the file system pool.
+					' * @param fs file system
+					' * @param add <CODE>true</CODE> if the file system is added,<CODE>false</CODE> if it is removed
+					' */
+					-fireFileSystem(fs : FileSystem, add : JavaPrimitiveTypes.boolean)
+					'/** 
+					' * Fires info about reodering
+					' * @param perm
+					' */
+					-fireFileSystemReordered(perm : JavaPrimitiveTypes.int)
+					'/** 
+					' * Gets the default filesystem of the IDE.
+					' * @return the default filesystem
+					' */
+					getDefaultFileSystem(): FileSystem
+					'/** 
+					' * Returns enumeration of all file systems.
+					' * @return enumeration of type {@link FileSystem}
+					' */
+					getFileSystems(): Netbeans_v1.0.x.java.util.Enumeration
+					'/** 
+					' * Initialazes the pool.
+					' * @exception SecurityException if CoronaStreamHandlerFactory is already registered.
+					' */
+					-init()
+					'/** 
+					' * @return true if the parameter describes a permutation 
+					' */
+					-{static} isPermutation(perm : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Reads object from stream. Reads all filesystems. Persistent and system file systems are untouched; all others are removed and possibly reread.
+					' * @param oos object output stream
+					' * @exception IOException if an error occures
+					' * @exception ClassNotFoundException if read class is not found
+					' */
+					readExternal(ois : Netbeans_v1.0.x.java.io.ObjectInput)
+					'/** 
+					' * Removes a file system from the pool.
+					' * @param fs file system to remove
+					' */
+					removeFileSystem(fs : FileSystem)
+					'/** 
+					' * Removes listener.
+					' * @param list the listener
+					' */
+					removeRepositoryListener(list : RepositoryListener)
+					'/** 
+					' * Reorders  {@link FileSystem}s by given permutation. For example, if there are three file systems, <code>new int[] {2, 0, 1}</code> cycles the file systems forwards.
+					' * @param perm an array of integers
+					' * @throws IllegalArgumentException if the array is not a permutation, or is not the same length as the current number of file systems in the pool
+					' */
+					reorder(perm : JavaPrimitiveTypes.int)
+					'/** 
+					' * Returns a sorted array of file systems. 
+					' */
+					toArray(): FileSystem
+					'/** 
+					' * Saves pool to stream by saving all file systems. The default (system) file system, or any non-persistent file systems, are skipped.
+					' * @param oos object output stream
+					' * @exception IOException if an error occures
+					' */
+					writeExternal(oos : Netbeans_v1.0.x.java.io.ObjectOutput)
+					'/** 
+					' * Writes the object to the stream.
+					' */
+					-writeReplace(): Netbeans_v1.0.x.java.lang.Object
+				}
+				Netbeans_v1.0.x.org.openide.nodes.Node.Cookie <|.. Repository
+				Netbeans_v1.0.x.java.io.Serializable <|.. Repository
+				Netbeans_v1.0.x.java.io.Serializable <|.. FileSystem
+				Netbeans_v1.0.x.java.io.Serializable <|.. FileObject
+				Netbeans_v1.0.x.java.util.EventListener <|-- FileChangeListener
+				FileEvent <|-- FileAttributeEvent
+				Netbeans_v1.0.x.java.util.EventObject <|-- FileEvent
+				FileEvent <|-- FileRenameEvent
+				Netbeans_v1.0.x.java.util.EventListener <|-- FileStatusListener
+				Netbeans_v1.0.x.java.util.EventObject <|-- FileStatusEvent
+				Netbeans_v1.0.x.java.util.EventListener <|-- RepositoryListener
+				Netbeans_v1.0.x.java.util.EventObject <|-- RepositoryEvent
+				Netbeans_v1.0.x.java.util.EventObject <|-- RepositoryReorderedEvent
+				Netbeans_v1.0.x.java.util.ArrayList "fileSystems" <-- Repository
+				Netbeans_v1.0.x.java.util.Hashtable "listeners" <-- Repository
+				Netbeans_v1.0.x.java.util.Hashtable "names" <-- Repository
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "propListener" <-- Repository
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Repository
+				Netbeans_v1.0.x.java.lang.String "PROP_HIDDEN" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "PROP_READ_ONLY" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "PROP_ROOT" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "PROP_SYSTEM_NAME" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "PROP_VALID" <-- FileSystem
+				Status "STATUS_NONE" <-- FileSystem
+				JavaPrimitiveTypes.boolean "assigned" <-- FileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileObject
+				JavaPrimitiveTypes.boolean "expected" <-- FileEvent
+				FileObject "file" <-- FileEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileEvent
+				JavaPrimitiveTypes.long "time" <-- FileEvent
+				Netbeans_v1.0.x.java.lang.String "name" <-- FileAttributeEvent
+				Netbeans_v1.0.x.java.lang.Object "newValue" <-- FileAttributeEvent
+				Netbeans_v1.0.x.java.lang.Object "oldValue" <-- FileAttributeEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileAttributeEvent
+				Netbeans_v1.0.x.java.lang.String "ext" <-- FileRenameEvent
+				Netbeans_v1.0.x.java.lang.String "name" <-- FileRenameEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileRenameEvent
+				JavaPrimitiveTypes.boolean "locked" <-- FileLock
+				JavaPrimitiveTypes.boolean "compilation" <-- Bean
+				JavaPrimitiveTypes.boolean "debug" <-- Bean
+				JavaPrimitiveTypes.boolean "doc" <-- Bean
+				JavaPrimitiveTypes.boolean "execution" <-- Bean
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Bean
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "supp" <-- Bean
+				FileSystemCapability "capability" <-- FileSystem
+				JavaPrimitiveTypes.boolean "hidden" <-- FileSystem
+				Netbeans_v1.0.x.javax.swing.event.EventListenerList "listenerList" <-- FileSystem
+				JavaPrimitiveTypes.int "requests" <-- FileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "systemName" <-- FileSystem
+				JavaPrimitiveTypes.boolean "valid" <-- FileSystem
+				Netbeans_v1.0.x.java.util.Set "files" <-- FileStatusEvent
+				JavaPrimitiveTypes.boolean "icon" <-- FileStatusEvent
+				JavaPrimitiveTypes.boolean "name" <-- FileStatusEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileStatusEvent
+				FileSystem "system" <-- Repository
+				Netbeans_v1.0.x.java.beans.VetoableChangeListener "vetoListener" <-- Repository
+				JavaPrimitiveTypes.boolean "add" <-- RepositoryEvent
+				FileSystem "fileSystem" <-- RepositoryEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- RepositoryEvent
+				JavaPrimitiveTypes.int "perm 0..*" <-- RepositoryReorderedEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- RepositoryReorderedEvent
+			}
+			package execution {
+				'/** 
+				' * Handle custom URL protocol for accessing internal resources.
+				' * @author Ales Novak, Petr Hamernik
+				' */
+				'DP role: concreteFactory
+				class NbfsStreamHandlerFactory {
+					<<Create>> NbfsStreamHandlerFactory()
+					'/** 
+					' * Create a new URL stream handler for accessing IDE-internal resources.
+					' * @param protocol the URL protocol. This should always be {@link NbfsURLConnection#PROTOCOL fixed}.
+					' * @return a stream handler if the proper protocol was specified, <code>null</code> otherwise
+					' */
+					createURLStreamHandler(protocol : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.net.URLStreamHandler
+				}
+				'/** 
+				' * This is a URLStreamHandlerClass for Nbfs URL.
+				' * @author Ales Novak, Petr Hamernik
+				' * @version 0.11, Apr 28, 1998
+				' */
+				'DP role: product
+				class NbfsURLStreamHandler {
+					{static} bundle: Netbeans_v1.0.x.java.util.ResourceBundle
+					<<Create>> NbfsURLStreamHandler()
+					'/** 
+					' * @param u - URL to open connection to.
+					' * @return new URLConnection.
+					' */
+					openConnection(u : Netbeans_v1.0.x.java.net.URL): Netbeans_v1.0.x.java.net.URLConnection
+				}
+				Netbeans_v1.0.x.java.net.URLStreamHandlerFactory <|.. NbfsStreamHandlerFactory
+				Netbeans_v1.0.x.java.net.URLStreamHandler <|-- NbfsURLStreamHandler
+				Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- NbfsURLStreamHandler
+			}
+		}
+	}
+	package java {
+		package net {
+			'DP role: abstractProduct
+			class URLStreamHandler {
+			}
+		}
+	}
+}
+@enduml

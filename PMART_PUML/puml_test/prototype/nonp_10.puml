@@ -1,0 +1,22 @@
+@startuml
+package dpd_jdt {
+	package Prototype {
+		package nonprototype {
+			'The factory interface used for creating instances of DriverSpecification class.  DriverSpecificationFactory collects information about available driver  description files. Then it's able to specify if system can control  the driver (specified by product name). It also provides a list of supported drivers.
+			'@author Radko Najman
+			interface DriverSpecificationFactory {
+				'Creates instance of DriverSpecification class; a driver-specification class. This object knows about used driver.
+				'@param driverName Driver name
+				'@return DriverSpecification object.
+				createDriverSpecification(driverName : java.lang.String): DriverSpecification
+				'Returns true if driver (specified by driverName) is supported by system. Does not throw exception if it doesn't.
+				'@param ddriverName Driver product name as given from DatabaseMetaData
+				'@return True if driver product is supported.
+				isDriverSupported(driverName : java.lang.String): JavaPrimitiveTypes.boolean
+				'Returns array of driver products supported by system. It returns string array only, not the DriverSpecification array.
+				supportedDrivers(): java.util.Set
+			}
+		}
+	}
+}
+@enduml

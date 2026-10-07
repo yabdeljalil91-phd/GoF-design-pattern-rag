@@ -1,0 +1,29 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Package selector dialog box
+			'@author    Chris Seguin
+			class NewClassDiagramAction {
+				'Constructor for the PrettyPrinterAction object
+				<<Create>> NewClassDiagramAction()
+				'The pretty printer action
+				'@param evt  the action that occurred
+				actionPerformed(evt : java.awt.event.ActionEvent)
+				'Creates a file if one does not yet exist
+				'@param diagramFile  the file to create
+				'@param summary      the associated package
+				-createFile(diagramFile : java.io.File, summary : PackageSummary)
+				'Gets the file associated with the package summary
+				'@param summary  the package summary
+				'@return          the file to get
+				-getFile(summary : PackageSummary): java.io.File
+				'Gets the Enabled attribute of the PrettyPrinterAction object
+				'@return    The Enabled value
+				isEnabled(): JavaPrimitiveTypes.boolean
+			}
+		}
+	}
+	Builder.nonbuilder.JBuilderAction <|-- Builder.nonbuilder.NewClassDiagramAction
+}
+@enduml

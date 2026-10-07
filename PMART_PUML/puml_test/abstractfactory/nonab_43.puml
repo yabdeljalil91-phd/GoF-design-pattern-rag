@@ -1,0 +1,50 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			class NodeFigure {
+				-{const} BORDER: JavaPrimitiveTypes.int = 6
+				-fConnectors: java.util.Vector
+				-fConnectorsVisible: JavaPrimitiveTypes.boolean
+				<<Create>> NodeFigure()
+				connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Connector
+				connectorVisibility(isVisible : JavaPrimitiveTypes.boolean)
+				-connectors(): java.util.Vector
+				containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				-createConnectors()
+				displayBox(): java.awt.Rectangle
+				draw(g : java.awt.Graphics)
+				-drawBorder(g : java.awt.Graphics)
+				-drawConnectors(g : java.awt.Graphics)
+				-findConnector(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Connector
+				handles(): java.util.Vector
+				-initialize()
+			}
+		}
+	}
+	Abstractfactory.non_abstract_factory.TextFigure <|-- Abstractfactory.non_abstract_factory.NodeFigure
+	Abstractfactory.non_abstract_factory.AttributeFigure <|-- Abstractfactory.non_abstract_factory.TextFigure
+	Abstractfactory.non_abstract_factory.FigureChangeListener <|-- Abstractfactory.non_abstract_factory.TextFigure
+	Abstractfactory.non_abstract_factory.TextHolder <|-- Abstractfactory.non_abstract_factory.TextFigure
+	java.lang.Cloneable <|-- Abstractfactory.non_abstract_factory.Figure
+	java.io.Serializable <|-- Abstractfactory.non_abstract_factory.Figure
+	java.awt.Font "fFont" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "fHeight" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.boolean "fIsReadOnly" <-- Abstractfactory.non_abstract_factory.TextFigure
+	Abstractfactory.non_abstract_factory.OffsetLocator "fLocator" <-- Abstractfactory.non_abstract_factory.TextFigure
+	Abstractfactory.non_abstract_factory.Figure "fObservedFigure" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "fOriginX" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "fOriginY" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.boolean "fSizeIsDirty" <-- Abstractfactory.non_abstract_factory.TextFigure
+	java.lang.String "fText" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "fWidth" <-- Abstractfactory.non_abstract_factory.TextFigure
+	java.lang.String "fgCurrentFontName" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontSize" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontStyle" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "textFigureSerializedDataVersion" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "BORDER" <-- Abstractfactory.non_abstract_factory.NodeFigure
+	java.util.Vector "fConnectors" <-- Abstractfactory.non_abstract_factory.NodeFigure
+	JavaPrimitiveTypes.boolean "fConnectorsVisible" <-- Abstractfactory.non_abstract_factory.NodeFigure
+}
+@enduml

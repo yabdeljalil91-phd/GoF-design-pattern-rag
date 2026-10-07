@@ -1,0 +1,64 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			class IntHashtable {
+				-count: JavaPrimitiveTypes.int
+				-loadFactor: JavaPrimitiveTypes.float
+				-table: IntHashtableEntry [*]
+				-threshold: JavaPrimitiveTypes.int
+				<<Create>> IntHashtable(initialCapacity : JavaPrimitiveTypes.int, loadFactor : JavaPrimitiveTypes.float)
+				<<Create>> IntHashtable(initialCapacity : JavaPrimitiveTypes.int)
+				<<Create>> IntHashtable()
+				clear()
+				clone(): java.lang.Object
+				contains(value : java.lang.Object): JavaPrimitiveTypes.boolean
+				containsKey(key : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				elements(): java.util.Enumeration
+				get(key : JavaPrimitiveTypes.int): java.lang.Object
+				get(okey : java.lang.Object): java.lang.Object
+				isEmpty(): JavaPrimitiveTypes.boolean
+				keys(): java.util.Enumeration
+				put(key : JavaPrimitiveTypes.int, value : java.lang.Object): java.lang.Object
+				put(okey : java.lang.Object, value : java.lang.Object): java.lang.Object
+				#rehash()
+				remove(key : JavaPrimitiveTypes.int): java.lang.Object
+				remove(okey : java.lang.Object): java.lang.Object
+				size(): JavaPrimitiveTypes.int
+				toString(): java.lang.String
+			}
+			class IntHashtableEntry {
+				hash: JavaPrimitiveTypes.int
+				key: JavaPrimitiveTypes.int
+				next: IntHashtableEntry
+				value: java.lang.Object
+				<<Create>> IntHashtableEntry()
+				#clone(): java.lang.Object
+			}
+			class IntHashtableEnumerator {
+				entry: IntHashtableEntry
+				index: JavaPrimitiveTypes.int
+				keys: JavaPrimitiveTypes.boolean
+				table: IntHashtableEntry [*]
+				<<Create>> IntHashtableEnumerator(table : IntHashtableEntry, keys : JavaPrimitiveTypes.boolean)
+				hasMoreElements(): JavaPrimitiveTypes.boolean
+				nextElement(): java.lang.Object
+			}
+		}
+	}
+	java.lang.Cloneable <|.. Builder.nonbuilder.IntHashtable
+	java.util.Dictionary <|-- Builder.nonbuilder.IntHashtable
+	java.util.Enumeration <|.. Builder.nonbuilder.IntHashtableEnumerator
+	JavaPrimitiveTypes.int "count" <-- Builder.nonbuilder.IntHashtable
+	JavaPrimitiveTypes.float "loadFactor" <-- Builder.nonbuilder.IntHashtable
+	JavaPrimitiveTypes.int "hash" <-- Builder.nonbuilder.IntHashtableEntry
+	JavaPrimitiveTypes.int "key" <-- Builder.nonbuilder.IntHashtableEntry
+	java.lang.Object "value" <-- Builder.nonbuilder.IntHashtableEntry
+	Builder.nonbuilder.IntHashtableEntry "table 0..*" <-- Builder.nonbuilder.IntHashtable
+	JavaPrimitiveTypes.int "threshold" <-- Builder.nonbuilder.IntHashtable
+	Builder.nonbuilder.IntHashtableEntry "entry" <-- Builder.nonbuilder.IntHashtableEnumerator
+	JavaPrimitiveTypes.int "index" <-- Builder.nonbuilder.IntHashtableEnumerator
+	JavaPrimitiveTypes.boolean "keys" <-- Builder.nonbuilder.IntHashtableEnumerator
+	Builder.nonbuilder.IntHashtableEntry "table 0..*" <-- Builder.nonbuilder.IntHashtableEnumerator
+}
+@enduml

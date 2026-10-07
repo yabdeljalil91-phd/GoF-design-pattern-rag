@@ -1,0 +1,62 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package nonsingleton {
+			'A tool that can be used to connect figures, to split connections, and to join two segments of a connection. ConnectionTools turns the visibility of the Connectors on when it enters a figure. The connection object to be created is specified by a prototype. <hr> <b>Design Patterns</b><P> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a href=../pattlets/sld029.htm>Prototype</a></b><br> ConnectionTools creates the connection by cloning a prototype. <hr>
+			'@see ConnectionFigure
+			'@see Object#clone
+			class ConnectionTool {
+				-fConnection: ConnectionFigure
+				-fConnectorTarget: Connector
+				-fEditedConnection: ConnectionFigure
+				-fEndConnector: Connector
+				-fPrototype: ConnectionFigure
+				-fSplitPoint: JavaPrimitiveTypes.int
+				-fStartConnector: Connector
+				-fTarget: Figure
+				<<Create>> ConnectionTool(view : DrawingView, prototype : ConnectionFigure)
+				'Creates the ConnectionFigure. By default the figure prototype is cloned.
+				#createConnection(): ConnectionFigure
+				'Gets the currently created figure
+				#createdFigure(): ConnectionFigure
+				deactivate()
+				-findConnectableFigure(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : Drawing): Figure
+				'Finds an existing connection figure.
+				#findConnection(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : Drawing): ConnectionFigure
+				'Finds a connection start figure.
+				#findConnectionStart(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : Drawing): Figure
+				-findConnector(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, f : Figure): Connector
+				'Finds a connectable figure target.
+				#findSource(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : Drawing): Figure
+				'Finds a connectable figure target.
+				#findTarget(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : Drawing): Figure
+				#getEndConnector(): Connector
+				#getStartConnector(): Connector
+				#getTarget(): Connector
+				'Manipulates connections in a context dependent way. If the mouse down hits a figure start a new connection. If the mousedown hits a connection split a segment or join two segments.
+				mouseDown(e : java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Adjust the created connection or split segment.
+				mouseDrag(e : java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Handles mouse move events in the drawing view.
+				mouseMove(e : java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Connects the figures if the mouse is released over another figure.
+				mouseUp(e : java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				#trackConnectors(e : java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	Singleton.nonsingleton.AbstractTool <|-- Singleton.nonsingleton.ConnectionTool
+	Singleton.nonsingleton.Figure <|-- Singleton.nonsingleton.ConnectionFigure
+	java.lang.Cloneable <|-- Singleton.nonsingleton.Figure
+	java.io.Serializable <|-- Singleton.nonsingleton.Figure
+	java.awt.image.ImageObserver <|-- Singleton.nonsingleton.DrawingView
+	Singleton.nonsingleton.ConnectionFigure "fConnection" <-- Singleton.nonsingleton.ConnectionTool
+	Singleton.nonsingleton.Connector "fConnectorTarget" <-- Singleton.nonsingleton.ConnectionTool
+	Singleton.nonsingleton.ConnectionFigure "fEditedConnection" <-- Singleton.nonsingleton.ConnectionTool
+	Singleton.nonsingleton.Connector "fEndConnector" <-- Singleton.nonsingleton.ConnectionTool
+	Singleton.nonsingleton.ConnectionFigure "fPrototype" <-- Singleton.nonsingleton.ConnectionTool
+	JavaPrimitiveTypes.int "fSplitPoint" <-- Singleton.nonsingleton.ConnectionTool
+	Singleton.nonsingleton.Connector "fStartConnector" <-- Singleton.nonsingleton.ConnectionTool
+	Singleton.nonsingleton.Figure "fTarget" <-- Singleton.nonsingleton.ConnectionTool
+}
+@enduml

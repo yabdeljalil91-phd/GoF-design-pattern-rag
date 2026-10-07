@@ -1,0 +1,114 @@
+@startuml
+' Design pattern: Adapter (explicitly reinforced for RAG)
+
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+	package org {
+		package acm {
+			package seguin {
+				package awt {
+
+					'========================
+					' CLIENT
+					'========================
+					class OrderableList {
+						' DP role: Client
+						' Responsibility: Uses adapted behavior via model abstraction
+						-olm: OrderableListModel
+						<<Create>> OrderableList(data : JRefactory_v2.6.24.java.lang.Object, render : JRefactory_v2.6.24.javax.swing.ListCellRenderer)
+
+						' Delegates data handling to adaptee via model
+						addListDataListener(l : JRefactory_v2.6.24.javax.swing.event.ListDataListener)
+
+						' Retrieves ordered data (delegation to model)
+						getData(): JRefactory_v2.6.24.java.lang.Object
+
+						{static} main(args : JRefactory_v2.6.24.java.lang.String)
+
+						removeListDataListener(l : JRefactory_v2.6.24.javax.swing.event.ListDataListener)
+					}
+
+					'========================
+					' ADAPTEE
+					'========================
+					class OrderableListModel {
+						' DP role: Adaptee
+						' Responsibility: Core data storage and manipulation logic
+						-data: JRefactory_v2.6.24.java.lang.Object [*]
+						-list: JRefactory_v2.6.24.javax.swing.JList
+
+						<<Create>> OrderableListModel()
+
+						' Provides raw data access
+						getData(): JRefactory_v2.6.24.java.lang.Object
+
+						' Low-level element access
+						getElementAt(index : JavaPrimitiveTypes.int): JRefactory_v2.6.24.java.lang.Object
+						getSize(): JavaPrimitiveTypes.int
+
+						' Mutators for internal state
+						setData(value : JRefactory_v2.6.24.java.lang.Object)
+						setList(value : JRefactory_v2.6.24.javax.swing.JList)
+
+						' Core behavior used by Adapter
+						swap(first : JavaPrimitiveTypes.int, second : JavaPrimitiveTypes.int)
+					}
+
+					'========================
+					' ADAPTER
+					'========================
+					class MoveItemAdapter {
+						' DP role: Adapter
+						' Responsibility: Translates ActionListener events into operations on OrderableListModel (Adaptee)
+						-direction: JavaPrimitiveTypes.int
+						-list: JRefactory_v2.6.24.javax.swing.JList
+						-olm: OrderableListModel
+
+						<<Create>> MoveItemAdapter(model : OrderableListModel, list : JRefactory_v2.6.24.javax.swing.JList, direction : JavaPrimitiveTypes.int)
+
+						' Key adaptation method: maps event -> swap operation
+						actionPerformed(evt : JRefactory_v2.6.24.java.awt.event.ActionEvent)
+					}
+
+					'========================
+					' INHERITANCE / IMPLEMENTATION
+					'========================
+					JRefactory_v2.6.24.javax.swing.JPanel <|-- OrderableList : inherits UI behavior
+					JRefactory_v2.6.24.javax.swing.AbstractListModel <|-- OrderableListModel : specializes list model
+					JRefactory_v2.6.24.java.awt.event.ActionListener <|.. MoveItemAdapter : implements Target interface
+
+					'========================
+					' ASSOCIATIONS / DELEGATION LINKS
+					'========================
+					JRefactory_v2.6.24.java.lang.Object "data 0..*" <-- OrderableListModel : aggregation (data storage)
+					JRefactory_v2.6.24.javax.swing.JList "list" <-- OrderableListModel : association (UI binding)
+
+					OrderableListModel "olm" <-- OrderableList : delegation to Adaptee
+
+					JavaPrimitiveTypes.int "direction" <-- MoveItemAdapter
+					JRefactory_v2.6.24.javax.swing.JList "list" <-- MoveItemAdapter
+					OrderableListModel "olm" <-- MoveItemAdapter : adapts calls to Adaptee
+
+				}
+			}
+		}
+	}
+
+	package java {
+		package awt {
+			package event {
+
+				'========================
+				' TARGET INTERFACE
+				'========================
+				interface ActionListener {
+					' DP role: Target
+					' Responsibility: Defines expected interface for event handling
+					actionPerformed(e : ActionEvent)
+				}
+
+				JRefactory_v2.6.24.java.util.EventListener <|-- ActionListener
+			}
+		}
+	}
+}
+@enduml

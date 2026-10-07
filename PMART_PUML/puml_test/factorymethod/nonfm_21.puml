@@ -1,0 +1,58 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'The implementation of hierarchy nodes factory for the java loader.
+			'@author Petr Hamernik
+			class JavaElementNodeFactory {
+				-{const} CLASS_ACTIONS: SystemAction [*]
+				{const} DEFAULT: DefaultFactory
+				-{const} DEFAULT_ACTIONS: SystemAction [*]
+				-FACTORY_GETTER_NODE: Node
+				-{const} INITIALIZER_ACTIONS: SystemAction [*]
+				-tree: JavaPrimitiveTypes.boolean
+				'Creates new factory.
+				<<Create>> JavaElementNodeFactory()
+				#createClassChildren(element : ClassElement): Children
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createClassNode(element : ClassElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createConstructorNode(element : ConstructorElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createFieldNode(element : FieldElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createInitializerNode(element : InitializerElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createMethodNode(element : MethodElement): Node
+				'Returns true if generate nodes for tree.
+				'@returns true if generate nodes for tree.
+				getGenerateForTree(): JavaPrimitiveTypes.boolean
+				'If true generate nodes for tree.
+				setGenerateForTree(tree : JavaPrimitiveTypes.boolean)
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.DefaultFactory <|-- Factory_method.nonfactorymethod.JavaElementNodeFactory
+	Factory_method.nonfactorymethod.ElementNodeFactory <|.. Factory_method.nonfactorymethod.DefaultFactory
+	Factory_method.nonfactorymethod.IconStrings <|-- Factory_method.nonfactorymethod.DefaultFactory
+	Factory_method.nonfactorymethod.SystemAction "CATEGORY_ACTIONS 0..*" <-- Factory_method.nonfactorymethod.DefaultFactory
+	java.lang.String "CATEGORY_ICONS 0..*" <-- Factory_method.nonfactorymethod.DefaultFactory
+	JavaPrimitiveTypes.int "FILTERS 0..*" <-- Factory_method.nonfactorymethod.DefaultFactory
+	java.lang.String "NAMES 0..*" <-- Factory_method.nonfactorymethod.DefaultFactory
+	java.lang.String "SHORTDESCRS 0..*" <-- Factory_method.nonfactorymethod.DefaultFactory
+	JavaPrimitiveTypes.boolean "writeable" <-- Factory_method.nonfactorymethod.DefaultFactory
+	Factory_method.nonfactorymethod.ClassElement "element" <-- Factory_method.nonfactorymethod.DefaultFactory.ElementCategoryNode
+	JavaPrimitiveTypes.int "newTypeIndex" <-- Factory_method.nonfactorymethod.DefaultFactory.ElementCategoryNode
+	Factory_method.nonfactorymethod.SystemAction "CLASS_ACTIONS 0..*" <-- Factory_method.nonfactorymethod.JavaElementNodeFactory
+	Factory_method.nonfactorymethod.DefaultFactory "DEFAULT" <-- Factory_method.nonfactorymethod.JavaElementNodeFactory
+	Factory_method.nonfactorymethod.SystemAction "DEFAULT_ACTIONS 0..*" <-- Factory_method.nonfactorymethod.JavaElementNodeFactory
+	Factory_method.nonfactorymethod.Node "FACTORY_GETTER_NODE" <-- Factory_method.nonfactorymethod.JavaElementNodeFactory
+	Factory_method.nonfactorymethod.SystemAction "INITIALIZER_ACTIONS 0..*" <-- Factory_method.nonfactorymethod.JavaElementNodeFactory
+	JavaPrimitiveTypes.boolean "tree" <-- Factory_method.nonfactorymethod.JavaElementNodeFactory
+}
+@enduml

@@ -1,0 +1,75 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'A set of assert methods.
+			class Assert {
+				condition: JavaPrimitiveTypes.boolean
+				message: java.lang.String
+				'Protect constructor since it is a static only class
+				#<<Create>> Assert()
+				'Asserts that two objects are equal. If they are not an AssertionFailedError is thrown.
+				{static} assertEquals(message : java.lang.String, expected : java.lang.Object, actual : java.lang.Object)
+				'Asserts that two objects are equal. If they are not an AssertionFailedError is thrown.
+				{static} assertEquals(expected : java.lang.Object, actual : java.lang.Object)
+				'Asserts that two doubles are equal concerning a delta. If the expected value is infinity then the delta value is ignored.
+				{static} assertEquals(message : java.lang.String, expected : JavaPrimitiveTypes.double, actual : JavaPrimitiveTypes.double, delta : JavaPrimitiveTypes.double)
+				'Asserts that two doubles are equal concerning a delta. If the expected value is infinity then the delta value is ignored.
+				{static} assertEquals(expected : JavaPrimitiveTypes.double, actual : JavaPrimitiveTypes.double, delta : JavaPrimitiveTypes.double)
+				'Asserts that two floats are equal concerning a delta. If the expected value is infinity then the delta value is ignored.
+				{static} assertEquals(message : java.lang.String, expected : JavaPrimitiveTypes.float, actual : JavaPrimitiveTypes.float, delta : JavaPrimitiveTypes.float)
+				'Asserts that two floats are equal concerning a delta. If the expected value is infinity then the delta value is ignored.
+				{static} assertEquals(expected : JavaPrimitiveTypes.float, actual : JavaPrimitiveTypes.float, delta : JavaPrimitiveTypes.float)
+				'Asserts that two longs are equal.
+				{static} assertEquals(message : java.lang.String, expected : JavaPrimitiveTypes.long, actual : JavaPrimitiveTypes.long)
+				'Asserts that two longs are equal.
+				{static} assertEquals(expected : JavaPrimitiveTypes.long, actual : JavaPrimitiveTypes.long)
+				'Asserts that two booleans are equal.
+				{static} assertEquals(message : java.lang.String, expected : JavaPrimitiveTypes.boolean, actual : JavaPrimitiveTypes.boolean)
+				'Asserts that two booleans are equal.
+				{static} assertEquals(expected : JavaPrimitiveTypes.boolean, actual : JavaPrimitiveTypes.boolean)
+				'Asserts that two bytes are equal.
+				{static} assertEquals(message : java.lang.String, expected : JavaPrimitiveTypes.byte, actual : JavaPrimitiveTypes.byte)
+				'Asserts that two bytes are equal.
+				{static} assertEquals(expected : JavaPrimitiveTypes.byte, actual : JavaPrimitiveTypes.byte)
+				'Asserts that two chars are equal.
+				{static} assertEquals(message : java.lang.String, expected : JavaPrimitiveTypes.char, actual : JavaPrimitiveTypes.char)
+				'Asserts that two chars are equal.
+				{static} assertEquals(expected : JavaPrimitiveTypes.char, actual : JavaPrimitiveTypes.char)
+				'Asserts that two shorts are equal.
+				{static} assertEquals(message : java.lang.String, expected : JavaPrimitiveTypes.short, actual : JavaPrimitiveTypes.short)
+				'Asserts that two shorts are equal.
+				{static} assertEquals(expected : JavaPrimitiveTypes.short, actual : JavaPrimitiveTypes.short)
+				'Asserts that two ints are equal.
+				{static} assertEquals(message : java.lang.String, expected : JavaPrimitiveTypes.int, actual : JavaPrimitiveTypes.int)
+				'Asserts that two ints are equal.
+				{static} assertEquals(expected : JavaPrimitiveTypes.int, actual : JavaPrimitiveTypes.int)
+				'Asserts that an object isn't null.
+				{static} assertNotNull(object : java.lang.Object)
+				'Asserts that an object isn't null.
+				{static} assertNotNull(message : java.lang.String, object : java.lang.Object)
+				'Asserts that an object is null.
+				{static} assertNull(object : java.lang.Object)
+				'Asserts that an object is null.
+				{static} assertNull(message : java.lang.String, object : java.lang.Object)
+				'Asserts that two objects refer to the same object. If they are not an AssertionFailedError is thrown.
+				{static} assertSame(message : java.lang.String, expected : java.lang.Object, actual : java.lang.Object)
+				'Asserts that two objects refer to the same object. If they are not the same an AssertionFailedError is thrown.
+				{static} assertSame(expected : java.lang.Object, actual : java.lang.Object)
+				'Asserts that a condition is true. If it isn't it throws an AssertionFailedError with the given message.
+				{static} assertTrue(message : java.lang.String, condition : JavaPrimitiveTypes.boolean)
+				'Asserts that a condition is true. If it isn't it throws an AssertionFailedError.
+				{static} assertTrue(condition : JavaPrimitiveTypes.boolean)
+				'Fails a test with the given message.
+				{static} fail(message : java.lang.String)
+				'Fails a test with no message.
+				{static} fail()
+				-{static} failNotEquals(message : java.lang.String, expected : java.lang.Object, actual : java.lang.Object)
+				-{static} failNotSame(message : java.lang.String, expected : java.lang.Object, actual : java.lang.Object)
+			}
+		}
+	}
+	JavaPrimitiveTypes.boolean "condition" <-- Factory_method.nonfactorymethod.Assert
+	java.lang.String "message" <-- Factory_method.nonfactorymethod.Assert
+}
+@enduml

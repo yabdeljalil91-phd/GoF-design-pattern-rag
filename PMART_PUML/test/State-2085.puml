@@ -1,0 +1,184 @@
+@startuml
+package "DrJava v20040326" as DrJava_v20040326 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package definitions {
+							package indent {
+								class Indenter {
+									{const} ENTER_KEY_PRESS: JavaPrimitiveTypes.int = 1
+									{const} OTHER: JavaPrimitiveTypes.int = 0
+									-_topRule: IndentRule
+									<<Create>> Indenter(indentLevel : JavaPrimitiveTypes.int)
+									buildTree(indentLevel : JavaPrimitiveTypes.int)
+									indent(doc : DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsDocument, reason : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								}
+								interface IndentRule {
+									indentLine(doc : DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsDocument, reason : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								}
+								class ActionBracePlus {
+									-_suffix: DrJava_v20040326.java.lang.String
+									<<Create>> ActionBracePlus(suffix : DrJava_v20040326.java.lang.String)
+									indentLine(doc : DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsDocument, reason : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								}
+								class ActionDoNothing {
+									<<Create>> ActionDoNothing()
+									indentLine(doc : DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsDocument, reason : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								}
+								class ActionStartPrevLinePlus {
+									-_suffix: DrJava_v20040326.java.lang.String
+									<<Create>> ActionStartPrevLinePlus(suffix : DrJava_v20040326.java.lang.String)
+									indentLine(doc : DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsDocument, reason : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								}
+								class ActionStartPrevStmtPlus {
+									-_suffix: DrJava_v20040326.java.lang.String
+									-_useColon: JavaPrimitiveTypes.boolean
+									<<Create>> ActionStartPrevStmtPlus(suffix : DrJava_v20040326.java.lang.String, colonIsDelim : JavaPrimitiveTypes.boolean)
+									-_isPrevNonWSCharEqualTo(doc : DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsDocument, pos : JavaPrimitiveTypes.int, c : JavaPrimitiveTypes.char): JavaPrimitiveTypes.boolean
+									indentLine(doc : DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsDocument, reason : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								}
+								class ActionStartStmtOfBracePlus {
+									-_suffix: DrJava_v20040326.java.lang.String
+									<<Create>> ActionStartStmtOfBracePlus(suffix : DrJava_v20040326.java.lang.String)
+									indentLine(doc : DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsDocument, reason : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								}
+								class ActionStartPrevLinePlusMultilinePreserve {
+									-_cursorLine: JavaPrimitiveTypes.int
+									-_cursorPos: JavaPrimitiveTypes.int
+									-_psrvLine: JavaPrimitiveTypes.int
+									-_psrvPos: JavaPrimitiveTypes.int
+									-_suffices: DrJava_v20040326.java.lang.String [*]
+									<<Create>> ActionStartPrevLinePlusMultilinePreserve(suffices : DrJava_v20040326.java.lang.String, cursorLine : JavaPrimitiveTypes.int, cursorPos : JavaPrimitiveTypes.int, psrvLine : JavaPrimitiveTypes.int, psrvPos : JavaPrimitiveTypes.int)
+									indentLine(doc : DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsDocument, reason : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								}
+								class ActionStartPrevLinePlusMultiline {
+									-_line: JavaPrimitiveTypes.int
+									-_offset: JavaPrimitiveTypes.int
+									-_position: JavaPrimitiveTypes.int
+									-_suffices: DrJava_v20040326.java.lang.String [*]
+									<<Create>> ActionStartPrevLinePlusMultiline(suffices : DrJava_v20040326.java.lang.String, line : JavaPrimitiveTypes.int, position : JavaPrimitiveTypes.int)
+									indentLine(doc : DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsDocument, reason : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								}
+								IndentRuleAction <|-- ActionBracePlus
+								IndentRuleWithTrace <|-- IndentRuleAction
+								IndentRule <|.. IndentRuleWithTrace
+								IndentRuleAction <|-- ActionDoNothing
+								IndentRuleAction <|-- ActionStartPrevLinePlus
+								IndentRuleAction <|-- ActionStartPrevStmtPlus
+								IndentRuleAction <|-- ActionStartStmtOfBracePlus
+								IndentRuleAction <|-- ActionStartPrevLinePlusMultilinePreserve
+								IndentRuleAction <|-- ActionStartPrevLinePlusMultiline
+								JavaPrimitiveTypes.int "ENTER_KEY_PRESS" <-- Indenter
+								JavaPrimitiveTypes.int "OTHER" <-- Indenter
+								IndentRule "_topRule" <-- Indenter
+								DrJava_v20040326.java.lang.String "NO" <-- IndentRuleWithTrace
+								DrJava_v20040326.java.lang.String "TERMINUS_RULE" <-- IndentRuleWithTrace
+								DrJava_v20040326.java.lang.String "YES" <-- IndentRuleWithTrace
+								JavaPrimitiveTypes.boolean "ruleTraceEnabled" <-- IndentRuleWithTrace
+								JavaPrimitiveTypes.boolean "startOver" <-- IndentRuleWithTrace
+								DrJava_v20040326.java.util.Vector "trace" <-- IndentRuleWithTrace
+								DrJava_v20040326.java.lang.String "_suffix" <-- ActionBracePlus
+								DrJava_v20040326.java.lang.String "_suffix" <-- ActionStartPrevLinePlus
+								DrJava_v20040326.java.lang.String "_suffix" <-- ActionStartPrevStmtPlus
+								JavaPrimitiveTypes.boolean "_useColon" <-- ActionStartPrevStmtPlus
+								DrJava_v20040326.java.lang.String "_suffix" <-- ActionStartStmtOfBracePlus
+								JavaPrimitiveTypes.int "_cursorLine" <-- ActionStartPrevLinePlusMultilinePreserve
+								JavaPrimitiveTypes.int "_cursorPos" <-- ActionStartPrevLinePlusMultilinePreserve
+								JavaPrimitiveTypes.int "_psrvLine" <-- ActionStartPrevLinePlusMultilinePreserve
+								JavaPrimitiveTypes.int "_psrvPos" <-- ActionStartPrevLinePlusMultilinePreserve
+								DrJava_v20040326.java.lang.String "_suffices 0..*" <-- ActionStartPrevLinePlusMultilinePreserve
+								JavaPrimitiveTypes.int "_line" <-- ActionStartPrevLinePlusMultiline
+								JavaPrimitiveTypes.int "_offset" <-- ActionStartPrevLinePlusMultiline
+								JavaPrimitiveTypes.int "_position" <-- ActionStartPrevLinePlusMultiline
+								DrJava_v20040326.java.lang.String "_suffices 0..*" <-- ActionStartPrevLinePlusMultiline
+							}
+							DrJava_v20040326.javax.swing.text.PlainDocument <|-- DefinitionsDocument
+							DrJava_v20040326.edu.rice.cs.drjava.config.OptionConstants <|.. DefinitionsDocument
+							DrJava_v20040326.javax.swing.text.DefaultEditorKit <|-- DefinitionsEditorKit
+							DrJava_v20040326.javax.swing.undo.UndoManager <|-- CompoundUndoManager
+							JavaPrimitiveTypes.int "DOCSTART" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "ERROR_INDEX" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "MAX_CACHE_SIZE" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "UNDO_LIMIT" <-- DefinitionsDocument
+							JavaPrimitiveTypes.boolean "_cacheInUse" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_cachedLineNum" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_cachedLocation" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_cachedNextLineLoc" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_cachedPrevLineLoc" <-- DefinitionsDocument
+							DrJava_v20040326.java.io.File "_classFile" <-- DefinitionsDocument
+							JavaPrimitiveTypes.boolean "_classFileInSync" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_currentLocation" <-- DefinitionsDocument
+							DrJava_v20040326.java.io.File "_file" <-- DefinitionsDocument
+							DrJava_v20040326.java.util.Hashtable "_helperCache" <-- DefinitionsDocument
+							DrJava_v20040326.java.util.Vector "_helperCacheHistory" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_indent" <-- DefinitionsDocument
+							DrJava_v20040326.edu.rice.cs.drjava.model.definitions.indent.Indenter "_indenter" <-- DefinitionsDocument
+							DrJava_v20040326.java.util.HashSet "_keywords" <-- DefinitionsDocument
+							JavaPrimitiveTypes.boolean "_modifiedSinceSave" <-- DefinitionsDocument
+							DrJava_v20040326.java.util.HashSet "_normEndings" <-- DefinitionsDocument
+							DrJava_v20040326.javax.swing.text.ViewFactory "_factory" <-- DefinitionsEditorKit
+							DrJava_v20040326.edu.rice.cs.drjava.model.GlobalEventNotifier "_notifier" <-- DefinitionsEditorKit
+							DrJava_v20040326.edu.rice.cs.drjava.model.GlobalEventNotifier "_notifier" <-- DefinitionsDocument
+							DrJava_v20040326.java.util.HashSet "_primTypes" <-- DefinitionsDocument
+							DrJava_v20040326.edu.rice.cs.drjava.model.definitions.reducedmodel.BraceReduction "_reduced" <-- DefinitionsDocument
+							JavaPrimitiveTypes.boolean "_tabsRemoved" <-- DefinitionsDocument
+							JavaPrimitiveTypes.long "_timestamp" <-- DefinitionsDocument
+							DrJava_v20040326.java.util.LinkedList "_compoundEdits" <-- CompoundUndoManager
+							DrJava_v20040326.java.util.LinkedList "_keys" <-- CompoundUndoManager
+							JavaPrimitiveTypes.int "_nextKey" <-- CompoundUndoManager
+							DrJava_v20040326.edu.rice.cs.drjava.model.GlobalEventNotifier "_notifier" <-- CompoundUndoManager
+							DrJava_v20040326.javax.swing.undo.UndoableEdit "_savePoint" <-- CompoundUndoManager
+							CompoundUndoManager "_undoManager" <-- DefinitionsDocument
+							DrJava_v20040326.java.lang.Runnable "_redoCommand" <-- CommandUndoableEdit
+							DrJava_v20040326.java.lang.Runnable "_undoCommand" <-- CommandUndoableEdit
+							JavaPrimitiveTypes.int "_offset" <-- InsertCommand
+							DrJava_v20040326.java.lang.String "_text" <-- InsertCommand
+							JavaPrimitiveTypes.int "_length" <-- RemoveCommand
+							JavaPrimitiveTypes.int "_offset" <-- RemoveCommand
+						}
+						EventNotifier <|-- GlobalEventNotifier
+						GlobalModelListener <|.. GlobalEventNotifier
+						DrJava_v20040326.edu.rice.cs.drjava.model.repl.InteractionsListener <|-- GlobalModelListener
+						JavadocListener <|-- GlobalModelListener
+						DrJava_v20040326.edu.rice.cs.drjava.model.compiler.CompilerListener <|-- GlobalModelListener
+						DrJava_v20040326.edu.rice.cs.drjava.model.junit.JUnitListener <|-- GlobalModelListener
+						GlobalModel <|.. DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.config.OptionConstants <|.. DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.util.swing.DocumentIterator <|.. DefaultGlobalModel
+						IGetDocuments <|-- GlobalModel
+						ILoadDocuments <|-- GlobalModel
+						DrJava_v20040326.java.lang.String "SUGGESTED_DIR_NAME" <-- JavadocModel
+						DrJava_v20040326.java.lang.String "DOCUMENT_OUT_OF_SYNC_MSG" <-- DefaultGlobalModel
+						JavaPrimitiveTypes.int "WRITE_DELAY" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.compiler.CompilerListener "_clearInteractionsListener" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.compiler.CompilerModel "_compilerModel" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.repl.ConsoleDocument "_consoleDoc" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.util.text.SwingDocumentAdapter "_consoleDocAdapter" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.debug.Debugger "_debugger" <-- DefaultGlobalModel
+						DrJava_v20040326.javax.swing.DefaultListModel "_definitionsDocs" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsEditorKit "_editorKit" <-- DefaultGlobalModel
+						InputListener "_inputListener" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.util.text.SwingDocumentAdapter "_interactionsDocAdapter" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.repl.DefaultInteractionsModel "_interactionsModel" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.repl.newjvm.MainJVM "_interpreterControl" <-- DefaultGlobalModel
+						JavadocModel "_javadocModel" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.junit.DefaultJUnitModel "_junitModel" <-- DefaultGlobalModel
+						GlobalEventNotifier "_notifier" <-- DefaultGlobalModel
+						DrJava_v20040326.java.awt.print.PageFormat "_pageFormat" <-- DefaultGlobalModel
+						JavaPrimitiveTypes.boolean "_resetAfterCompile" <-- DefaultGlobalModel
+						DrJava_v20040326.java.lang.Object "_systemWriterLock" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.print.DrJavaBook "_book" <-- DefinitionsDocumentHandler
+						DrJava_v20040326.java.util.Vector "_breakpoints" <-- DefinitionsDocumentHandler
+						DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsDocument "_doc" <-- DefinitionsDocumentHandler
+						DrJava_v20040326.java.io.File "_file" <-- TrivialFSS
+						DrJava_v20040326.java.util.LinkedList "_listeners" <-- EventNotifier
+						DrJava_v20040326.edu.rice.cs.util.ReaderWriterLock "_lock" <-- EventNotifier
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

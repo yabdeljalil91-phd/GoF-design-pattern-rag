@@ -1,0 +1,341 @@
+@startuml
+'Design pattern Observer
+package "JHotDraw v5.1" as JHotDraw_v5.1 {
+	package CH {
+		package ifa {
+			package draw {
+				package framework {
+					'/** 
+					' * Connectors know how to locate a connection point on a figure. A Connector knows its owning figure and can determine either the start or the endpoint of a given connection figure. A connector has a display box that describes the area of a figure it is responsible for. A connector can be visible but it doesn't have to be.<br> <hr> <b>Design Patterns</b><P> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a href=../pattlets/sld004.htm>Strategy</a></b><br> Connector implements the strategy to determine the connections points.<br> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a href=../pattlets/sld016.htm>Factory Method</a></b><br> Connectors are created by the Figure's factory method connectorAt. <hr>
+					' * @see Figure#connectorAt
+					' * @see ConnectionFigure
+					' */
+					'DP role: subject
+					interface Connector {
+						'/** 
+						' * Tests if a point is contained in the connector.
+						' */
+						containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Gets the display box of the connector.
+						' */
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						'/** 
+						' * Draws this connector. Connectors don't have to be visible and it is OK leave this method empty.
+						' */
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						'/** 
+						' * Finds the end point for the connection.
+						' */
+						findEnd(connection : ConnectionFigure): JHotDraw_v5.1.java.awt.Point
+						'/** 
+						' * Finds the start point for the connection.
+						' */
+						findStart(connection : ConnectionFigure): JHotDraw_v5.1.java.awt.Point
+						'/** 
+						' * Gets the connector's owner.
+						' */
+						owner(): Figure
+					}
+					'DP role: observer
+					interface ConnectionFigure {
+						canConnect(start : Figure, end : Figure): JavaPrimitiveTypes.boolean
+						connectEnd(end : Connector)
+						connectStart(start : Connector)
+						connectsSame(other : ConnectionFigure): JavaPrimitiveTypes.boolean
+						disconnectEnd()
+						disconnectStart()
+						end(): Connector
+						endPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						endPoint(): JHotDraw_v5.1.java.awt.Point
+						joinSegments(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						pointAt(index : JavaPrimitiveTypes.int): JHotDraw_v5.1.java.awt.Point
+						pointCount(): JavaPrimitiveTypes.int
+						setPointAt(p : JHotDraw_v5.1.java.awt.Point, index : JavaPrimitiveTypes.int)
+						splitSegment(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+						start(): Connector
+						startPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						startPoint(): JHotDraw_v5.1.java.awt.Point
+						updateConnection()
+					}
+					JHotDraw_v5.1.java.io.Serializable <|-- Connector
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Connector
+					Figure <|-- ConnectionFigure
+					FigureChangeListener <|-- ConnectionFigure
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Figure
+					JHotDraw_v5.1.java.lang.Cloneable <|-- Figure
+					JHotDraw_v5.1.java.io.Serializable <|-- Figure
+					JHotDraw_v5.1.java.util.EventListener <|-- FigureChangeListener
+					JHotDraw_v5.1.java.util.EventObject <|-- FigureChangeEvent
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Locator
+					JHotDraw_v5.1.java.io.Serializable <|-- Locator
+					JHotDraw_v5.1.java.lang.Cloneable <|-- Locator
+					JHotDraw_v5.1.java.util.Enumeration <|-- FigureEnumeration
+					JHotDraw_v5.1.java.awt.Rectangle "fRectangle" <-- FigureChangeEvent
+					JHotDraw_v5.1.java.awt.Rectangle "fgEmptyRectangle" <-- FigureChangeEvent
+				}
+				package standard {
+					'/** 
+					' * A ChopBoxConnector locates connection points by choping the connection between the centers of the two figures at the display box.
+					' * @see Connector
+					' */
+					'DP role: concreteSubject
+					class ChopBoxConnector {
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = -1461450322712345462
+						<<Create>> ChopBoxConnector()
+						<<Create>> ChopBoxConnector(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						#chop(target : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, from : JHotDraw_v5.1.java.awt.Point): JHotDraw_v5.1.java.awt.Point
+						findEnd(connection : JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure): JHotDraw_v5.1.java.awt.Point
+						findStart(connection : JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure): JHotDraw_v5.1.java.awt.Point
+					}
+					'/** 
+					' * A LocatorConnector locates connection points with the help of a Locator. It supports the definition of connection points to semantic locations.
+					' * @see Locator
+					' * @see Connector
+					' */
+					'DP role: concreteSubject
+					class LocatorConnector {
+						{const} SIZE: JavaPrimitiveTypes.int = 8
+						-fLocator: JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						-locatorConnectorSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 5062833203337604181
+						<<Create>> LocatorConnector()
+						<<Create>> LocatorConnector(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, l : JHotDraw_v5.1.CH.ifa.draw.framework.Locator)
+						'/** 
+						' * Tests if a point is contained in the connector.
+						' */
+						containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Gets the display box of the connector.
+						' */
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						'/** 
+						' * Draws this connector.
+						' */
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						#locate(connection : JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure): JHotDraw_v5.1.java.awt.Point
+						'/** 
+						' * Reads the arrow tip from a StorableInput.
+						' */
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						'/** 
+						' * Stores the arrow tip to a StorableOutput.
+						' */
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					AbstractConnector <|-- ChopBoxConnector
+					JHotDraw_v5.1.CH.ifa.draw.framework.Connector <|.. AbstractConnector
+					AbstractConnector <|-- LocatorConnector
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure <|.. AbstractFigure
+					JavaPrimitiveTypes.int "abstractConnectorSerializedDataVersion" <-- AbstractConnector
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure "fOwner" <-- AbstractConnector
+					JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractConnector
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ChopBoxConnector
+					JavaPrimitiveTypes.int "SIZE" <-- LocatorConnector
+					JHotDraw_v5.1.CH.ifa.draw.framework.Locator "fLocator" <-- LocatorConnector
+					JavaPrimitiveTypes.int "locatorConnectorSerializedDataVersion" <-- LocatorConnector
+					JavaPrimitiveTypes.long "serialVersionUID" <-- LocatorConnector
+					JavaPrimitiveTypes.int "abstractFigureSerializedDataVersion" <-- AbstractFigure
+					JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeListener "fListener" <-- AbstractFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractFigure
+				}
+				package figures {
+					'/** 
+					' * A ShortestDistance locates connection points by finding the shortest distance between the start and end of the connection. It doesn't connect to the ares defined by Figure.connectionInsets()
+					' * @see Figure#connectionInsets
+					' * @see Connector
+					' */
+					'DP role: concreteSubject
+					class ShortestDistanceConnector {
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = -2273446020593433887
+						<<Create>> ShortestDistanceConnector()
+						<<Create>> ShortestDistanceConnector(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						findEnd(connection : JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure): JHotDraw_v5.1.java.awt.Point
+						#findPoint(connection : JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure, getStart : JavaPrimitiveTypes.boolean): JHotDraw_v5.1.java.awt.Point
+						findStart(connection : JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure): JHotDraw_v5.1.java.awt.Point
+					}
+					'/** 
+					' * A LineConnection is a standard implementation of the ConnectionFigure interface. The interface is implemented with PolyLineFigure.
+					' * @see ConnectionFigure
+					' */
+					'DP role: concreteObserver
+					class LineConnection {
+						#fEnd: JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						#fStart: JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						-lineConnectionSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 6883731614578414801
+						'/** 
+						' * Constructs a LineConnection. A connection figure has an arrow decoration at the start and end.
+						' */
+						<<Create>> LineConnection()
+						'/** 
+						' * Ensures that a connection is updated if the connection was moved.
+						' */
+						#basicMoveBy(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int)
+						'/** 
+						' * Tests whether a figure can be a connection target. ConnectionFigures cannot be connected and return false.
+						' */
+						canConnect(): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Tests whether two figures can be connected.
+						' */
+						canConnect(start : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, end : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Sets the end figure of the connection.
+						' */
+						connectEnd(end : JHotDraw_v5.1.CH.ifa.draw.framework.Connector)
+						'/** 
+						' * Sets the start figure of the connection.
+						' */
+						connectStart(start : JHotDraw_v5.1.CH.ifa.draw.framework.Connector)
+						'/** 
+						' * Tests whether a connection connects the same figures as another ConnectionFigure.
+						' */
+						connectsSame(other : JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Disconnects the end figure.
+						' */
+						disconnectEnd()
+						'/** 
+						' * Disconnects the start figure.
+						' */
+						disconnectStart()
+						'/** 
+						' * Gets the end figure of the connection.
+						' */
+						end(): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						'/** 
+						' * Gets the end figure of the connection.
+						' */
+						endFigure(): JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						'/** 
+						' * Sets the end point.
+						' */
+						endPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						'/** 
+						' * Gets the end point.
+						' */
+						endPoint(): JHotDraw_v5.1.java.awt.Point
+						figureChanged(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureInvalidated(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRemoved(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRequestRemove(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRequestUpdate(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						'/** 
+						' * Handles the connection of a connection. Override this method to handle this event.
+						' */
+						#handleConnect(start : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, end : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						'/** 
+						' * Handles the disconnection of a connection. Override this method to handle this event.
+						' */
+						#handleDisconnect(start : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, end : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						'/** 
+						' * Gets the handles of the figure. It returns the normal PolyLineHandles but adds ChangeConnectionHandles at the start and end.
+						' */
+						handles(): JHotDraw_v5.1.java.util.Vector
+						'/** 
+						' * Inserts the point and updates the connection.
+						' */
+						insertPointAt(p : JHotDraw_v5.1.java.awt.Point, i : JavaPrimitiveTypes.int)
+						'/** 
+						' * Lays out the connection. This is called when the connection itself changes. By default the connection is recalculated
+						' */
+						layoutConnection()
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						-readObject(s : JHotDraw_v5.1.java.io.ObjectInputStream)
+						release()
+						'/** 
+						' * Removes the point and updates the connection.
+						' */
+						removePointAt(i : JavaPrimitiveTypes.int)
+						'/** 
+						' * Sets the point and updates the connection.
+						' */
+						setPointAt(p : JHotDraw_v5.1.java.awt.Point, i : JavaPrimitiveTypes.int)
+						'/** 
+						' * Gets the start figure of the connection.
+						' */
+						start(): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						'/** 
+						' * Gets the start figure of the connection.
+						' */
+						startFigure(): JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						'/** 
+						' * Sets the start point.
+						' */
+						startPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						'/** 
+						' * Gets the start point.
+						' */
+						startPoint(): JHotDraw_v5.1.java.awt.Point
+						'/** 
+						' * Updates the connection.
+						' */
+						updateConnection()
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'/** 
+					' * A LineConnection that constrains a connection to orthogonal lines.
+					' */
+					'DP role: concreteObserver
+					class ElbowConnection {
+						-elbowConnectionSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 2193968743082078559
+						<<Create>> ElbowConnection()
+						connectedTextLocator(f : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						'/** 
+						' * Gets the handles of the figure.
+						' */
+						handles(): JHotDraw_v5.1.java.util.Vector
+						layoutConnection()
+						updateConnection()
+						#updatePoints()
+					}
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractConnector <|-- ShortestDistanceConnector
+					PolyLineFigure <|-- LineConnection
+					JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure <|.. LineConnection
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractFigure <|-- PolyLineFigure
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- LineDecoration
+					JHotDraw_v5.1.java.lang.Cloneable <|-- LineDecoration
+					JHotDraw_v5.1.java.io.Serializable <|-- LineDecoration
+					LineConnection <|-- ElbowConnection
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ShortestDistanceConnector
+					JavaPrimitiveTypes.int "ARROW_TIP_BOTH" <-- PolyLineFigure
+					JavaPrimitiveTypes.int "ARROW_TIP_END" <-- PolyLineFigure
+					JavaPrimitiveTypes.int "ARROW_TIP_NONE" <-- PolyLineFigure
+					JavaPrimitiveTypes.int "ARROW_TIP_START" <-- PolyLineFigure
+					LineDecoration "fEndDecoration" <-- PolyLineFigure
+					JHotDraw_v5.1.java.awt.Color "fFrameColor" <-- PolyLineFigure
+					JHotDraw_v5.1.java.util.Vector "fPoints" <-- PolyLineFigure
+					LineDecoration "fStartDecoration" <-- PolyLineFigure
+					JavaPrimitiveTypes.int "polyLineFigureSerializedDataVersion" <-- PolyLineFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- PolyLineFigure
+					JHotDraw_v5.1.CH.ifa.draw.framework.Connector "fEnd" <-- LineConnection
+					JHotDraw_v5.1.CH.ifa.draw.framework.Connector "fStart" <-- LineConnection
+					JavaPrimitiveTypes.int "lineConnectionSerializedDataVersion" <-- LineConnection
+					JavaPrimitiveTypes.long "serialVersionUID" <-- LineConnection
+					JavaPrimitiveTypes.int "elbowConnectionSerializedDataVersion" <-- ElbowConnection
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ElbowConnection
+				}
+				package samples {
+					package pert {
+						'DP role: concreteObserver
+						class PertDependency {
+							-pertDependencySerializedDataVersion: JavaPrimitiveTypes.int
+							-{const} serialVersionUID: JavaPrimitiveTypes.long = -7959500008698525009
+							<<Create>> PertDependency()
+							canConnect(start : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, end : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JavaPrimitiveTypes.boolean
+							handleConnect(start : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, end : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+							handleDisconnect(start : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, end : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+							handles(): JHotDraw_v5.1.java.util.Vector
+						}
+						JHotDraw_v5.1.CH.ifa.draw.figures.LineConnection <|-- PertDependency
+						JavaPrimitiveTypes.int "pertDependencySerializedDataVersion" <-- PertDependency
+						JavaPrimitiveTypes.long "serialVersionUID" <-- PertDependency
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

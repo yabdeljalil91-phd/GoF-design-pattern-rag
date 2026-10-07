@@ -1,0 +1,29 @@
+@startuml
+'Design pattern Singleton
+
+package "QuickUML 2001" as QuickUML_2001 {
+    package uml {
+        package ui {
+            'DP role: singleton
+            class IconManager {
+                - {static} instance: IconManager
+                -imageMap: HashMap
+                -resourceMap: WeakHashMap
+                
+                -IconManager()  ' private constructor
+                + {static} getInstance(): IconManager
+                
+                + getIconResource(comp: Component, resourceName: String): Icon
+                + getImageResource(comp: Component, resourceName: String): Image
+                # loadImageResource(resourceName: String): Image
+                + registerImageResource(comp: Component, resourceName: String)
+                - trackImage(tracker: MediaTracker, resourceName: String): Image
+            }
+            
+            ' Associations
+            HashMap "imageMap" <-- IconManager
+            WeakHashMap "resourceMap" <-- IconManager
+        }
+    }
+}
+@enduml

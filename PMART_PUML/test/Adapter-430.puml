@@ -1,0 +1,51 @@
+@startuml
+package "DrJava v20030203" as DrJava_v20030203 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package repl {
+							class JavaInterpreterTest {
+								-_interpreter: JavaInterpreter
+								{static} testValue: JavaPrimitiveTypes.boolean
+								<<Create>> JavaInterpreterTest(name : DrJava_v20030203.java.lang.String)
+								#setUp()
+								{static} suite(): DrJava_v20030203.junit.framework.Test
+								testBooleanOps()
+								testCharacterOps()
+								testConstants()
+								testDoubleOps()
+								testIntegerOps()
+								testSemicolon()
+								testStringOps()
+								-tester(cases : Pair)
+							}
+							interface JavaInterpreter {
+								{const} NO_RESULT: DrJava_v20030203.java.lang.Object
+								addClassPath(path : DrJava_v20030203.java.lang.String)
+								interpret(s : DrJava_v20030203.java.lang.String): DrJava_v20030203.java.lang.Object
+								setPackageScope(packageName : DrJava_v20030203.java.lang.String)
+							}
+							class DynamicJavaAdapter {
+								<<Create>> DynamicJavaAdapter()
+								addClassPath(path : DrJava_v20030203.java.lang.String)
+								interpret(s : DrJava_v20030203.java.lang.String): DrJava_v20030203.java.lang.Object
+								setPackageScope(packageName : DrJava_v20030203.java.lang.String)
+							}
+							DrJava_v20030203.junit.framework.TestCase <|-- JavaInterpreterTest
+							JavaInterpreter <|.. DynamicJavaAdapter
+							DrJava_v20030203.java.lang.Object "NO_RESULT" <-- JavaInterpreter
+							JavaInterpreter "_interpreter" <-- JavaInterpreterTest
+							JavaPrimitiveTypes.boolean "testValue" <-- JavaInterpreterTest
+							DrJava_v20030203.java.lang.String "_first" <-- Pair
+							DrJava_v20030203.java.lang.Object "_second" <-- Pair
+							DrJava_v20030203.edu.rice.cs.util.classloader.StickyClassLoader "_stickyLoader" <-- ClassLoaderExtension
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

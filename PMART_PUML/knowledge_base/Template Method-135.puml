@@ -1,0 +1,70 @@
+@startuml
+'Design pattern Template Method
+package "PMD v1.8" as PMD_v1.8 {
+	package net {
+		package sourceforge {
+			package pmd {
+				package ant {
+					'DP role: concreteClass
+					class PMDTask {
+						#EOL: PMD_v1.8.java.lang.String
+						-encoding: PMD_v1.8.java.lang.String
+						-failOnError: JavaPrimitiveTypes.boolean
+						-failOnRuleViolation: JavaPrimitiveTypes.boolean
+						-failuresPropertyName: PMD_v1.8.java.lang.String
+						-filesets: PMD_v1.8.java.util.List
+						-formatters: PMD_v1.8.java.util.List
+						-printToConsole: JavaPrimitiveTypes.boolean
+						-ruleSetFiles: PMD_v1.8.java.lang.String
+						-shortFilenames: JavaPrimitiveTypes.boolean
+						-targetJDK13: JavaPrimitiveTypes.boolean
+						<<Create>> PMDTask()
+						addFormatter(f : Formatter)
+						-logRulesUsed(rules : PMD_v1.8.net.sourceforge.pmd.RuleSet)
+						setEncoding(encoding : PMD_v1.8.java.lang.String)
+						setFailOnError(fail : JavaPrimitiveTypes.boolean)
+						setFailOnRuleViolation(fail : JavaPrimitiveTypes.boolean)
+						setFailuresPropertyName(failuresPropertyName : PMD_v1.8.java.lang.String)
+						setPrintToConsole(printToConsole : JavaPrimitiveTypes.boolean)
+						setRuleSetFiles(ruleSetFiles : PMD_v1.8.java.lang.String)
+						setShortFilenames(value : JavaPrimitiveTypes.boolean)
+						setTargetJDK13(value : JavaPrimitiveTypes.boolean)
+					}
+					PMD_v1.8.java.lang.String "EOL" <-- PMDTask
+					PMD_v1.8.java.lang.String "encoding" <-- PMDTask
+					JavaPrimitiveTypes.boolean "failOnError" <-- PMDTask
+					JavaPrimitiveTypes.boolean "failOnRuleViolation" <-- PMDTask
+					PMD_v1.8.java.lang.String "failuresPropertyName" <-- PMDTask
+					PMD_v1.8.java.util.List "filesets" <-- PMDTask
+					PMD_v1.8.java.util.List "formatters" <-- PMDTask
+					JavaPrimitiveTypes.boolean "printToConsole" <-- PMDTask
+					PMD_v1.8.java.lang.String "ruleSetFiles" <-- PMDTask
+					JavaPrimitiveTypes.boolean "shortFilenames" <-- PMDTask
+					JavaPrimitiveTypes.boolean "targetJDK13" <-- PMDTask
+					PMD_v1.8.net.sourceforge.pmd.renderers.Renderer "renderer" <-- Formatter
+					PMD_v1.8.java.io.File "toFile" <-- Formatter
+				}
+				PMD_v1.8.java.util.List "errors" <-- Report
+				PMD_v1.8.java.util.List "listeners" <-- Report
+				PMD_v1.8.java.util.Set "metrics" <-- Report
+				PMD_v1.8.java.util.Set "violations" <-- Report
+				PMD_v1.8.java.lang.String "file" <-- ProcessingError
+				PMD_v1.8.java.lang.String "msg" <-- ProcessingError
+				PMD_v1.8.java.lang.String "description" <-- RuleViolation
+				PMD_v1.8.java.lang.String "filename" <-- RuleViolation
+				JavaPrimitiveTypes.int "line" <-- RuleViolation
+				JavaPrimitiveTypes.int "LOWEST_PRIORITY" <-- Rule
+				PMD_v1.8.java.lang.String "PRIORITIES 0..*" <-- Rule
+				Report "report" <-- RuleContext
+				PMD_v1.8.java.lang.String "sourceCodeFilename" <-- RuleContext
+				Rule "rule" <-- RuleViolation
+				PMD_v1.8.java.lang.String "description" <-- RuleSet
+				PMD_v1.8.java.lang.String "m_fileName" <-- RuleSet
+				JavaPrimitiveTypes.boolean "m_include" <-- RuleSet
+				PMD_v1.8.java.lang.String "name" <-- RuleSet
+				PMD_v1.8.java.util.Set "rules" <-- RuleSet
+			}
+		}
+	}
+}
+@enduml

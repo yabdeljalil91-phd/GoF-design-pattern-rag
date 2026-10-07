@@ -1,0 +1,598 @@
+@startuml
+package "DrJava v20020619" as DrJava_v20020619 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						class DefaultGlobalModel {
+							{const} EXIT_CALLED_MESSAGE: DrJava_v20020619.java.lang.String = The interaction was aborted by a call to System.exit.
+							{const} SYSTEM_ERR_STYLE: DrJava_v20020619.javax.swing.text.AttributeSet
+							{const} SYSTEM_OUT_DEBUG_STYLE: DrJava_v20020619.javax.swing.text.AttributeSet
+							{const} SYSTEM_OUT_INTERACTIONS_STYLE: DrJava_v20020619.javax.swing.text.AttributeSet
+							{const} SYSTEM_OUT_STYLE: DrJava_v20020619.javax.swing.text.AttributeSet
+							-_compilerErrorsWithoutFiles: DrJava_v20020619.edu.rice.cs.drjava.model.compiler.CompilerError [*]
+							-_consoleDoc: DrJava_v20020619.javax.swing.text.StyledDocument
+							-_debugDoc: DrJava_v20020619.javax.swing.text.StyledDocument
+							-_debugManager: DrJava_v20020619.edu.rice.cs.drjava.model.debug.DebugManager
+							-_definitionsDocs: DrJava_v20020619.javax.swing.DefaultListModel
+							-_editorKit: DrJava_v20020619.edu.rice.cs.drjava.model.definitions.DefinitionsEditorKit
+							-_interactionsDoc: DrJava_v20020619.edu.rice.cs.drjava.model.repl.InteractionsDocument
+							_interpreterControl: DrJava_v20020619.edu.rice.cs.drjava.model.repl.newjvm.MainJVM
+							-_junitDoc: DrJava_v20020619.javax.swing.text.StyledDocument
+							-_junitTestRunner: DrJava_v20020619.edu.rice.cs.drjava.model.junit.JUnitTestRunner
+							-_listeners: DrJava_v20020619.java.util.LinkedList
+							-_numErrors: JavaPrimitiveTypes.int
+							-_pageFormat: DrJava_v20020619.java.awt.print.PageFormat
+							<<Create>> DefaultGlobalModel()
+							<<Create>> DefaultGlobalModel(other : DefaultGlobalModel)
+							-_createDebugger()
+							-_createOpenDefinitionsDocument(): OpenDefinitionsDocument
+							-_deleteSemiColon(s : DrJava_v20020619.java.lang.String): DrJava_v20020619.java.lang.String
+							-_docAppend(doc : DrJava_v20020619.javax.swing.text.Document, s : DrJava_v20020619.java.lang.String, set : DrJava_v20020619.javax.swing.text.AttributeSet)
+							-_docIsOpen(file : DrJava_v20020619.java.io.File): JavaPrimitiveTypes.boolean
+							-{static} _getErrStyle(): DrJava_v20020619.javax.swing.text.AttributeSet
+							-_getOpenDocument(file : DrJava_v20020619.java.io.File): OpenDefinitionsDocument
+							-{static} _getOutInsideInteractionsStyle(): DrJava_v20020619.javax.swing.text.AttributeSet
+							-_interactionIsOver()
+							-_openFile(file : DrJava_v20020619.java.io.File): OpenDefinitionsDocument
+							-_resetInteractionsClasspath()
+							-_restoreInteractionsState()
+							-_testClassCall(s : DrJava_v20020619.java.lang.String): DrJava_v20020619.java.lang.String
+							abortCurrentInteraction()
+							aboutToSaveFromSaveAll(doc : OpenDefinitionsDocument)
+							addListener(listener : GlobalModelListener)
+							areAnyModifiedSinceSave(): JavaPrimitiveTypes.boolean
+							clearCurrentInteraction()
+							closeAllFiles(): JavaPrimitiveTypes.boolean
+							closeFile(doc : OpenDefinitionsDocument): JavaPrimitiveTypes.boolean
+							debugSystemErrPrint(s : DrJava_v20020619.java.lang.String)
+							debugSystemOutPrint(s : DrJava_v20020619.java.lang.String)
+							getActiveCompiler(): DrJava_v20020619.edu.rice.cs.drjava.model.compiler.CompilerInterface
+							getAvailableCompilers(): DrJava_v20020619.edu.rice.cs.drjava.model.compiler.CompilerInterface
+							getClasspath(): DrJava_v20020619.java.lang.String
+							getCompilerErrorsWithoutFiles(): DrJava_v20020619.edu.rice.cs.drjava.model.compiler.CompilerError
+							getConsoleDocument(): DrJava_v20020619.javax.swing.text.StyledDocument
+							getDebugDocument(): DrJava_v20020619.javax.swing.text.StyledDocument
+							getDebugManager(): DrJava_v20020619.edu.rice.cs.drjava.model.debug.DebugManager
+							getDefinitionsDocuments(): DrJava_v20020619.javax.swing.ListModel
+							getDocumentForFile(file : DrJava_v20020619.java.io.File): OpenDefinitionsDocument
+							getEditorKit(): DrJava_v20020619.edu.rice.cs.drjava.model.definitions.DefinitionsEditorKit
+							getInteractionsDocument(): DrJava_v20020619.javax.swing.text.StyledDocument
+							getInteractionsFrozenPos(): JavaPrimitiveTypes.int
+							getJUnitDocument(): DrJava_v20020619.javax.swing.text.StyledDocument
+							getNumErrors(): JavaPrimitiveTypes.int
+							getPageFormat(): DrJava_v20020619.java.awt.print.PageFormat
+							getSourceRootSet(): DrJava_v20020619.java.io.File
+							getTestRunner(): DrJava_v20020619.edu.rice.cs.drjava.model.junit.JUnitTestRunner
+							interpretCurrentInteraction()
+							newFile(): OpenDefinitionsDocument
+							#notifyListeners(n : EventNotifier)
+							openFile(com : FileOpenSelector): OpenDefinitionsDocument
+							openFiles(com : FileOpenSelector): OpenDefinitionsDocument
+							#pollListeners(p : EventPoller): JavaPrimitiveTypes.boolean
+							quit()
+							recallNextInteractionInHistory(failed : DrJava_v20020619.java.lang.Runnable)
+							recallPreviousInteractionInHistory(failed : DrJava_v20020619.java.lang.Runnable)
+							removeListener(listener : GlobalModelListener)
+							replCalledSystemExit(status : JavaPrimitiveTypes.int)
+							replReturnedResult(result : DrJava_v20020619.java.lang.String)
+							replReturnedVoid()
+							replSystemErrPrint(s : DrJava_v20020619.java.lang.String)
+							replSystemOutPrint(s : DrJava_v20020619.java.lang.String)
+							replThrewException(exceptionClass : DrJava_v20020619.java.lang.String, message : DrJava_v20020619.java.lang.String, stackTrace : DrJava_v20020619.java.lang.String)
+							resetConsole()
+							resetInteractions()
+							saveAllBeforeProceeding(reason : SaveReason)
+							saveAllFiles(com : FileSaveSelector)
+							saveAllFiles(com : FileSaveSelector)
+							setActiveCompiler(compiler : DrJava_v20020619.edu.rice.cs.drjava.model.compiler.CompilerInterface)
+							setDefinitionsIndent(indent : JavaPrimitiveTypes.int)
+							setPageFormat(format : DrJava_v20020619.java.awt.print.PageFormat)
+						}
+						interface FileOpenSelector {
+							getFiles(): DrJava_v20020619.java.io.File
+						}
+						class GlobalModelIOTest {
+							<<Create>> GlobalModelIOTest(name : DrJava_v20020619.java.lang.String)
+							{static} suite(): DrJava_v20020619.junit.framework.Test
+							testCancelFirstSave()
+							testCancelOpenFile()
+							testCancelOpenMultipleFiles()
+							testCancelSaveAlreadySaved()
+							testCancelSaveAsAlreadySaved()
+							testCloseFileAllowAbandon()
+							testCloseFileDisallowAbandon()
+							testCloseMultipleFiles()
+							testForceFileOpen()
+							testModifiedByOther()
+							testModifiedByOtherFalse()
+							testMultipleFiles()
+							testMultipleFilesArray()
+							testOpenMultipleFiles()
+							testOpenMultipleFilesError()
+							testOpenMultipleNonexistentFiles()
+							testOpenNonexistentFile()
+							testOpenRealFile()
+							testRealSaveFirstSave()
+							testReopenFile()
+							testRevertFile()
+							testSaveAllSaveInOrder()
+							testSaveAlreadySaved()
+							testSaveAsAlreadySaved()
+							testSaveAsExistsAndOpen()
+							testSaveAsExistsForOverwrite()
+						}
+						GlobalModel <|.. DefaultGlobalModel
+						DrJava_v20020619.edu.rice.cs.drjava.config.OptionConstants <|.. DefaultGlobalModel
+						GlobalModelTestCase <|-- GlobalModelIOTest
+						DrJava_v20020619.junit.framework.TestCase <|-- GlobalModelTestCase
+						SaveReason "COMPILE_REASON" <-- GlobalModelListener
+						SaveReason "DEBUG_REASON" <-- GlobalModelListener
+						SaveReason "JUNIT_REASON" <-- GlobalModelListener
+						DrJava_v20020619.java.lang.String "EXIT_CALLED_MESSAGE" <-- DefaultGlobalModel
+						DrJava_v20020619.javax.swing.text.AttributeSet "SYSTEM_ERR_STYLE" <-- DefaultGlobalModel
+						DrJava_v20020619.javax.swing.text.AttributeSet "SYSTEM_OUT_DEBUG_STYLE" <-- DefaultGlobalModel
+						DrJava_v20020619.javax.swing.text.AttributeSet "SYSTEM_OUT_INTERACTIONS_STYLE" <-- DefaultGlobalModel
+						DrJava_v20020619.javax.swing.text.AttributeSet "SYSTEM_OUT_STYLE" <-- DefaultGlobalModel
+						DrJava_v20020619.edu.rice.cs.drjava.model.compiler.CompilerError "_compilerErrorsWithoutFiles 0..*" <-- DefaultGlobalModel
+						DrJava_v20020619.javax.swing.text.StyledDocument "_consoleDoc" <-- DefaultGlobalModel
+						DrJava_v20020619.javax.swing.text.StyledDocument "_debugDoc" <-- DefaultGlobalModel
+						DrJava_v20020619.edu.rice.cs.drjava.model.debug.DebugManager "_debugManager" <-- DefaultGlobalModel
+						DrJava_v20020619.javax.swing.DefaultListModel "_definitionsDocs" <-- DefaultGlobalModel
+						DrJava_v20020619.edu.rice.cs.drjava.model.definitions.DefinitionsEditorKit "_editorKit" <-- DefaultGlobalModel
+						DrJava_v20020619.edu.rice.cs.drjava.model.repl.InteractionsDocument "_interactionsDoc" <-- DefaultGlobalModel
+						DrJava_v20020619.edu.rice.cs.drjava.model.repl.newjvm.MainJVM "_interpreterControl" <-- DefaultGlobalModel
+						DrJava_v20020619.javax.swing.text.StyledDocument "_junitDoc" <-- DefaultGlobalModel
+						DrJava_v20020619.edu.rice.cs.drjava.model.junit.JUnitTestRunner "_junitTestRunner" <-- DefaultGlobalModel
+						DrJava_v20020619.java.util.LinkedList "_listeners" <-- DefaultGlobalModel
+						JavaPrimitiveTypes.int "_numErrors" <-- DefaultGlobalModel
+						DrJava_v20020619.java.awt.print.PageFormat "_pageFormat" <-- DefaultGlobalModel
+						DrJava_v20020619.edu.rice.cs.drjava.model.print.DrJavaBook "_book" <-- DefinitionsDocumentHandler
+						DrJava_v20020619.edu.rice.cs.drjava.model.definitions.DefinitionsDocument "_doc" <-- DefinitionsDocumentHandler
+						DrJava_v20020619.edu.rice.cs.drjava.model.compiler.CompilerErrorModel "_errorModel" <-- DefinitionsDocumentHandler
+						DrJava_v20020619.edu.rice.cs.drjava.model.junit.JUnitErrorModel "_junitErrorModel" <-- DefinitionsDocumentHandler
+						DrJava_v20020619.java.lang.String "BAR_TEXT" <-- GlobalModelTestCase
+						DrJava_v20020619.java.lang.String "FOO_MISSING_CLOSE_TEXT" <-- GlobalModelTestCase
+						DrJava_v20020619.java.lang.String "FOO_PACKAGE_AFTER_IMPORT" <-- GlobalModelTestCase
+						DrJava_v20020619.java.lang.String "FOO_PACKAGE_AS_FIELD" <-- GlobalModelTestCase
+						DrJava_v20020619.java.lang.String "FOO_PACKAGE_AS_FIELD_2" <-- GlobalModelTestCase
+						DrJava_v20020619.java.lang.String "FOO_PACKAGE_AS_PART_OF_FIELD" <-- GlobalModelTestCase
+						DrJava_v20020619.java.lang.String "FOO_PACKAGE_INSIDE_CLASS" <-- GlobalModelTestCase
+						DrJava_v20020619.java.lang.String "FOO_TEXT" <-- GlobalModelTestCase
+						DefaultGlobalModel "_model" <-- GlobalModelTestCase
+						DefaultGlobalModel "_originalModel" <-- GlobalModelTestCase
+						DrJava_v20020619.java.io.File "_tempDir" <-- GlobalModelTestCase
+						JavaPrimitiveTypes.int "canAbandonCount" <-- TestListener
+						JavaPrimitiveTypes.int "closeCount" <-- TestListener
+						JavaPrimitiveTypes.int "compileEndCount" <-- TestListener
+						JavaPrimitiveTypes.int "compileErrorDuringJUnitCount" <-- TestListener
+						JavaPrimitiveTypes.int "compileStartCount" <-- TestListener
+						JavaPrimitiveTypes.int "consoleResetCount" <-- TestListener
+						JavaPrimitiveTypes.int "fileRevertedCount" <-- TestListener
+						JavaPrimitiveTypes.int "interactionEndCount" <-- TestListener
+						JavaPrimitiveTypes.int "interactionStartCount" <-- TestListener
+						JavaPrimitiveTypes.int "interactionsExitedCount" <-- TestListener
+						JavaPrimitiveTypes.int "interactionsResetCount" <-- TestListener
+						JavaPrimitiveTypes.int "junitEndCount" <-- TestListener
+						JavaPrimitiveTypes.int "junitStartCount" <-- TestListener
+						JavaPrimitiveTypes.int "lastExitStatus" <-- TestListener
+						JavaPrimitiveTypes.int "newCount" <-- TestListener
+						JavaPrimitiveTypes.int "nonTestCaseCount" <-- TestListener
+						JavaPrimitiveTypes.int "openCount" <-- TestListener
+						JavaPrimitiveTypes.int "saveAllBeforeProceedingCount" <-- TestListener
+						JavaPrimitiveTypes.int "saveCount" <-- TestListener
+						JavaPrimitiveTypes.int "shouldRevertFileCount" <-- TestListener
+						DrJava_v20020619.java.io.File "_file" <-- FileSelector
+						DrJava_v20020619.java.io.File "_file2" <-- FileSelector
+						DrJava_v20020619.java.io.File "_file" <-- WarningFileSelector
+					}
+					package ui {
+						class MainFrame {
+							-{const} COMPILE_TAB: JavaPrimitiveTypes.int = 1
+							-{const} DOC_LIST_WIDTH: JavaPrimitiveTypes.int = 150
+							-{const} GUI_HEIGHT: JavaPrimitiveTypes.int = 700
+							-{const} GUI_WIDTH: JavaPrimitiveTypes.int = 800
+							-{const} ICON_PATH: DrJava_v20020619.java.lang.String = /edu/rice/cs/drjava/ui/icons/
+							-{const} INTERACTIONS_TAB: JavaPrimitiveTypes.int = 0
+							-{const} JUNIT_TAB: JavaPrimitiveTypes.int = 3
+							-{const} OUTPUT_TAB: JavaPrimitiveTypes.int = 2
+							-_abortInteractionAction: DrJava_v20020619.javax.swing.Action
+							-_abortInteractionMenuItem: DrJava_v20020619.javax.swing.JMenuItem
+							-_aboutAction: DrJava_v20020619.javax.swing.Action
+							-_clearAllBreakpointsAction: DrJava_v20020619.javax.swing.Action
+							-_clearAllBreakpointsMenuItem: DrJava_v20020619.javax.swing.JMenuItem
+							-_clearOutputAction: DrJava_v20020619.javax.swing.Action
+							-_closeAction: DrJava_v20020619.javax.swing.Action
+							-_closeAllAction: DrJava_v20020619.javax.swing.Action
+							-_compileAction: DrJava_v20020619.javax.swing.Action
+							-_compileButton: DrJava_v20020619.javax.swing.JButton
+							-_compileMenuItem: DrJava_v20020619.javax.swing.JMenuItem
+							-_copyAction: DrJava_v20020619.javax.swing.Action
+							-_currLocationField: DrJava_v20020619.javax.swing.JLabel
+							-_currentDefPane: DefinitionsPane
+							-_cutAction: DrJava_v20020619.javax.swing.Action
+							-_debugMenu: DrJava_v20020619.javax.swing.JMenu
+							-_debugPanel: DebugPanel
+							-_debuggerEnabledMenuItem: DrJava_v20020619.javax.swing.JCheckBoxMenuItem
+							-_defScrollPanes: DrJava_v20020619.java.util.Hashtable
+							-_docList: DrJava_v20020619.javax.swing.JList
+							-_docSplitPane: DrJava_v20020619.javax.swing.JSplitPane
+							-_editMenu: DrJava_v20020619.javax.swing.JMenu
+							-_errorPanel: CompilerErrorPanel
+							-_fileMenu: DrJava_v20020619.javax.swing.JMenu
+							-_fileNameField: DrJava_v20020619.javax.swing.JLabel
+							-_fileTitle: DrJava_v20020619.java.lang.String
+							-_findReplace: FindReplaceDialog
+							-_findReplaceAction: DrJava_v20020619.javax.swing.Action
+							-_gotoLineAction: DrJava_v20020619.javax.swing.Action
+							-_helpMenu: DrJava_v20020619.javax.swing.JMenu
+							-_interactionsPane: InteractionsPane
+							-_junitAction: DrJava_v20020619.javax.swing.Action
+							-_junitButton: DrJava_v20020619.javax.swing.JButton
+							-_junitPanel: JUnitPanel
+							-_mainSplit: DrJava_v20020619.javax.swing.JSplitPane
+							-_menuBar: DrJava_v20020619.javax.swing.JMenuBar
+							-_model: SingleDisplayModel
+							-_newAction: DrJava_v20020619.javax.swing.Action
+							-_nextDebugAction: DrJava_v20020619.javax.swing.Action
+							-_nextDebugMenuItem: DrJava_v20020619.javax.swing.JMenuItem
+							-_openAction: DrJava_v20020619.javax.swing.Action
+							-_openChooser: DrJava_v20020619.javax.swing.JFileChooser
+							-_openSelector: DrJava_v20020619.edu.rice.cs.drjava.model.FileOpenSelector
+							-_outputPane: OutputPane
+							-_pageSetupAction: DrJava_v20020619.javax.swing.Action
+							-_pasteAction: DrJava_v20020619.javax.swing.Action
+							-_posListener: PositionListener
+							-_printAction: DrJava_v20020619.javax.swing.Action
+							-_printBreakpointsAction: DrJava_v20020619.javax.swing.Action
+							-_printBreakpointsMenuItem: DrJava_v20020619.javax.swing.JMenuItem
+							-_printPreviewAction: DrJava_v20020619.javax.swing.Action
+							-_quitAction: DrJava_v20020619.javax.swing.Action
+							-_redoAction: DrJava_v20020619.edu.rice.cs.util.swing.DelegatingAction
+							-_resetInteractionsAction: DrJava_v20020619.javax.swing.Action
+							-_resumeDebugMenuItem: DrJava_v20020619.javax.swing.JMenuItem
+							-_resumeDebuggerAction: DrJava_v20020619.javax.swing.Action
+							-_revertAction: DrJava_v20020619.javax.swing.Action
+							-_revertMenuItem: DrJava_v20020619.javax.swing.JMenuItem
+							-_runDebuggerAction: DrJava_v20020619.javax.swing.Action
+							-_runDebuggerMenuItem: DrJava_v20020619.javax.swing.JMenuItem
+							-_saveAction: DrJava_v20020619.javax.swing.Action
+							-_saveAllAction: DrJava_v20020619.javax.swing.Action
+							-_saveAsAction: DrJava_v20020619.javax.swing.Action
+							-_saveButton: DrJava_v20020619.javax.swing.JButton
+							-_saveChooser: DrJava_v20020619.javax.swing.JFileChooser
+							-_saveMenuItem: DrJava_v20020619.javax.swing.JMenuItem
+							-_saveSelector: DrJava_v20020619.edu.rice.cs.drjava.model.FileSaveSelector
+							-_selectAllAction: DrJava_v20020619.javax.swing.Action
+							-_statusBar: DrJava_v20020619.javax.swing.JPanel
+							-_stepDebugAction: DrJava_v20020619.javax.swing.Action
+							-_stepDebugMenuItem: DrJava_v20020619.javax.swing.JMenuItem
+							-_suspendDebugAction: DrJava_v20020619.javax.swing.Action
+							-_suspendDebugMenuItem: DrJava_v20020619.javax.swing.JMenuItem
+							-_switchToNextAction: DrJava_v20020619.javax.swing.Action
+							-_switchToPrevAction: DrJava_v20020619.javax.swing.Action
+							-_tabbedPane: DrJava_v20020619.javax.swing.JTabbedPane
+							-_tabs: DrJava_v20020619.java.util.LinkedList
+							-_toggleBreakpointAction: DrJava_v20020619.javax.swing.Action
+							-_toggleBreakpointMenuItem: DrJava_v20020619.javax.swing.JMenuItem
+							-_toggleDebuggerAction: DrJava_v20020619.javax.swing.Action
+							-_toolBar: DrJava_v20020619.javax.swing.JToolBar
+							-_toolsMenu: DrJava_v20020619.javax.swing.JMenu
+							-_undoAction: DrJava_v20020619.edu.rice.cs.util.swing.DelegatingAction
+							-_windowCloseListener: DrJava_v20020619.java.awt.event.WindowListener
+							<<Create>> MainFrame()
+							-_clearAllBreakpoints()
+							-_close()
+							-_closeAll()
+							-_compile()
+							-_createDefScrollPane(doc : DrJava_v20020619.edu.rice.cs.drjava.model.OpenDefinitionsDocument): DrJava_v20020619.javax.swing.JScrollPane
+							_createManualToolbarButton(a : DrJava_v20020619.javax.swing.Action): DrJava_v20020619.javax.swing.JButton
+							_createToolbarButton(a : DrJava_v20020619.javax.swing.Action): DrJava_v20020619.javax.swing.JButton
+							-_debugNext()
+							-_debugStep()
+							-_debugSuspend()
+							-_getIcon(name : DrJava_v20020619.java.lang.String): DrJava_v20020619.javax.swing.ImageIcon
+							-_gotoLine()
+							-_installNewDocumentListener(d : DrJava_v20020619.javax.swing.text.Document)
+							-_junit()
+							-_new()
+							-_open()
+							-_pageSetup()
+							-_print()
+							-_printBreakpoints()
+							-_printPreview()
+							-_reenableScrollBar()
+							-_removeErrorListener(doc : DrJava_v20020619.edu.rice.cs.drjava.model.OpenDefinitionsDocument)
+							-_resumeDebugger()
+							-_revert()
+							-_runDebugger()
+							-_save()
+							-_saveAll()
+							-_saveAs()
+							-_selectAll()
+							-_setAllFonts(f : DrJava_v20020619.java.awt.Font)
+							-_setCurrentDirectory(doc : DrJava_v20020619.edu.rice.cs.drjava.model.OpenDefinitionsDocument)
+							-_setDebugMenuItemsEnabled(enabled : JavaPrimitiveTypes.boolean)
+							-_setDividerLocation()
+							-_setUpAction(a : DrJava_v20020619.javax.swing.Action, icon : DrJava_v20020619.java.lang.String, shortDesc : DrJava_v20020619.java.lang.String)
+							-_setUpActions()
+							-_setUpDebugMenu(mask : JavaPrimitiveTypes.int): DrJava_v20020619.javax.swing.JMenu
+							-_setUpDocumentSelector()
+							-_setUpEditMenu(mask : JavaPrimitiveTypes.int): DrJava_v20020619.javax.swing.JMenu
+							-_setUpFileMenu(mask : JavaPrimitiveTypes.int): DrJava_v20020619.javax.swing.JMenu
+							-_setUpHelpMenu(mask : JavaPrimitiveTypes.int): DrJava_v20020619.javax.swing.JMenu
+							-_setUpMenuBar()
+							-_setUpPanes()
+							-_setUpStatusBar()
+							-_setUpTabs()
+							-_setUpToolBar()
+							-_setUpToolsMenu(mask : JavaPrimitiveTypes.int): DrJava_v20020619.javax.swing.JMenu
+							-_showClassNotFoundError(cnfe : DrJava_v20020619.java.lang.ClassNotFoundException)
+							-_showDebugError(de : DrJava_v20020619.edu.rice.cs.drjava.model.debug.DebugException)
+							-_showError(e : DrJava_v20020619.java.lang.Throwable, title : DrJava_v20020619.java.lang.String, message : DrJava_v20020619.java.lang.String)
+							-_showIOError(ioe : DrJava_v20020619.java.io.IOException)
+							-_showNoClassDefError(ncde : DrJava_v20020619.java.lang.NoClassDefFoundError)
+							-_switchDefScrollPane()
+							-_toggleBreakpoint()
+							-_updateErrorListeners()
+							-getChosenFile(fc : DrJava_v20020619.javax.swing.JFileChooser, choice : JavaPrimitiveTypes.int): DrJava_v20020619.java.io.File
+							-getChosenFiles(fc : DrJava_v20020619.javax.swing.JFileChooser, choice : JavaPrimitiveTypes.int): DrJava_v20020619.java.io.File
+							getCurrentDefPane(): DefinitionsPane
+							getDefViewport(): DrJava_v20020619.javax.swing.JViewport
+							getModel(): SingleDisplayModel
+							getOpenFiles(): DrJava_v20020619.java.io.File
+							getSaveFile(): DrJava_v20020619.java.io.File
+							hideDebugger()
+							hourglassOff()
+							hourglassOn()
+							removeTab(c : DrJava_v20020619.java.awt.Component)
+							showDebugger()
+							showTab(c : DrJava_v20020619.java.awt.Component)
+							toggleDebugger()
+							updateFileTitle()
+						}
+						DrJava_v20020619.javax.swing.JFrame <|-- MainFrame
+						DrJava_v20020619.edu.rice.cs.drjava.config.OptionConstants <|.. MainFrame
+						DrJava_v20020619.javax.swing.JEditorPane <|-- DefinitionsPane
+						DrJava_v20020619.edu.rice.cs.drjava.config.OptionConstants <|.. DefinitionsPane
+						DrJava_v20020619.javax.swing.event.CaretListener <|.. CompilerErrorCaretListener
+						DrJava_v20020619.javax.swing.event.CaretListener <|.. JUnitErrorCaretListener
+						DrJava_v20020619.javax.swing.JPanel <|-- DebugPanel
+						DrJava_v20020619.edu.rice.cs.drjava.config.OptionConstants <|.. DebugPanel
+						DrJava_v20020619.edu.rice.cs.drjava.model.DefaultGlobalModel <|-- SingleDisplayModel
+						TabbedPanel <|-- FindReplaceDialog
+						DrJava_v20020619.edu.rice.cs.drjava.config.OptionConstants <|.. FindReplaceDialog
+						DrJava_v20020619.javax.swing.JPanel <|-- TabbedPanel
+						DrJava_v20020619.javax.swing.JTextPane <|-- InteractionsPane
+						DrJava_v20020619.javax.swing.JTextPane <|-- OutputPane
+						DrJava_v20020619.edu.rice.cs.drjava.model.GlobalModelListener <|-- SingleDisplayModelListener
+						JavaPrimitiveTypes.int "COMPILE_TAB" <-- MainFrame
+						JavaPrimitiveTypes.int "DOC_LIST_WIDTH" <-- MainFrame
+						JavaPrimitiveTypes.int "GUI_HEIGHT" <-- MainFrame
+						JavaPrimitiveTypes.int "GUI_WIDTH" <-- MainFrame
+						DrJava_v20020619.java.lang.String "ICON_PATH" <-- MainFrame
+						JavaPrimitiveTypes.int "INTERACTIONS_TAB" <-- MainFrame
+						JavaPrimitiveTypes.int "JUNIT_TAB" <-- MainFrame
+						JavaPrimitiveTypes.int "OUTPUT_TAB" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_abortInteractionAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenuItem "_abortInteractionMenuItem" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_aboutAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_clearAllBreakpointsAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenuItem "_clearAllBreakpointsMenuItem" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_clearOutputAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_closeAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_closeAllAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_compileAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JButton "_compileButton" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenuItem "_compileMenuItem" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_copyAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JLabel "_currLocationField" <-- MainFrame
+						DrJava_v20020619.javax.swing.text.EditorKit "EDITOR_KIT" <-- DefinitionsPane
+						DrJava_v20020619.edu.rice.cs.drjava.model.OpenDefinitionsDocument "_doc" <-- DefinitionsPane
+						DrJava_v20020619.javax.swing.text.DefaultHighlighter.DefaultHighlightPainter "_errorHighlightPainter" <-- DefinitionsPane
+						DrJava_v20020619.java.lang.Object "_errorHighlightTag" <-- DefinitionsPane
+						DefinitionsPane "_definitionsPane" <-- CompilerErrorCaretListener
+						DrJava_v20020619.javax.swing.text.Document "_document" <-- CompilerErrorCaretListener
+						DrJava_v20020619.javax.swing.text.Position "_errorListPositions 0..*" <-- ErrorListPane
+						DrJava_v20020619.java.util.Hashtable "_errorTable" <-- ErrorListPane
+						DefinitionsPane "_lastDefPane" <-- ErrorListPane
+						DrJava_v20020619.java.lang.Object "_listHighlightTag" <-- ErrorListPane
+						DrJava_v20020619.java.awt.event.MouseAdapter "_mouseListener" <-- ErrorListPane
+						JavaPrimitiveTypes.int "_selectedIndex" <-- ErrorListPane
+						ErrorListPane "_errorListPane" <-- CompilerErrorCaretListener
+						DrJava_v20020619.edu.rice.cs.drjava.model.compiler.CompilerErrorModel "_model" <-- CompilerErrorCaretListener
+						DrJava_v20020619.edu.rice.cs.drjava.model.OpenDefinitionsDocument "_openDoc" <-- CompilerErrorCaretListener
+						DrJava_v20020619.javax.swing.text.Position "_positions 0..*" <-- CompilerErrorCaretListener
+						CompilerErrorCaretListener "_errorListener" <-- DefinitionsPane
+						DrJava_v20020619.javax.swing.text.DefaultHighlighter.DefaultHighlightPainter "_highlightPainter" <-- DefinitionsPane
+						DrJava_v20020619.javax.swing.Action "_indentKeyActionColon" <-- DefinitionsPane
+						DrJava_v20020619.javax.swing.Action "_indentKeyActionLine" <-- DefinitionsPane
+						DrJava_v20020619.javax.swing.Action "_indentKeyActionOpenSquiggly" <-- DefinitionsPane
+						DrJava_v20020619.javax.swing.Action "_indentKeyActionSquiggly" <-- DefinitionsPane
+						DrJava_v20020619.javax.swing.Action "_indentKeyActionTab" <-- DefinitionsPane
+						DefinitionsPane "_definitionsPane" <-- JUnitErrorCaretListener
+						DrJava_v20020619.javax.swing.text.Document "_document" <-- JUnitErrorCaretListener
+						DrJava_v20020619.javax.swing.text.Position "_errorListPositions 0..*" <-- JUnitErrorListPane
+						DrJava_v20020619.java.util.Hashtable "_errorTable" <-- JUnitErrorListPane
+						DefinitionsPane "_lastDefPane" <-- JUnitErrorListPane
+						DrJava_v20020619.java.lang.Object "_listHighlightTag" <-- JUnitErrorListPane
+						DrJava_v20020619.java.awt.event.MouseAdapter "_mouseListener" <-- JUnitErrorListPane
+						JavaPrimitiveTypes.int "_selectedIndex" <-- JUnitErrorListPane
+						JUnitErrorListPane "_errorListPane" <-- JUnitErrorCaretListener
+						DrJava_v20020619.edu.rice.cs.drjava.model.junit.JUnitErrorModel "_model" <-- JUnitErrorCaretListener
+						DrJava_v20020619.edu.rice.cs.drjava.model.OpenDefinitionsDocument "_openDoc" <-- JUnitErrorCaretListener
+						DrJava_v20020619.javax.swing.text.Position "_positions 0..*" <-- JUnitErrorCaretListener
+						JavaPrimitiveTypes.boolean "_shouldHighlight" <-- JUnitErrorCaretListener
+						JUnitErrorCaretListener "_junitErrorListener" <-- DefinitionsPane
+						MainFrame "_mainFrame" <-- DefinitionsPane
+						DrJava_v20020619.java.lang.Object "_matchHighlight" <-- DefinitionsPane
+						DrJava_v20020619.javax.swing.event.CaretListener "_matchListener" <-- DefinitionsPane
+						DrJava_v20020619.edu.rice.cs.drjava.model.GlobalModel "_model" <-- DefinitionsPane
+						RedoAction "_redoAction" <-- DefinitionsPane
+						UndoAction "_undoAction" <-- DefinitionsPane
+						DrJava_v20020619.javax.swing.event.UndoableEditListener "_undoListener" <-- DefinitionsPane
+						DrJava_v20020619.javax.swing.undo.UndoManager "_undoManager" <-- DefinitionsPane
+						DrJava_v20020619.javax.swing.Action "_defaultAction" <-- IndentKeyAction
+						DrJava_v20020619.java.lang.String "_key" <-- IndentKeyAction
+						DefinitionsPane "_currentDefPane" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_cutAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenu "_debugMenu" <-- MainFrame
+						DrJava_v20020619.java.lang.String "BANNER_TEXT" <-- DebugPanel
+						DrJava_v20020619.edu.rice.cs.drjava.model.debug.DebugManager "_debugger" <-- DebugPanel
+						MainFrame "_frame" <-- DebugPanel
+						DrJava_v20020619.javax.swing.JTextField "_inputField" <-- DebugPanel
+						DrJava_v20020619.java.util.Hashtable "_jswatProperties" <-- DebugPanel
+						DebugLogger "_logger" <-- DebugPanel
+						DrJava_v20020619.java.lang.String "ABOUT_TEXT" <-- SingleDisplayModel
+						DrJava_v20020619.edu.rice.cs.drjava.model.OpenDefinitionsDocument "_activeDocument" <-- SingleDisplayModel
+						JavaPrimitiveTypes.boolean "_isClosingAllDocs" <-- SingleDisplayModel
+						DrJava_v20020619.javax.swing.ListSelectionModel "_selectionModel" <-- SingleDisplayModel
+						SingleDisplayModel "_model" <-- DebugPanel
+						DrJava_v20020619.javax.swing.text.StyledDocument "_outputDoc" <-- DebugPanel
+						DrJava_v20020619.javax.swing.JTextPane "_outputPane" <-- DebugPanel
+						DrJava_v20020619.java.awt.event.ActionListener "_performAction" <-- DebugPanel
+						DrJava_v20020619.javax.swing.JScrollPane "_scrollPane" <-- DebugPanel
+						DebugPanel "_debugPanel" <-- MainFrame
+						DrJava_v20020619.javax.swing.JCheckBoxMenuItem "_debuggerEnabledMenuItem" <-- MainFrame
+						DrJava_v20020619.java.util.Hashtable "_defScrollPanes" <-- MainFrame
+						DrJava_v20020619.javax.swing.JList "_docList" <-- MainFrame
+						DrJava_v20020619.javax.swing.JSplitPane "_docSplitPane" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenu "_editMenu" <-- MainFrame
+						CompilerErrorPanel "_errorPanel" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenu "_fileMenu" <-- MainFrame
+						DrJava_v20020619.javax.swing.JLabel "_fileNameField" <-- MainFrame
+						DrJava_v20020619.java.lang.String "_fileTitle" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_closeAction" <-- TabbedPanel
+						DrJava_v20020619.javax.swing.JButton "_closeButton" <-- TabbedPanel
+						DrJava_v20020619.javax.swing.JPanel "_closePanel" <-- TabbedPanel
+						JavaPrimitiveTypes.boolean "_displayed" <-- TabbedPanel
+						MainFrame "_frame" <-- TabbedPanel
+						DrJava_v20020619.javax.swing.JPanel "_mainPanel" <-- TabbedPanel
+						DrJava_v20020619.java.lang.String "_name" <-- TabbedPanel
+						JavaPrimitiveTypes.boolean "_caretChanged" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.event.CaretListener "_caretListener" <-- FindReplaceDialog
+						DefinitionsPane "_defPane" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.JTextField "_findField" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.Action "_findNextAction" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.JButton "_findNextButton" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.JPanel "_labelPanel" <-- FindReplaceDialog
+						DrJava_v20020619.edu.rice.cs.util.swing.FindReplaceMachine "_machine" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.JCheckBox "_matchCase" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.JPanel "_matchCaseAndClosePanel" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.JLabel "_message" <-- FindReplaceDialog
+						SingleDisplayModel "_model" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.JOptionPane "_optionPane" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.Action "_replaceAction" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.Action "_replaceAllAction" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.JButton "_replaceAllButton" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.JButton "_replaceButton" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.JTextField "_replaceField" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.Action "_replaceFindAction" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.JButton "_replaceFindButton" <-- FindReplaceDialog
+						DrJava_v20020619.javax.swing.JPanel "_rightPanel" <-- FindReplaceDialog
+						FindReplaceDialog "_findReplace" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_findReplaceAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_gotoLineAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenu "_helpMenu" <-- MainFrame
+						DrJava_v20020619.java.lang.Runnable "BEEP" <-- InteractionsPane
+						DrJava_v20020619.javax.swing.text.EditorKit "EDITOR_KIT" <-- InteractionsPane
+						DrJava_v20020619.javax.swing.AbstractAction "_clearCurrentAction" <-- InteractionsPane
+						DrJava_v20020619.javax.swing.AbstractAction "_evalAction" <-- InteractionsPane
+						DrJava_v20020619.javax.swing.AbstractAction "_gotoFrozenPosAction" <-- InteractionsPane
+						DrJava_v20020619.javax.swing.AbstractAction "_historyNextAction" <-- InteractionsPane
+						DrJava_v20020619.javax.swing.AbstractAction "_historyPrevAction" <-- InteractionsPane
+						DrJava_v20020619.edu.rice.cs.drjava.model.GlobalModel "_model" <-- InteractionsPane
+						DrJava_v20020619.javax.swing.AbstractAction "_moveLeft" <-- InteractionsPane
+						DrJava_v20020619.javax.swing.AbstractAction "_moveRight" <-- InteractionsPane
+						InteractionsPane "_interactionsPane" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_junitAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JButton "_junitButton" <-- MainFrame
+						JUnitPanel "_junitPanel" <-- MainFrame
+						DrJava_v20020619.javax.swing.JSplitPane "_mainSplit" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenuBar "_menuBar" <-- MainFrame
+						SingleDisplayModel "_model" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_newAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_nextDebugAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenuItem "_nextDebugMenuItem" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_openAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JFileChooser "_openChooser" <-- MainFrame
+						DrJava_v20020619.edu.rice.cs.drjava.model.FileOpenSelector "_openSelector" <-- MainFrame
+						OutputPane "_outputPane" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_pageSetupAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_pasteAction" <-- MainFrame
+						PositionListener "_posListener" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_printAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_printBreakpointsAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenuItem "_printBreakpointsMenuItem" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_printPreviewAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_quitAction" <-- MainFrame
+						DrJava_v20020619.edu.rice.cs.util.swing.DelegatingAction "_redoAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_resetInteractionsAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenuItem "_resumeDebugMenuItem" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_resumeDebuggerAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_revertAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenuItem "_revertMenuItem" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_runDebuggerAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenuItem "_runDebuggerMenuItem" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_saveAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_saveAllAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_saveAsAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JButton "_saveButton" <-- MainFrame
+						DrJava_v20020619.javax.swing.JFileChooser "_saveChooser" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenuItem "_saveMenuItem" <-- MainFrame
+						DrJava_v20020619.edu.rice.cs.drjava.model.FileSaveSelector "_saveSelector" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_selectAllAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JPanel "_statusBar" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_stepDebugAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenuItem "_stepDebugMenuItem" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_suspendDebugAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenuItem "_suspendDebugMenuItem" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_switchToNextAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_switchToPrevAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JTabbedPane "_tabbedPane" <-- MainFrame
+						DrJava_v20020619.java.util.LinkedList "_tabs" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_toggleBreakpointAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenuItem "_toggleBreakpointMenuItem" <-- MainFrame
+						DrJava_v20020619.javax.swing.Action "_toggleDebuggerAction" <-- MainFrame
+						DrJava_v20020619.javax.swing.JToolBar "_toolBar" <-- MainFrame
+						DrJava_v20020619.javax.swing.JMenu "_toolsMenu" <-- MainFrame
+						DrJava_v20020619.edu.rice.cs.util.swing.DelegatingAction "_undoAction" <-- MainFrame
+						DrJava_v20020619.java.awt.event.WindowListener "_windowCloseListener" <-- MainFrame
+					}
+					class DrJava {
+						{const} CONFIG: DrJava_v20020619.edu.rice.cs.drjava.config.FileConfiguration
+						{const} PROPERTIES_FILE: DrJava_v20020619.java.io.File
+						-{const} _consoleErr: DrJava_v20020619.java.io.PrintStream
+						-{const} _consoleOut: DrJava_v20020619.java.io.PrintStream
+						-{static} _manager: DrJava_v20020619.edu.rice.cs.util.PreventExitSecurityManager
+						<<Create>> DrJava()
+						-{static} _setupCompilerIfNeeded()
+						-{static} _userWantsToPickAgain(): JavaPrimitiveTypes.boolean
+						{static} consoleErr(): DrJava_v20020619.java.io.PrintStream
+						{static} consoleOut(): DrJava_v20020619.java.io.PrintStream
+						{static} disableSecurityManager()
+						{static} enableSecurityManager()
+						{static} getSecurityManager(): DrJava_v20020619.edu.rice.cs.util.PreventExitSecurityManager
+						{static} main(args : DrJava_v20020619.java.lang.String)
+						{static} openCommandLineFiles(mf : DrJava_v20020619.edu.rice.cs.drjava.ui.MainFrame, args : DrJava_v20020619.java.lang.String)
+					}
+					DrJava_v20020619.edu.rice.cs.drjava.config.ConfigurationTool <|.. DrJava
+					DrJava_v20020619.edu.rice.cs.drjava.config.OptionConstants <|.. DrJava
+					DrJava_v20020619.edu.rice.cs.drjava.config.FileConfiguration "CONFIG" <-- DrJava
+					DrJava_v20020619.java.io.File "PROPERTIES_FILE" <-- DrJava
+					DrJava_v20020619.java.io.PrintStream "_consoleErr" <-- DrJava
+					DrJava_v20020619.java.io.PrintStream "_consoleOut" <-- DrJava
+					DrJava_v20020619.edu.rice.cs.util.PreventExitSecurityManager "_manager" <-- DrJava
+				}
+			}
+		}
+	}
+	package java {
+		package io {
+			class File {
+			}
+		}
+	}
+}
+@enduml

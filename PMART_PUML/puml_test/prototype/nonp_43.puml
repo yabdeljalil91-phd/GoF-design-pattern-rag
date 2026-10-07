@@ -1,0 +1,18 @@
+@startuml
+package dpd_jdt {
+	package Prototype {
+		package nonprototype {
+			'Singleton Writable with no data.
+			class NullWritable {
+				-{const} THIS: NullWritable
+				-<<Create>> NullWritable()
+				'Returns the single instance of this class.
+				{static} get(): NullWritable
+				readFields(in : java.io.DataInput)
+				write(out : java.io.DataOutput)
+			}
+		}
+	}
+	Prototype.nonprototype.Writable <|-- Prototype.nonprototype.NullWritable
+}
+@enduml

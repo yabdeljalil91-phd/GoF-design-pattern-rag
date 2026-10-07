@@ -1,0 +1,32 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'@author     Ara Abrahamian (ara_e@email.com)
+			'@created    May 18, 2001
+			'@version    $Revision: 1.1 $
+			class Pretty {
+				-cvs: JavaPrimitiveTypes.boolean
+				-cvsUtil: CVSUtil
+				-filesets: java.util.Vector
+				<<Create>> Pretty()
+				'Adds a set of files (nested fileset attribute).
+				addFileset(set : FileSet)
+				execute()
+				setCvs(cvs : JavaPrimitiveTypes.boolean)
+				setSettingsdir(new_settings_dir : java.io.File)
+				'Ensure we have a consistent and legal set of attributes, and set any internal flags necessary based on different combinations of attributes.
+				#validateAttributes()
+			}
+		}
+	}
+	Builder.nonbuilder.Task <|-- Builder.nonbuilder.Pretty
+	JavaPrimitiveTypes.boolean "cvs" <-- Builder.nonbuilder.Pretty
+	java.util.HashMap "entries" <-- Builder.nonbuilder.CVSUtil
+	java.util.TimeZone "tz" <-- Builder.nonbuilder.CVSUtil
+	java.util.Date "date" <-- Builder.nonbuilder.CVSUtil.CVSEntry
+	java.lang.String "fileName" <-- Builder.nonbuilder.CVSUtil.CVSEntry
+	Builder.nonbuilder.CVSUtil "cvsUtil" <-- Builder.nonbuilder.Pretty
+	java.util.Vector "filesets" <-- Builder.nonbuilder.Pretty
+}
+@enduml

@@ -1,0 +1,158 @@
+@startuml
+package "DrJava v20040326" as DrJava_v20040326 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package repl {
+							package newjvm {
+								class InterpreterJVM {
+									{const} EMPTY_TRACE_TEXT: DrJava_v20040326.java.lang.String
+									{const} ONLY: InterpreterJVM
+									-_activeInterpreter: InterpreterData
+									-<<TemplateBinding>> _classpath: DrJava_v20040326.java.util.Vector
+									-_defaultInterpreter: InterpreterData
+									-<<TemplateBinding>> _interpreters: DrJava_v20040326.java.util.Hashtable
+									-_junitTestManager: DrJava_v20040326.edu.rice.cs.drjava.model.junit.JUnitTestManager
+									-{const} _log: DrJava_v20040326.edu.rice.cs.util.Log
+									-_mainJVM: MainJVMRemoteI
+									-_messageOnResetFailure: JavaPrimitiveTypes.boolean
+									-{const} printMessages: JavaPrimitiveTypes.boolean = false
+									-<<Create>> InterpreterJVM()
+									#_addClasspath(interpreter : DrJava_v20040326.edu.rice.cs.drjava.model.repl.JavaInterpreter)
+									-{static} _dialog(s : DrJava_v20040326.java.lang.String)
+									-_processReturnValue(o : DrJava_v20040326.java.lang.Object): DrJava_v20040326.java.lang.String
+									addClassPath(s : DrJava_v20040326.java.lang.String)
+									addDebugInterpreter(name : DrJava_v20040326.java.lang.String, className : DrJava_v20040326.java.lang.String)
+									addInterpreter(name : DrJava_v20040326.java.lang.String, interpreter : DrJava_v20040326.edu.rice.cs.drjava.model.repl.Interpreter)
+									addJavaInterpreter(name : DrJava_v20040326.java.lang.String)
+									getActiveInterpreter(): DrJava_v20040326.edu.rice.cs.drjava.model.repl.Interpreter
+									getAugmentedClasspath(): DrJava_v20040326.java.util.Vector
+									getClasspathString(): DrJava_v20040326.java.lang.String
+									getFileForClassName(className : DrJava_v20040326.java.lang.String): DrJava_v20040326.java.io.File
+									getInterpreter(name : DrJava_v20040326.java.lang.String): InterpreterData
+									getInterpreters(): DrJava_v20040326.java.util.Hashtable
+									getJavaInterpreter(name : DrJava_v20040326.java.lang.String): DrJava_v20040326.edu.rice.cs.drjava.model.repl.JavaInterpreter
+									{static} getStackTrace(t : DrJava_v20040326.java.lang.Throwable): DrJava_v20040326.java.lang.String
+									getVariableClassName(var : DrJava_v20040326.java.lang.String): DrJava_v20040326.java.lang.String
+									getVariableToString(var : DrJava_v20040326.java.lang.String): DrJava_v20040326.java.lang.String
+									#handleStart(mainJVM : DrJava_v20040326.edu.rice.cs.util.newjvm.MasterRemote)
+									interpret(s : DrJava_v20040326.java.lang.String)
+									interpret(s : DrJava_v20040326.java.lang.String, interpreterName : DrJava_v20040326.java.lang.String)
+									interpret(input : DrJava_v20040326.java.lang.String, interpreter : InterpreterData)
+									junitJVMReady()
+									nonTestCase(isTestAll : JavaPrimitiveTypes.boolean)
+									#quitFailed(th : DrJava_v20040326.java.lang.Throwable)
+									removeInterpreter(name : DrJava_v20040326.java.lang.String)
+									reset()
+									runTestSuite(classNames : DrJava_v20040326.java.util.List, files : DrJava_v20040326.java.util.List, isTestAll : JavaPrimitiveTypes.boolean): DrJava_v20040326.java.util.List
+									setActiveInterpreter(name : DrJava_v20040326.java.lang.String): JavaPrimitiveTypes.boolean
+									setPackageScope(s : DrJava_v20040326.java.lang.String)
+									setPrivateAccessible(allow : JavaPrimitiveTypes.boolean)
+									setShowMessageOnResetFailure(show : JavaPrimitiveTypes.boolean)
+									setToDefaultInterpreter(): JavaPrimitiveTypes.boolean
+									testEnded(testName : DrJava_v20040326.java.lang.String, wasSuccessful : JavaPrimitiveTypes.boolean, causedError : JavaPrimitiveTypes.boolean)
+									testStarted(testName : DrJava_v20040326.java.lang.String)
+									testSuiteEnded(errors : DrJava_v20040326.edu.rice.cs.drjava.model.junit.JUnitError)
+									testSuiteStarted(numTests : JavaPrimitiveTypes.int)
+								}
+								DrJava_v20040326.edu.rice.cs.util.newjvm.AbstractSlaveJVM <|-- InterpreterJVM
+								InterpreterJVMRemoteI <|.. InterpreterJVM
+								DrJava_v20040326.edu.rice.cs.drjava.model.junit.JUnitModelCallback <|.. InterpreterJVM
+								DrJava_v20040326.edu.rice.cs.util.newjvm.SlaveRemote <|-- InterpreterJVMRemoteI
+								DrJava_v20040326.edu.rice.cs.util.newjvm.MasterRemote <|-- MainJVMRemoteI
+								DrJava_v20040326.java.io.Serializable <|-- InterpretResult
+								InterpretResult <|.. ExceptionResult
+								InterpretResult <|.. SyntaxErrorResult
+								InterpretResult <|.. ValueResult
+								InterpretResult <|.. VoidResult
+								DrJava_v20040326.java.lang.String "EMPTY_TRACE_TEXT" <-- InterpreterJVM
+								JavaPrimitiveTypes.boolean "_inProgress" <-- InterpreterData
+								DrJava_v20040326.edu.rice.cs.drjava.model.repl.Interpreter "_interpreter" <-- InterpreterData
+								InterpreterData "_activeInterpreter" <-- InterpreterJVM
+								DrJava_v20040326.java.util.Vector "_classpath" <-- InterpreterJVM
+								InterpreterData "_defaultInterpreter" <-- InterpreterJVM
+								DrJava_v20040326.java.util.Hashtable "_interpreters" <-- InterpreterJVM
+								DrJava_v20040326.edu.rice.cs.drjava.model.junit.JUnitTestManager "_junitTestManager" <-- InterpreterJVM
+								DrJava_v20040326.edu.rice.cs.util.Log "_log" <-- InterpreterJVM
+								DrJava_v20040326.java.lang.String "_exceptionClass" <-- ExceptionResult
+								DrJava_v20040326.java.lang.String "_exceptionMessage" <-- ExceptionResult
+								DrJava_v20040326.java.lang.String "_stackTrace" <-- ExceptionResult
+								JavaPrimitiveTypes.int "_endCol" <-- SyntaxErrorResult
+								JavaPrimitiveTypes.int "_endRow" <-- SyntaxErrorResult
+								DrJava_v20040326.java.lang.String "_errorMessage" <-- SyntaxErrorResult
+								DrJava_v20040326.java.lang.String "_interaction" <-- SyntaxErrorResult
+								JavaPrimitiveTypes.int "_startCol" <-- SyntaxErrorResult
+								JavaPrimitiveTypes.int "_startRow" <-- SyntaxErrorResult
+								DrJava_v20040326.java.lang.String "_valueStr" <-- ValueResult
+								MainJVMRemoteI "_mainJVM" <-- InterpreterJVM
+								JavaPrimitiveTypes.boolean "_messageOnResetFailure" <-- InterpreterJVM
+								JavaPrimitiveTypes.boolean "printMessages" <-- InterpreterJVM
+							}
+							interface JavaInterpreter {
+								addClassPath(path : DrJava_v20040326.java.lang.String)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : DrJava_v20040326.java.lang.Object)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.boolean)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.byte)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.char)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.double)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.float)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.int)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.long)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.short)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : DrJava_v20040326.java.lang.Object)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.boolean)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.byte)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.char)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.double)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.float)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.int)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.long)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.short)
+								getVariable(name : DrJava_v20040326.java.lang.String): DrJava_v20040326.java.lang.Object
+								getVariableClass(name : DrJava_v20040326.java.lang.String): DrJava_v20040326.java.lang.Class
+								setPackageScope(packageName : DrJava_v20040326.java.lang.String)
+								setPrivateAccessible(accessible : JavaPrimitiveTypes.boolean)
+							}
+							class DynamicJavaAdapter {
+								<<Create>> DynamicJavaAdapter()
+								addClassPath(path : DrJava_v20040326.java.lang.String)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : DrJava_v20040326.java.lang.Object)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.boolean)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.byte)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.char)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.double)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.float)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.int)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.long)
+								defineConstant(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.short)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : DrJava_v20040326.java.lang.Object, type : DrJava_v20040326.java.lang.Class)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : DrJava_v20040326.java.lang.Object)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.boolean)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.byte)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.char)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.double)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.float)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.int)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.long)
+								defineVariable(name : DrJava_v20040326.java.lang.String, value : JavaPrimitiveTypes.short)
+								getVariable(name : DrJava_v20040326.java.lang.String): DrJava_v20040326.java.lang.Object
+								getVariableClass(name : DrJava_v20040326.java.lang.String): DrJava_v20040326.java.lang.Class
+								interpret(s : DrJava_v20040326.java.lang.String): DrJava_v20040326.java.lang.Object
+								setPackageScope(packageName : DrJava_v20040326.java.lang.String)
+								setPrivateAccessible(accessible : JavaPrimitiveTypes.boolean)
+							}
+							Interpreter <|-- JavaInterpreter
+							JavaInterpreter <|.. DynamicJavaAdapter
+							DrJava_v20040326.java.lang.Object "NO_RESULT" <-- Interpreter
+							DrJava_v20040326.edu.rice.cs.util.classloader.StickyClassLoader "_stickyLoader" <-- ClassLoaderExtension
+							JavaPrimitiveTypes.boolean "classLoaderCreated" <-- ClassLoaderExtension
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

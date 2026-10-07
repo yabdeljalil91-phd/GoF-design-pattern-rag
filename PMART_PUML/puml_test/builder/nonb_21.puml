@@ -1,0 +1,39 @@
+@startuml
+package dpd_jdt {
+	package Context {
+		package nonContext {
+			'Stores a view of a UML class diagram
+			'@author    Chris Seguin
+			class UMLNodeViewer {
+				-diagram: UMLPackage
+				-reloader: ClassDiagramReloader
+				'Constructor for the UMLNodeViewer object
+				'@param summary  Description of Parameter
+				'@param init     Description of Parameter
+				<<Create>> UMLNodeViewer(summary : PackageSummary, init : ClassDiagramReloader)
+				'Constructor for the UMLNodeViewer object
+				'@param context  Description of Parameter
+				'@param init     Description of Parameter
+				<<Create>> UMLNodeViewer(context : Context, init : ClassDiagramReloader)
+				'Creates a summary component, which is blank
+				'@return    the component
+				createStructureComponent(): javax.swing.JComponent
+				'Creates the main viewer
+				'@return    the viewer
+				createViewerComponent(): javax.swing.JComponent
+				'Gets the Diagram attribute of the UMLNodeViewer object
+				'@return    The Diagram value
+				getDiagram(): UMLPackage
+				'Gets the ViewerTitle attribute of the UMLNodeViewer object
+				'@return    The ViewerTitle value
+				getViewerTitle(): java.lang.String
+				'Releases the viewer
+				releaseViewer()
+			}
+		}
+	}
+	Context.nonContext.AbstractNodeViewer <|-- Context.nonContext.UMLNodeViewer
+	Context.nonContext.UMLPackage "diagram" <-- Context.nonContext.UMLNodeViewer
+	Context.nonContext.ClassDiagramReloader "reloader" <-- Context.nonContext.UMLNodeViewer
+}
+@enduml

@@ -1,0 +1,63 @@
+@startuml
+package "10 - Nutch v0.4" as 10_-_Nutch_v0.4 {
+	package net {
+		package nutch {
+			package io {
+				interface Writable {
+					readFields(in : 10_-_Nutch_v0.4.java.io.DataInput)
+					write(out : 10_-_Nutch_v0.4.java.io.DataOutput)
+				}
+				Writable <|-- WritableComparable
+				_0___Nutch_v0.4.java.lang.Comparable <|-- WritableComparable
+				WritableComparable <|.. MD5Hash
+				WritableComparable <|.. UTF8
+				_0___Nutch_v0.4.java.io.DataInputStream <|-- DataInputBuffer
+				_0___Nutch_v0.4.java.io.DataOutputStream <|-- DataOutputBuffer
+				_0___Nutch_v0.4.java.security.MessageDigest "DIGESTER" <-- MD5Hash
+				JavaPrimitiveTypes.char "HEX_DIGITS 0..*" <-- MD5Hash
+				JavaPrimitiveTypes.int "MD5_LEN" <-- MD5Hash
+				JavaPrimitiveTypes.byte "digest 0..*" <-- MD5Hash
+				Buffer "buffer" <-- DataInputBuffer
+				DataInputBuffer "IBUF" <-- UTF8
+				_0___Nutch_v0.4.java.util.logging.Logger "LOG" <-- UTF8
+				Buffer "buffer" <-- DataOutputBuffer
+				DataOutputBuffer "OBUF" <-- UTF8
+				JavaPrimitiveTypes.byte "bytes 0..*" <-- UTF8
+				JavaPrimitiveTypes.int "length" <-- UTF8
+				DataInputBuffer "buffer" <-- WritableComparator
+				WritableComparable "key1" <-- WritableComparator
+				WritableComparable "key2" <-- WritableComparator
+				_0___Nutch_v0.4.java.lang.Class "keyClass" <-- WritableComparator
+			}
+			package pagedb {
+				class FetchListEntry {
+					-{const} CUR_VERSION: JavaPrimitiveTypes.byte = 2
+					{const} DIR_NAME: 10_-_Nutch_v0.4.java.lang.String = fetchlist
+					-anchors: 10_-_Nutch_v0.4.java.lang.String [*]
+					-fetch: JavaPrimitiveTypes.boolean
+					-page: 10_-_Nutch_v0.4.net.nutch.db.Page
+					<<Create>> FetchListEntry()
+					<<Create>> FetchListEntry(fetch : JavaPrimitiveTypes.boolean, page : 10_-_Nutch_v0.4.net.nutch.db.Page, anchors : 10_-_Nutch_v0.4.java.lang.String)
+					clone(): 10_-_Nutch_v0.4.java.lang.Object
+					equals(o : 10_-_Nutch_v0.4.java.lang.Object): JavaPrimitiveTypes.boolean
+					getAnchors(): 10_-_Nutch_v0.4.java.lang.String
+					getFetch(): JavaPrimitiveTypes.boolean
+					getPage(): 10_-_Nutch_v0.4.net.nutch.db.Page
+					{static} main(argv : 10_-_Nutch_v0.4.java.lang.String)
+					{static} read(in : 10_-_Nutch_v0.4.java.io.DataInput): FetchListEntry
+					readFields(in : 10_-_Nutch_v0.4.java.io.DataInput)
+					toString(): 10_-_Nutch_v0.4.java.lang.String
+					write(out : 10_-_Nutch_v0.4.java.io.DataOutput)
+				}
+				_0___Nutch_v0.4.net.nutch.io.Writable <|.. FetchListEntry
+				_0___Nutch_v0.4.java.lang.Cloneable <|.. FetchListEntry
+				JavaPrimitiveTypes.byte "CUR_VERSION" <-- FetchListEntry
+				_0___Nutch_v0.4.java.lang.String "DIR_NAME" <-- FetchListEntry
+				_0___Nutch_v0.4.java.lang.String "anchors 0..*" <-- FetchListEntry
+				JavaPrimitiveTypes.boolean "fetch" <-- FetchListEntry
+				_0___Nutch_v0.4.net.nutch.db.Page "page" <-- FetchListEntry
+			}
+		}
+	}
+}
+@enduml

@@ -1,0 +1,137 @@
+@startuml
+package dpd_jdt {
+	package Context {
+		package name {
+			'Form is ...
+			'@author Marty Phelan
+			'@version 1.0
+			class Form {
+				{const} PARAMETER_MAP: java.lang.String = com.taursys.xml.ParameterMap
+				-closeFormDispatcher: CloseFormDispatcher
+				-closeFormListeners: java.util.ArrayList
+				-documentAdapter: DocumentAdapter
+				-formContext: java.util.Map
+				-initContextDispatcher: InitContextDispatcher
+				-initContextListeners: java.util.ArrayList
+				-initFormDispatcher: InitFormDispatcher
+				-initFormListeners: java.util.ArrayList
+				-initialized: JavaPrimitiveTypes.boolean
+				-openFormDispatcher: OpenFormDispatcher
+				-openFormListeners: java.util.ArrayList
+				-sourceId: java.lang.String
+				'Constructs a new Form
+				<<Create>> Form()
+				'Adds given listener to notification list for CloseFormEvents
+				addCloseFormListener(l : CloseFormListener)
+				'Adds given listener to notification list for InitContextEvents
+				addInitContextListener(l : InitContextListener)
+				'Adds given listener to notification list for InitFormEvents
+				addInitFormListener(l : InitFormListener)
+				'Adds given listener to notification list for OpenFormEvents
+				addOpenFormListener(l : OpenFormListener)
+				'Closes the form and any resources it may have opened. This method is invoked by the processCloseForm method which is normally invoked at the end of the processing cycle but before this Form is recycled. Override this method to provide custom behavior. This implementation has no specific behavior.
+				#closeForm()
+				'Creates the default DocumentElementRenderer for this component. By Default this methos returns a new DocumentElementRenderer. Override this method to define your own DocumentElementRenderer.
+				#createDefaultRenderer(): DocumentElementRenderer
+				'Initiate the dispatch of the <code>CloseFormEvent</code> to registered nested <code>Forms</code>. This method should be invoked after all processing is complete. Normally, nested <code>Forms</code> should be allowed to close before this form closes.
+				#dispatchCloseForm()
+				'This method is invoked by run to dispatch the formContext to nested Forms. This method depends on the parameterMap property being set. A new context is constructed which contains everything already in this <code>Form's</code> plus the parameterMap.
+				#dispatchInitContext()
+				'Initiate the dispatch of the <code>InitFormEvent</code> to registered nested <code>Forms</code>. This method should only be invoked after the <code>InitContextEvent</code> has been dispatched.
+				#dispatchInitForm()
+				'Initiate the dispatch of the <code>OpenFormEvent</code> to registered nested <code>Forms</code>. This method should only be invoked after the <code>InitFormEvent</code> and <code>ParameterEvent</code> have been dispatched.
+				#dispatchOpenForm()
+				'Notifies all registered listeners of a given CloseFormEvent
+				#fireCloseFormReceived(e : CloseFormEvent)
+				'Notifies all registered listeners of a given InitContextEvent
+				#fireInitContextReceived(e : InitContextEvent)
+				'Notifies all registered listeners of a given InitFormEvent
+				#fireInitFormReceived(e : InitFormEvent)
+				'Notifies all registered listeners of a given OpenFormEvent
+				#fireOpenFormReceived(e : OpenFormEvent)
+				'Returns the document for this form.  This is the document which will be sent back as the response.  This is also the document which the components of this form will modify.
+				getDocument(): org.w3c.dom.Document
+				'Gets the documentAdapter for this form.  The document adapter is used by components as an adapter for the actual Document.  The adapter provides the needed methods for components to manipulate the Document regardless of the DOM version.
+				'@return the documentAdapter for this form.
+				getDocumentAdapter(): DocumentAdapter
+				'Get the <code>Map</code> of key/value pairs for this <code>Form's</code> context.
+				'@return the <code>Map</code> of key/value pairs for this <code>Form's</code>context.
+				getFormContext(): java.util.Map
+				'Returns the id of the node this component is bound to.  This is the node which this component will replicate.
+				getSourceId(): java.lang.String
+				'This method is invoked by run to initialize the form.  It is the first method invoked by the doGet method before any parameters have been dispatched. This method sets the initialized flag to true. Override this method to provide custom behavior.  If you override, be sure to invoke super.initForm or setInitialized(true) if this method should only be called once.
+				#initForm()
+				'Indicates whether the form has been initialized (via the initForm method). The run method will only invoke the initForm method if this indicator is false, and then it will set this indicator to true.  This will prevent the form from being initialized again (if it is recycled).
+				isInitialized(): JavaPrimitiveTypes.boolean
+				'Lookup a value from this <code>Form's</code> context.
+				'@param key the key for the value to lookup
+				'@return the value as an Object or null if not found.
+				lookup(key : java.lang.Object): java.lang.Object
+				'This method is invoked as part of the processOpenFormEvent method. It is normally invoked after processParameterEvent, but before processInputEvent.  Override this method to provide custom behavior such as opening data sources. This implementation has no specific behavior.
+				#openForm()
+				'Processes a given CloseFormEvent by invoking the Form's closeForm method, then dispatching an <code>CloseFormEvent</code> to the <code>Form's</code> children, and finally propagating the <code>CloseFormEvent</code> to registered listeners.
+				'@param e the CloseFormEvent to process
+				#processCloseFormEvent(e : CloseFormEvent)
+				'Processes given event by invoking the appropriate processX__Event method. The appropriate event type is determined by the class of the given EventObject.
+				#processEvent(e : java.util.EventObject)
+				'Processes a given InitContextEvent by setting the <code>formContext</code> and <code>parameterMap</code> from the given message, then dispatching an <code>InitContextEvent</code> to the <code>Form's</code> children, and finally propagating the <code>InitContextEvent</code> to registered listeners.
+				'@param e the InitContextEvent to process
+				#processInitContextEvent(e : InitContextEvent)
+				'Processes a given InitFormEvent by invoking the Form's initForm method (unless initialized is true), then dispatching an <code>InitFormEvent</code> to the <code>Form's</code> children, and finally propagating the <code>InitFormEvent</code> to registered listeners.
+				'@param e the InitFormEvent to process
+				#processInitFormEvent(e : InitFormEvent)
+				'Processes a given OpenFormEvent by invoking the Form's openForm method, then dispatching an <code>OpenFormEvent</code> to the <code>Form's</code> children, and finally propagating the <code>OpenFormEvent</code> to registered listeners.
+				'@param e the OpenFormEvent to process
+				#processOpenFormEvent(e : OpenFormEvent)
+				'Removes given listener from notification list for CloseFormEvents
+				removeCloseFormListener(l : CloseFormListener)
+				'Removes given listener from notification list for InitContextEvents
+				removeInitContextListener(l : InitContextListener)
+				'Removes given listener from notification list for InitFormEvents
+				removeInitFormListener(l : InitFormListener)
+				'Removes given listener from notification list for OpenFormEvents
+				removeOpenFormListener(l : OpenFormListener)
+				'Sets the document and creates the documentAdapter for this form. This is the document which will be typically be modified and sent back as the response.
+				'@param newDocument for this form.
+				setDocument(newDocument : org.w3c.dom.Document)
+				'Sets the documentAdapter for this form.  The document adapter is used by components as an adapter for the actual Document.  The adapter provides the needed methods for components to manipulate the Document regardless of the DOM version.
+				'@param newDocumentAdapter for this form.
+				setDocumentAdapter(newDocumentAdapter : DocumentAdapter)
+				'Set the <code>Map</code> of key/value pairs for this <code>Form's</code> context.
+				'@param formContext the <code>Map</code> of key/value pairs for this<code>Form's</code> context.
+				'@throws IllegalArgumentException if the given value is null
+				setFormContext(formContext : java.util.Map)
+				'Sets an indicator that the form has been initialized (via the initForm method). The run method will only invoke the initForm method if this indicator is false, and then it will set this indicator to true.  This will prevent the form from being initialized again (if it is recycled).
+				setInitialized(newInitialized : JavaPrimitiveTypes.boolean)
+				'Sets the id of the node this component is bound to.  This is the node which this component will replicate.
+				setSourceId(sourceId : java.lang.String)
+			}
+		}
+	}
+	Context.name.DocumentElement <|-- Context.name.Form
+	Context.name.DispatchingContainer <|-- Context.name.DocumentElement
+	Context.name.DocumentComponent <|-- Context.name.DocumentElement
+	Context.name.Container <|-- Context.name.DispatchingContainer
+	Context.name.InputDispatcher "inputDispatcher" <-- Context.name.DispatchingContainer
+	Context.name.ParameterDispatcher "parameterDispatcher" <-- Context.name.DispatchingContainer
+	java.util.Map "parameterMap" <-- Context.name.DispatchingContainer
+	Context.name.RecycleDispatcher "recycleDispatcher" <-- Context.name.DispatchingContainer
+	Context.name.RenderDispatcher "renderDispatcher" <-- Context.name.DispatchingContainer
+	Context.name.TriggerDispatcher "triggerDispatcher" <-- Context.name.DispatchingContainer
+	java.lang.String "id" <-- Context.name.DocumentElement
+	Context.name.DocumentElementRenderer "renderer" <-- Context.name.DocumentElement
+	java.lang.String "PARAMETER_MAP" <-- Context.name.Form
+	Context.name.CloseFormDispatcher "closeFormDispatcher" <-- Context.name.Form
+	java.util.ArrayList "closeFormListeners" <-- Context.name.Form
+	Context.name.DocumentAdapter "documentAdapter" <-- Context.name.Form
+	java.util.Map "formContext" <-- Context.name.Form
+	Context.name.InitContextDispatcher "initContextDispatcher" <-- Context.name.Form
+	java.util.ArrayList "initContextListeners" <-- Context.name.Form
+	Context.name.InitFormDispatcher "initFormDispatcher" <-- Context.name.Form
+	java.util.ArrayList "initFormListeners" <-- Context.name.Form
+	JavaPrimitiveTypes.boolean "initialized" <-- Context.name.Form
+	Context.name.OpenFormDispatcher "openFormDispatcher" <-- Context.name.Form
+	java.util.ArrayList "openFormListeners" <-- Context.name.Form
+	java.lang.String "sourceId" <-- Context.name.Form
+}
+@enduml

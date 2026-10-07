@@ -1,0 +1,27 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			'A little tool that allows an Icon to exist on a JPanel or other component
+			'@author    Chris Seguin
+			class IconPanel {
+				-icon: javax.swing.Icon
+				'Constructor for the IconPanel object
+				'@param init  Description of Parameter
+				<<Create>> IconPanel(init : javax.swing.Icon)
+				'Gets the MinimumSize attribute of the IconPanel object
+				'@return    The MinimumSize value
+				getMinimumSize(): java.awt.Dimension
+				'Gets the PreferredSize attribute of the IconPanel object
+				'@return    The PreferredSize value
+				getPreferredSize(): java.awt.Dimension
+				'Description of the Method
+				'@param g  Description of Parameter
+				paint(g : java.awt.Graphics)
+			}
+		}
+	}
+	javax.swing.JPanel <|-- Abstractfactory.non_abstract_factory.IconPanel
+	javax.swing.Icon "icon" <-- Abstractfactory.non_abstract_factory.IconPanel
+}
+@enduml

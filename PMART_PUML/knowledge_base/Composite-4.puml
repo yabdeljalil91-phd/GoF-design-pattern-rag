@@ -1,0 +1,744 @@
+@startuml
+'Design pattern Composite
+package "QuickUML 2001" as QuickUML_2001 {
+	package uml {
+		package ui {
+			'/** 
+			' * @class ToolPalette
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: client
+			class ToolPalette {
+				-buttonGroup: QuickUML_2001.javax.swing.ButtonGroup
+				-container: DiagramContainer
+				-currentTool: QuickUML_2001.diagram.tool.Tool
+				-pointerButton: ToolButton
+				-revertPointer: JavaPrimitiveTypes.boolean
+				'/** 
+				' * Create a new MenuBar
+				' */
+				<<Create>> ToolPalette(container : DiagramContainer)
+				'/** 
+				' * Add a button to the palette
+				' */
+				#createButton(tool : QuickUML_2001.diagram.tool.Tool, iconResource : QuickUML_2001.java.lang.String, toolTip : QuickUML_2001.java.lang.String): ToolButton
+				'/** 
+				' * Add a button to the palette
+				' */
+				#createButton(tool : QuickUML_2001.diagram.tool.Tool, icon : QuickUML_2001.javax.swing.Icon, toolTip : QuickUML_2001.java.lang.String): ToolButton
+				'/** 
+				' * Listen for the property to changes
+				' */
+				propertyChange(e : QuickUML_2001.java.beans.PropertyChangeEvent)
+				'/** 
+				' * Called when a tool has completed its work
+				' */
+				toolFinished(tool : QuickUML_2001.diagram.tool.Tool)
+				'/** 
+				' * Called when a tool has reacted to an event and has started doing its job
+				' */
+				toolStarted(tool : QuickUML_2001.diagram.tool.Tool)
+				'/** 
+				' * Update the menu bar. Add toggle option, etc.
+				' * @param FlatMenuBar
+				' */
+				updateMenus(menuBar : FlatMenuBar)
+			}
+			'/** 
+			' * @class CardinalityTool
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: leaf
+			class CardinalityTool {
+				#diagram: QuickUML_2001.diagram.Diagram
+				#item: QuickUML_2001.uml.diagram.CompositionItem
+				#link: QuickUML_2001.uml.diagram.CompositionLink
+				#mouseHandler: MouseHandler
+				#popup: Popup
+				<<Create>> CardinalityTool()
+				install(diagram : QuickUML_2001.diagram.Diagram)
+				#reset()
+				#startEditing(pt : QuickUML_2001.java.awt.Point)
+				#stopEditing(n : QuickUML_2001.java.lang.String)
+				uninstall(diagram : QuickUML_2001.diagram.Diagram)
+			}
+			'/** 
+			' * @class AssociationTool
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: leaf
+			class AssociationTool {
+				<<Create>> AssociationTool()
+				'/** 
+				' * Create the Figure for the link
+				' * @param Figure source end
+				' * @param Figure sink end
+				' * @return Link
+				' */
+				#createLink(source : QuickUML_2001.diagram.Figure, sink : QuickUML_2001.diagram.Figure): QuickUML_2001.diagram.Link
+			}
+			'/** 
+			' * @class CompositionTool
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: leaf
+			class CompositionTool {
+				<<Create>> CompositionTool()
+				'/** 
+				' * Create the Figure for the link
+				' * @param Figure source end
+				' * @param Figure sink end
+				' * @return Link
+				' */
+				#createLink(source : QuickUML_2001.diagram.Figure, sink : QuickUML_2001.diagram.Figure): QuickUML_2001.diagram.Link
+			}
+			'/** 
+			' * @class DependencyTool
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: leaf
+			class DependencyTool {
+				<<Create>> DependencyTool()
+				'/** 
+				' * Create the Figure for the link
+				' * @param Figure source end
+				' * @param Figure sink end
+				' * @return Link
+				' */
+				#createLink(source : QuickUML_2001.diagram.Figure, sink : QuickUML_2001.diagram.Figure): QuickUML_2001.diagram.Link
+			}
+			'/** 
+			' * @class GeneralizationTool
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: leaf
+			class GeneralizationTool {
+				<<Create>> GeneralizationTool()
+				'/** 
+				' * Create the Figure for the link
+				' * @param Figure source end
+				' * @param Figure sink end
+				' * @return Link
+				' */
+				#createLink(source : QuickUML_2001.diagram.Figure, sink : QuickUML_2001.diagram.Figure): QuickUML_2001.diagram.Link
+			}
+			'/** 
+			' * @class RealizationTool
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: leaf
+			class RealizationTool {
+				<<Create>> RealizationTool()
+				'/** 
+				' * Create the Figure for the link
+				' * @param Figure source end
+				' * @param Figure sink end
+				' * @return Link
+				' */
+				#createLink(source : QuickUML_2001.diagram.Figure, sink : QuickUML_2001.diagram.Figure): QuickUML_2001.diagram.Link
+			}
+			QuickUML_2001.javax.swing.JToolBar <|-- ToolPalette
+			QuickUML_2001.java.beans.PropertyChangeListener <|.. ToolPalette
+			QuickUML_2001.diagram.tool.ToolListener <|.. ToolPalette
+			QuickUML_2001.javax.swing.JScrollPane <|-- DiagramContainer
+			QuickUML_2001.javax.swing.JMenuBar <|-- FlatMenuBar
+			FileAction <|-- ExportAction
+			QuickUML_2001.javax.swing.AbstractAction <|-- FileAction
+			QuickUML_2001.javax.swing.AbstractAction <|-- PrintableAction
+			QuickUML_2001.java.awt.print.Printable <|.. PrintableAction
+			PrintableAction <|-- ScaledPrintableAction
+			QuickUML_2001.diagram.tool.AbstractTool <|-- CardinalityTool
+			QuickUML_2001.diagram.tool.LinkTool <|-- AssociationTool
+			QuickUML_2001.diagram.tool.LinkTool <|-- CompositionTool
+			QuickUML_2001.diagram.tool.LinkTool <|-- DependencyTool
+			QuickUML_2001.diagram.tool.LinkTool <|-- GeneralizationTool
+			QuickUML_2001.diagram.tool.LinkTool <|-- RealizationTool
+			QuickUML_2001.javax.swing.ButtonGroup "buttonGroup" <-- ToolPalette
+			QuickUML_2001.javax.swing.Action "closeAction" <-- DiagramContainer
+			QuickUML_2001.java.lang.String "colorProperties 0..*" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "copyAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "cutAction" <-- DiagramContainer
+			QuickUML_2001.java.awt.Dimension "defaultSize" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "exportAction" <-- DiagramContainer
+			QuickUML_2001.java.lang.String "fontProperties 0..*" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "pasteAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "printAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "resizeAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "saveAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "scaledPrintAction" <-- DiagramContainer
+			JavaPrimitiveTypes.int "nextInsert" <-- FlatMenuBar
+			QuickUML_2001.java.awt.Insets "noInsets" <-- FlatMenuBar
+			QuickUML_2001.java.io.File "lastDirectory" <-- SmartChooser
+			SmartChooser "chooser" <-- FileAction
+			QuickUML_2001.java.lang.String "description" <-- SimpleFilter
+			QuickUML_2001.java.lang.String "extensions 0..*" <-- SimpleFilter
+			SimpleFilter "filter" <-- ExportGIFAction
+			SimpleFilter "filter" <-- OpenAction
+			SimpleFilter "filter" <-- SaveAction
+			DiagramContainer "container" <-- ToolPalette
+			QuickUML_2001.diagram.tool.Tool "currentTool" <-- ToolPalette
+			QuickUML_2001.diagram.tool.Tool "tool" <-- ToolButton
+			ToolButton "pointerButton" <-- ToolPalette
+			JavaPrimitiveTypes.boolean "revertPointer" <-- ToolPalette
+			QuickUML_2001.diagram.Diagram "diagram" <-- CardinalityTool
+			QuickUML_2001.uml.diagram.CompositionItem "item" <-- CardinalityTool
+			QuickUML_2001.uml.diagram.CompositionLink "link" <-- CardinalityTool
+			MouseHandler "mouseHandler" <-- CardinalityTool
+			JavaPrimitiveTypes.int "n" <-- Popup
+			QuickUML_2001.javax.swing.JTextField "text" <-- Popup
+			Popup "popup" <-- CardinalityTool
+		}
+	}
+	package diagram {
+		package tool {
+			'DP role: component
+			interface Tool {
+				addToolListener(l : ToolListener)
+				install(diagram : QuickUML_2001.diagram.Diagram)
+				removeToolListener(l : ToolListener)
+				uninstall(diagram : QuickUML_2001.diagram.Diagram)
+			}
+			'/** 
+			' * @class CompositeTool
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0This tool allows composites of other tools to be formed. This is convient  for tools that need to be able to drag AND select, or edit AND select, etc.
+			' */
+			'DP role: composite
+			class CompositeTool {
+				-tools: QuickUML_2001.java.util.Vector
+				<<Create>> CompositeTool()
+				add(tool : Tool)
+				'/** 
+				' * Add a new listener to this tool.
+				' * @param ToolListener
+				' */
+				addToolListener(l : ToolListener)
+				install(diagram : QuickUML_2001.diagram.Diagram)
+				remove(tool : Tool)
+				'/** 
+				' * Remove a listener to this tool.
+				' * @param ToolListener
+				' */
+				removeToolListener(l : ToolListener)
+				uninstall(diagram : QuickUML_2001.diagram.Diagram)
+			}
+			'/** 
+			' * @class ClipboardTool
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0A Clipboard implements the copy/cut/paste actions for a Diagram. A set of actions are inserted into the target Diagrams ActionMap (copy, cut, and paste) that allow the UI to map inputs to these actions as it sees fit.
+			' */
+			'DP role: leaf
+			class ClipboardTool {
+				#actionCopy: QuickUML_2001.javax.swing.Action
+				#actionCut: QuickUML_2001.javax.swing.Action
+				#actionPaste: QuickUML_2001.javax.swing.Action
+				-clipboard: QuickUML_2001.java.util.ArrayList
+				-copyboard: QuickUML_2001.java.util.ArrayList
+				#{static} diagramKey: QuickUML_2001.java.lang.ThreadLocal
+				-figures: QuickUML_2001.diagram.Figure [*]
+				-related: QuickUML_2001.diagram.Figure [*]
+				<<Create>> ClipboardTool()
+				'/** 
+				' * Copy the current selection from the Diagram to the Clipboard
+				' */
+				doCopy()
+				'/** 
+				' * Cut the current selection from the Diagram
+				' */
+				doCut()
+				'/** 
+				' * Paste the top of the clipboard stack to the diagram
+				' */
+				doPaste()
+				'/** 
+				' */
+				-doPaste(figure : QuickUML_2001.diagram.Figure, model : QuickUML_2001.diagram.DiagramModel, selectionModel : QuickUML_2001.diagram.SelectionModel, ui : QuickUML_2001.diagram.DiagramUI)
+				'/** 
+				' * Get the diagram the Clipboard is configured for
+				' * @return Diagram
+				' */
+				{static} getDiagram(): QuickUML_2001.diagram.Diagram
+				'/** 
+				' * Install the support in the specified Diagram
+				' * @param Diagram
+				' */
+				install(diagram : QuickUML_2001.diagram.Diagram)
+				'/** 
+				' * Prepare for a clipboard operation. Copy the current selection into a local array for processing.
+				' * @return boolean
+				' */
+				#prepareSelection(): JavaPrimitiveTypes.boolean
+				'/** 
+				' * Configure the current context for the given Diagram
+				' * @param Diagram
+				' * @return Clipboard
+				' */
+				{static} setDiagram(diagram : QuickUML_2001.diagram.Diagram)
+				'/** 
+				' * Install the support in the specified Diagram
+				' * @param Diagram
+				' */
+				uninstall(diagram : QuickUML_2001.diagram.Diagram)
+			}
+			'/** 
+			' * @class EditingTool
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0Add figure editing support to a Diagram. The method used to supprot figure  editing is a simplified version of the method used in Suns JTable  implementation. Editing is triggered whenever a mouse is clicked inside a Figure in a  Diagram. The FigureEditor for the diagram is obtained and an Component is  produced to perform the editing. Editing will continue until that Component loses focus, either from clicking off or clicking onto another Figure. Three Action objects are installed in the Diagram ActionMap,  "startEditing" "stopEditing" "cancleEditing" A diagram can insert mapping for these actions into its InputMap inorder to take advantage of them. Editing can be controlled programtically, on the selected Figure, in this way.
+			' */
+			'DP role: leaf
+			class EditingTool {
+				#actionCancel: QuickUML_2001.javax.swing.Action
+				#actionStart: QuickUML_2001.javax.swing.Action
+				#actionStop: QuickUML_2001.javax.swing.Action
+				-diagram: QuickUML_2001.diagram.Diagram
+				-dispatchComponent: QuickUML_2001.java.awt.Component
+				-editor: QuickUML_2001.diagram.FigureEditor
+				-editorBounds: QuickUML_2001.java.awt.Rectangle
+				-editorComponent: QuickUML_2001.java.awt.Component
+				-figure: QuickUML_2001.diagram.Figure
+				#focusHandler: FocusHandler
+				#mouseHandler: MouseHandler
+				-selected: QuickUML_2001.diagram.Figure [*]
+				<<Create>> EditingTool()
+				'/** 
+				' * Install the support in the specified Diagram
+				' * @param Diagram
+				' */
+				install(diagram : QuickUML_2001.diagram.Diagram)
+				'/** 
+				' * Check if this support object is currently editing a diagram.
+				' * @return boolean
+				' */
+				#isEditing(): JavaPrimitiveTypes.boolean
+				'/** 
+				' * Remove the editing component
+				' * @post Clears any reference to the editing components no longerin use.
+				' */
+				#removeEditor()
+				'/** 
+				' * Try to start editing a Figure
+				' * @param Diagram
+				' * @param Figure
+				' * @param EventObject
+				' * @return boolean true if editing was successfully started.
+				' */
+				#startEditing(diagram : QuickUML_2001.diagram.Diagram, figure : QuickUML_2001.diagram.Figure, e : QuickUML_2001.java.util.EventObject): JavaPrimitiveTypes.boolean
+				'/** 
+				' * Stop editing a certain figure
+				' */
+				#stopEditing(diagram : QuickUML_2001.diagram.Diagram, figure : QuickUML_2001.diagram.Figure)
+				'/** 
+				' * Uninstall the support from the specified Diagram
+				' * @param Diagram
+				' */
+				uninstall(diagram : QuickUML_2001.diagram.Diagram)
+			}
+			'/** 
+			' * @class FigureDraggingTool
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0This tool allows selected Figures to be dragged around the Diagram.
+			' */
+			'DP role: leaf
+			class FigureDraggingTool {
+				-{const} MV_CURSOR: QuickUML_2001.java.awt.Cursor
+				-diagram: QuickUML_2001.diagram.Diagram
+				-dragPoint: QuickUML_2001.java.awt.geom.Point2D
+				-mouseHandler: MouseHandler
+				-originalCursor: QuickUML_2001.java.awt.Cursor
+				#relatedFigures: QuickUML_2001.diagram.Figure [*]
+				-relatedList: QuickUML_2001.java.util.ArrayList
+				#selectedFigures: QuickUML_2001.diagram.Figure [*]
+				<<Create>> FigureDraggingTool()
+				'/** 
+				' * Find all the related figures, update the relatedFigures array.
+				' */
+				#getRelatedFigures()
+				'/** 
+				' * Install support for something in the given Diagram
+				' * @param Diagram
+				' */
+				install(diagram : QuickUML_2001.diagram.Diagram)
+				'/** 
+				' * Cleanup
+				' */
+				#reset()
+				'/** 
+				' * Remove support for something that was previously installed.
+				' * @param Diagram
+				' */
+				uninstall(diagram : QuickUML_2001.diagram.Diagram)
+			}
+			'/** 
+			' * @class FigureShapping
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0Add node shaping support to a Diagram.
+			' */
+			'DP role: leaf
+			class FigureShappingTool {
+				-{const} HZ_CURSOR: QuickUML_2001.java.awt.Cursor
+				-{const} MINIMUM_SIZE: JavaPrimitiveTypes.int = 16
+				-{const} QUAD_BOTTOM: JavaPrimitiveTypes.int = 1024
+				-{const} QUAD_CENTER: JavaPrimitiveTypes.int = 512
+				-{const} QUAD_LEFT: JavaPrimitiveTypes.int = 1
+				-{const} QUAD_MIDDLE: JavaPrimitiveTypes.int = 2
+				-{const} QUAD_RIGHT: JavaPrimitiveTypes.int = 4
+				-{const} QUAD_TOP: JavaPrimitiveTypes.int = 256
+				-{const} SENW_CURSOR: QuickUML_2001.java.awt.Cursor
+				-{const} SWNE_CURSOR: QuickUML_2001.java.awt.Cursor
+				-{const} VT_CURSOR: QuickUML_2001.java.awt.Cursor
+				-bounds: QuickUML_2001.java.awt.geom.Rectangle2D
+				-center: QuickUML_2001.java.awt.geom.Point2D
+				-diagram: QuickUML_2001.diagram.Diagram
+				-dragPoint: QuickUML_2001.java.awt.geom.Point2D
+				-figure: QuickUML_2001.diagram.Figure
+				-graphics: QuickUML_2001.java.awt.Graphics2D
+				-lastPoint: QuickUML_2001.java.awt.geom.Point2D
+				-mouseHandler: MouseHandler
+				-originalCursor: QuickUML_2001.java.awt.Cursor
+				-outline: QuickUML_2001.java.awt.geom.Rectangle2D.Double
+				#relatedFigures: QuickUML_2001.diagram.Figure [*]
+				-sizingDirection: JavaPrimitiveTypes.int
+				<<Create>> FigureShappingTool()
+				'/** 
+				' * Guess the right cursor to use based on some point in the Figure
+				' * @return Cursor
+				' */
+				-getCursor(): QuickUML_2001.java.awt.Cursor
+				'/** 
+				' * Prepare the graphcis context.
+				' * @return Graphics2D
+				' */
+				-getGraphics(c : QuickUML_2001.java.awt.Component): QuickUML_2001.java.awt.Graphics2D
+				'/** 
+				' * Find the direction using the clicked point & the center of  the target Figure. 
+				' * @param Point2D clicked point
+				' */
+				-getQuadrant(pt : QuickUML_2001.java.awt.geom.Point2D)
+				'/** 
+				' * Test the quadrant flag
+				' * @return boolean
+				' */
+				-hasQuad(quad : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				'/** 
+				' * Install the support in the specified Diagram
+				' * @param Diagram
+				' */
+				install(diagram : QuickUML_2001.diagram.Diagram)
+				'/** 
+				' * Paint the resizing outline of the Figure.
+				' * @param dx - position change
+				' * @param dy - position change
+				' * @param boolean true if only need to erase last drawn outline
+				' */
+				-paintOutline(dx : JavaPrimitiveTypes.double, dy : JavaPrimitiveTypes.double, eraseOnly : JavaPrimitiveTypes.boolean)
+				#reset()
+				'/** 
+				' * Reshape the drag outline.
+				' * @param double
+				' * @param double
+				' */
+				-reshapeOutline(dx : JavaPrimitiveTypes.double, dy : JavaPrimitiveTypes.double)
+				'/** 
+				' * Uninstall the support from specified Diagram
+				' * @param Diagram
+				' */
+				uninstall(diagram : QuickUML_2001.diagram.Diagram)
+			}
+			'/** 
+			' * @class FigureTool 
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0This tool allows a Figure to be added to a Diagram model. The FigureTool will accept an instance of a Figure to use as a protoype. Each time the tool is invoked, the prototype is clone()ed and shaped to the correct size. If the user does not drag the mouse to shape the cloned Figure then it is set to the default size suplpied by prototype object.
+			' */
+			'DP role: leaf
+			class FigureTool {
+				-current: QuickUML_2001.diagram.Figure
+				-diagram: QuickUML_2001.diagram.Diagram
+				-fig: QuickUML_2001.diagram.Figure
+				-mouseHandler: MouseHandler
+				-ptPress: QuickUML_2001.java.awt.geom.Point2D
+				-rcBounds: QuickUML_2001.java.awt.geom.Rectangle2D
+				'/** 
+				' * Create a figure tool that uses the given Figure as a template. 
+				' * @param Figure
+				' */
+				<<Create>> FigureTool(fig : QuickUML_2001.diagram.Figure)
+				'/** 
+				' * Install support for something in the given Diagram
+				' * @param Diagram
+				' */
+				install(diagram : QuickUML_2001.diagram.Diagram)
+				'/** 
+				' * Cleanup
+				' */
+				#reset()
+				'/** 
+				' * Remove support for something that was previously installed.
+				' * @param Diagram
+				' */
+				uninstall(diagram : QuickUML_2001.diagram.Diagram)
+				'/** 
+				' * Calculate a bounding rectangle between two arbitrary points
+				' * @param Point2D pt1
+				' * @param Point2D pt2
+				' */
+				#updateBounds(pt1 : QuickUML_2001.java.awt.geom.Point2D, pt2 : QuickUML_2001.java.awt.geom.Point2D)
+			}
+			'/** 
+			' * @class LinkShapping
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0This tool allows PolyLink figures to be dragged or edited. Left-clicking and dragging allows new points to be inserted into the PolyLink, or existing points to be moved. Right-clicking allows existing points to be deleted. The two end points are immune to these operations.
+			' */
+			'DP role: leaf
+			class LinkShappingTool {
+				{const} CLICK_TOLERANCE: JavaPrimitiveTypes.double = 6.0
+				{const} DRAG_TOLERANCE: JavaPrimitiveTypes.double = 6.0
+				-{const} HD_CURSOR: QuickUML_2001.java.awt.Cursor
+				-diagram: QuickUML_2001.diagram.Diagram
+				-dragPoint: QuickUML_2001.java.awt.geom.Point2D
+				-mouseHandler: MouseHandler
+				-originalCursor: QuickUML_2001.java.awt.Cursor
+				-polyLink: QuickUML_2001.diagram.figures.PolyLink
+				-pressPoint: QuickUML_2001.java.awt.geom.Point2D
+				<<Create>> LinkShappingTool()
+				'/** 
+				' * Install the support in the specified Diagram
+				' * @param Diagram
+				' */
+				install(diagram : QuickUML_2001.diagram.Diagram)
+				'/** 
+				' * Called when a link has been clicked
+				' */
+				#linkClicked(link : QuickUML_2001.diagram.figures.PolyLink, event : QuickUML_2001.java.awt.event.MouseEvent)
+				'/** 
+				' * Called when a link has been pressed
+				' */
+				#linkPressed(link : QuickUML_2001.diagram.figures.PolyLink, event : QuickUML_2001.java.awt.event.MouseEvent)
+				'/** 
+				' * Called when a link has been pressed
+				' */
+				#linkReleased(link : QuickUML_2001.diagram.figures.PolyLink, event : QuickUML_2001.java.awt.event.MouseEvent)
+				'/** 
+				' * Clean up
+				' */
+				#reset()
+				'/** 
+				' * Uninstall the support from the specified Diagram
+				' * @param Diagram
+				' */
+				uninstall(diagram : QuickUML_2001.diagram.Diagram)
+			}
+			'/** 
+			' * @class LinkTool 
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0This tool allows a Link to be added to a Diagram model. The Link must be anchored in a (non-Link) Figure and its sink will be at the current mouse position until it can be placed into another (non-Link) Figure
+			' */
+			'DP role: leaf
+			class LinkTool {
+				-{const} POINT_SIZE: JavaPrimitiveTypes.double = 5.0
+				-diagram: QuickUML_2001.diagram.Diagram
+				-figSink: QuickUML_2001.diagram.Figure
+				-figSource: QuickUML_2001.diagram.Figure
+				-link: QuickUML_2001.diagram.Link
+				-mouseHandler: MouseHandler
+				-ptCenter: QuickUML_2001.java.awt.geom.Point2D
+				-ptSink: QuickUML_2001.diagram.figures.PointFigure
+				<<Create>> LinkTool()
+				'/** 
+				' * Create the Figure for the link
+				' * @param Figure source end
+				' * @param Figure sink end
+				' * @return Link
+				' */
+				#createLink(source : QuickUML_2001.diagram.Figure, sink : QuickUML_2001.diagram.Figure): QuickUML_2001.diagram.Link
+				'/** 
+				' * This method provides an opportunity to replace the link when the shapping is done.
+				' * @param Link
+				' * @return Link
+				' */
+				#finalizeLink(link : QuickUML_2001.diagram.Link): QuickUML_2001.diagram.Link
+				'/** 
+				' * Install support for something in the given Diagram
+				' * @param Diagram
+				' */
+				install(diagram : QuickUML_2001.diagram.Diagram)
+				'/** 
+				' * Cleanup
+				' */
+				#reset()
+				'/** 
+				' * Remove support for something that was previously installed.
+				' * @param Diagram
+				' */
+				uninstall(diagram : QuickUML_2001.diagram.Diagram)
+			}
+			'/** 
+			' * @class SelectionTool 
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0This tool allows a the selected figures in a Diagram to be modified. - Left mouse button selects an item. - Shift clicking edits the current selection. - Left clicking no where unselects the current selection.
+			' */
+			'DP role: leaf
+			class SelectionTool {
+				-figures: QuickUML_2001.diagram.Figure [*]
+				-mouseHandler: MouseHandler
+				<<Create>> SelectionTool()
+				'/** 
+				' * Deselect all items but the given Figure (if any)
+				' * @param SelectionModel
+				' * @param Figure
+				' */
+				-deselectAll(diagram : QuickUML_2001.diagram.Diagram, model : QuickUML_2001.diagram.SelectionModel, except : QuickUML_2001.diagram.Figure)
+				'/** 
+				' * Install support for something in the given Diagram
+				' * @param Diagram
+				' */
+				install(diagram : QuickUML_2001.diagram.Diagram)
+				'/** 
+				' * Remove support for something that was previously installed.
+				' * @param Diagram
+				' */
+				uninstall(diagram : QuickUML_2001.diagram.Diagram)
+			}
+			Tool <|.. CompositeTool
+			Tool <|.. AbstractTool
+			AbstractTool <|-- ClipboardTool
+			AbstractTool <|-- EditingTool
+			AbstractTool <|-- FigureDraggingTool
+			AbstractTool <|-- FigureShappingTool
+			AbstractTool <|-- FigureTool
+			AbstractTool <|-- LinkShappingTool
+			AbstractTool <|-- LinkTool
+			AbstractTool <|-- SelectionTool
+			QuickUML_2001.java.util.Vector "tools" <-- CompositeTool
+			QuickUML_2001.util.WeakList "listeners" <-- AbstractTool
+			QuickUML_2001.javax.swing.Action "actionCopy" <-- ClipboardTool
+			QuickUML_2001.javax.swing.Action "actionCut" <-- ClipboardTool
+			QuickUML_2001.javax.swing.Action "actionPaste" <-- ClipboardTool
+			QuickUML_2001.java.util.ArrayList "clipboard" <-- ClipboardTool
+			QuickUML_2001.java.util.ArrayList "copyboard" <-- ClipboardTool
+			QuickUML_2001.java.lang.ThreadLocal "diagramKey" <-- ClipboardTool
+			QuickUML_2001.diagram.Figure "figures 0..*" <-- ClipboardTool
+			QuickUML_2001.diagram.Figure "related 0..*" <-- ClipboardTool
+			QuickUML_2001.javax.swing.Action "actionCancel" <-- EditingTool
+			QuickUML_2001.javax.swing.Action "actionStart" <-- EditingTool
+			QuickUML_2001.javax.swing.Action "actionStop" <-- EditingTool
+			QuickUML_2001.diagram.Diagram "diagram" <-- EditingTool
+			QuickUML_2001.java.awt.Component "dispatchComponent" <-- EditingTool
+			QuickUML_2001.diagram.FigureEditor "editor" <-- EditingTool
+			QuickUML_2001.java.awt.Rectangle "editorBounds" <-- EditingTool
+			QuickUML_2001.java.awt.Component "editorComponent" <-- EditingTool
+			QuickUML_2001.diagram.Figure "figure" <-- EditingTool
+			FocusHandler "focusHandler" <-- EditingTool
+			QuickUML_2001.diagram.Link "links 0..*" <-- MouseHandler
+			MouseHandler "mouseHandler" <-- EditingTool
+			QuickUML_2001.diagram.Figure "selected 0..*" <-- EditingTool
+			QuickUML_2001.java.awt.Cursor "MV_CURSOR" <-- FigureDraggingTool
+			QuickUML_2001.diagram.Diagram "diagram" <-- FigureDraggingTool
+			QuickUML_2001.java.awt.geom.Point2D "dragPoint" <-- FigureDraggingTool
+			MouseHandler "mouseHandler" <-- FigureDraggingTool
+			QuickUML_2001.java.awt.Cursor "originalCursor" <-- FigureDraggingTool
+			QuickUML_2001.diagram.Figure "relatedFigures 0..*" <-- FigureDraggingTool
+			QuickUML_2001.java.util.ArrayList "relatedList" <-- FigureDraggingTool
+			QuickUML_2001.diagram.Figure "selectedFigures 0..*" <-- FigureDraggingTool
+			QuickUML_2001.java.awt.Cursor "HZ_CURSOR" <-- FigureShappingTool
+			JavaPrimitiveTypes.int "MINIMUM_SIZE" <-- FigureShappingTool
+			JavaPrimitiveTypes.int "QUAD_BOTTOM" <-- FigureShappingTool
+			JavaPrimitiveTypes.int "QUAD_CENTER" <-- FigureShappingTool
+			JavaPrimitiveTypes.int "QUAD_LEFT" <-- FigureShappingTool
+			JavaPrimitiveTypes.int "QUAD_MIDDLE" <-- FigureShappingTool
+			JavaPrimitiveTypes.int "QUAD_RIGHT" <-- FigureShappingTool
+			JavaPrimitiveTypes.int "QUAD_TOP" <-- FigureShappingTool
+			QuickUML_2001.java.awt.Cursor "SENW_CURSOR" <-- FigureShappingTool
+			QuickUML_2001.java.awt.Cursor "SWNE_CURSOR" <-- FigureShappingTool
+			QuickUML_2001.java.awt.Cursor "VT_CURSOR" <-- FigureShappingTool
+			QuickUML_2001.java.awt.geom.Rectangle2D "bounds" <-- FigureShappingTool
+			QuickUML_2001.java.awt.geom.Point2D "center" <-- FigureShappingTool
+			QuickUML_2001.diagram.Diagram "diagram" <-- FigureShappingTool
+			QuickUML_2001.java.awt.geom.Point2D "dragPoint" <-- FigureShappingTool
+			QuickUML_2001.diagram.Figure "figure" <-- FigureShappingTool
+			QuickUML_2001.java.awt.Graphics2D "graphics" <-- FigureShappingTool
+			QuickUML_2001.java.awt.geom.Point2D "lastPoint" <-- FigureShappingTool
+			MouseHandler "mouseHandler" <-- FigureShappingTool
+			QuickUML_2001.java.awt.Cursor "originalCursor" <-- FigureShappingTool
+			QuickUML_2001.java.awt.geom.Rectangle2D.Double "outline" <-- FigureShappingTool
+			QuickUML_2001.diagram.Figure "relatedFigures 0..*" <-- FigureShappingTool
+			JavaPrimitiveTypes.int "sizingDirection" <-- FigureShappingTool
+			QuickUML_2001.diagram.Figure "current" <-- FigureTool
+			QuickUML_2001.diagram.Diagram "diagram" <-- FigureTool
+			QuickUML_2001.diagram.Figure "fig" <-- FigureTool
+			MouseHandler "mouseHandler" <-- FigureTool
+			QuickUML_2001.java.awt.geom.Point2D "ptPress" <-- FigureTool
+			QuickUML_2001.java.awt.geom.Rectangle2D "rcBounds" <-- FigureTool
+			JavaPrimitiveTypes.double "CLICK_TOLERANCE" <-- LinkShappingTool
+			JavaPrimitiveTypes.double "DRAG_TOLERANCE" <-- LinkShappingTool
+			QuickUML_2001.java.awt.Cursor "HD_CURSOR" <-- LinkShappingTool
+			QuickUML_2001.diagram.Diagram "diagram" <-- LinkShappingTool
+			QuickUML_2001.java.awt.geom.Point2D "dragPoint" <-- LinkShappingTool
+			MouseHandler "mouseHandler" <-- LinkShappingTool
+			QuickUML_2001.java.awt.Cursor "originalCursor" <-- LinkShappingTool
+			QuickUML_2001.diagram.figures.PolyLink "polyLink" <-- LinkShappingTool
+			QuickUML_2001.java.awt.geom.Point2D "pressPoint" <-- LinkShappingTool
+			JavaPrimitiveTypes.double "POINT_SIZE" <-- LinkTool
+			QuickUML_2001.diagram.Diagram "diagram" <-- LinkTool
+			QuickUML_2001.diagram.Figure "figSink" <-- LinkTool
+			QuickUML_2001.diagram.Figure "figSource" <-- LinkTool
+			QuickUML_2001.diagram.Link "link" <-- LinkTool
+			MouseHandler "mouseHandler" <-- LinkTool
+			QuickUML_2001.java.awt.geom.Point2D "ptCenter" <-- LinkTool
+			QuickUML_2001.diagram.figures.PointFigure "ptSink" <-- LinkTool
+			QuickUML_2001.diagram.Figure "figures 0..*" <-- SelectionTool
+			MouseHandler "mouseHandler" <-- SelectionTool
+		}
+		QuickUML_2001.javax.swing.JComponent <|-- Diagram
+		QuickUML_2001.javax.swing.Scrollable <|.. Diagram
+		QuickUML_2001.java.awt.Shape <|-- Figure
+		Figure <|-- Link
+		QuickUML_2001.javax.swing.CellEditor <|-- FigureEditor
+		QuickUML_2001.javax.swing.plaf.ComponentUI <|-- DiagramUI
+		DiagramModel "diagramModel" <-- Diagram
+		QuickUML_2001.java.util.HashMap "editorMap" <-- Diagram
+		JavaPrimitiveTypes.boolean "fastRefresh" <-- Diagram
+		QuickUML_2001.java.awt.Rectangle "figureBounds" <-- Diagram
+		QuickUML_2001.java.util.HashMap "rendererMap" <-- Diagram
+		SelectionModel "selectionModel" <-- Diagram
+		QuickUML_2001.java.lang.String "uiClassID" <-- Diagram
+		QuickUML_2001.java.awt.Rectangle "bounds" <-- DiagramUI
+		QuickUML_2001.javax.swing.CellRendererPane "cellRendererPane" <-- DiagramUI
+		QuickUML_2001.java.awt.Rectangle "clip" <-- DiagramUI
+		Diagram "diagram" <-- DiagramUI
+		QuickUML_2001.java.util.HashMap "editorCache" <-- DiagramUI
+		JavaPrimitiveTypes.boolean "fastRefresh" <-- DiagramUI
+		QuickUML_2001.java.util.ArrayList "figureList" <-- Layer
+		Layer "figureLayer" <-- DiagramUI
+		Layer "linkLayer" <-- DiagramUI
+		QuickUML_2001.java.util.HashMap "linkMap" <-- DiagramUI
+		ModelHandler "modelListener" <-- DiagramUI
+		QuickUML_2001.java.awt.Color "originalBackground" <-- DiagramUI
+		QuickUML_2001.java.awt.Color "originalForeground" <-- DiagramUI
+		PropertyChangeHandler "propertyListener" <-- DiagramUI
+		QuickUML_2001.java.util.HashMap "rendererCache" <-- DiagramUI
+	}
+}
+@enduml

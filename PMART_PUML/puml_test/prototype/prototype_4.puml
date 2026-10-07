@@ -1,0 +1,43 @@
+@startuml
+package dpd_jdt {
+	package Locator {
+		package name {
+			'A LineConnection that constrains a connection to orthogonal lines.
+			class ElbowConnection {
+				-elbowConnectionSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 2193968743082078559
+				<<Create>> ElbowConnection()
+				connectedTextLocator(f : Figure): Locator
+				'Gets the handles of the figure.
+				handles(): java.util.Vector
+				layoutConnection()
+				updateConnection()
+				#updatePoints()
+			}
+		}
+	}
+	Locator.name.LineConnection <|-- Locator.name.ElbowConnection
+	Locator.name.ConnectionFigure <|.. Locator.name.LineConnection
+	Locator.name.PolyLineFigure <|-- Locator.name.LineConnection
+	Locator.name.AbstractFigure <|-- Locator.name.PolyLineFigure
+	Locator.name.Figure <|-- Locator.name.ConnectionFigure
+	java.lang.Cloneable <|-- Locator.name.Figure
+	java.io.Serializable <|-- Locator.name.Figure
+	JavaPrimitiveTypes.int "ARROW_TIP_BOTH" <-- Locator.name.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_END" <-- Locator.name.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_NONE" <-- Locator.name.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_START" <-- Locator.name.PolyLineFigure
+	Locator.name.LineDecoration "fEndDecoration" <-- Locator.name.PolyLineFigure
+	java.awt.Color "fFrameColor" <-- Locator.name.PolyLineFigure
+	java.util.Vector "fPoints" <-- Locator.name.PolyLineFigure
+	Locator.name.LineDecoration "fStartDecoration" <-- Locator.name.PolyLineFigure
+	JavaPrimitiveTypes.int "polyLineFigureSerializedDataVersion" <-- Locator.name.PolyLineFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Locator.name.PolyLineFigure
+	Locator.name.Connector "fEnd" <-- Locator.name.LineConnection
+	Locator.name.Connector "fStart" <-- Locator.name.LineConnection
+	JavaPrimitiveTypes.int "lineConnectionSerializedDataVersion" <-- Locator.name.LineConnection
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Locator.name.LineConnection
+	JavaPrimitiveTypes.int "elbowConnectionSerializedDataVersion" <-- Locator.name.ElbowConnection
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Locator.name.ElbowConnection
+}
+@enduml

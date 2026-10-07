@@ -1,0 +1,240 @@
+@startuml
+'Design pattern Adapter (RAG-enhanced for GoF detection)
+
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+
+	package org {
+		package acm {
+			package seguin {
+
+				package uml {
+
+					'====================================================
+					' CLIENT LAYER (UI triggering adaptation)
+					'====================================================
+					class UMLPopupMenu {
+
+						-activeComponent: JRefactory_v2.6.24.javax.swing.JPanel
+						-current: UMLPackage
+						-popupMenu: JRefactory_v2.6.24.javax.swing.JPopupMenu
+
+						<<Create>> UMLPopupMenu(top : UMLPackage, init : JRefactory_v2.6.24.javax.swing.JPanel)
+
+						'Builds UI actions that trigger adapters
+						-addFieldRefactorings(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu)
+
+						'Method-level refactoring menu construction
+						-addMethodRefactorings(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu)
+
+						'Core hook for adding refactoring actions (shared logic)
+						#addRefactorings(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu)
+
+						'Type-level refactoring entry point
+						-addTypeRefactorings(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu)
+
+						'Popup construction entry point (UI bootstrap)
+						#createPopupMenu(): JRefactory_v2.6.24.javax.swing.JPopupMenu
+
+						getMenu(): JRefactory_v2.6.24.javax.swing.JPopupMenu
+
+						'Optional metrics augmentation (UI enrichment)
+						#getMetricsMenu(menu : JRefactory_v2.6.24.javax.swing.JPopupMenu): JRefactory_v2.6.24.javax.swing.JMenuItem
+
+						'Internal type extraction (adaptee query dependency)
+						-getType(): UMLType
+
+						'Metadata extraction from model
+						-getTypeSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+					}
+
+					'====================================================
+					' ADAPTEE (domain model: UML semantic objects)
+					'====================================================
+					class UMLType {
+
+						-{const} DEFAULT: JavaPrimitiveTypes.int = 0
+						-{const} FOREIGN: JavaPrimitiveTypes.int = 2
+						-{const} SELECTED: JavaPrimitiveTypes.int = 1
+						-{const} TITLE_BORDER: JavaPrimitiveTypes.int = 4
+
+						#borderWidth: JavaPrimitiveTypes.int
+
+						-{static} defaultBG: JRefactory_v2.6.24.java.awt.Color
+						-{static} foreignBG: JRefactory_v2.6.24.java.awt.Color
+						-{static} selectedBG: JRefactory_v2.6.24.java.awt.Color
+						-{static} selectedForeignBG: JRefactory_v2.6.24.java.awt.Color
+
+						-high: JavaPrimitiveTypes.int
+						-lineSize: JavaPrimitiveTypes.int
+						-nameLabel: JRefactory_v2.6.24.org.acm.seguin.uml.line.SizableLabel
+						-parent: UMLPackage
+						-roles: RoleHolder
+
+						-state: JavaPrimitiveTypes.int
+						-titleHeight: JavaPrimitiveTypes.int
+						-type: JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+						-wide: JavaPrimitiveTypes.int
+
+						<<Create>> UMLType(initParent : UMLPackage, initType : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, foreign : JavaPrimitiveTypes.boolean)
+
+						'Core domain behavior (NOT UI compatible → needs adapter)
+						-computeLineSize(): JavaPrimitiveTypes.int
+						convertToAssociation(packagePanel : UMLPackage, fieldPanel : UMLField): JRefactory_v2.6.24.org.acm.seguin.uml.line.AssociationRelationship
+						convertToAttribute(packagePanel : UMLPackage, fieldPanel : UMLField)
+
+						deselect()
+						-drawFrame(g : JRefactory_v2.6.24.java.awt.Graphics, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+
+						getAttributeCount(): JavaPrimitiveTypes.int
+						getBackgroundColor(): JRefactory_v2.6.24.java.awt.Color
+						getField(name : JRefactory_v2.6.24.java.lang.String): UMLField
+						getID(): JRefactory_v2.6.24.java.lang.String
+						getMinimumSize(): JRefactory_v2.6.24.java.awt.Dimension
+						getPackage(): UMLPackage
+						getPreferredSize(): JRefactory_v2.6.24.java.awt.Dimension
+						getSourceSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.Summary
+						getSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+
+						isForeign(): JavaPrimitiveTypes.boolean
+						isSelected(): JavaPrimitiveTypes.boolean
+
+						load(buffer : JRefactory_v2.6.24.java.lang.String)
+						paint(g : JRefactory_v2.6.24.java.awt.Graphics)
+						print(g : JRefactory_v2.6.24.java.awt.Graphics, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						resize()
+						save(output : JRefactory_v2.6.24.java.io.PrintWriter)
+						scale(value : JavaPrimitiveTypes.double)
+
+						select()
+						setSelected(way : JavaPrimitiveTypes.boolean)
+						toggleSelect()
+					}
+
+					'====================================================
+					' ADAPTEE (field-level semantic model)
+					'====================================================
+					class UMLField {
+
+						-association: JavaPrimitiveTypes.boolean
+						-current: UMLPackage
+						-fieldDragAdapter: JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter
+						-parentDragAdapter: JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter
+						-summary: JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary
+
+						<<Create>> UMLField(initCurrent : UMLPackage, parent : UMLType, field : JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary, adapter : JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter)
+
+						getDefaultBackground(): JRefactory_v2.6.24.java.awt.Color
+						getSourceSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.Summary
+						getSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary
+						getType(): JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+
+						isAssociation(): JavaPrimitiveTypes.boolean
+						isConvertable(): JavaPrimitiveTypes.boolean
+
+						setAssociation(way : JavaPrimitiveTypes.boolean)
+					}
+
+					'====================================================
+					' ADAPTER (UI → domain conversion layer)
+					'====================================================
+					class ConvertAdapter {
+
+						-fieldPanel: UMLField
+						-packagePanel: UMLPackage
+						-typePanel: UMLType
+
+						<<Create>> ConvertAdapter(packagePanel : UMLPackage, fieldPanel : UMLField)
+
+						'Bridge: UI event → domain transformation
+						actionPerformed(ev : JRefactory_v2.6.24.java.awt.event.ActionEvent)
+					}
+
+					'====================================================
+					' STRUCTURAL SIGNALS (existing architecture)
+					'====================================================
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.LinedPanel <|-- UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.io.Saveable <|.. UMLPackage
+
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.EndPointPanel <|-- UMLType
+					ISourceful <|.. UMLType
+
+					UMLLine <|-- UMLField
+					ISourceful <|.. UMLField
+
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.EndPointPanel <|-- UMLLine
+					JRefactory_v2.6.24.javax.swing.Icon <|.. UMLIcon
+
+					JRefactory_v2.6.24.java.awt.event.ActionListener <|.. ConvertAdapter
+
+					'====================================================
+					' KEY RAG ENRICHMENT: ADAPTER PATTERN LINKS
+					'====================================================
+
+					'Client dependency (UI triggers adaptation)
+					JRefactory_v2.6.24.javax.swing.JPanel "activeComponent" <-- UMLPopupMenu
+
+					'Core adaptation dependency (CRITICAL SIGNAL)
+					ConvertAdapter ..> UMLType : converts / transforms
+					ConvertAdapter ..> UMLField : converts / transforms
+
+					'UMLPopupMenu depends on adaptees indirectly via UI actions
+					UMLPopupMenu ..> UMLType : getType()
+					UMLPopupMenu ..> JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary : getTypeSummary()
+
+					'Structural model bindings
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.SegmentedLine "currentLine" <-- UMLPackage
+					JavaPrimitiveTypes.boolean "first" <-- UMLPackage
+					JavaPrimitiveTypes.boolean "hasChanged" <-- UMLPackage
+					JavaPrimitiveTypes.boolean "loading" <-- UMLPackage
+					JRefactory_v2.6.24.java.lang.String "packageName" <-- UMLPackage
+					JRefactory_v2.6.24.javax.swing.JScrollPane "scrollPane" <-- UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary "summary" <-- UMLPackage
+
+					JavaPrimitiveTypes.int "DEFAULT" <-- UMLType
+					JavaPrimitiveTypes.int "FOREIGN" <-- UMLType
+					JavaPrimitiveTypes.int "SELECTED" <-- UMLType
+					JavaPrimitiveTypes.int "TITLE_BORDER" <-- UMLType
+					JavaPrimitiveTypes.int "borderWidth" <-- UMLType
+
+					JRefactory_v2.6.24.java.awt.Color "defaultBG" <-- UMLType
+					JRefactory_v2.6.24.java.awt.Color "foreignBG" <-- UMLType
+					JavaPrimitiveTypes.int "high" <-- UMLType
+					JavaPrimitiveTypes.int "lineSize" <-- UMLType
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.SizableLabel "nameLabel" <-- UMLType
+					UMLPackage "parent" <-- UMLType
+				}
+			}
+		}
+	}
+
+	package java {
+		package awt {
+			package event {
+
+				interface ActionListener {
+					actionPerformed(e : ActionEvent)
+				}
+
+				JRefactory_v2.6.24.java.util.EventListener <|-- ActionListener
+			}
+		}
+	}
+}
+
+'====================================================
+' RAG SUMMARY (Adapter detection view)
+'====================================================
+'
+' Adapter hypothesis:
+' - Target  : ActionListener
+' - Adapter : ConvertAdapter
+' - Adaptee : UMLType + UMLField
+' - Client  : UMLPopupMenu
+'
+' Key signals:
+' 1. Realization: ConvertAdapter <|.. ActionListener
+' 2. Dual adaptees: UMLType + UMLField (important multi-adaptee case)
+' 3. Transformation semantics: convertToAssociation / convertToAttribute
+' 4. UI-to-domain bridge: actionPerformed() → conversion logic
+'
+@enduml

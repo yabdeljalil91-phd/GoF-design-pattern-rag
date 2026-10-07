@@ -1,0 +1,29 @@
+@startuml
+package dpd_jdt {
+	package Res {
+		package name {
+			class BouncingDrawing {
+				-bouncingDrawingSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -8566272817418441758
+				<<Create>> BouncingDrawing()
+				add(figure : Figure): Figure
+				animationStep()
+				remove(figure : Figure): Figure
+				replace(figure : Figure, replacement : Figure)
+			}
+		}
+	}
+	Res.name.StandardDrawing <|-- Res.name.BouncingDrawing
+	Res.name.Animatable <|-- Res.name.BouncingDrawing
+	Res.name.CompositeFigure <|-- Res.name.StandardDrawing
+	Res.name.Drawing <|-- Res.name.StandardDrawing
+	java.lang.Cloneable <|-- Res.name.Figure
+	java.io.Serializable <|-- Res.name.Figure
+	JavaPrimitiveTypes.int "drawingSerializedDataVersion" <-- Res.name.StandardDrawing
+	java.lang.Thread "fDrawingLockHolder" <-- Res.name.StandardDrawing
+	java.util.Vector "fListeners" <-- Res.name.StandardDrawing
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Res.name.StandardDrawing
+	JavaPrimitiveTypes.int "bouncingDrawingSerializedDataVersion" <-- Res.name.BouncingDrawing
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Res.name.BouncingDrawing
+}
+@enduml

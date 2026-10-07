@@ -1,0 +1,51 @@
+@startuml
+' Singleton / static-only class UML for Assert (JUnit 3.7)
+
+package "JUnit v3.7" as JUnit {
+
+    class Assert {
+        condition: boolean
+        message: String
+
+        ' Protected constructor to prevent instantiation
+        #Assert()
+
+        ' Static assertion methods
+        {static} assertEquals(message: String, expected: Object, actual: Object)
+        {static} assertEquals(expected: Object, actual: Object)
+        {static} assertEquals(message: String, expected: double, actual: double, delta: double)
+        {static} assertEquals(expected: double, actual: double, delta: double)
+        {static} assertEquals(message: String, expected: float, actual: float, delta: float)
+        {static} assertEquals(expected: float, actual: float, delta: float)
+        {static} assertEquals(message: String, expected: long, actual: long)
+        {static} assertEquals(expected: long, actual: long)
+        {static} assertEquals(message: String, expected: boolean, actual: boolean)
+        {static} assertEquals(expected: boolean, actual: boolean)
+        {static} assertEquals(message: String, expected: byte, actual: byte)
+        {static} assertEquals(expected: byte, actual: byte)
+        {static} assertEquals(message: String, expected: char, actual: char)
+        {static} assertEquals(expected: char, actual: char)
+        {static} assertEquals(message: String, expected: short, actual: short)
+        {static} assertEquals(expected: short, actual: short)
+        {static} assertEquals(message: String, expected: int, actual: int)
+        {static} assertEquals(expected: int, actual: int)
+
+        {static} assertNotNull(object: Object)
+        {static} assertNotNull(message: String, object: Object)
+        {static} assertNull(object: Object)
+        {static} assertNull(message: String, object: Object)
+        {static} assertSame(message: String, expected: Object, actual: Object)
+        {static} assertSame(expected: Object, actual: Object)
+        {static} assertTrue(message: String, condition: boolean)
+        {static} assertTrue(condition: boolean)
+        {static} fail(message: String)
+        {static} fail()
+        -{static} failNotEquals(message: String, expected: Object, actual: Object)
+        -{static} failNotSame(message: String, expected: Object, actual: Object)
+    }
+
+    ' Relationships for attributes
+    boolean "condition" <-- Assert
+    String "message" <-- Assert
+}
+@enduml

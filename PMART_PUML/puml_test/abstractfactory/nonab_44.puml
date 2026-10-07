@@ -1,0 +1,44 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			'A TextFigure specialized to edit numbers.
+			class NumberTextFigure {
+				-numberTextFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -4056859232918336475
+				<<Create>> NumberTextFigure()
+				'Gets the numerical value of the contained text. return the value or 0 in the case of an illegal number format.
+				getValue(): JavaPrimitiveTypes.int
+				'Gets the number of columns to be used by the text overlay.
+				'@see FloatingTextField
+				overlayColumns(): JavaPrimitiveTypes.int
+				'Sets the numberical value of the contained text.
+				setValue(value : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	Abstractfactory.non_abstract_factory.TextFigure <|-- Abstractfactory.non_abstract_factory.NumberTextFigure
+	Abstractfactory.non_abstract_factory.AttributeFigure <|-- Abstractfactory.non_abstract_factory.TextFigure
+	Abstractfactory.non_abstract_factory.FigureChangeListener <|-- Abstractfactory.non_abstract_factory.TextFigure
+	Abstractfactory.non_abstract_factory.TextHolder <|-- Abstractfactory.non_abstract_factory.TextFigure
+	java.lang.Cloneable <|-- Abstractfactory.non_abstract_factory.Figure
+	java.io.Serializable <|-- Abstractfactory.non_abstract_factory.Figure
+	java.awt.Font "fFont" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "fHeight" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.boolean "fIsReadOnly" <-- Abstractfactory.non_abstract_factory.TextFigure
+	Abstractfactory.non_abstract_factory.OffsetLocator "fLocator" <-- Abstractfactory.non_abstract_factory.TextFigure
+	Abstractfactory.non_abstract_factory.Figure "fObservedFigure" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "fOriginX" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "fOriginY" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.boolean "fSizeIsDirty" <-- Abstractfactory.non_abstract_factory.TextFigure
+	java.lang.String "fText" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "fWidth" <-- Abstractfactory.non_abstract_factory.TextFigure
+	java.lang.String "fgCurrentFontName" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontSize" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontStyle" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "textFigureSerializedDataVersion" <-- Abstractfactory.non_abstract_factory.TextFigure
+	JavaPrimitiveTypes.int "numberTextFigureSerializedDataVersion" <-- Abstractfactory.non_abstract_factory.NumberTextFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Abstractfactory.non_abstract_factory.NumberTextFigure
+}
+@enduml

@@ -1,0 +1,379 @@
+@startuml
+'Design pattern Abstract Factory
+package "QuickUML 2001" as QuickUML_2001 {
+	package diagram {
+		'/** 
+		' * @class DefaultFigureEditor
+		' * @date 08-20-2001
+		' * @author Eric Crahen
+		' * @version 1.0
+		' */
+		'DP role: client
+		class DefaultFigureEditor {
+			'/** 
+			' */
+			<<Create>> DefaultFigureEditor()
+			'/** 
+			' */
+			<<Create>> DefaultFigureEditor(comp : QuickUML_2001.javax.swing.JTextField)
+			getCellEditorValue(): QuickUML_2001.java.lang.Object
+			'/** 
+			' * Get the extended bounds for a Figure, these are bounds that a component should use to include a small area for decoration, such as different borders, or arrow heads that fall just outside the Figures normal bounds. This allows editors to occupy a space different from the figure when neccessary.
+			' * @param Diagram
+			' * @param Figure
+			' * @param Rectangle2D reuse a rectangle
+			' * @return Rectangle2D
+			' */
+			getDecoratedBounds(diagram : Diagram, figure : Figure, rcBounds : QuickUML_2001.java.awt.geom.Rectangle2D): QuickUML_2001.java.awt.geom.Rectangle2D
+			'/** 
+			' * This method is the first invoked when the editing process begins.
+			' * @param Diagram surface that is being rendered upon
+			' * @param Figure item to edit
+			' * @param boolean
+			' * @return suitable A Component that can render the given item is returned. 
+			' * @post the Component returned will most likey be changed, in that it willhave been reparented & its bounds will be reset. Each time this Component is used this will happen, so generally it is not neccessary for the  returned item to bother setting its own size.
+			' */
+			getFigureEditorComponent(diagram : Diagram, figure : Figure, isSelected : JavaPrimitiveTypes.boolean): QuickUML_2001.java.awt.Component
+		}
+		'DP role: abstractProduct
+		interface FigureRenderer {
+			getDecoratedBounds(diagram : Diagram, figure : Figure, rcBounds : QuickUML_2001.java.awt.geom.Rectangle2D): QuickUML_2001.java.awt.geom.Rectangle2D
+			getRendererComponent(diagram : Diagram, figure : Figure, isSelected : JavaPrimitiveTypes.boolean): QuickUML_2001.java.awt.Component
+		}
+		'DP role: client
+		class DiagramUI {
+			#bounds: QuickUML_2001.java.awt.Rectangle
+			#cellRendererPane: QuickUML_2001.javax.swing.CellRendererPane
+			#clip: QuickUML_2001.java.awt.Rectangle
+			#diagram: Diagram
+			-{static} editorCache: QuickUML_2001.java.util.HashMap
+			#fastRefresh: JavaPrimitiveTypes.boolean
+			#figureLayer: Layer
+			#linkLayer: Layer
+			#linkMap: QuickUML_2001.java.util.HashMap
+			#modelListener: ModelHandler
+			-originalBackground: QuickUML_2001.java.awt.Color
+			-originalForeground: QuickUML_2001.java.awt.Color
+			#propertyListener: PropertyChangeHandler
+			-{static} rendererCache: QuickUML_2001.java.util.HashMap
+			<<Create>> DiagramUI()
+			addConnection(figure : Figure, link : Link)
+			{static} createUI(c : QuickUML_2001.javax.swing.JComponent): QuickUML_2001.javax.swing.plaf.ComponentUI
+			damageFigure(figure : Figure)
+			damageRegion(rc : QuickUML_2001.java.awt.Rectangle)
+			findFigure(pt : QuickUML_2001.java.awt.geom.Point2D): Figure
+			getConnected(figure : Figure, array : Figure): Figure
+			{static} getEditor(c : QuickUML_2001.java.lang.Class): FigureEditor
+			{static} getRenderer(c : QuickUML_2001.java.lang.Class): FigureRenderer
+			#installColors(diagram : Diagram)
+			#installEditors(diagram : Diagram)
+			#installRenderers(diagram : Diagram)
+			installUI(c : QuickUML_2001.javax.swing.JComponent)
+			paint(g : QuickUML_2001.java.awt.Graphics, c : QuickUML_2001.javax.swing.JComponent)
+			refreshFigure(figure : Figure)
+			refreshRegion(rc : QuickUML_2001.java.awt.Rectangle)
+			removeConnection(figure : Figure, link : Link)
+			-repaintDiagram()
+			repaintFigure(figure : Figure)
+			repaintRegion(rc : QuickUML_2001.java.awt.Rectangle)
+			#uninstallColors(diagram : Diagram)
+			uninstallUI(c : QuickUML_2001.javax.swing.JComponent)
+		}
+		QuickUML_2001.javax.swing.DefaultCellEditor <|-- DefaultFigureEditor
+		FigureEditor <|.. DefaultFigureEditor
+		QuickUML_2001.javax.swing.CellEditor <|-- FigureEditor
+		QuickUML_2001.javax.swing.JComponent <|-- Diagram
+		QuickUML_2001.javax.swing.Scrollable <|.. Diagram
+		QuickUML_2001.java.awt.Shape <|-- Figure
+		Figure <|-- Link
+		QuickUML_2001.javax.swing.plaf.ComponentUI <|-- DiagramUI
+		QuickUML_2001.javax.swing.JComponent <|-- DefaultFigureRenderer
+		FigureRenderer <|.. DefaultFigureRenderer
+		QuickUML_2001.javax.swing.border.AbstractBorder <|-- SelectionBorder
+		DefaultFigureRenderer <|-- DefaultLinkRenderer
+		QuickUML_2001.javax.swing.JTextField <|-- DefaultLabelRenderer
+		FigureRenderer <|.. DefaultLabelRenderer
+		DiagramModel "diagramModel" <-- Diagram
+		QuickUML_2001.java.util.HashMap "editorMap" <-- Diagram
+		JavaPrimitiveTypes.boolean "fastRefresh" <-- Diagram
+		QuickUML_2001.java.awt.Rectangle "figureBounds" <-- Diagram
+		QuickUML_2001.java.util.HashMap "rendererMap" <-- Diagram
+		SelectionModel "selectionModel" <-- Diagram
+		QuickUML_2001.java.lang.String "uiClassID" <-- Diagram
+		QuickUML_2001.java.awt.Rectangle "bounds" <-- DiagramUI
+		QuickUML_2001.javax.swing.CellRendererPane "cellRendererPane" <-- DiagramUI
+		QuickUML_2001.java.awt.Rectangle "clip" <-- DiagramUI
+		Diagram "diagram" <-- DiagramUI
+		QuickUML_2001.java.util.HashMap "editorCache" <-- DiagramUI
+		JavaPrimitiveTypes.boolean "fastRefresh" <-- DiagramUI
+		QuickUML_2001.java.util.ArrayList "figureList" <-- Layer
+		Layer "figureLayer" <-- DiagramUI
+		Layer "linkLayer" <-- DiagramUI
+		QuickUML_2001.java.util.HashMap "linkMap" <-- DiagramUI
+		ModelHandler "modelListener" <-- DiagramUI
+		QuickUML_2001.java.awt.Color "originalBackground" <-- DiagramUI
+		QuickUML_2001.java.awt.Color "originalForeground" <-- DiagramUI
+		PropertyChangeHandler "propertyListener" <-- DiagramUI
+		QuickUML_2001.java.util.HashMap "rendererCache" <-- DiagramUI
+		JavaPrimitiveTypes.double "DEFAULT_EXPANSION" <-- DefaultFigureRenderer
+		Diagram "lastDiagram" <-- DefaultFigureRenderer
+		Figure "lastFigure" <-- DefaultFigureRenderer
+		QuickUML_2001.java.awt.Color "lineColor" <-- SelectionBorder
+		JavaPrimitiveTypes.int "thickness" <-- SelectionBorder
+		SelectionBorder "selectionBorder" <-- DefaultFigureRenderer
+		QuickUML_2001.java.awt.Component "userComponent" <-- DefaultFigureRenderer
+		QuickUML_2001.java.awt.geom.AffineTransform "at" <-- DefaultLinkRenderer
+		QuickUML_2001.java.awt.FontMetrics "font" <-- DefaultLinkRenderer
+		QuickUML_2001.java.awt.Rectangle "labelBounds" <-- DefaultLinkRenderer
+		QuickUML_2001.java.awt.Component "labelComponent" <-- DefaultLinkRenderer
+		JavaPrimitiveTypes.int "MAXIMUM_WIDTH" <-- DefaultLabelRenderer
+		QuickUML_2001.java.awt.Insets "insets" <-- DefaultLabelRenderer
+		JavaPrimitiveTypes.int "lastWidth" <-- DefaultLabelRenderer
+		QuickUML_2001.java.awt.Point "p1" <-- DefaultLabelRenderer
+		QuickUML_2001.java.awt.Point "p2" <-- DefaultLabelRenderer
+		DefaultLabelRenderer "labelRenderer" <-- DefaultLinkRenderer
+		QuickUML_2001.java.awt.geom.Point2D "p1" <-- DefaultLinkRenderer
+		QuickUML_2001.java.awt.geom.Point2D "p2" <-- DefaultLinkRenderer
+		QuickUML_2001.java.awt.geom.GeneralPath "path" <-- DefaultLinkRenderer
+	}
+	package uml {
+		package diagram {
+			'/** 
+			' * @class ClassRenderer
+			' * @date 08-27-2001
+			' * @author Eric Crahen
+			' * @version 1.1
+			' */
+			'DP role: product
+			class ClassRenderer {
+				#classComponent: ClassRendererComponent
+				<<Create>> ClassRenderer()
+				'/** 
+				' * Get the Component to be fixed to the Figure bounds.
+				' */
+				getUserComponent(): QuickUML_2001.java.awt.Component
+			}
+			'/** 
+			' * @class AssociationLinkRenderer
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0Renderer for AssociationLink Figures.
+			' */
+			'DP role: product
+			class AssociationLinkRenderer {
+				#{const} associationUI: CustomUI
+				'/** 
+				' * Create a new renderer
+				' */
+				<<Create>> AssociationLinkRenderer()
+				'/** 
+				' * Draw an open ArrowHead shape at the sink
+				' */
+				#getSinkEndpoint(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, path : QuickUML_2001.java.awt.geom.GeneralPath): QuickUML_2001.java.awt.geom.GeneralPath
+				'/** 
+				' * No decoration on the source endpoint
+				' */
+				#getSourceEndpoint(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, path : QuickUML_2001.java.awt.geom.GeneralPath): QuickUML_2001.java.awt.geom.GeneralPath
+				'/** 
+				' * Paint the normal line with a dashed Stroke.
+				' */
+				paintComponent(g : QuickUML_2001.java.awt.Graphics)
+				'/** 
+				' * Paint that open ArrowHead shape with a solid Stroke
+				' */
+				#paintSinkEndpoint(g2 : QuickUML_2001.java.awt.Graphics2D, at : QuickUML_2001.java.awt.geom.AffineTransform, path : QuickUML_2001.java.awt.geom.GeneralPath)
+			}
+			'/** 
+			' * @class CompositionLinkRenderer
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: product
+			class CompositionLinkRenderer {
+				-angle: JavaPrimitiveTypes.double
+				-cardinality: QuickUML_2001.java.lang.String
+				#{const} compositionUI: CustomUI
+				-pt: QuickUML_2001.java.awt.Point
+				-sourceX: JavaPrimitiveTypes.double
+				-sourceY: JavaPrimitiveTypes.double
+				<<Create>> CompositionLinkRenderer()
+				getDecoratedBounds(diagram : QuickUML_2001.diagram.Diagram, figure : QuickUML_2001.diagram.Figure, rcBounds : QuickUML_2001.java.awt.geom.Rectangle2D): QuickUML_2001.java.awt.geom.Rectangle2D
+				getRendererComponent(diagram : QuickUML_2001.diagram.Diagram, figure : QuickUML_2001.diagram.Figure, isSelected : JavaPrimitiveTypes.boolean): QuickUML_2001.java.awt.Component
+				#getSinkAngle(x1 : JavaPrimitiveTypes.double, y1 : JavaPrimitiveTypes.double, x2 : JavaPrimitiveTypes.double, y2 : JavaPrimitiveTypes.double): JavaPrimitiveTypes.double
+				#getSinkEndpoint(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, path : QuickUML_2001.java.awt.geom.GeneralPath): QuickUML_2001.java.awt.geom.GeneralPath
+				#getSourceEndpoint(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, path : QuickUML_2001.java.awt.geom.GeneralPath): QuickUML_2001.java.awt.geom.GeneralPath
+				#paintSinkEndpoint(g2 : QuickUML_2001.java.awt.Graphics2D, at : QuickUML_2001.java.awt.geom.AffineTransform, path : QuickUML_2001.java.awt.geom.GeneralPath)
+				#paintSourceEndpoint(g2 : QuickUML_2001.java.awt.Graphics2D, at : QuickUML_2001.java.awt.geom.AffineTransform, path : QuickUML_2001.java.awt.geom.GeneralPath)
+			}
+			'/** 
+			' * @class DependencyLinkRenderer
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0Renderer for DependencyLink Figures.
+			' */
+			'DP role: product
+			class DependencyLinkRenderer {
+				#{const} dashed: QuickUML_2001.java.awt.BasicStroke
+				#{const} dependencyUI: CustomUI
+				#{const} normal: QuickUML_2001.java.awt.BasicStroke
+				'/** 
+				' * Create a new renderer
+				' */
+				<<Create>> DependencyLinkRenderer()
+				'/** 
+				' * Draw an open ArrowHead shape at the sink
+				' */
+				#getSinkEndpoint(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, path : QuickUML_2001.java.awt.geom.GeneralPath): QuickUML_2001.java.awt.geom.GeneralPath
+				'/** 
+				' * No decoration on the source endpoint
+				' */
+				#getSourceEndpoint(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, path : QuickUML_2001.java.awt.geom.GeneralPath): QuickUML_2001.java.awt.geom.GeneralPath
+				'/** 
+				' * Paint the normal line with a dashed Stroke.
+				' */
+				paintComponent(g : QuickUML_2001.java.awt.Graphics)
+				'/** 
+				' * Paint that open ArrowHead shape with a solid Stroke
+				' */
+				#paintSinkEndpoint(g2 : QuickUML_2001.java.awt.Graphics2D, at : QuickUML_2001.java.awt.geom.AffineTransform, path : QuickUML_2001.java.awt.geom.GeneralPath)
+			}
+			'/** 
+			' * @class GeneralizationLinkRenderer
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0Renderer for GeneralizationLink Figures.
+			' */
+			'DP role: product
+			class GeneralizationLinkRenderer {
+				#{const} generalizationUI: CustomUI
+				'/** 
+				' * Create a new Renderer
+				' */
+				<<Create>> GeneralizationLinkRenderer()
+				'/** 
+				' * Create a flat ArrowHead shape for the sink endpoint
+				' */
+				#getSinkEndpoint(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, path : QuickUML_2001.java.awt.geom.GeneralPath): QuickUML_2001.java.awt.geom.GeneralPath
+				'/** 
+				' * No decoration on the source endpoint
+				' */
+				#getSourceEndpoint(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, path : QuickUML_2001.java.awt.geom.GeneralPath): QuickUML_2001.java.awt.geom.GeneralPath
+				'/** 
+				' * Paint the sink endpoint as with a lighter fill and darker outline
+				' */
+				#paintSinkEndpoint(g2 : QuickUML_2001.java.awt.Graphics2D, at : QuickUML_2001.java.awt.geom.AffineTransform, path : QuickUML_2001.java.awt.geom.GeneralPath)
+			}
+			'/** 
+			' * @class RealizationLinkRenderer
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0 Renderer for RealizationLink Figures
+			' */
+			'DP role: product
+			class RealizationLinkRenderer {
+				#{const} dashed: QuickUML_2001.java.awt.BasicStroke
+				#{const} normal: QuickUML_2001.java.awt.BasicStroke
+				#{const} realizationUI: CustomUI
+				'/** 
+				' * Create a new Renderer
+				' */
+				<<Create>> RealizationLinkRenderer()
+				'/** 
+				' * Create flat ArrowHead shape for the sink endpoint
+				' */
+				#getSinkEndpoint(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, path : QuickUML_2001.java.awt.geom.GeneralPath): QuickUML_2001.java.awt.geom.GeneralPath
+				'/** 
+				' * No decoration on the source endpoint
+				' */
+				#getSourceEndpoint(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, path : QuickUML_2001.java.awt.geom.GeneralPath): QuickUML_2001.java.awt.geom.GeneralPath
+				'/** 
+				' * Paint this link with a dashed Stroke
+				' */
+				paintComponent(g : QuickUML_2001.java.awt.Graphics)
+				'/** 
+				' * Paint the sink endpoint with a solid stroke.
+				' */
+				#paintSinkEndpoint(g2 : QuickUML_2001.java.awt.Graphics2D, at : QuickUML_2001.java.awt.geom.AffineTransform, path : QuickUML_2001.java.awt.geom.GeneralPath)
+			}
+			'/** 
+			' * @class InterfaceRenderer
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: product
+			class InterfaceRenderer {
+				#interfaceComponent: InterfaceComponent
+				<<Create>> InterfaceRenderer()
+				'/** 
+				' * Get the Component to be fixed to the Figure bounds.
+				' */
+				getUserComponent(): QuickUML_2001.java.awt.Component
+			}
+			'/** 
+			' * @class NoteRenderer
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0 
+			' */
+			'DP role: product
+			class NoteRenderer {
+				#noteComponent: NoteComponent
+				<<Create>> NoteRenderer()
+				'/** 
+				' * Get the Component to be fixed to the Figure bounds.
+				' */
+				getUserComponent(): QuickUML_2001.java.awt.Component
+			}
+			QuickUML_2001.diagram.DefaultFigureRenderer <|-- ClassRenderer
+			CustomComponent <|-- ClassRendererComponent
+			QuickUML_2001.javax.swing.JComponent <|-- CustomComponent
+			QuickUML_2001.javax.swing.plaf.ComponentUI <|-- CustomUI
+			QuickUML_2001.java.beans.PropertyChangeListener <|.. CustomUI
+			QuickUML_2001.diagram.DefaultLinkRenderer <|-- AssociationLinkRenderer
+			QuickUML_2001.diagram.DefaultLinkRenderer <|-- CompositionLinkRenderer
+			QuickUML_2001.diagram.DefaultLinkRenderer <|-- DependencyLinkRenderer
+			QuickUML_2001.diagram.DefaultLinkRenderer <|-- GeneralizationLinkRenderer
+			QuickUML_2001.diagram.DefaultLinkRenderer <|-- RealizationLinkRenderer
+			QuickUML_2001.diagram.DefaultFigureRenderer <|-- InterfaceRenderer
+			CustomComponent <|-- InterfaceComponent
+			QuickUML_2001.diagram.DefaultFigureRenderer <|-- NoteRenderer
+			CustomComponent <|-- NoteComponent
+			QuickUML_2001.java.util.ArrayList "components" <-- CustomUI
+			QuickUML_2001.java.lang.String "prefix" <-- CustomUI
+			CustomUI "classUI" <-- ClassRendererComponent
+			JavaPrimitiveTypes.int "divider" <-- ClassRendererComponent
+			QuickUML_2001.uml.ui.FlatTextArea "fields" <-- ClassRendererComponent
+			QuickUML_2001.java.awt.Insets "margin" <-- ClassRendererComponent
+			QuickUML_2001.uml.ui.FlatTextArea "members" <-- ClassRendererComponent
+			QuickUML_2001.javax.swing.JTextField "title" <-- ClassRendererComponent
+			ClassRendererComponent "classComponent" <-- ClassRenderer
+			CustomUI "associationUI" <-- AssociationLinkRenderer
+			JavaPrimitiveTypes.double "angle" <-- CompositionLinkRenderer
+			QuickUML_2001.java.lang.String "cardinality" <-- CompositionLinkRenderer
+			CustomUI "compositionUI" <-- CompositionLinkRenderer
+			QuickUML_2001.java.awt.Point "pt" <-- CompositionLinkRenderer
+			JavaPrimitiveTypes.double "sourceX" <-- CompositionLinkRenderer
+			JavaPrimitiveTypes.double "sourceY" <-- CompositionLinkRenderer
+			QuickUML_2001.java.awt.BasicStroke "dashed" <-- DependencyLinkRenderer
+			CustomUI "dependencyUI" <-- DependencyLinkRenderer
+			QuickUML_2001.java.awt.BasicStroke "normal" <-- DependencyLinkRenderer
+			CustomUI "generalizationUI" <-- GeneralizationLinkRenderer
+			QuickUML_2001.java.awt.BasicStroke "dashed" <-- RealizationLinkRenderer
+			QuickUML_2001.java.awt.BasicStroke "normal" <-- RealizationLinkRenderer
+			CustomUI "realizationUI" <-- RealizationLinkRenderer
+			CustomUI "interfaceUI" <-- InterfaceComponent
+			QuickUML_2001.javax.swing.JLabel "label" <-- InterfaceComponent
+			QuickUML_2001.java.awt.Insets "margin" <-- InterfaceComponent
+			QuickUML_2001.uml.ui.FlatTextArea "members" <-- InterfaceComponent
+			QuickUML_2001.javax.swing.JTextField "title" <-- InterfaceComponent
+			InterfaceComponent "interfaceComponent" <-- InterfaceRenderer
+			QuickUML_2001.java.awt.Insets "margin" <-- NoteComponent
+			CustomUI "noteUI" <-- NoteComponent
+			QuickUML_2001.uml.ui.FlatTextArea "text" <-- NoteComponent
+			NoteComponent "noteComponent" <-- NoteRenderer
+		}
+	}
+}
+@enduml

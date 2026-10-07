@@ -1,0 +1,40 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'A handle to connect figures. The connection object to be created is specified by a prototype. <hr> <b>Design Patterns</b><P> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a href=../pattlets/sld029.htm>Prototype</a></b><br> ConnectionHandle creates the connection by cloning a prototype. <hr>
+			'@see ConnectionFigure
+			'@see Object#clone
+			class ConnectionHandle {
+				-fConnection: ConnectionFigure
+				-fPrototype: ConnectionFigure
+				-fTarget: Figure
+				'Constructs a handle with the given owner, locator, and connection prototype
+				<<Create>> ConnectionHandle(owner : Figure, l : Locator, prototype : ConnectionFigure)
+				'Creates the ConnectionFigure. By default the figure prototype is cloned.
+				#createConnection(): ConnectionFigure
+				'Draws the connection handle, by default the outline of a blue circle.
+				draw(g : java.awt.Graphics)
+				-findConnectableFigure(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : Drawing): Figure
+				'Finds a connection end figure.
+				#findConnectionTarget(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : Drawing): Connector
+				#findConnector(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, f : Figure): Connector
+				'Connects the figures if the mouse is released over another figure.
+				invokeEnd(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : DrawingView)
+				'Creates the connection
+				invokeStart(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, view : DrawingView)
+				'Tracks the connection.
+				invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : DrawingView)
+				-startConnector(): Connector
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.LocatorHandle <|-- Factory_method.nonfactorymethod.ConnectionHandle
+	Factory_method.nonfactorymethod.Figure <|-- Factory_method.nonfactorymethod.ConnectionFigure
+	java.lang.Cloneable <|-- Factory_method.nonfactorymethod.Figure
+	java.io.Serializable <|-- Factory_method.nonfactorymethod.Figure
+	Factory_method.nonfactorymethod.ConnectionFigure "fConnection" <-- Factory_method.nonfactorymethod.ConnectionHandle
+	Factory_method.nonfactorymethod.ConnectionFigure "fPrototype" <-- Factory_method.nonfactorymethod.ConnectionHandle
+	Factory_method.nonfactorymethod.Figure "fTarget" <-- Factory_method.nonfactorymethod.ConnectionHandle
+}
+@enduml

@@ -1,0 +1,1797 @@
+@startuml
+'Design pattern Adapter
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package openide {
+			package explorer {
+				package propertysheet {
+					'/** 
+					' * A helper class that manages woking with a set of beans. It usess BeanDetails for each of them, and creates PropertyDetails for each common property of all beans.
+					' * @author   Jan Jancura
+					' * @version  0.26, Apr 6, 1998
+					' */
+					'DP role: client
+					'DP role: adaptee
+					class BeansDetails {
+						-displayNames: Netbeans_v1.0.x.java.lang.String [*]
+						-hints: Netbeans_v1.0.x.java.lang.String [*]
+						-names: Netbeans_v1.0.x.java.lang.String [*]
+						-node: Netbeans_v1.0.x.org.openide.nodes.Node [*]
+						-propertyDetails: PropertyDetails [*]
+						-propertyDetailsArray: PropertyDetails [*]
+						'/** 
+						' * Default constructor that creates description for null set of beans
+						' */
+						<<Create>> BeansDetails()
+						'/** 
+						' * Constructs a new BeanaDetails class for given array of Java Beans. There are BeanDetails created for each bean and PropertyChangeListeners are added to the beans.
+						' * @param Object[] aBeans the Java Beans for which we are constructing the BeansDetails.
+						' */
+						<<Create>> BeansDetails(aNode : Netbeans_v1.0.x.org.openide.nodes.Node)
+						'/** 
+						' * Add Node listener to all nodes.
+						' */
+						addNodeListener(l : Netbeans_v1.0.x.org.openide.nodes.NodeListener)
+						'/** 
+						' * Standart helper method.
+						' */
+						addPropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+						'/** 
+						' * Helper method that creates a customizer component for this JavaBean.
+						' * @return The customizer component for this JavBean or null if the customizer does not exist oris not a subclass of java.awt.Component
+						' */
+						customize()
+						'/** 
+						' * Returns the poperties from one cathegory. There are all common properties for all nodes in this cathegory.
+						' * @param propertySetNameIndex Index of this cathegory.
+						' */
+						getPropertyDetails(propertySetNameIndex : JavaPrimitiveTypes.int): PropertyDetails
+						'/** 
+						' * Returns Display names of property cathegories common for all the nodes.
+						' */
+						getPropertySetDisplayNames(): Netbeans_v1.0.x.java.lang.String
+						'/** 
+						' * Returns Hints of property cathegories common for all the nodes.
+						' */
+						getPropertySetHints(): Netbeans_v1.0.x.java.lang.String
+						'/** 
+						' * Returns Names of property cathegories common for all the nodes.
+						' */
+						getPropertySetNames(): Netbeans_v1.0.x.java.lang.String
+						'/** 
+						' * Returns true if this BeansDetails represents one bean which has customizer.
+						' * @return true if this BeansDetails represents one bean which has customizer.
+						' */
+						hasCustomizer(): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Finds all common propertise from the vector of property arrays.
+						' * @param v Vector of property arrays.
+						' */
+						-parseProperties(v : Netbeans_v1.0.x.java.util.Vector): PropertyDetails
+						'/** 
+						' * Parse property sets, inspect all comon property sets for common properties. Input: node[] Output: name[], propertyDetails []
+						' */
+						-parsePropertySets()
+						'/** 
+						' * Refresh informations about property set.
+						' */
+						refresh()
+						'/** 
+						' * Remove Node listener to all nodes.
+						' */
+						removeNodeListener(l : Netbeans_v1.0.x.org.openide.nodes.NodeListener)
+						'/** 
+						' * Standart helper method.
+						' */
+						removePropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					}
+					'/** 
+					' * Implements a "property sheet" for a set of selected beans. <P> <TABLE BORDER COLS=3 WIDTH=100%> <TR><TH WIDTH=15%>Property<TH WIDTH=15%>Property Type<TH>Description <TR><TD> <code>paintingStyle</code> <TD> <code>int</code>     <TD> style of painting properties ( {@link #ALWAYS_AS_STRING},  {@link #STRING_PREFERRED},  {@link #PAINTING_PREFERRED}) <TR><TD> <code>currentPage</code>   <TD> <code>int</code>     <TD> currently showed page (e.g. properties, expert, events) <TR><TD> <code>expert</code>        <TD> <code>boolean</code> <TD> expert mode as in the JavaBeans specifications </TABLE>
+					' * @author   Jan Jancura, Jaroslav Tulach
+					' * @version  1.23, Sep 07, 1998
+					' */
+					'DP role: adaptee
+					class PropertySheet {
+						{const} ALWAYS_AS_STRING: JavaPrimitiveTypes.int = 1
+						{const} PAINTING_PREFERRED: JavaPrimitiveTypes.int = 3
+						{const} PROPERTY_CURRENT_PAGE: Netbeans_v1.0.x.java.lang.String = currentPage
+						{const} PROPERTY_DISABLED_PROPERTY_COLOR: Netbeans_v1.0.x.java.lang.String = disabledPropertyColor
+						{const} PROPERTY_DISPLAY_WRITABLE_ONLY: Netbeans_v1.0.x.java.lang.String = displayWritableOnly
+						{const} PROPERTY_PLASTIC: Netbeans_v1.0.x.java.lang.String = plastic
+						{const} PROPERTY_PROPERTY_PAINTING_STYLE: Netbeans_v1.0.x.java.lang.String = propertyPaintingStyle
+						{const} PROPERTY_SORTING_MODE: Netbeans_v1.0.x.java.lang.String = sortingMode
+						{const} PROPERTY_VALUE_COLOR: Netbeans_v1.0.x.java.lang.String = valueColor
+						{const} SORTED_BY_NAMES: JavaPrimitiveTypes.int = 1
+						{const} SORTED_BY_TYPES: JavaPrimitiveTypes.int = 2
+						-{const} SORTER_NAME: Netbeans_v1.0.x.java.util.Comparator
+						-{const} SORTER_TYPE: Netbeans_v1.0.x.java.util.Comparator
+						{const} STRING_PREFERRED: JavaPrimitiveTypes.int = 2
+						{const} UNSORTED: JavaPrimitiveTypes.int = 0
+						-bAlphaSort: Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton
+						-bDisplayWritableOnly: Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton
+						-bNoSort: Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton
+						-bTypeSort: Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton
+						-beansDetails: BeansDetails
+						-beansListener: BeansListener
+						{static} bundle: Netbeans_v1.0.x.java.util.ResourceBundle
+						copy: Netbeans_v1.0.x.org.openide.actions.CopyAction
+						-customizer: Netbeans_v1.0.x.org.openide.awt.ToolbarButton
+						-disabledPropertyColor: Netbeans_v1.0.x.java.awt.Color
+						-displayWritableOnly: JavaPrimitiveTypes.boolean
+						-emptyPanel: EmptyPanel
+						-hints: Netbeans_v1.0.x.java.lang.String [*]
+						#{static} iAlphaSort: Netbeans_v1.0.x.javax.swing.Icon
+						#{static} iCustomize: Netbeans_v1.0.x.javax.swing.Icon
+						#{static} iDisplayWritableOnly: Netbeans_v1.0.x.javax.swing.Icon
+						#{static} iNoSort: Netbeans_v1.0.x.javax.swing.Icon
+						#{static} iTypeSort: Netbeans_v1.0.x.javax.swing.Icon
+						-ignorePropertyChanges: JavaPrimitiveTypes.boolean
+						keepFocus: JavaPrimitiveTypes.boolean
+						-lastSelectedLine: PropertyDisplayer
+						-lock: Netbeans_v1.0.x.java.lang.Integer
+						-namesPanel: NamesPanel [*]
+						oldCopy: Netbeans_v1.0.x.org.openide.util.actions.ActionPerformer
+						oldPaste: Netbeans_v1.0.x.org.openide.util.datatransfer.PasteType [*]
+						-pageIndex: JavaPrimitiveTypes.int
+						-pages: Netbeans_v1.0.x.javax.swing.JTabbedPane
+						paste: Netbeans_v1.0.x.org.openide.actions.PasteAction
+						-plastic: JavaPrimitiveTypes.boolean
+						-popupMenu: Netbeans_v1.0.x.javax.swing.JPopupMenu
+						-propertyDetails: PropertyDetails [*]
+						-propertyDisplayer: PropertyDisplayer [*]
+						-propertyPaintingStyle: JavaPrimitiveTypes.int
+						-propertyValue: PropertyValue [*]
+						-runNodes: RunNodes
+						-selectedTabName: Netbeans_v1.0.x.java.lang.String
+						{const} serialVersionUID: JavaPrimitiveTypes.long = -7698351033045864945
+						setDefault: SetDefaultValueAction
+						-settingsListener: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+						-sorter: Netbeans_v1.0.x.java.util.Comparator
+						-sortingMode: JavaPrimitiveTypes.int
+						-tab: Netbeans_v1.0.x.java.lang.String [*]
+						-tabListener: Netbeans_v1.0.x.javax.swing.event.ChangeListener
+						-{static} text: Netbeans_v1.0.x.java.lang.String
+						-valueColor: Netbeans_v1.0.x.java.awt.Color
+						-valuesPanel: NamesPanel [*]
+						'/** 
+						' * Create and initialize the property sheet. When the  {@link PropertySheetView} is created, this is called from its constructor.
+						' */
+						<<Create>> PropertySheet()
+						addNotify()
+						'/** 
+						' * Creates components in one tab. Must be init.: tab[] (with values), hints [] (with values), namesPanel[] & valuesPanel[] (only declared). Initializes: namesPanel [index] & valuesPanel [index] & creates visual rep. of one tab.
+						' */
+						-createPane(index : JavaPrimitiveTypes.int, empty : JavaPrimitiveTypes.boolean)
+						'/** 
+						' * Creates one tab in tabbed pane. Must be init.: tab[] (with values), hints [] (with values).
+						' */
+						-createTab(index : JavaPrimitiveTypes.int)
+						'/** 
+						' * Get the currently selected page.
+						' * @return index of currently selected page
+						' */
+						getCurrentPage(): JavaPrimitiveTypes.int
+						'/** 
+						' * Returns description of the property. This description is showen in the tool tip for example.
+						' */
+						{static} getDescription(propertyDetails : PropertyDetails): Netbeans_v1.0.x.java.lang.String
+						'/** 
+						' * Get the foreground color of disabled properties.
+						' * @return the color
+						' */
+						getDisabledPropertyColor(): Netbeans_v1.0.x.java.awt.Color
+						'/** 
+						' * Test whether only writable properties are currently displayed.
+						' * @return <code>true</code> if so
+						' */
+						getDisplayWritableOnly(): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Test whether buttons in sheet are plastic.
+						' * @return <code>true</code> if so
+						' */
+						getPlastic(): JavaPrimitiveTypes.boolean
+						getPreferredSize(): Netbeans_v1.0.x.java.awt.Dimension
+						'/** 
+						' * Get property paint mode.
+						' * @return the mode
+						' * @see #setPropertyPaintingStyle
+						' */
+						getPropertyPaintingStyle(): JavaPrimitiveTypes.int
+						'/** 
+						' * Get the sorting mode.
+						' * @return the mode
+						' * @see #setSortingMode
+						' */
+						getSortingMode(): JavaPrimitiveTypes.int
+						{static} getString(str : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						'/** 
+						' * Get the foreground color of values.
+						' * @return the color
+						' */
+						getValueColor(): Netbeans_v1.0.x.java.awt.Color
+						'/** 
+						' * Returns description of the property value. This description is showen in the tool tip for example.
+						' */
+						{static} getValueDescription(propertyDetails : PropertyDetails): Netbeans_v1.0.x.java.lang.String
+						'/** 
+						' * Invokes the customization on the currently selected Node (JavaBean).
+						' */
+						invokeCustomization()
+						'/** 
+						' * Post the request for redraw of new nodes.
+						' * @param nodes nodes to display in the sheet
+						' */
+						postSetNodes(nodes : Netbeans_v1.0.x.org.openide.nodes.Node)
+						'/** 
+						' * Refreshs propertysheet.
+						' */
+						-refreshPropertySheet()
+						'/** 
+						' * Refreshs properties in one tab. Out: propertyValue [index][], propertyDisplayer [index][], propertyDetails [index][]
+						' * @param index Index of tab to refresh.
+						' */
+						-refreshTab(index : JavaPrimitiveTypes.int)
+						removeActions(pd : PropertyDetails)
+						'/** 
+						' * Removes input component.
+						' */
+						removeInputComponent(index : JavaPrimitiveTypes.int)
+						removeNotify()
+						resort(index : JavaPrimitiveTypes.int)
+						setActions(pd : PropertyDetails)
+						'/** 
+						' * Set the currently selected page.
+						' * @param index index of the page to select
+						' */
+						setCurrentPage(index : JavaPrimitiveTypes.int)
+						'/** 
+						' * Set the currently selected page.
+						' * @param str name of the tab to select
+						' */
+						setCurrentPage(str : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Set the foreground color of disabled properties.
+						' * @param color the new color
+						' */
+						setDisabledPropertyColor(color : Netbeans_v1.0.x.java.awt.Color)
+						'/** 
+						' * Set whether only writable properties are displayed.
+						' * @param b <code>true</code> if this is desired
+						' */
+						setDisplayWritableOnly(b : JavaPrimitiveTypes.boolean)
+						'/** 
+						' * Sets or removes input component for one property displayer.
+						' * @param displayer Displayer for whis to set or remove the input component.
+						' */
+						setInputComponent(dis : PropertyDisplayer)
+						'/** 
+						' * Set the nodes explored by this property sheet.
+						' * @param node nodes to be explored
+						' */
+						setNodes(node : Netbeans_v1.0.x.org.openide.nodes.Node)
+						'/** 
+						' * Set whether buttons in sheet should be plastic.
+						' * @param plastic true if so
+						' * @see SheetButton#setPlastic
+						' */
+						setPlastic(plastic : JavaPrimitiveTypes.boolean)
+						'/** 
+						' * Set property paint mode.
+						' * @param style one of {@link #ALWAYS_AS_STRING},  {@link #STRING_PREFERRED}, or  {@link #PAINTING_PREFERRED}
+						' */
+						setPropertyPaintingStyle(style : JavaPrimitiveTypes.int)
+						'/** 
+						' * Set the sorting mode.
+						' * @param sortingMode one of {@link #UNSORTED},  {@link #SORTED_BY_NAMES},  {@link #SORTED_BY_TYPES}
+						' */
+						setSortingMode(sortingMode : JavaPrimitiveTypes.int)
+						'/** 
+						' * Set the foreground color of values.
+						' * @param color the new color
+						' */
+						setValueColor(color : Netbeans_v1.0.x.java.awt.Color)
+						'/** 
+						' * Updates values of the properties in one tab.
+						' * @param index Index of tab to refresh.
+						' */
+						updateTab(index : JavaPrimitiveTypes.int)
+					}
+					Netbeans_v1.0.x.javax.swing.JPanel <|-- PropertySheet
+					Netbeans_v1.0.x.javax.swing.JPanel <|-- EmptyPanel
+					Netbeans_v1.0.x.javax.swing.JPanel <|-- PropertyDisplayer
+					Netbeans_v1.0.x.javax.swing.JPanel <|-- SheetButton
+					Netbeans_v1.0.x.javax.swing.JPanel <|-- NamesPanel
+					Netbeans_v1.0.x.java.awt.LayoutManager <|.. ColumnManager
+					Netbeans_v1.0.x.java.io.Serializable <|.. ColumnManager
+					Netbeans_v1.0.x.org.openide.util.actions.CallbackSystemAction <|-- SetDefaultValueAction
+					Netbeans_v1.0.x.java.lang.String "displayNames 0..*" <-- BeansDetails
+					Netbeans_v1.0.x.java.lang.String "hints 0..*" <-- BeansDetails
+					Netbeans_v1.0.x.java.lang.String "names 0..*" <-- BeansDetails
+					Netbeans_v1.0.x.org.openide.nodes.Node "node 0..*" <-- BeansDetails
+					JavaPrimitiveTypes.int "BOTH" <-- PropertyDetails
+					JavaPrimitiveTypes.int "INDEXED" <-- PropertyDetails
+					JavaPrimitiveTypes.int "NORMAL" <-- PropertyDetails
+					Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- PropertyDetails
+					Netbeans_v1.0.x.java.lang.Class "elementType" <-- PropertyDetails
+					Netbeans_v1.0.x.org.openide.nodes.Node.Property "firstProperty" <-- PropertyDetails
+					Netbeans_v1.0.x.java.beans.PropertyEditor "indexedPropertyEditor" <-- PropertyDetails
+					JavaPrimitiveTypes.boolean "indexedPropertyEditorReaded" <-- PropertyDetails
+					Netbeans_v1.0.x.org.openide.nodes.Node "nodes 0..*" <-- PropertyDetails
+					Netbeans_v1.0.x.java.util.Vector "property" <-- PropertyDetails
+					Netbeans_v1.0.x.java.beans.PropertyEditor "propertyEditor" <-- PropertyDetails
+					JavaPrimitiveTypes.boolean "propertyEditorReaded" <-- PropertyDetails
+					Netbeans_v1.0.x.java.lang.Class "type" <-- PropertyDetails
+					Netbeans_v1.0.x.java.lang.Throwable "t" <-- ExceptionHack
+					Netbeans_v1.0.x.java.lang.String "text" <-- ExceptionHack
+					PropertyDetails "propertyDetails 0..*" <-- BeansDetails
+					PropertyDetails "propertyDetailsArray 0..*" <-- BeansDetails
+					JavaPrimitiveTypes.int "ALWAYS_AS_STRING" <-- PropertySheet
+					JavaPrimitiveTypes.int "PAINTING_PREFERRED" <-- PropertySheet
+					Netbeans_v1.0.x.java.lang.String "PROPERTY_CURRENT_PAGE" <-- PropertySheet
+					Netbeans_v1.0.x.java.lang.String "PROPERTY_DISABLED_PROPERTY_COLOR" <-- PropertySheet
+					Netbeans_v1.0.x.java.lang.String "PROPERTY_DISPLAY_WRITABLE_ONLY" <-- PropertySheet
+					Netbeans_v1.0.x.java.lang.String "PROPERTY_PLASTIC" <-- PropertySheet
+					Netbeans_v1.0.x.java.lang.String "PROPERTY_PROPERTY_PAINTING_STYLE" <-- PropertySheet
+					Netbeans_v1.0.x.java.lang.String "PROPERTY_SORTING_MODE" <-- PropertySheet
+					Netbeans_v1.0.x.java.lang.String "PROPERTY_VALUE_COLOR" <-- PropertySheet
+					JavaPrimitiveTypes.int "SORTED_BY_NAMES" <-- PropertySheet
+					JavaPrimitiveTypes.int "SORTED_BY_TYPES" <-- PropertySheet
+					Netbeans_v1.0.x.java.util.Comparator "SORTER_NAME" <-- PropertySheet
+					Netbeans_v1.0.x.java.util.Comparator "SORTER_TYPE" <-- PropertySheet
+					JavaPrimitiveTypes.int "STRING_PREFERRED" <-- PropertySheet
+					JavaPrimitiveTypes.int "UNSORTED" <-- PropertySheet
+					Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton "bAlphaSort" <-- PropertySheet
+					Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton "bDisplayWritableOnly" <-- PropertySheet
+					Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton "bNoSort" <-- PropertySheet
+					Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton "bTypeSort" <-- PropertySheet
+					BeansDetails "beansDetails" <-- PropertySheet
+					BeansListener "beansListener" <-- PropertySheet
+					Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- PropertySheet
+					Netbeans_v1.0.x.org.openide.actions.CopyAction "copy" <-- PropertySheet
+					Netbeans_v1.0.x.org.openide.awt.ToolbarButton "customizer" <-- PropertySheet
+					Netbeans_v1.0.x.java.awt.Color "disabledPropertyColor" <-- PropertySheet
+					JavaPrimitiveTypes.boolean "displayWritableOnly" <-- PropertySheet
+					JavaPrimitiveTypes.long "serialVersionUID" <-- EmptyPanel
+					Netbeans_v1.0.x.java.lang.String "text" <-- EmptyPanel
+					EmptyPanel "emptyPanel" <-- PropertySheet
+					Netbeans_v1.0.x.java.lang.String "hints 0..*" <-- PropertySheet
+					Netbeans_v1.0.x.javax.swing.Icon "iAlphaSort" <-- PropertySheet
+					Netbeans_v1.0.x.javax.swing.Icon "iCustomize" <-- PropertySheet
+					Netbeans_v1.0.x.javax.swing.Icon "iDisplayWritableOnly" <-- PropertySheet
+					Netbeans_v1.0.x.javax.swing.Icon "iNoSort" <-- PropertySheet
+					Netbeans_v1.0.x.javax.swing.Icon "iTypeSort" <-- PropertySheet
+					JavaPrimitiveTypes.boolean "ignorePropertyChanges" <-- PropertySheet
+					JavaPrimitiveTypes.boolean "keepFocus" <-- PropertySheet
+					JavaPrimitiveTypes.boolean "canEditAsText" <-- PropertyDisplayer
+					Netbeans_v1.0.x.java.awt.Color "disabledColor" <-- PropertyDisplayer
+					Netbeans_v1.0.x.java.awt.Color "foregroundColor" <-- PropertyDisplayer
+					JavaPrimitiveTypes.boolean "isWriteState" <-- PropertyDisplayer
+					JavaPrimitiveTypes.long "lastDeselectTime" <-- PropertyDisplayer
+					Netbeans_v1.0.x.java.util.Vector "listener" <-- PropertyDisplayer
+					Netbeans_v1.0.x.java.lang.Object "lock" <-- PropertyDisplayer
+					JavaPrimitiveTypes.int "paintingStyle" <-- PropertyDisplayer
+					JavaPrimitiveTypes.boolean "plastic" <-- PropertyDisplayer
+					Netbeans_v1.0.x.java.util.Vector "propertyChangeListeners" <-- PropertyDisplayer
+					Netbeans_v1.0.x.java.awt.Component "propertyCustomEditor" <-- PropertyDisplayer
+					PropertyDetails "propertyDetails" <-- PropertyDisplayer
+					Netbeans_v1.0.x.java.beans.PropertyEditor "propertyEditor" <-- PropertyDisplayer
+					JavaPrimitiveTypes.int "propertyIndex" <-- PropertyDisplayer
+					SheetButtonListener "readButtonListener" <-- PropertyDisplayer
+					Netbeans_v1.0.x.java.lang.String "actionCommand" <-- SheetButton
+					JavaPrimitiveTypes.boolean "focusTransferable" <-- SheetButton
+					Netbeans_v1.0.x.java.awt.Color "foreground" <-- SheetButton
+					JavaPrimitiveTypes.boolean "hasFocus" <-- SheetButton
+					JavaPrimitiveTypes.boolean "hasFocusFromMouse" <-- SheetButton
+					Netbeans_v1.0.x.java.awt.Color "inForeground" <-- SheetButton
+					Netbeans_v1.0.x.javax.swing.JComponent "innerComponent" <-- SheetButton
+					InnerListener "innerListener" <-- SheetButton
+					JavaPrimitiveTypes.boolean "isPlastic" <-- SheetButton
+					Netbeans_v1.0.x.java.lang.String "label" <-- SheetButton
+					Netbeans_v1.0.x.java.util.Vector "listeners" <-- SheetButton
+					JavaPrimitiveTypes.boolean "plasticNotify" <-- SheetButton
+					Netbeans_v1.0.x.java.awt.Dimension "preferredSize" <-- SheetButton
+					JavaPrimitiveTypes.boolean "pressed" <-- SheetButton
+					JavaPrimitiveTypes.long "serialVersionUID" <-- SheetButton
+					SheetButton "readComponent" <-- PropertyDisplayer
+					Netbeans_v1.0.x.java.lang.String "rollingItem" <-- PropertyDisplayer
+					JavaPrimitiveTypes.long "serialVersionUID" <-- PropertyDisplayer
+					Netbeans_v1.0.x.java.lang.String "stringValue" <-- PropertyDisplayer
+					JavaPrimitiveTypes.boolean "switchAutomatically" <-- PropertyDisplayer
+					Netbeans_v1.0.x.javax.swing.JTextField "textField" <-- PropertyDisplayer
+					Netbeans_v1.0.x.java.lang.String "toolTip" <-- PropertyDisplayer
+					Netbeans_v1.0.x.java.lang.Object "value" <-- PropertyDisplayer
+					JavaPrimitiveTypes.boolean "canRead" <-- PropertyValue
+					Netbeans_v1.0.x.java.lang.Throwable "exception" <-- PropertyValue
+					JavaPrimitiveTypes.boolean "isArray" <-- PropertyValue
+					Netbeans_v1.0.x.java.lang.Object "value" <-- PropertyValue
+					PropertyDisplayer "lastSelectedLine" <-- PropertySheet
+					Netbeans_v1.0.x.java.lang.Integer "lock" <-- PropertySheet
+					Netbeans_v1.0.x.java.awt.Component "hiddenComponent" <-- NamesPanel
+					Netbeans_v1.0.x.java.util.Vector "item" <-- NamesPanel
+					JavaPrimitiveTypes.int "height" <-- ColumnManager
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ColumnManager
+					ColumnManager "manager" <-- NamesPanel
+					JavaPrimitiveTypes.int "selectedItem" <-- NamesPanel
+					JavaPrimitiveTypes.long "serialVersionUID" <-- NamesPanel
+					NamesPanel "namesPanel 0..*" <-- PropertySheet
+					Netbeans_v1.0.x.org.openide.util.actions.ActionPerformer "oldCopy" <-- PropertySheet
+					Netbeans_v1.0.x.org.openide.util.datatransfer.PasteType "oldPaste 0..*" <-- PropertySheet
+					JavaPrimitiveTypes.int "pageIndex" <-- PropertySheet
+					Netbeans_v1.0.x.javax.swing.JTabbedPane "pages" <-- PropertySheet
+					Netbeans_v1.0.x.org.openide.actions.PasteAction "paste" <-- PropertySheet
+					JavaPrimitiveTypes.boolean "plastic" <-- PropertySheet
+					Netbeans_v1.0.x.javax.swing.JPopupMenu "popupMenu" <-- PropertySheet
+					PropertyDetails "propertyDetails 0..*" <-- PropertySheet
+					PropertyDisplayer "propertyDisplayer 0..*" <-- PropertySheet
+					JavaPrimitiveTypes.int "propertyPaintingStyle" <-- PropertySheet
+					PropertyValue "propertyValue 0..*" <-- PropertySheet
+					Netbeans_v1.0.x.org.openide.nodes.Node "nodes 0..*" <-- RunNodes
+					Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task "runTask" <-- RunNodes
+					RunNodes "runNodes" <-- PropertySheet
+					Netbeans_v1.0.x.java.lang.String "selectedTabName" <-- PropertySheet
+					JavaPrimitiveTypes.long "serialVersionUID" <-- PropertySheet
+					JavaPrimitiveTypes.long "serialVersionUID" <-- SetDefaultValueAction
+					SetDefaultValueAction "setDefault" <-- PropertySheet
+					Netbeans_v1.0.x.java.beans.PropertyChangeListener "settingsListener" <-- PropertySheet
+					Netbeans_v1.0.x.java.util.Comparator "sorter" <-- PropertySheet
+					JavaPrimitiveTypes.int "sortingMode" <-- PropertySheet
+					Netbeans_v1.0.x.java.lang.String "tab 0..*" <-- PropertySheet
+					Netbeans_v1.0.x.javax.swing.event.ChangeListener "tabListener" <-- PropertySheet
+					Netbeans_v1.0.x.java.lang.String "text" <-- PropertySheet
+					Netbeans_v1.0.x.java.awt.Color "valueColor" <-- PropertySheet
+					NamesPanel "valuesPanel 0..*" <-- PropertySheet
+					PropertyDetails "details" <-- BeanPasteType
+					Netbeans_v1.0.x.java.awt.datatransfer.DataFlavor "flavor" <-- BeanPasteType
+					Netbeans_v1.0.x.java.awt.datatransfer.Transferable "transferable" <-- BeanPasteType
+					Netbeans_v1.0.x.java.awt.datatransfer.DataFlavor "flavor" <-- BeanTransferableOwner
+					Netbeans_v1.0.x.java.lang.Object "object" <-- BeanTransferableOwner
+					Netbeans_v1.0.x.java.awt.Container "element" <-- ScrollableSplittedPanel
+					Netbeans_v1.0.x.java.awt.Component "scroll" <-- ScrollableSplittedPanel
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ScrollableSplittedPanel
+					SheetButton "nameComponent" <-- SheetListener
+					PropertyDisplayer "valueComponent" <-- SheetListener
+				}
+				package view {
+					'/** 
+					' * Visual representation of one node. Holds necessary information about nodes like icon, name, description and also list of its children.  <P> There is at most one VisualizerNode for one node. All of them are hold in a cache. <P> The VisualizerNode level provides secure layer between Nodes and Swing AWT dispatch  thread.
+					' * @author Jaroslav Tulach
+					' */
+					'DP role: adapter
+					class VisualizerNode {
+						{const} EMPTY: VisualizerNode
+						-{const} NO_REF: Netbeans_v1.0.x.java.lang.ref.Reference
+						-{const} TEMPLATE: VisualizerNode
+						-{static} cache: Netbeans_v1.0.x.java.util.WeakHashMap
+						-children: Netbeans_v1.0.x.java.lang.ref.Reference
+						displayName: Netbeans_v1.0.x.java.lang.String
+						-hashCode: JavaPrimitiveTypes.int
+						name: Netbeans_v1.0.x.java.lang.String
+						node: Netbeans_v1.0.x.org.openide.nodes.Node
+						-parent: VisualizerChildren
+						-rendererList: List
+						-rendererPane: Pane
+						-rendererTree: Tree
+						{const} serialVersionUID: JavaPrimitiveTypes.long = 3726728244698316872
+						shortDescription: Netbeans_v1.0.x.java.lang.String
+						-uiListener: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+						'/** 
+						' * Constructor that creates template for the node.
+						' */
+						-<<Create>> VisualizerNode(hashCode : JavaPrimitiveTypes.int)
+						'/** 
+						' * Creates new VisualizerNode
+						' * @param n node to refer to
+						' */
+						-<<Create>> VisualizerNode(n : Netbeans_v1.0.x.org.openide.nodes.Node)
+						'/** 
+						' * Adds visualizer listener.
+						' */
+						addNodeModel(l : NodeModel)
+						children(): Netbeans_v1.0.x.java.util.Enumeration
+						'/** 
+						' * Fired when a set of new children is added.
+						' * @param ev event describing the action
+						' */
+						childrenAdded(ev : Netbeans_v1.0.x.org.openide.nodes.NodeMemberEvent)
+						'/** 
+						' * Fired when a set of children is removed.
+						' * @param ev event describing the action
+						' */
+						childrenRemoved(ev : Netbeans_v1.0.x.org.openide.nodes.NodeMemberEvent)
+						'/** 
+						' * Fired when the order of children is changed.
+						' * @param ev event describing the change
+						' */
+						childrenReordered(ev : Netbeans_v1.0.x.org.openide.nodes.NodeReorderEvent)
+						'/** 
+						' * Equals two objects are equal if they have the same hash code
+						' */
+						equals(o : Netbeans_v1.0.x.java.lang.Object): JavaPrimitiveTypes.boolean
+						'/** 
+						' * When finalized remove the ui listener 
+						' */
+						#finalize()
+						getAllowsChildren(): JavaPrimitiveTypes.boolean
+						getChildAt(p1 : JavaPrimitiveTypes.int): Netbeans_v1.0.x.javax.swing.tree.TreeNode
+						getChildCount(): JavaPrimitiveTypes.int
+						'/** 
+						' * Getter for list of children of this visualizer.
+						' * @return list of VisualizerNode objects
+						' */
+						getChildren(): Netbeans_v1.0.x.java.util.List
+						getIndex(p1 : Netbeans_v1.0.x.javax.swing.tree.TreeNode): JavaPrimitiveTypes.int
+						'/** 
+						' * List renderer for this node.
+						' */
+						getList(): List
+						'/** 
+						' * Pane renderer for this node.
+						' */
+						getPane(): Pane
+						getParent(): Netbeans_v1.0.x.javax.swing.tree.TreeNode
+						'/** 
+						' * Tree renderer for this node.
+						' */
+						getTree(): Tree
+						'/** 
+						' * Finds VisualizerNode for given node. Can be called only from EventQueue.
+						' * @param ch the children this visualizer should belong to
+						' * @param n the node
+						' * @return the visualizer
+						' */
+						{static} getVisualizer(ch : VisualizerChildren, n : Netbeans_v1.0.x.org.openide.nodes.Node): VisualizerNode
+						'/** 
+						' * Hash code
+						' */
+						hashCode(): JavaPrimitiveTypes.int
+						isLeaf(): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Fired when the node is deleted.
+						' * @param ev event describing the node
+						' */
+						nodeDestroyed(ev : Netbeans_v1.0.x.org.openide.nodes.NodeEvent)
+						'/** 
+						' * Notifies change in the amount of children. This is used to distinguish between weak and hard reference. Called from VisualizerChildren
+						' * @param size amount of children
+						' * @param ch the children
+						' */
+						notifyVisualizerChildrenChange(size : JavaPrimitiveTypes.int, ch : VisualizerChildren)
+						'/** 
+						' * Change in the node properties (icon, etc.)
+						' */
+						propertyChange(evt : Netbeans_v1.0.x.java.beans.PropertyChangeEvent)
+						'/** 
+						' * Removes visualizer listener.
+						' */
+						removeNodeModel(l : NodeModel)
+						'/** 
+						' * Update the state of this class by retrieving new name, etc. And fire change to all listeners. Only by AWT-Event-Queue
+						' */
+						run()
+						'/** 
+						' * String name is taken from the node.
+						' */
+						toString(): Netbeans_v1.0.x.java.lang.String
+					}
+					'DP role: adaptee
+					class VisualizerEvent {
+					}
+					Netbeans_v1.0.x.javax.swing.event.EventListenerList <|-- VisualizerNode
+					Netbeans_v1.0.x.org.openide.nodes.NodeListener <|.. VisualizerNode
+					Netbeans_v1.0.x.javax.swing.tree.TreeNode <|.. VisualizerNode
+					Netbeans_v1.0.x.java.lang.Runnable <|.. VisualizerNode
+					Netbeans_v1.0.x.java.util.EventListener <|-- NodeModel
+					Netbeans_v1.0.x.java.lang.ref.Reference "NO_REF" <-- VisualizerNode
+					Netbeans_v1.0.x.java.util.WeakHashMap "cache" <-- VisualizerNode
+					Netbeans_v1.0.x.java.lang.ref.Reference "children" <-- VisualizerNode
+					Netbeans_v1.0.x.java.lang.String "displayName" <-- VisualizerNode
+					JavaPrimitiveTypes.int "hashCode" <-- VisualizerNode
+					Netbeans_v1.0.x.java.lang.String "name" <-- VisualizerNode
+					Netbeans_v1.0.x.org.openide.nodes.Node "node" <-- VisualizerNode
+					Netbeans_v1.0.x.java.util.List "list" <-- VisualizerChildren
+					VisualizerNode "parent" <-- VisualizerChildren
+					Netbeans_v1.0.x.org.openide.nodes.Node "added 0..*" <-- Added
+					JavaPrimitiveTypes.long "serialVersionUID" <-- Added
+					Netbeans_v1.0.x.java.util.LinkedList "removed" <-- Removed
+					JavaPrimitiveTypes.long "serialVersionUID" <-- Removed
+					JavaPrimitiveTypes.int "changedIndices 0..*" <-- Reordered
+					JavaPrimitiveTypes.long "serialVersionUID" <-- Reordered
+					VisualizerChildren "parent" <-- VisualizerNode
+					Netbeans_v1.0.x.javax.swing.border.Border "hasFocusBorder" <-- List
+					Netbeans_v1.0.x.javax.swing.border.Border "noFocusBorder" <-- List
+					JavaPrimitiveTypes.long "serialVersionUID" <-- List
+					List "rendererList" <-- VisualizerNode
+					Netbeans_v1.0.x.javax.swing.border.Border "hasFocusBorder" <-- Pane
+					Netbeans_v1.0.x.javax.swing.border.Border "noFocusBorder" <-- Pane
+					JavaPrimitiveTypes.long "serialVersionUID" <-- Pane
+					Pane "rendererPane" <-- VisualizerNode
+					Netbeans_v1.0.x.javax.swing.border.Border "activeBorder" <-- Tree
+					JavaPrimitiveTypes.boolean "displaysOpenedIcon" <-- Tree
+					Netbeans_v1.0.x.javax.swing.border.Border "emptyBorder" <-- Tree
+					JavaPrimitiveTypes.boolean "nbDrawsFocusBorderAroundIcon" <-- Tree
+					JavaPrimitiveTypes.boolean "nbHasFocus" <-- Tree
+					Netbeans_v1.0.x.java.awt.Component "oldRenderer" <-- Tree
+					JavaPrimitiveTypes.long "serialVersionUID" <-- Tree
+					Tree "rendererTree" <-- VisualizerNode
+					JavaPrimitiveTypes.long "serialVersionUID" <-- VisualizerNode
+					Netbeans_v1.0.x.java.lang.String "shortDescription" <-- VisualizerNode
+					Netbeans_v1.0.x.java.beans.PropertyChangeListener "uiListener" <-- VisualizerNode
+					Netbeans_v1.0.x.java.lang.Object "o" <-- StrongReference
+				}
+				'/** 
+				' * Manages a selection and root context for a (set of) Explorer view(s). The views should register their  {@link java.beans.VetoableChangeListener}s and  {@link java.beans.PropertyChangeListener}s at the <code>ExplorerManager</code> of the Explorer they belong to. The manager listens on changes to the node hierarchy and updates the selection and root node. <P> Deserialization of this object is done with validation with priority 10. In readObject the ExplorerManager is temporarily initialized with void values. These values are  replaced with original ones when the validation proceeds.
+				' * @author   Ian Formanek, Petr Hamernik, Jaroslav Tulach, Jan Jancura
+				' */
+				'DP role: adaptee
+				class ExplorerManager {
+					{const} PROP_EXPLORED_CONTEXT: Netbeans_v1.0.x.java.lang.String = exploredContext
+					{const} PROP_ROOT_CONTEXT: Netbeans_v1.0.x.java.lang.String = rootContext
+					{const} PROP_SELECTED_NODES: Netbeans_v1.0.x.java.lang.String = selectedNodes
+					-exploredContext: Netbeans_v1.0.x.org.openide.nodes.Node
+					{static} explorerBundle: Netbeans_v1.0.x.java.util.ResourceBundle
+					-listener: Listener
+					-propertySupport: Netbeans_v1.0.x.java.beans.PropertyChangeSupport
+					-rootContext: Netbeans_v1.0.x.org.openide.nodes.Node
+					-selectedNodes: Netbeans_v1.0.x.org.openide.nodes.Node [*]
+					{const} serialVersionUID: JavaPrimitiveTypes.long = -4330330689803575792
+					-vetoableSupport: Netbeans_v1.0.x.java.beans.VetoableChangeSupport
+					-weakListener: Netbeans_v1.0.x.org.openide.nodes.NodeListener
+					'/** 
+					' * Construct a new manager. 
+					' */
+					<<Create>> ExplorerManager()
+					'/** 
+					' * Add a <code>PropertyChangeListener</code> to the listener list.
+					' * @param l the listener to add
+					' */
+					addPropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					'/** 
+					' * Add a <code>VetoableListener</code> to the listener list.
+					' * @param l the listener to add
+					' */
+					addVetoableChangeListener(l : Netbeans_v1.0.x.java.beans.VetoableChangeListener)
+					'/** 
+					' * Clones the manager.
+					' * @return manager with the same settings like this one
+					' */
+					clone(): Netbeans_v1.0.x.java.lang.Object
+					'/** 
+					' * Find the proper Explorer manager for a given component. This is done by traversing the component hierarchy and finding the first ancestor that implements  {@link Provider}. <P> This method should be used in  {@link Component#addNotify} of each componentthat works with the Explorer manager, e.g.: <p><CODE><pre> private transient ExplorerManager explorer; public void addNotify () { super.addNotify (); explorer = ExplorerManager.find (this); } </pre></CODE>
+					' * @param comp component to find the manager for
+					' * @return the manager, or a new empty manager if no ancestor implements <code>Provider</code>
+					' * @see Provider
+					' */
+					{static} find(comp : Netbeans_v1.0.x.java.awt.Component): ExplorerManager
+					'/** 
+					' * Finds node by given path 
+					' */
+					{static} findPath(r : Netbeans_v1.0.x.org.openide.nodes.Node, path : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.org.openide.nodes.Node
+					'/** 
+					' * Get the explored context.
+					' * @return the node being explored, or <code>null</code>
+					' */
+					getExploredContext(): Netbeans_v1.0.x.org.openide.nodes.Node
+					'/** 
+					' * Get the root context.
+					' * @return the root context node
+					' */
+					getRootContext(): Netbeans_v1.0.x.org.openide.nodes.Node
+					'/** 
+					' * Get the set of selected nodes.
+					' * @return the selected nodes; empty (not <code>null</code>) if none are selected
+					' */
+					getSelectedNodes(): Netbeans_v1.0.x.org.openide.nodes.Node
+					'/** 
+					' * Initializes the nodes.
+					' */
+					-init()
+					'/** 
+					' * Checks whether given Node is a subnode of rootContext.
+					' * @return true if specified Node is under current rootContext
+					' */
+					-isUnderRoot(node : Netbeans_v1.0.x.org.openide.nodes.Node): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Deserializes the view and initializes it
+					' */
+					-readObject(ois : Netbeans_v1.0.x.java.io.ObjectInputStream)
+					'/** 
+					' * Remove a <code>PropertyChangeListener</code> from the listener list.
+					' * @param l the listener to remove
+					' */
+					removePropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					'/** 
+					' * Remove a <code>VetoableChangeListener</code> from the listener list.
+					' * @param l the listener to remove
+					' */
+					removeVetoableChangeListener(l : Netbeans_v1.0.x.java.beans.VetoableChangeListener)
+					'/** 
+					' * Set the explored context.
+					' * @param value the new node to explore, or <code>null</code> if none should be explored. The action is ignored if the node is above the current root context in the node hierarchy.
+					' */
+					setExploredContext(value : Netbeans_v1.0.x.org.openide.nodes.Node)
+					'/** 
+					' * Set the root context.
+					' * @param value the new node to serve as a root
+					' */
+					setRootContext(value : Netbeans_v1.0.x.org.openide.nodes.Node)
+					'/** 
+					' * Set the set of selected nodes.
+					' * @param value the nodes to select; empty (not <code>null</code>) if none are to be selected
+					' * @exception PropertyVetoException when the given nodes cannot be selected
+					' */
+					setSelectedNodes(value : Netbeans_v1.0.x.org.openide.nodes.Node)
+					'/** 
+					' * serializes object
+					' */
+					-writeObject(os : Netbeans_v1.0.x.java.io.ObjectOutputStream)
+				}
+				Netbeans_v1.0.x.java.io.Serializable <|.. ExplorerManager
+				Netbeans_v1.0.x.java.lang.Cloneable <|.. ExplorerManager
+				Netbeans_v1.0.x.java.lang.String "PROP_EXPLORED_CONTEXT" <-- ExplorerManager
+				Netbeans_v1.0.x.java.lang.String "PROP_ROOT_CONTEXT" <-- ExplorerManager
+				Netbeans_v1.0.x.java.lang.String "PROP_SELECTED_NODES" <-- ExplorerManager
+				Netbeans_v1.0.x.org.openide.nodes.Node "exploredContext" <-- ExplorerManager
+				Netbeans_v1.0.x.java.util.ResourceBundle "explorerBundle" <-- ExplorerManager
+				Listener "listener" <-- ExplorerManager
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "propertySupport" <-- ExplorerManager
+				Netbeans_v1.0.x.org.openide.nodes.Node "rootContext" <-- ExplorerManager
+				Netbeans_v1.0.x.org.openide.nodes.Node "selectedNodes 0..*" <-- ExplorerManager
+				JavaPrimitiveTypes.long "serialVersionUID" <-- ExplorerManager
+				Netbeans_v1.0.x.java.beans.VetoableChangeSupport "vetoableSupport" <-- ExplorerManager
+				Netbeans_v1.0.x.org.openide.nodes.NodeListener "weakListener" <-- ExplorerManager
+				Netbeans_v1.0.x.java.lang.String "exploredCtx 0..*" <-- MyValidation
+				Netbeans_v1.0.x.org.openide.nodes.Node "root" <-- MyValidation
+				Netbeans_v1.0.x.java.lang.String "rootCtx 0..*" <-- MyValidation
+				Netbeans_v1.0.x.java.util.List "selNodes" <-- MyValidation
+			}
+			package nodes {
+				'DP role: client
+				abstract class Node {
+					{const} EMPTY: Node
+					{const} PROP_COOKIE: Netbeans_v1.0.x.java.lang.String = cookie
+					{const} PROP_DISPLAY_NAME: Netbeans_v1.0.x.java.lang.String = displayName
+					{const} PROP_ICON: Netbeans_v1.0.x.java.lang.String = icon
+					{const} PROP_NAME: Netbeans_v1.0.x.java.lang.String = name
+					{const} PROP_OPENED_ICON: Netbeans_v1.0.x.java.lang.String = openedIcon
+					{const} PROP_PARENT_NODE: Netbeans_v1.0.x.java.lang.String = parentNode
+					{const} PROP_PROPERTY_SETS: Netbeans_v1.0.x.java.lang.String = propertySets
+					{const} PROP_SHORT_DESCRIPTION: Netbeans_v1.0.x.java.lang.String = shortDescription
+					hierarchy: Children
+					-listeners: Netbeans_v1.0.x.javax.swing.event.EventListenerList
+					-parent: Children
+					#<<Create>> Node(h : Children)
+					addNodeListener(l : NodeListener)
+					addPropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					assignTo(parent : Children, index : JavaPrimitiveTypes.int)
+					canCopy(): JavaPrimitiveTypes.boolean
+					canCut(): JavaPrimitiveTypes.boolean
+					canDestroy(): JavaPrimitiveTypes.boolean
+					canRename(): JavaPrimitiveTypes.boolean
+					clipboardCopy(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+					clipboardCut(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+					#clone(): Netbeans_v1.0.x.java.lang.Object
+					cloneNode(): Node
+					deassignFrom(parent : Children)
+					destroy()
+					drag(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+					#fireCookieChange()
+					#fireDisplayNameChange(o : Netbeans_v1.0.x.java.lang.String, n : Netbeans_v1.0.x.java.lang.String)
+					#fireIconChange()
+					#fireNameChange(o : Netbeans_v1.0.x.java.lang.String, n : Netbeans_v1.0.x.java.lang.String)
+					-fireNodeDestroyed()
+					#fireOpenedIconChange()
+					fireOwnPropertyChange(name : Netbeans_v1.0.x.java.lang.String, o : Netbeans_v1.0.x.java.lang.Object, n : Netbeans_v1.0.x.java.lang.Object)
+					fireParentNodeChange(o : Node, n : Node)
+					#firePropertyChange(name : Netbeans_v1.0.x.java.lang.String, o : Netbeans_v1.0.x.java.lang.Object, n : Netbeans_v1.0.x.java.lang.Object)
+					#firePropertySetsChange(o : PropertySet, n : PropertySet)
+					fireReorderChange(indices : JavaPrimitiveTypes.int)
+					#fireShortDescriptionChange(o : Netbeans_v1.0.x.java.lang.String, n : Netbeans_v1.0.x.java.lang.String)
+					fireSubNodesChange(addAction : JavaPrimitiveTypes.boolean, delta : Node, from : Node)
+					getActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					getChildren(): Children
+					getContextActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					getContextMenu(): Netbeans_v1.0.x.javax.swing.JPopupMenu
+					getCookie(type : Netbeans_v1.0.x.java.lang.Class): Cookie
+					getCustomizer(): Netbeans_v1.0.x.java.awt.Component
+					getDefaultAction(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					getDropType(t : Netbeans_v1.0.x.java.awt.datatransfer.Transferable, action : JavaPrimitiveTypes.int, index : JavaPrimitiveTypes.int): Netbeans_v1.0.x.org.openide.util.datatransfer.PasteType
+					getHandle(): Handle
+					getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+					getIcon(type : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.awt.Image
+					getNewTypes(): Netbeans_v1.0.x.org.openide.util.datatransfer.NewType
+					getOpenedIcon(type : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.awt.Image
+					getParentNode(): Node
+					getPasteTypes(t : Netbeans_v1.0.x.java.awt.datatransfer.Transferable): Netbeans_v1.0.x.org.openide.util.datatransfer.PasteType
+					getPropertySets(): PropertySet
+					{static} getString(resName : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+					hasCustomizer(): JavaPrimitiveTypes.boolean
+					isLeaf(): JavaPrimitiveTypes.boolean
+					removeNodeListener(l : NodeListener)
+					removePropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					setDisplayName(s : Netbeans_v1.0.x.java.lang.String)
+					setName(s : Netbeans_v1.0.x.java.lang.String)
+					setShortDescription(s : Netbeans_v1.0.x.java.lang.String)
+					toString(): Netbeans_v1.0.x.java.lang.String
+				}
+				'DP role: adapter
+				class ChildrenArray {
+					-children: Children
+					-map: Netbeans_v1.0.x.java.util.WeakHashMap
+					-nodes: Node [*]
+					-<<Create>> ChildrenArray()
+					clear()
+					{static} create(ch : Children): ChildrenArray
+					#finalize()
+					finalizeNodes()
+					isInitialized(): JavaPrimitiveTypes.boolean
+					nodes(): Node
+					nodesFor(info : Info): Netbeans_v1.0.x.java.util.Collection
+					useNodes(info : Info, list : Netbeans_v1.0.x.java.util.Collection)
+				}
+				'DP role: adapter
+				class NodeAdapter {
+					<<Create>> NodeAdapter()
+					childrenAdded(ev : NodeMemberEvent)
+					childrenRemoved(ev : NodeMemberEvent)
+					childrenReordered(ev : NodeReorderEvent)
+					nodeDestroyed(ev : NodeEvent)
+					propertyChange(ev : Netbeans_v1.0.x.java.beans.PropertyChangeEvent)
+				}
+				'DP role: target
+				'DP role: adaptee
+				interface NodeListener {
+					childrenAdded(ev : NodeMemberEvent)
+					childrenRemoved(ev : NodeMemberEvent)
+					childrenReordered(ev : NodeReorderEvent)
+					nodeDestroyed(ev : NodeEvent)
+				}
+				'DP role: adaptee
+				class FilterNode {
+					-{const} DELEGATE_ALL: JavaPrimitiveTypes.int = 511
+					#{const} DELEGATE_DESTROY: JavaPrimitiveTypes.int = 64
+					#{const} DELEGATE_GET_ACTIONS: JavaPrimitiveTypes.int = 128
+					#{const} DELEGATE_GET_CONTEXT_ACTIONS: JavaPrimitiveTypes.int = 256
+					#{const} DELEGATE_GET_DISPLAY_NAME: JavaPrimitiveTypes.int = 8
+					#{const} DELEGATE_GET_NAME: JavaPrimitiveTypes.int = 2
+					#{const} DELEGATE_GET_SHORT_DESCRIPTION: JavaPrimitiveTypes.int = 32
+					#{const} DELEGATE_SET_DISPLAY_NAME: JavaPrimitiveTypes.int = 4
+					#{const} DELEGATE_SET_NAME: JavaPrimitiveTypes.int = 1
+					#{const} DELEGATE_SET_SHORT_DESCRIPTION: JavaPrimitiveTypes.int = 16
+					-delegateMask: JavaPrimitiveTypes.int
+					-nodeL: NodeListener
+					-original: Node
+					-propL: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					<<Create>> FilterNode(original : Node)
+					<<Create>> FilterNode(original : Node, children : Children)
+					canCopy(): JavaPrimitiveTypes.boolean
+					canCut(): JavaPrimitiveTypes.boolean
+					canDestroy(): JavaPrimitiveTypes.boolean
+					canRename(): JavaPrimitiveTypes.boolean
+					clipboardCopy(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+					clipboardCut(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+					cloneNode(): Node
+					#createNodeListener(): NodeListener
+					#createPropertyChangeListener(): Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					-delegating(what : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					destroy()
+					#disableDelegation(mask : JavaPrimitiveTypes.int)
+					drag(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+					#enableDelegation(mask : JavaPrimitiveTypes.int)
+					equals(o : Netbeans_v1.0.x.java.lang.Object): JavaPrimitiveTypes.boolean
+					#finalize()
+					getActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					getContextActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					getCookie(type : Netbeans_v1.0.x.java.lang.Class): Cookie
+					getCustomizer(): Netbeans_v1.0.x.java.awt.Component
+					getDefaultAction(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					getDisplayName(): Netbeans_v1.0.x.java.lang.String
+					getDropType(t : Netbeans_v1.0.x.java.awt.datatransfer.Transferable, action : JavaPrimitiveTypes.int, index : JavaPrimitiveTypes.int): Netbeans_v1.0.x.org.openide.util.datatransfer.PasteType
+					getHandle(): Handle
+					getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+					getIcon(type : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.awt.Image
+					getName(): Netbeans_v1.0.x.java.lang.String
+					getNewTypes(): Netbeans_v1.0.x.org.openide.util.datatransfer.NewType
+					getNodeListener(): NodeListener
+					getOpenedIcon(type : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.awt.Image
+					#getOriginal(): Node
+					getPasteTypes(t : Netbeans_v1.0.x.java.awt.datatransfer.Transferable): Netbeans_v1.0.x.org.openide.util.datatransfer.PasteType
+					getPropertyChangeListener(): Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					getPropertySets(): PropertySet
+					getShortDescription(): Netbeans_v1.0.x.java.lang.String
+					hasCustomizer(): JavaPrimitiveTypes.boolean
+					hashCode(): JavaPrimitiveTypes.int
+					-init()
+					-isDefault(): JavaPrimitiveTypes.boolean
+					-originalDestroyed()
+					setDisplayName(s : Netbeans_v1.0.x.java.lang.String)
+					setName(s : Netbeans_v1.0.x.java.lang.String)
+					setShortDescription(s : Netbeans_v1.0.x.java.lang.String)
+				}
+				Netbeans_v1.0.x.java.beans.FeatureDescriptor <|-- Node
+				NodeAdapter <|-- ChildrenArray
+				NodeListener <|.. NodeAdapter
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|-- NodeListener
+				NodeEvent <|-- NodeMemberEvent
+				Netbeans_v1.0.x.java.util.EventObject <|-- NodeEvent
+				NodeEvent <|-- NodeReorderEvent
+				Node <|-- AbstractNode
+				Node <|-- FilterNode
+				AbstractNode <|-- BeanNode
+				Netbeans_v1.0.x.java.lang.String "PROP_COOKIE" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_DISPLAY_NAME" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_ICON" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_NAME" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_OPENED_ICON" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_PARENT_NODE" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_PROPERTY_SETS" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_SHORT_DESCRIPTION" <-- Node
+				Netbeans_v1.0.x.org.openide.util.Mutex "MUTEX" <-- Children
+				Netbeans_v1.0.x.java.lang.ref.Reference "array" <-- Children
+				Netbeans_v1.0.x.java.util.Collection "entries" <-- Children
+				Netbeans_v1.0.x.java.util.Map "map" <-- Children
+				Node "parent" <-- Children
+				Entry "entry" <-- Info
+				JavaPrimitiveTypes.int "length" <-- Info
+				JavaPrimitiveTypes.long "serialVersionUID" <-- NodeEvent
+				JavaPrimitiveTypes.boolean "add" <-- NodeMemberEvent
+				Node "delta 0..*" <-- NodeMemberEvent
+				Node "from 0..*" <-- NodeMemberEvent
+				JavaPrimitiveTypes.int "indices 0..*" <-- NodeMemberEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- NodeMemberEvent
+				JavaPrimitiveTypes.int "newIndices 0..*" <-- NodeReorderEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- NodeReorderEvent
+				Children "children" <-- ChildrenArray
+				Netbeans_v1.0.x.java.util.WeakHashMap "map" <-- ChildrenArray
+				Node "nodes 0..*" <-- ChildrenArray
+				Netbeans_v1.0.x.java.util.Collection "nodes" <-- Array
+				Entry "nodesEntry" <-- Array
+				Node "ARRAY 0..*" <-- Empty
+				JavaPrimitiveTypes.boolean "before" <-- Keys
+				Netbeans_v1.0.x.java.lang.Object "key" <-- KE
+				Netbeans_v1.0.x.java.util.Map "nodes" <-- Map
+				Netbeans_v1.0.x.java.lang.Object "key" <-- ME
+				Node "node" <-- ME
+				Netbeans_v1.0.x.java.util.Comparator "comp" <-- SortedArray
+				Netbeans_v1.0.x.java.util.Comparator "comp" <-- SortedMap
+				Children "hierarchy" <-- Node
+				Netbeans_v1.0.x.javax.swing.event.EventListenerList "listeners" <-- Node
+				Children "parent" <-- Node
+				Netbeans_v1.0.x.java.lang.Class "type" <-- Property
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Handle
+				Netbeans_v1.0.x.java.lang.Class "elementType" <-- IndexedProperty
+				Netbeans_v1.0.x.java.lang.String "DEFAULT_ICON_BASE" <-- AbstractNode
+				JavaPrimitiveTypes.int "ICON_BASE" <-- AbstractNode
+				Netbeans_v1.0.x.org.openide.util.datatransfer.NewType "NO_NEW_TYPES 0..*" <-- AbstractNode
+				Netbeans_v1.0.x.org.openide.util.datatransfer.PasteType "NO_PASTE_TYPES 0..*" <-- AbstractNode
+				PropertySet "NO_PROPERTY_SETS 0..*" <-- AbstractNode
+				JavaPrimitiveTypes.int "OPENED_ICON_BASE" <-- AbstractNode
+				Netbeans_v1.0.x.javax.swing.event.ChangeListener "cookieL" <-- AbstractNode
+				Netbeans_v1.0.x.java.util.HashSet "list" <-- CookieSet
+				Netbeans_v1.0.x.java.util.HashMap "map" <-- CookieSet
+				CookieSet "cookieSet" <-- AbstractNode
+				Netbeans_v1.0.x.org.openide.util.actions.SystemAction "defaultAction" <-- AbstractNode
+				Netbeans_v1.0.x.java.text.MessageFormat "displayFormat" <-- AbstractNode
+				Netbeans_v1.0.x.java.lang.Object "iconBase 0..*" <-- AbstractNode
+				Netbeans_v1.0.x.java.text.MessageFormat "icons 0..*" <-- AbstractNode
+				Netbeans_v1.0.x.java.lang.Boolean "moduleTestIcons" <-- AbstractNode
+				Netbeans_v1.0.x.java.lang.String "EXPERT" <-- Sheet
+				Netbeans_v1.0.x.java.lang.String "PROPERTIES" <-- Sheet
+				PropertySet "array 0..*" <-- Sheet
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "propL" <-- Sheet
+				Netbeans_v1.0.x.java.util.ArrayList "sets" <-- Sheet
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "supp" <-- Sheet
+				Property "array 0..*" <-- Set
+				Netbeans_v1.0.x.java.util.ArrayList "props" <-- Set
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "supp" <-- Set
+				Sheet "sheet" <-- AbstractNode
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "sheetL" <-- AbstractNode
+				Netbeans_v1.0.x.org.openide.util.actions.SystemAction "systemActions 0..*" <-- AbstractNode
+				JavaPrimitiveTypes.int "DELEGATE_ALL" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_DESTROY" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_GET_ACTIONS" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_GET_CONTEXT_ACTIONS" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_GET_DISPLAY_NAME" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_GET_NAME" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_GET_SHORT_DESCRIPTION" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_SET_DISPLAY_NAME" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_SET_NAME" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_SET_SHORT_DESCRIPTION" <-- FilterNode
+				JavaPrimitiveTypes.int "delegateMask" <-- FilterNode
+				NodeListener "nodeL" <-- FilterNode
+				Node "original" <-- FilterNode
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "propL" <-- FilterNode
+				NodeListener "nodeL" <-- Children
+				Node "original" <-- Children
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "children" <-- ChildrenAdapter
+				Handle "original" <-- FilterHandle
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FilterHandle
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "children" <-- NodeAdapter
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "fn" <-- NodeAdapter
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "fn" <-- PropertyChangeAdapter
+				Netbeans_v1.0.x.java.util.HashSet "listeners" <-- Support
+				Netbeans_v1.0.x.java.lang.String "EXPERT" <-- BeanNode
+				Netbeans_v1.0.x.java.lang.String "ICON_BASE" <-- BeanNode
+				Netbeans_v1.0.x.java.lang.String "PROPERTIES" <-- BeanNode
+				Netbeans_v1.0.x.java.lang.Object "bean" <-- BeanNode
+				Netbeans_v1.0.x.java.beans.BeanInfo "beanInfo" <-- BeanNode
+				Netbeans_v1.0.x.java.lang.reflect.Method "nameGetter" <-- BeanNode
+				Netbeans_v1.0.x.java.lang.reflect.Method "nameSetter" <-- BeanNode
+				PropL "propertyChangeListener" <-- BeanNode
+				Netbeans_v1.0.x.java.lang.reflect.Method "removePCLMethod" <-- BeanNode
+				JavaPrimitiveTypes.boolean "synchronizeName" <-- BeanNode
+				Property "expert 0..*" <-- Descriptor
+				Property "hidden 0..*" <-- Descriptor
+				Property "property 0..*" <-- Descriptor
+			}
+			package util {
+				package actions {
+					'/** 
+					' * An action dependent on the cookies of the selected nodes.
+					' * @author   Petr Hamernik, Jaroslav Tulach, Dafe Simonek
+					' */
+					'DP role: adaptee
+					abstract class CookieAction {
+						{const} MODE_ALL: JavaPrimitiveTypes.int = 4
+						{const} MODE_ANY: JavaPrimitiveTypes.int = 7
+						{const} MODE_EXACTLY_ONE: JavaPrimitiveTypes.int = 8
+						{const} MODE_ONE: JavaPrimitiveTypes.int = 1
+						{const} MODE_SOME: JavaPrimitiveTypes.int = 2
+						-{const} PROP_COOKIES: Netbeans_v1.0.x.java.lang.String = cookies
+						-{const} PROP_COOKIE_CHANGE: Netbeans_v1.0.x.java.lang.String = cookieChange
+						{const} serialVersionUID: JavaPrimitiveTypes.long = 6031319415908298424
+						<<Create>> CookieAction()
+						#addNotify()
+						'/** 
+						' * Get the cookies that this action requires. The cookies are disjunctive, i.e. a node must support AT LEAST ONE of the cookies specified by this method.
+						' * @return a list of cookies
+						' */
+						#cookieClasses(): Netbeans_v1.0.x.java.lang.Class
+						'/** 
+						' * Helper, actually performs enable / disable logic 
+						' */
+						doEnable(activatedNodes : Netbeans_v1.0.x.org.openide.nodes.Node): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Test for enablement based on the cookies of selected nodes. Generally subclasses should not override this except for strange purposes, and then only calling the super method and adding a check. Just use  {@link #cookieClasses} and {@link #mode} to specifythe enablement logic.
+						' * @param activatedNodes the set of activated nodes
+						' * @return <code>true</code> to enable
+						' */
+						#enable(activatedNodes : Netbeans_v1.0.x.org.openide.nodes.Node): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Getter for cookies.
+						' * @return the set of cookies for this
+						' */
+						-getCookies(): Netbeans_v1.0.x.java.lang.Class
+						#initialize()
+						'/** 
+						' * Get the mode of the action, i.e.<!-- --> how strict it should be about cookie support.
+						' * @return the mode of the action. Possible values are disjunctions of the <code>MODE_XXX</code>constants. 
+						' */
+						#mode(): JavaPrimitiveTypes.int
+						#removeNotify()
+						'/** 
+						' * Implementation of the above method.
+						' * @param activatedNodes gives array of actually activated nodes.
+						' * @return number of supported classes
+						' */
+						-resolveSupported(activatedNodes : Netbeans_v1.0.x.org.openide.nodes.Node): JavaPrimitiveTypes.int
+					}
+					'/** 
+					' * Base class for all project sensitive actions. Attaches listener to changes of project desktop (TopManager.PROP_PLACES) and also to  cookie changes on current project desktop. If either one is changed, the enable method is called to enable/disable the action. When  enabled and invoked the method performAction (Node) is called.
+					' * @author Jaroslav Tulach
+					' */
+					'DP role: adaptee
+					abstract class ProjectSensitiveAction {
+						-{const} PROP_LISTENER: Netbeans_v1.0.x.java.lang.String = listener
+						{const} serialVersionUID: JavaPrimitiveTypes.long = 1813729754448097488
+						<<Create>> ProjectSensitiveAction()
+						actionPerformed(ev : Netbeans_v1.0.x.java.awt.event.ActionEvent)
+						#addNotify()
+						'/** 
+						' * Performs the action on the current project desktop node.
+						' * @param project desktop node
+						' * @return <code>true</code> to be enabled, <code>false</code> to be disabled
+						' */
+						#enable(project : Netbeans_v1.0.x.org.openide.nodes.Node): JavaPrimitiveTypes.boolean
+						#initialize()
+						'/** 
+						' * Test for enablement based on  {@link #enable}. You probably ought not override this, except possibly to call the super method and add an additional check.
+						' * @return <code>true</code> to enable
+						' */
+						isEnabled(): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Performs the action. In the default implementation, calls  {@link #performAction(Node[])}. In general you need not override this.
+						' */
+						performAction()
+						'/** 
+						' * Performs the action on the current project desktop node.
+						' * @param project desktop node
+						' */
+						#performAction(project : Netbeans_v1.0.x.org.openide.nodes.Node)
+						'/** 
+						' * Project desktop
+						' */
+						{static} projectDesktop(): Netbeans_v1.0.x.org.openide.nodes.Node
+						#removeNotify()
+					}
+					Netbeans_v1.0.x.org.openide.util.SharedClassObject <|-- SystemAction
+					Netbeans_v1.0.x.javax.swing.Action <|.. SystemAction
+					CallableSystemAction <|-- CallbackSystemAction
+					SystemAction <|-- CallableSystemAction
+					Menu <|.. CallableSystemAction
+					Popup <|.. CallableSystemAction
+					Toolbar <|.. CallableSystemAction
+					NodeAction <|-- CookieAction
+					CallableSystemAction <|-- NodeAction
+					CallableSystemAction <|-- ProjectSensitiveAction
+					Netbeans_v1.0.x.java.lang.String "PROP_ENABLED" <-- SystemAction
+					Netbeans_v1.0.x.java.lang.String "PROP_ICON" <-- SystemAction
+					JavaPrimitiveTypes.long "serialVersionUID" <-- SystemAction
+					JavaPrimitiveTypes.long "serialVersionUID" <-- CallableSystemAction
+					Netbeans_v1.0.x.java.lang.String "PROP_ACTION_PERFORMER" <-- CallbackSystemAction
+					Netbeans_v1.0.x.java.lang.String "PROP_FOCUS_LISTENER" <-- CallbackSystemAction
+					JavaPrimitiveTypes.long "serialVersionUID" <-- CallbackSystemAction
+					Netbeans_v1.0.x.java.lang.Class "clazz" <-- FocusL
+					Netbeans_v1.0.x.java.lang.String "PROP_LISTENER" <-- NodeAction
+					JavaPrimitiveTypes.long "serialVersionUID" <-- NodeAction
+					JavaPrimitiveTypes.int "DELAY" <-- NodesL
+					JavaPrimitiveTypes.boolean "active" <-- NodesL
+					Netbeans_v1.0.x.java.lang.Class "clazz" <-- NodesL
+					Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task "task" <-- NodesL
+					JavaPrimitiveTypes.int "MODE_ALL" <-- CookieAction
+					JavaPrimitiveTypes.int "MODE_ANY" <-- CookieAction
+					JavaPrimitiveTypes.int "MODE_EXACTLY_ONE" <-- CookieAction
+					JavaPrimitiveTypes.int "MODE_ONE" <-- CookieAction
+					JavaPrimitiveTypes.int "MODE_SOME" <-- CookieAction
+					Netbeans_v1.0.x.java.lang.String "PROP_COOKIES" <-- CookieAction
+					Netbeans_v1.0.x.java.lang.String "PROP_COOKIE_CHANGE" <-- CookieAction
+					JavaPrimitiveTypes.long "serialVersionUID" <-- CookieAction
+					JavaPrimitiveTypes.boolean "active" <-- CookiesChangeListener
+					Netbeans_v1.0.x.java.lang.Class "clazz" <-- CookiesChangeListener
+					Netbeans_v1.0.x.org.openide.nodes.Node "nodes 0..*" <-- CookiesChangeListener
+					Netbeans_v1.0.x.java.lang.String "PROP_LISTENER" <-- ProjectSensitiveAction
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ProjectSensitiveAction
+					Netbeans_v1.0.x.java.lang.Class "clazz" <-- NodesL
+					Netbeans_v1.0.x.org.openide.nodes.NodeListener "listener" <-- NodesL
+				}
+				'/** 
+				' * Property change listener that delegates to another one change listener but hold only weak reference to that listener, so it does not prevent it to be finalized.
+				' * @author Jaroslav Tulach
+				' */
+				'DP role: client
+				abstract class WeakListener {
+					-{static} CLEANER_TASK: Task
+					-{static} CLEANER_TIME: JavaPrimitiveTypes.int
+					-{static} QUEUE: Netbeans_v1.0.x.java.lang.ref.ReferenceQueue
+					-{static} factory: Factory
+					listenerClass: Netbeans_v1.0.x.java.lang.Class
+					-ref: Netbeans_v1.0.x.java.lang.ref.Reference
+					-source: Netbeans_v1.0.x.java.lang.ref.Reference
+					'/** 
+					' * @param listenerClass class of the listener
+					' * @param l listener to delegate to
+					' */
+					#<<Create>> WeakListener(listenerClass : Netbeans_v1.0.x.java.lang.Class, l : Netbeans_v1.0.x.java.util.EventListener)
+					{static} change(l : Netbeans_v1.0.x.javax.swing.event.ChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.ChangeListener
+					{static} document(l : Netbeans_v1.0.x.javax.swing.event.DocumentListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.DocumentListener
+					{static} fileChange(l : Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+					{static} fileStatus(l : Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener
+					{static} focus(l : Netbeans_v1.0.x.java.awt.event.FocusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.awt.event.FocusListener
+					'/** 
+					' * Getter for the target listener.
+					' * @param event the event the we want to distribute
+					' * @return null if there is no listener because it has been finalized
+					' */
+					#get(ev : Netbeans_v1.0.x.java.util.EventObject): Netbeans_v1.0.x.java.util.EventListener
+					'/** 
+					' * Creates a weak listener. The sample usage code is <PRE> AnySource source; AnyListener listener; AnyListener weak = WeakListener.any (listener, source); source.addAnyListener (weak); </PRE>
+					' * @param l the listener to delegate to
+					' * @param source the source that the listener should detach from when listener <CODE>l</CODE>is no longer used, can be <CODE>null</CODE>
+					' */
+					{static} node(l : Netbeans_v1.0.x.org.openide.nodes.NodeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.nodes.NodeListener
+					{static} operation(l : Netbeans_v1.0.x.org.openide.loaders.OperationListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.loaders.OperationListener
+					{static} propertyChange(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					'/** 
+					' * Removes a listener if the source field is filled.
+					' */
+					-removeListener()
+					'/** 
+					' * Tries to find a removePropertyChangeListener method and invoke it
+					' * @param source the source object
+					' */
+					-removeListener(source : Netbeans_v1.0.x.java.lang.Object)
+					'/** 
+					' * Method name to use for removing the listener.
+					' * @return name of method of the source object that should be usedto remove the listener from listening on source of events
+					' */
+					#removeMethodName(): Netbeans_v1.0.x.java.lang.String
+					{static} repository(l : Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener
+					'/** 
+					' * Setter for source
+					' */
+					setSource(source : Netbeans_v1.0.x.java.lang.Object)
+					'/** 
+					' * To string.
+					' */
+					toString(): Netbeans_v1.0.x.java.lang.String
+					{static} vetoableChange(l : Netbeans_v1.0.x.java.beans.VetoableChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.VetoableChangeListener
+				}
+				'/** 
+				' * Factory for JDK 1.2.
+				' * @author Jaroslav Tulach
+				' */
+				'DP role: client
+				class WeakListener12 {
+					<<Create>> WeakListener12()
+					change(l : Netbeans_v1.0.x.javax.swing.event.ChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.ChangeListener
+					document(l : Netbeans_v1.0.x.javax.swing.event.DocumentListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.DocumentListener
+					fileChange(l : Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+					fileStatus(l : Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener
+					focus(l : Netbeans_v1.0.x.java.awt.event.FocusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.awt.event.FocusListener
+					node(l : Netbeans_v1.0.x.org.openide.nodes.NodeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.nodes.NodeListener
+					operation(l : Netbeans_v1.0.x.org.openide.loaders.OperationListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.loaders.OperationListener
+					propertyChange(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					repository(l : Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener
+					vetoableChange(l : Netbeans_v1.0.x.java.beans.VetoableChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.VetoableChangeListener
+				}
+				'/** 
+				' * Factory for JDK 1.3. Uses java.lang.reflect.Proxy
+				' * @author Jaroslav Tulach
+				' */
+				'DP role: client
+				class WeakListener13 {
+					<<Create>> WeakListener13()
+					change(l : Netbeans_v1.0.x.javax.swing.event.ChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.ChangeListener
+					'/** 
+					' * Creates a proxy for given class
+					' */
+					-{static} create(clazz : Netbeans_v1.0.x.java.lang.Class, listener : Netbeans_v1.0.x.java.util.EventListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.Object
+					document(l : Netbeans_v1.0.x.javax.swing.event.DocumentListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.DocumentListener
+					fileChange(l : Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+					fileStatus(l : Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener
+					focus(l : Netbeans_v1.0.x.java.awt.event.FocusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.awt.event.FocusListener
+					node(l : Netbeans_v1.0.x.org.openide.nodes.NodeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.nodes.NodeListener
+					operation(l : Netbeans_v1.0.x.org.openide.loaders.OperationListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.loaders.OperationListener
+					propertyChange(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					repository(l : Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener
+					vetoableChange(l : Netbeans_v1.0.x.java.beans.VetoableChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.VetoableChangeListener
+				}
+				Netbeans_v1.0.x.java.io.Externalizable <|.. SharedClassObject
+				Netbeans_v1.0.x.java.lang.Runnable <|.. Task
+				Netbeans_v1.0.x.java.util.EventListener <|-- TaskListener
+				Netbeans_v1.0.x.java.util.EventListener <|.. WeakListener
+				Factory <|.. WeakListener12
+				Factory <|.. WeakListener13
+				JavaPrimitiveTypes.int "CHAIN" <-- Mutex
+				Netbeans_v1.0.x.java.lang.Object "LOCK" <-- Mutex
+				JavaPrimitiveTypes.int "MODE_COUNT" <-- Mutex
+				JavaPrimitiveTypes.int "NONE" <-- Mutex
+				JavaPrimitiveTypes.int "S" <-- Mutex
+				JavaPrimitiveTypes.long "TIMEOUT" <-- Mutex
+				Netbeans_v1.0.x.java.lang.Object "TREELOCK" <-- Mutex
+				JavaPrimitiveTypes.int "X" <-- Mutex
+				JavaPrimitiveTypes.boolean "cmatrix 0..*" <-- Mutex
+				JavaPrimitiveTypes.int "grantedMode" <-- Mutex
+				JavaPrimitiveTypes.boolean "killDeadlocksOn" <-- Mutex
+				JavaPrimitiveTypes.int "readersNo" <-- Mutex
+				Netbeans_v1.0.x.java.util.Map "registeredThreads" <-- Mutex
+				Netbeans_v1.0.x.java.util.List "waiters" <-- Mutex
+				JavaPrimitiveTypes.boolean "left" <-- QueueCell
+				JavaPrimitiveTypes.int "mode" <-- QueueCell
+				JavaPrimitiveTypes.boolean "signal" <-- QueueCell
+				Netbeans_v1.0.x.java.lang.Thread "t" <-- QueueCell
+				JavaPrimitiveTypes.long "timeout" <-- QueueCell
+				JavaPrimitiveTypes.int "counts 0..*" <-- ThreadInfo
+				JavaPrimitiveTypes.boolean "forced" <-- ThreadInfo
+				JavaPrimitiveTypes.int "mode" <-- ThreadInfo
+				Netbeans_v1.0.x.java.util.List "queues 0..*" <-- ThreadInfo
+				JavaPrimitiveTypes.int "rsnapshot" <-- ThreadInfo
+				Netbeans_v1.0.x.java.lang.Thread "t" <-- ThreadInfo
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DeadlockAvoidanceException
+				Netbeans_v1.0.x.java.lang.Object "PROP_SUPPORT" <-- SharedClassObject
+				JavaPrimitiveTypes.int "count" <-- DataEntry
+				Netbeans_v1.0.x.java.util.HashMap "map" <-- DataEntry
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "ref" <-- DataEntry
+				DataEntry "dataEntry" <-- SharedClassObject
+				JavaPrimitiveTypes.long "serialVersionUID" <-- SharedClassObject
+				Netbeans_v1.0.x.java.util.HashMap "values" <-- SharedClassObject
+				Netbeans_v1.0.x.java.lang.Class "clazz" <-- WriteReplace
+				SharedClassObject "object" <-- WriteReplace
+				JavaPrimitiveTypes.long "serialVersionUID" <-- WriteReplace
+				Netbeans_v1.0.x.java.net.URL "helpCtx" <-- HelpCtx
+				Netbeans_v1.0.x.java.lang.String "helpID" <-- HelpCtx
+				JavaPrimitiveTypes.boolean "finished" <-- Task
+				Netbeans_v1.0.x.java.util.HashSet "list" <-- Task
+				Netbeans_v1.0.x.java.lang.Runnable "run" <-- Task
+				JavaPrimitiveTypes.int "priority" <-- Holder
+				Task "task" <-- Holder
+				JavaPrimitiveTypes.long "time" <-- Holder
+				Holder "holder" <-- Task
+				JavaPrimitiveTypes.int "priority" <-- Task
+				JavaPrimitiveTypes.long "time" <-- Task
+				Task "CLEANER_TASK" <-- WeakListener
+				JavaPrimitiveTypes.int "CLEANER_TIME" <-- WeakListener
+				Netbeans_v1.0.x.java.lang.ref.ReferenceQueue "QUEUE" <-- WeakListener
+				Factory "factory" <-- WeakListener
+				Netbeans_v1.0.x.java.lang.Class "listenerClass" <-- WeakListener
+				Netbeans_v1.0.x.java.lang.ref.Reference "ref" <-- WeakListener
+				Netbeans_v1.0.x.java.lang.ref.Reference "source" <-- WeakListener
+				WeakListener "weakListener" <-- ListenerReference
+				Netbeans_v1.0.x.java.lang.Object "proxy" <-- ProxyListener
+			}
+			package windows {
+				'/** 
+				' * Embeddable visual component to be displayed in the IDE. This is the basic unit of display in the IDE--windows should not be created directly, but rather use this class. A top component may correspond to a single window, but may also be a tab (e.g.) in a window. It may be docked or undocked, have selected nodes, supply actions, etc.
+				' * @author Jaroslav Tulach, Petr Hamernik, Jan Jancura
+				' */
+				'DP role: adaptee
+				class TopComponent {
+					{const} CLOSE_EACH: JavaPrimitiveTypes.int = 0
+					{const} CLOSE_LAST: JavaPrimitiveTypes.int = 1
+					-closeOperation: JavaPrimitiveTypes.int
+					-manager: Component
+					-nodeName: NodeName
+					-{static} registry: Registry
+					serialVersion: JavaPrimitiveTypes.short
+					{const} serialVersionUID: JavaPrimitiveTypes.long = -3022538025284122942
+					-{static} systemActions: Netbeans_v1.0.x.org.openide.util.actions.SystemAction [*]
+					'/** 
+					' * Create a top component.
+					' */
+					<<Create>> TopComponent()
+					'/** 
+					' * Create a top component associated with a data object. Currently the data object is used to set the component's name (which will be updated according to the object's node delegate) by installing NodeName inner class and attaching it to the node delegate.
+					' * @param obj the data object
+					' */
+					<<Create>> TopComponent(obj : Netbeans_v1.0.x.org.openide.loaders.DataObject)
+					'/** 
+					' * This method is called when top component is about to close. Allows subclasses to decide if top component is ready for closing or not.<br> Default implementation always return true.
+					' * @param workspace the workspace on which we are about to close ornull which means that component will be closed on all workspaces where it is opened (CLOSE_EACH mode)
+					' * @param last true if this is last workspace where top component isopened, false otherwise. If close operation is set to CLOSE_EACH, then this param is always true
+					' * @return true if top component is ready to close, false otherwise.
+					' */
+					canClose(workspace : Workspace, last : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Closes the top component on current workspace. First asks canClose() method to see if it is possible to close now. If canClose() returns false, component will not be closed. Semantics of this method depends on top component's closeOperation state. If closeOperation is set to CLOSE_LAST (default), top component will be closed only on current workspace. If it is set to CLOSE_EACH, if will be closed on all workspaces at once.
+					' * @return true if top component was succesfully closed, false if top component for some reason refused to close.
+					' */
+					close(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Closes the top component on given workspace, if closeOperation is set to CLOSE_LAST. If it is set to CLOSE_EACH, given parameter  will be ignored and component will be closed on all workspaces at once.
+					' * @param workspace Workspace on which component should be closed.
+					' * @return true if top component was succesfully closed, false if top component for some reason refused to close.
+					' */
+					close(workspace : Workspace): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Called when this component is activated. This happens when the parent window of this component gets focus (and this component is the preferred one in it), <em>or</em> when this component is selected in its window (and its window was already focussed). Override this method to perform some special action on component activation: typically, set performers for relevant actions. Remember to call the super method. The default implementation does nothing.
+					' */
+					#componentActivated()
+					'/** 
+					' * Called when this component is deactivated. This happens when the parent window of this component loses focus (and this component is the preferred one in the parent), <em>or</em> when this component loses preference in the parent window (and the parent window is focussed). Override this method to perform some special action on component deactivation: typically, unset performers for relevant actions. Remember to call the super method. The default implementation does nothing.
+					' */
+					#componentDeactivated()
+					'/** 
+					' * Get the set of activated nodes in this component.
+					' * @return the activated nodes for this component
+					' */
+					getActivatedNodes(): Netbeans_v1.0.x.org.openide.nodes.Node
+					'/** 
+					' * Get the current close mode for this component.
+					' * @return one of {@link #CLOSE_EACH} or {@link #CLOSE_LAST}
+					' */
+					getCloseOperation(): JavaPrimitiveTypes.int
+					'/** 
+					' * Get the help context for this component. Subclasses should generally override this to return specific help.
+					' * @return the help context
+					' */
+					getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+					'/** 
+					' * @return The icon of the top component 
+					' */
+					getIcon(): Netbeans_v1.0.x.java.awt.Image
+					'/** 
+					' * Getter for manager for this component. This manager allows to control where is the component shown can be used to destroy and show the component, etc.
+					' */
+					getManager(): Component
+					'/** 
+					' * Getter for class that allows obtaining of information about components. It allows to find out which component is selected, which nodes are  currently or has been activated and list of all components.
+					' * @return the registry of components
+					' */
+					{const} getRegistry(): Registry
+					'/** 
+					' * Get the system actions which will appear in the popup menu of this component. <p>Subclasses are encouraged to override this method to specify their own sets of actions. <p>Remember to call the super method when overriding and add your actions to the superclass' ones (in some order),? because the default implementation provides support for standard component actions like save, close, and clone.
+					' * @return system actions for this component
+					' */
+					getSystemActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					'/** 
+					' * Get the undo/redo support for this component. The default implementation returns a dummy support that cannot undo anything.
+					' * @return undoable edit for this component
+					' */
+					getUndoRedo(): Netbeans_v1.0.x.org.openide.awt.UndoRedo
+					'/** 
+					' * Finds out if this top component is opened at least on one workspace.
+					' * @return true if given top component is opened on at leastone workspace, false otherwise 
+					' */
+					isOpened(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Finds out whether this top component is opened or not on specified workspace.
+					' * @return true if given top component is opened on given workspace,false otherwise 
+					' */
+					isOpened(workspace : Workspace): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Show the component on current workspace. Note that this method only makes it visible, but does not give it focus. Implemented via call to open(null).
+					' * @see #requestFocus
+					' */
+					open()
+					'/** 
+					' * Show the component on given workspace. If given workspace is not active, component will be shown only after given workspace will become visible. Note that this method only makes it visible, but does not give it focus.
+					' * @param workspace Workspace on which component should be opened.Parameter can be null -> means current workspace.
+					' * @see #requestFocus
+					' */
+					open(workspace : Workspace)
+					'/** 
+					' * Deserialize this top component. Subclasses wishing to store state must call the super method, then read from the stream.
+					' * @param in the stream to deserialize from
+					' */
+					readExternal(in : Netbeans_v1.0.x.java.io.ObjectInput)
+					'/** 
+					' * Request focus for the window holding this top component. Also makes the component preferred in that window. The component will <em>not</em> be automatically  {@link #open opened} firstif it is not already.
+					' */
+					requestFocus()
+					'/** 
+					' * Set the set of activated nodes in this component.
+					' * @param nodes activated nodes for this component
+					' */
+					setActivatedNodes(nodes : Netbeans_v1.0.x.org.openide.nodes.Node)
+					'/** 
+					' * Set the close mode for the component. Note that if the  {@link #close} is called (rather than a user-initiated close action), the component (and maybe itswindow) is always removed from all workspaces.<P>
+					' * @param mode one of {@link #CLOSE_EACH} or {@link #CLOSE_LAST}
+					' * @throws IllegalArgumentException if an unrecognized close mode was supplied
+					' */
+					setCloseOperation(closeOperation : JavaPrimitiveTypes.int)
+					'/** 
+					' * Set the icon of this top component. The icon will be used for the component's representation on the screen, e.g. in a multiwindow's tab. The default implementation just notifies the window manager.
+					' * @param icon New components' icon.
+					' */
+					setIcon(icon : Netbeans_v1.0.x.java.awt.Image)
+					'/** 
+					' * Set the name of this top component. The default implementation just notifies the window manager.
+					' * @param displayName the new display name
+					' */
+					setName(name : Netbeans_v1.0.x.java.lang.String)
+					'/** 
+					' * Serialize this top component. Subclasses wishing to store state must call the super method, then write to the stream.
+					' * @param out the stream to serialize to
+					' */
+					writeExternal(out : Netbeans_v1.0.x.java.io.ObjectOutput)
+					'/** 
+					' * Delegates instance of replacer class to be serialized instead of top component itself. Replacer class calls writeExternal and constructor, readExternal and readResolve methods properly, so 8 any top component can behave like any other externalizable object. Subclasses can override this method to perform their serialization differentrly 
+					' */
+					#writeReplace(): Netbeans_v1.0.x.java.lang.Object
+				}
+				Netbeans_v1.0.x.java.io.PrintWriter <|-- OutputWriter
+				Netbeans_v1.0.x.java.util.EventListener <|-- OutputListener
+				Netbeans_v1.0.x.java.util.EventObject <|-- OutputEvent
+				Netbeans_v1.0.x.javax.swing.JComponent <|-- TopComponent
+				Netbeans_v1.0.x.java.io.Externalizable <|.. TopComponent
+				Netbeans_v1.0.x.java.io.Serializable <|-- Workspace
+				Netbeans_v1.0.x.java.io.Serializable <|-- Mode
+				Netbeans_v1.0.x.java.io.Reader "nullReader" <-- InputOutput
+				JavaPrimitiveTypes.long "serialVersionUID" <-- OutputEvent
+				OutputWriter "nullWriter" <-- InputOutput
+				JavaPrimitiveTypes.int "CLOSE_EACH" <-- TopComponent
+				JavaPrimitiveTypes.int "CLOSE_LAST" <-- TopComponent
+				JavaPrimitiveTypes.int "closeOperation" <-- TopComponent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Component
+				Netbeans_v1.0.x.java.lang.String "PROP_DISPLAY_NAME" <-- Workspace
+				Netbeans_v1.0.x.java.lang.String "PROP_MODES" <-- Workspace
+				Netbeans_v1.0.x.java.lang.String "PROP_NAME" <-- Workspace
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Workspace
+				Netbeans_v1.0.x.java.lang.String "PROP_BOUNDS" <-- Mode
+				Netbeans_v1.0.x.java.lang.String "PROP_DISPLAY_NAME" <-- Mode
+				Netbeans_v1.0.x.java.lang.String "PROP_NAME" <-- Mode
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Mode
+				Component "manager" <-- TopComponent
+				Netbeans_v1.0.x.org.openide.nodes.Node "node" <-- NodeName
+				Netbeans_v1.0.x.java.lang.ref.Reference "top" <-- NodeName
+				NodeName "nodeName" <-- TopComponent
+				Netbeans_v1.0.x.java.lang.String "PROP_ACTIVATED" <-- Registry
+				Netbeans_v1.0.x.java.lang.String "PROP_ACTIVATED_NODES" <-- Registry
+				Netbeans_v1.0.x.java.lang.String "PROP_CURRENT_NODES" <-- Registry
+				Netbeans_v1.0.x.java.lang.String "PROP_OPENED" <-- Registry
+				Registry "registry" <-- TopComponent
+				JavaPrimitiveTypes.short "serialVersion" <-- TopComponent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- TopComponent
+				Netbeans_v1.0.x.org.openide.util.actions.SystemAction "systemActions 0..*" <-- TopComponent
+				Netbeans_v1.0.x.javax.swing.FocusManager "delegate" <-- FocusMan
+				Netbeans_v1.0.x.java.util.HashSet "posted" <-- FocusMan
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Replacer
+				TopComponent "tc" <-- Replacer
+			}
+		}
+		package netbeans {
+			package modules {
+				package form {
+					package palette {
+						'/** 
+						' * The ComponentPalette is a visual component that manages a add component/selection mode for FormEditor. The current state of the palette is returned by getSelectedItem() method.
+						' * @author   Ian Formanek, Jan Jancura
+						' */
+						'DP role: client
+						class ComponentPalette {
+							-{const} DEFAULT_WIDTH: JavaPrimitiveTypes.int = 420
+							-{static} KEY_PALETTE_MODE: Netbeans_v1.0.x.java.lang.String
+							-{static} KEY_SELECTED_BUTTON: Netbeans_v1.0.x.java.lang.String
+							-{static} KEY_SELECTED_PALETTE_ITEM: Netbeans_v1.0.x.java.lang.String
+							-{const} MAX_WIDTH: JavaPrimitiveTypes.int = 1024
+							-{const} bundle: Netbeans_v1.0.x.java.util.ResourceBundle
+							-buttonListener: Netbeans_v1.0.x.java.awt.event.ActionListener
+							-buttonToItem: Netbeans_v1.0.x.java.util.HashMap
+							-categoryNodeListener: Netbeans_v1.0.x.org.openide.nodes.NodeListener
+							-categoryToPanel: Netbeans_v1.0.x.java.util.HashMap
+							-connectionButton: Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton
+							-itemToButton: Netbeans_v1.0.x.java.util.HashMap
+							-paletteNode: PaletteNode
+							-refreshNodes: Netbeans_v1.0.x.java.util.Set
+							-refreshTask: Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task
+							-selectionButton: Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton
+							{const} serialVersionUID: JavaPrimitiveTypes.long = 7249158494688903041
+							-{static} sharedInstance: ComponentPalette
+							-tabbedArea: Netbeans_v1.0.x.javax.swing.JTabbedPane
+							-wait: Netbeans_v1.0.x.javax.swing.JLabel
+							'/** 
+							' * Constructs a new empty ComponentPalette.
+							' */
+							<<Create>> ComponentPalette()
+							getAllItems(): PaletteItem
+							{static} getDefault(): ComponentPalette
+							'/** 
+							' * Gets the maximum size of this component.
+							' * @return A dimension object indicating this component's maximum size.
+							' * @see #getMinimumSize
+							' * @see #getPreferredSize
+							' * @see LayoutManager
+							' */
+							getMaximumSize(): Netbeans_v1.0.x.java.awt.Dimension
+							getMinimumSize(): Netbeans_v1.0.x.java.awt.Dimension
+							getMode(): JavaPrimitiveTypes.int
+							getPaletteCategories(): Netbeans_v1.0.x.java.lang.String
+							{static} getPaletteFolder(): Netbeans_v1.0.x.org.openide.loaders.DataFolder
+							getPreferredSize(): Netbeans_v1.0.x.java.awt.Dimension
+							-getSelectedButton(): Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton
+							'/** 
+							' * Returns the currently selected PaletteNode (that represents a JavaBean to be added to the form) or null for selection mode.
+							' * @return the currently selected PaletteNode or null for selection mode
+							' */
+							getSelectedItem(): PaletteItem
+							setMode(newMode : JavaPrimitiveTypes.int)
+							-setSelectedButton(button : Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton)
+							'/** 
+							' * Sets the current add component or selection mode.
+							' * @param value The new add component or null for selection mode
+							' */
+							setSelectedItem(value : PaletteItem)
+							-updateCategory(category : PaletteCategoryNode)
+							-updateCategoryInEventQueue(node : PaletteCategoryNode, time : JavaPrimitiveTypes.int)
+							'/** 
+							' * Repaints palette with datas from paletteContext variable.
+							' */
+							updatePalette()
+							-updatePaletteInEventQueue()
+						}
+						'/** 
+						' * Button that displays on node in component palette.
+						' * @author Jaroslav Tulach
+						' */
+						'DP role: adapter
+						'DP role: adaptee
+						class PaletteButton {
+							-itemNode: Netbeans_v1.0.x.org.openide.nodes.Node
+							-palItem: PaletteItem
+							{const} serialVersionUID: JavaPrimitiveTypes.long = -8524018463476326691
+							'/** 
+							' * /** Creates new PaletteButton 
+							' */
+							<<Create>> PaletteButton(itemNode : Netbeans_v1.0.x.org.openide.nodes.Node, palItem : PaletteItem)
+							'/** 
+							' * Fired when a set of new children is added.
+							' * @param ev event describing the action
+							' */
+							childrenAdded(ev : Netbeans_v1.0.x.org.openide.nodes.NodeMemberEvent)
+							'/** 
+							' * Fired when a set of children is removed.
+							' * @param ev event describing the action
+							' */
+							childrenRemoved(ev : Netbeans_v1.0.x.org.openide.nodes.NodeMemberEvent)
+							'/** 
+							' * Fired when the order of children is changed.
+							' * @param ev event describing the change
+							' */
+							childrenReordered(ev : Netbeans_v1.0.x.org.openide.nodes.NodeReorderEvent)
+							instanceClass(): Netbeans_v1.0.x.java.lang.Class
+							instanceCreate(): Netbeans_v1.0.x.java.lang.Object
+							instanceName(): Netbeans_v1.0.x.java.lang.String
+							'/** 
+							' * Fired when the node is deleted.
+							' * @param ev event describing the node
+							' */
+							nodeDestroyed(ev : Netbeans_v1.0.x.org.openide.nodes.NodeEvent)
+							propertyChange(ev : Netbeans_v1.0.x.java.beans.PropertyChangeEvent)
+							'/** 
+							' * Later initialization of the help.
+							' */
+							run()
+						}
+						Netbeans_v1.0.x.javax.swing.JPanel <|-- ComponentPalette
+						Netbeans_v1.0.x.org.openide.loaders.DataFolder.FolderNode <|-- PaletteNode
+						Netbeans_v1.0.x.org.openide.loaders.DataFolder.FolderNode <|-- PaletteCategoryNode
+						Netbeans_v1.0.x.java.io.Serializable <|.. PaletteItem
+						Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton <|-- PaletteButton
+						Netbeans_v1.0.x.org.openide.cookies.InstanceCookie <|.. PaletteButton
+						Netbeans_v1.0.x.org.openide.nodes.NodeListener <|.. PaletteButton
+						Netbeans_v1.0.x.java.lang.Runnable <|.. PaletteButton
+						JavaPrimitiveTypes.int "DEFAULT_WIDTH" <-- ComponentPalette
+						Netbeans_v1.0.x.java.lang.String "KEY_PALETTE_MODE" <-- ComponentPalette
+						Netbeans_v1.0.x.java.lang.String "KEY_SELECTED_BUTTON" <-- ComponentPalette
+						Netbeans_v1.0.x.java.lang.String "KEY_SELECTED_PALETTE_ITEM" <-- ComponentPalette
+						JavaPrimitiveTypes.int "MAX_WIDTH" <-- ComponentPalette
+						Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- ComponentPalette
+						Netbeans_v1.0.x.java.awt.event.ActionListener "buttonListener" <-- ComponentPalette
+						Netbeans_v1.0.x.java.util.HashMap "buttonToItem" <-- ComponentPalette
+						Netbeans_v1.0.x.org.openide.nodes.NodeListener "categoryNodeListener" <-- ComponentPalette
+						Netbeans_v1.0.x.java.util.HashMap "categoryToPanel" <-- ComponentPalette
+						Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton "connectionButton" <-- ComponentPalette
+						Netbeans_v1.0.x.java.util.HashMap "itemToButton" <-- ComponentPalette
+						Netbeans_v1.0.x.org.openide.nodes.Node.PropertySet "NO_PROPERTIES 0..*" <-- PaletteNode
+						Netbeans_v1.0.x.java.lang.String "PALETTE_FOLDER_NAME" <-- PaletteNode
+						Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- PaletteNode
+						Netbeans_v1.0.x.java.lang.String "icon32URL" <-- PaletteNode
+						Netbeans_v1.0.x.java.lang.String "iconURL" <-- PaletteNode
+						Netbeans_v1.0.x.org.openide.loaders.DataFolder "paletteFolder" <-- PaletteNode
+						Netbeans_v1.0.x.org.openide.util.actions.SystemAction "staticActions 0..*" <-- PaletteNode
+						Netbeans_v1.0.x.java.awt.Image "substIcon" <-- PaletteNode
+						Netbeans_v1.0.x.java.awt.Image "substIcon32" <-- PaletteNode
+						Netbeans_v1.0.x.org.openide.nodes.Node.PropertySet "NO_PROPERTIES 0..*" <-- PaletteCategoryNode
+						Netbeans_v1.0.x.java.lang.String "PALETTE_FOLDER_NAME" <-- PaletteCategoryNode
+						Netbeans_v1.0.x.java.lang.String "icon32URL" <-- PaletteCategoryNode
+						Netbeans_v1.0.x.java.lang.String "iconURL" <-- PaletteCategoryNode
+						Netbeans_v1.0.x.org.openide.util.actions.SystemAction "staticActions 0..*" <-- PaletteCategoryNode
+						Netbeans_v1.0.x.java.awt.Image "substIcon" <-- PaletteCategoryNode
+						Netbeans_v1.0.x.java.awt.Image "substIcon32" <-- PaletteCategoryNode
+						PaletteCategoryNodeChildren "children" <-- PaletteCategoryIndex
+						PaletteNodeChildren "children" <-- PaletteIndex
+						PaletteNode "paletteNode" <-- ComponentPalette
+						Netbeans_v1.0.x.java.util.Set "refreshNodes" <-- ComponentPalette
+						Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task "refreshTask" <-- ComponentPalette
+						Netbeans_v1.0.x.org.openide.awt.ToolbarToggleButton "selectionButton" <-- ComponentPalette
+						JavaPrimitiveTypes.long "serialVersionUID" <-- ComponentPalette
+						Netbeans_v1.0.x.javax.swing.JTabbedPane "tabbedArea" <-- ComponentPalette
+						Netbeans_v1.0.x.javax.swing.JLabel "wait" <-- ComponentPalette
+						Netbeans_v1.0.x.java.lang.String "ATTR_IS_CONTAINER" <-- PaletteItem
+						Netbeans_v1.0.x.java.lang.Class "beanClass" <-- PaletteItem
+						Netbeans_v1.0.x.java.lang.Boolean "expliciteIsContainer" <-- PaletteItem
+						Netbeans_v1.0.x.org.openide.cookies.InstanceCookie "instanceCookie" <-- PaletteItem
+						Netbeans_v1.0.x.org.openide.loaders.InstanceDataObject "instanceDO" <-- PaletteItem
+						JavaPrimitiveTypes.long "serialVersionUID" <-- PaletteItem
+						Netbeans_v1.0.x.java.lang.ref.WeakReference "sharedReference" <-- PaletteItem
+						Netbeans_v1.0.x.org.openide.nodes.Node "itemNode" <-- PaletteButton
+						PaletteItem "palItem" <-- PaletteButton
+						JavaPrimitiveTypes.long "serialVersionUID" <-- PaletteButton
+					}
+				}
+				package projects {
+					package settings {
+						'/** 
+						' * @author  mryzl
+						' */
+						'DP role: adaptee
+						class GlobalOptionsChildren {
+							{static} PROJECT: JavaPrimitiveTypes.int
+							{static} SESSION: JavaPrimitiveTypes.int
+							-nodeL: Netbeans_v1.0.x.org.openide.nodes.NodeListener
+							-project: Netbeans_v1.0.x.org.openide.nodes.Node
+							-session: Netbeans_v1.0.x.org.openide.nodes.Node
+							'/** 
+							' * Creates new ProjectSettingsNode. 
+							' */
+							<<Create>> GlobalOptionsChildren()
+							'/** 
+							' * Initializes listening to changes in original node.
+							' */
+							#addNotify()
+							#createNodes(key : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.nodes.Node
+							'/** 
+							' * Closes the listener, if any, on the original node.
+							' */
+							#finalize()
+							'/** 
+							' * Get project keys and session keys and connect it together.
+							' */
+							#updateKeys()
+						}
+						Netbeans_v1.0.x.org.openide.nodes.Children.Keys <|-- GlobalOptionsChildren
+						JavaPrimitiveTypes.int "PROJECT" <-- GlobalOptionsChildren
+						JavaPrimitiveTypes.int "SESSION" <-- GlobalOptionsChildren
+						Netbeans_v1.0.x.org.openide.nodes.NodeListener "nodeL" <-- GlobalOptionsChildren
+						Netbeans_v1.0.x.org.openide.nodes.Node "project" <-- GlobalOptionsChildren
+						Netbeans_v1.0.x.org.openide.nodes.Node "session" <-- GlobalOptionsChildren
+						Netbeans_v1.0.x.java.lang.ref.WeakReference "children" <-- ChildrenAdapter
+						Netbeans_v1.0.x.org.openide.nodes.Node "node" <-- OptionItem
+						JavaPrimitiveTypes.int "type" <-- OptionItem
+					}
+				}
+			}
+			package core {
+				package execution {
+					'/** 
+					' * Node which represents list of running processes. Final only for better performance.
+					' * @author Ales Novak
+					' */
+					'DP role: client
+					class ProcessNode {
+						{static} noProcesses: Netbeans_v1.0.x.org.openide.nodes.AbstractNode
+						{static} processNode: ProcessNode
+						{const} serialVersionUID: JavaPrimitiveTypes.long = 5090696227895147340
+						'/** 
+						' * @param parent is a parent node
+						' */
+						<<Create>> ProcessNode()
+						'/** 
+						' * adds node signalizing that no processes run 
+						' */
+						addNoProcessNode()
+						'/** 
+						' * creates new ExecutionListener that listens on ExecutionEngine
+						' * @return new @see ExecutionListener
+						' */
+						-createListener(): ExecutionListener
+						{const} getBundle(): Netbeans_v1.0.x.java.util.ResourceBundle
+						'/** 
+						' * @return filter node for the execution node with the given parent 
+						' */
+						{static} getExecutionNode(): Netbeans_v1.0.x.org.openide.nodes.Node
+						getHandle(): Netbeans_v1.0.x.org.openide.nodes.Node.Handle
+						getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+						{static} getNoProcessesNode(): Netbeans_v1.0.x.org.openide.nodes.Node
+						'/** 
+						' * removes node signalizing that no processes run 
+						' */
+						removeNoProcessNode()
+						run()
+					}
+					Netbeans_v1.0.x.org.openide.nodes.AbstractNode <|-- ProcessNode
+					Netbeans_v1.0.x.java.lang.Runnable <|.. ProcessNode
+					Netbeans_v1.0.x.java.util.EventObject <|-- ExecutionEvent
+					Netbeans_v1.0.x.org.openide.execution.ExecutorTask <|-- DefaultSysProcess
+					Netbeans_v1.0.x.java.lang.ThreadGroup <|-- TaskThreadGroup
+					Netbeans_v1.0.x.org.openide.nodes.AbstractNode "noProcesses" <-- ProcessNode
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ProcessNode
+					JavaPrimitiveTypes.boolean "destroyed" <-- DefaultSysProcess
+					Netbeans_v1.0.x.java.lang.Object "TIMER" <-- TaskThreadGroup
+					JavaPrimitiveTypes.boolean "dead" <-- TaskThreadGroup
+					JavaPrimitiveTypes.boolean "finalizable" <-- TaskThreadGroup
+					JavaPrimitiveTypes.boolean "runClassThreadOut" <-- TaskThreadGroup
+					Netbeans_v1.0.x.java.lang.Class "threadClass" <-- TaskThreadGroup
+					TaskThreadGroup "group" <-- DefaultSysProcess
+					Netbeans_v1.0.x.org.openide.windows.InputOutput "io" <-- DefaultSysProcess
+					Netbeans_v1.0.x.java.lang.String "name" <-- DefaultSysProcess
+					JavaPrimitiveTypes.int "processCount" <-- DefaultSysProcess
+					DefaultSysProcess "proc" <-- ExecutionEvent
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ExecutionEvent
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ProcessHandle
+				}
+				Netbeans_v1.0.x.org.openide.nodes.AbstractNode <|-- ControlPanelNode
+				Netbeans_v1.0.x.org.openide.options.ControlPanel <|-- NbControlPanel
+				Netbeans_v1.0.x.java.lang.String "CP_ICON_BASE" <-- ControlPanelNode
+				Netbeans_v1.0.x.org.openide.nodes.Node "controlPanel" <-- ControlPanelNode
+				Netbeans_v1.0.x.org.openide.nodes.Node "projectSettings" <-- ControlPanelNode
+				JavaPrimitiveTypes.long "serialVersionUID" <-- ControlPanelNode
+				JavaPrimitiveTypes.long "serialVersionUID" <-- NbControlPanel
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "supp" <-- NbControlPanel
+				NbControlPanel "options" <-- ControlPanelChildren
+				JavaPrimitiveTypes.boolean "def" <-- Han
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Han
+			}
+		}
+	}
+}
+@enduml

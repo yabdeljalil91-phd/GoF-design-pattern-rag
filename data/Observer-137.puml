@@ -1,0 +1,132 @@
+@startuml
+'Enhanced for RAG-based GoF pattern detection (Observer)
+
+package "PMD v1.8" as PMD_v1.8 {
+
+package net {
+package sourceforge {
+package pmd {
+
+'==================== OBSERVER ====================
+'DP role: Observer (Observer Pattern)
+'Responsibility: defines callbacks for Report updates
+interface ReportListener {
+    metricAdded(metric : PMD_v1.8.net.sourceforge.pmd.stat.Metric)  ' event callback
+    ruleViolationAdded(ruleViolation : RuleViolation)              ' event callback
+}
+
+'==================== SUBJECT ====================
+'DP role: Subject + ConcreteSubject (Observer Pattern)
+'Responsibility: collects analysis results and notifies listeners
+class Report {
+    -errors: PMD_v1.8.java.util.List      ' domain state
+    -listeners: PMD_v1.8.java.util.List   ' aggregation: observers
+    -metrics: PMD_v1.8.java.util.Set      ' domain state
+    -violations: PMD_v1.8.java.util.Set   ' domain state
+
+    <<Create>> Report()
+
+    '==================== OBSERVER MANAGEMENT ====================
+    addListener(listener : ReportListener)   ' register observer
+
+    '==================== NOTIFICATION POINTS ====================
+    addMetric(metric : PMD_v1.8.net.sourceforge.pmd.stat.Metric) 
+    ' -> notifies observers via metricAdded()
+
+    addRuleViolation(violation : RuleViolation) 
+    ' -> notifies observers via ruleViolationAdded()
+
+    '==================== CORE DOMAIN OPERATIONS ====================
+    addError(error : ProcessingError)
+    errors(): PMD_v1.8.java.util.Iterator
+    metrics(): PMD_v1.8.java.util.Iterator
+    iterator(): PMD_v1.8.java.util.Iterator
+
+    getSummary(): PMD_v1.8.java.util.Map
+    hasMetrics(): JavaPrimitiveTypes.boolean
+    isEmpty(): JavaPrimitiveTypes.boolean
+    size(): JavaPrimitiveTypes.int
+}
+
+'==================== RELATIONSHIPS ====================
+'Aggregation: Subject maintains list of observers
+Report o--> ReportListener : maintains >
+
+'Association: Subject notifies observers
+Report --> ReportListener : notifies >
+
+'==================== DOMAIN ENTITIES ====================
+'Used in notification events (data passed to observers)
+class RuleViolation
+class ProcessingError
+
+}
+
+}
+}
+
+'========================================================
+package test {
+package net {
+package sourceforge {
+package pmd {
+
+package rules {
+package design {
+
+'==================== CONCRETE OBSERVER ====================
+'DP role: ConcreteObserver (Observer Pattern)
+'Responsibility: test class reacting to Report events
+class UseSingletonRuleTest {
+    -callbacks: JavaPrimitiveTypes.int  ' tracks number of notifications received
+
+    <<Create>> UseSingletonRuleTest()
+
+    ' Observer callbacks
+    metricAdded(metric : PMD_v1.8.net.sourceforge.pmd.stat.Metric)
+    ruleViolationAdded(ruleViolation : PMD_v1.8.net.sourceforge.pmd.RuleViolation)
+
+    ' Test logic
+    testAll()
+    testResetState()
+}
+
+'Implements Observer interface
+PMD_v1.8.net.sourceforge.pmd.ReportListener <|.. UseSingletonRuleTest
+
+}
+
+}
+
+'==================== CONCRETE OBSERVER ====================
+'DP role: ConcreteObserver
+'Responsibility: verifies correct notification behavior
+class ReportTest {
+    -metricSemaphore: JavaPrimitiveTypes.boolean   ' indicates metric callback received
+    -violationSemaphore: JavaPrimitiveTypes.boolean ' indicates violation callback received
+
+    <<Create>> ReportTest()
+
+    ' Observer callbacks
+    metricAdded(metric : PMD_v1.8.net.sourceforge.pmd.stat.Metric)
+    ruleViolationAdded(ruleViolation : PMD_v1.8.net.sourceforge.pmd.RuleViolation)
+
+    ' Test cases
+    testBasic()
+    testListener()
+    testMetric0()
+    testMetric1()
+    testSortedReport_File()
+    testSortedReport_Line()
+    testSummary()
+}
+
+'Implements Observer interface
+PMD_v1.8.net.sourceforge.pmd.ReportListener <|.. ReportTest
+
+}
+}
+}
+}
+
+@enduml

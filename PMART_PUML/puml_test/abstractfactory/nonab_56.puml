@@ -1,0 +1,31 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			class AnimationDecorator {
+				-animationDecoratorSerializedDataVersion: JavaPrimitiveTypes.int
+				-fXVelocity: JavaPrimitiveTypes.int
+				-fYVelocity: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 7894632974364110685
+				<<Create>> AnimationDecorator()
+				<<Create>> AnimationDecorator(figure : Figure)
+				animationStep()
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				displayBox(): java.awt.Rectangle
+				read(dr : StorableInput)
+				velocity(xVelocity : JavaPrimitiveTypes.int, yVelocity : JavaPrimitiveTypes.int)
+				velocity(): java.awt.Point
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	Abstractfactory.non_abstract_factory.DecoratorFigure <|-- Abstractfactory.non_abstract_factory.AnimationDecorator
+	java.lang.Cloneable <|-- Abstractfactory.non_abstract_factory.Figure
+	java.io.Serializable <|-- Abstractfactory.non_abstract_factory.Figure
+	JavaPrimitiveTypes.int "animationDecoratorSerializedDataVersion" <-- Abstractfactory.non_abstract_factory.AnimationDecorator
+	JavaPrimitiveTypes.int "fXVelocity" <-- Abstractfactory.non_abstract_factory.AnimationDecorator
+	JavaPrimitiveTypes.int "fYVelocity" <-- Abstractfactory.non_abstract_factory.AnimationDecorator
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Abstractfactory.non_abstract_factory.AnimationDecorator
+}
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Loads all the class settings based on a particular directory
+			'@author    Chris Seguin
+			class SummaryLoaderThread {
+				-base: java.lang.String
+				-{static} count: JavaPrimitiveTypes.int
+				'Constructor for the SummaryLoaderThread object
+				'@param init  The root directory to load
+				<<Create>> SummaryLoaderThread(init : java.lang.String)
+				'Main processing method for the SummaryLoaderThread object
+				run()
+				'This just confirms that you have loaded the summaries into memory.
+				{static} waitForLoading()
+			}
+		}
+	}
+	java.lang.Thread <|-- Builder.nonbuilder.SummaryLoaderThread
+	java.lang.String "base" <-- Builder.nonbuilder.SummaryLoaderThread
+	JavaPrimitiveTypes.int "count" <-- Builder.nonbuilder.SummaryLoaderThread
+}
+@enduml

@@ -1,0 +1,443 @@
+@startuml
+'Design pattern Decorator
+package "JUnit v3.7" as JUnit_v3.7 {
+	package junit {
+		package framework {
+			'/** 
+			' * A <em>Test</em> can be run and collect its results.
+			' * @see TestResult
+			' */
+			'DP role: component
+			interface Test {
+				'/** 
+				' * Counts the number of test cases that will be run by this test.
+				' */
+				countTestCases(): JavaPrimitiveTypes.int
+				'/** 
+				' * Runs a test and collects its result in a TestResult instance.
+				' */
+				run(result : TestResult)
+			}
+			JUnit_v3.7.java.lang.Error <|-- AssertionFailedError
+			Assert <|-- TestCase
+			Test <|.. TestCase
+			Test <|.. TestSuite
+			JUnit_v3.7.java.util.Vector "fErrors" <-- TestResult
+			JUnit_v3.7.java.util.Vector "fFailures" <-- TestResult
+			JUnit_v3.7.java.util.Vector "fListeners" <-- TestResult
+			JavaPrimitiveTypes.int "fRunTests" <-- TestResult
+			JavaPrimitiveTypes.boolean "fStop" <-- TestResult
+			JavaPrimitiveTypes.boolean "condition" <-- Assert
+			JUnit_v3.7.java.lang.String "message" <-- Assert
+			JUnit_v3.7.java.lang.String "fName" <-- TestCase
+			JUnit_v3.7.java.lang.String "fName" <-- TestSuite
+			JUnit_v3.7.java.util.Vector "fTests" <-- TestSuite
+		}
+		package tests {
+			'/** 
+			' * Test an implementor of junit.framework.Test other than TestCase or TestSuite
+			' */
+			'DP role: concreteComponent
+			class TestImplementorTest {
+				-fTest: DoubleTestCase
+				<<Create>> TestImplementorTest(name : JUnit_v3.7.java.lang.String)
+				testSuccessfulRun()
+			}
+			'/** 
+			' * Testing the ActiveTest support
+			' */
+			'DP role: concreteComponent
+			class ActiveTestTest {
+				<<Create>> ActiveTestTest(name : JUnit_v3.7.java.lang.String)
+				createActiveTestSuite(): JUnit_v3.7.junit.extensions.ActiveTestSuite
+				testActiveRepeatedTest()
+				testActiveRepeatedTest0()
+				testActiveRepeatedTest1()
+				testActiveTest()
+			}
+			'DP role: concreteComponent
+			class AssertTest {
+				<<Create>> AssertTest(name : JUnit_v3.7.java.lang.String)
+				testAssertEquals()
+				'/** 
+				' * Test for the special Double.NaN value.
+				' */
+				testAssertEqualsNaNFails()
+				testAssertEqualsNull()
+				testAssertNaNEqualsFails()
+				testAssertNaNEqualsNaNFails()
+				testAssertNegInfinityEqualsInfinity()
+				testAssertNull()
+				testAssertNullNotEqualsNull()
+				testAssertPosInfinityEqualsInfinity()
+				testAssertPosInfinityNotEquals()
+				testAssertPosInfinityNotEqualsNegInfinity()
+				testAssertSame()
+				testAssertSameFails()
+				testFail()
+				testFailAssertNotNull()
+				testSucceedAssertNotNull()
+			}
+			'DP role: concreteComponent
+			class ExceptionTestCaseTest {
+				<<Create>> ExceptionTestCaseTest(name : JUnit_v3.7.java.lang.String)
+				testExceptionSubclass()
+				testExceptionTest()
+				testFailure()
+				testNoException()
+				testWrongException()
+			}
+			'/** 
+			' * A test case testing the extensions to the testing framework.
+			' */
+			'DP role: concreteComponent
+			class ExtensionTest {
+				<<Create>> ExtensionTest(name : JUnit_v3.7.java.lang.String)
+				testRunningErrorInTestSetup()
+				testRunningErrorsInTestSetup()
+				testSetupErrorDontTearDown()
+				testSetupErrorInTestSetup()
+			}
+			'/** 
+			' * A test case testing the testing framework.
+			' */
+			'DP role: concreteComponent
+			class Failure {
+				<<Create>> Failure(name : JUnit_v3.7.java.lang.String)
+				test()
+			}
+			'DP role: concreteComponent
+			class NoTestCases {
+				<<Create>> NoTestCases(name : JUnit_v3.7.java.lang.String)
+				noTestCase()
+			}
+			'DP role: concreteComponent
+			class NotPublicTestCase {
+				<<Create>> NotPublicTestCase(name : JUnit_v3.7.java.lang.String)
+				#testNotPublic()
+				testPublic()
+			}
+			'DP role: concreteComponent
+			class NotVoidTestCase {
+				<<Create>> NotVoidTestCase(name : JUnit_v3.7.java.lang.String)
+				testNotVoid(): JavaPrimitiveTypes.int
+				testVoid()
+			}
+			'DP role: concreteComponent
+			class OneTestCase {
+				<<Create>> OneTestCase(name : JUnit_v3.7.java.lang.String)
+				noTestCase()
+				testCase()
+				testCase(arg : JavaPrimitiveTypes.int)
+			}
+			'/** 
+			' * Test class used in SuiteTest
+			' */
+			'DP role: concreteComponent
+			class InheritedTestCase {
+				<<Create>> InheritedTestCase(name : JUnit_v3.7.java.lang.String)
+				test2()
+			}
+			'/** 
+			' * Test class used in SuiteTest
+			' */
+			'DP role: concreteComponent
+			class OverrideTestCase {
+				<<Create>> OverrideTestCase(name : JUnit_v3.7.java.lang.String)
+				testCase()
+			}
+			'/** 
+			' * Testing the RepeatedTest support.
+			' */
+			'DP role: concreteComponent
+			class RepeatedTestTest {
+				-fSuite: JUnit_v3.7.junit.framework.TestSuite
+				<<Create>> RepeatedTestTest(name : JUnit_v3.7.java.lang.String)
+				testRepeatedMoreThanOnce()
+				testRepeatedNegative()
+				testRepeatedOnce()
+				testRepeatedZero()
+			}
+			'DP role: concreteComponent
+			class SorterTest {
+				<<Create>> SorterTest(name : JUnit_v3.7.java.lang.String)
+				testSort()
+			}
+			'DP role: concreteComponent
+			class StackFilterTest {
+				fFiltered: JUnit_v3.7.java.lang.String
+				fUnfiltered: JUnit_v3.7.java.lang.String
+				<<Create>> StackFilterTest(name : JUnit_v3.7.java.lang.String)
+				#setUp()
+				testFilter()
+			}
+			'/** 
+			' * A test case testing the testing framework.
+			' */
+			'DP role: concreteComponent
+			class Success {
+				<<Create>> Success(name : JUnit_v3.7.java.lang.String)
+				test()
+			}
+			'/** 
+			' * A fixture for testing the "auto" test suite feature.
+			' */
+			'DP role: concreteComponent
+			class SuiteTest {
+				#fResult: JUnit_v3.7.junit.framework.TestResult
+				<<Create>> SuiteTest(name : JUnit_v3.7.java.lang.String)
+				#setUp()
+				{static} suite(): JUnit_v3.7.junit.framework.Test
+				testAddTestSuite()
+				testInheritedTests()
+				testNoTestCaseClass()
+				testNoTestCases()
+				testNotExistingTestCase()
+				testNotPublicTestCase()
+				testNotVoidTestCase()
+				testOneTestCase()
+				testShadowedTests()
+			}
+			'/** 
+			' * A TestCase for testing the TestCaseClassLoader
+			' */
+			'DP role: concreteComponent
+			class TestCaseClassLoaderTest {
+				<<Create>> TestCaseClassLoaderTest(name : JUnit_v3.7.java.lang.String)
+				testClassLoading()
+				testJarClassLoading()
+			}
+			'/** 
+			' * A test case testing the testing framework.
+			' */
+			'DP role: concreteComponent
+			class TestCaseTest {
+				<<Create>> TestCaseTest(name : JUnit_v3.7.java.lang.String)
+				testCaseToString()
+				testError()
+				testFailure()
+				testRunAndTearDownFails()
+				testSetupFails()
+				testSuccess()
+				testTearDownAfterError()
+				testTearDownFails()
+				testTearDownSetupFails()
+				testWasRun()
+				verifyError(test : JUnit_v3.7.junit.framework.TestCase)
+				verifyFailure(test : JUnit_v3.7.junit.framework.TestCase)
+				verifySuccess(test : JUnit_v3.7.junit.framework.TestCase)
+			}
+			'DP role: concreteComponent
+			class TestListenerTest {
+				-fEndCount: JavaPrimitiveTypes.int
+				-fErrorCount: JavaPrimitiveTypes.int
+				-fFailureCount: JavaPrimitiveTypes.int
+				-fResult: JUnit_v3.7.junit.framework.TestResult
+				-fStartCount: JavaPrimitiveTypes.int
+				<<Create>> TestListenerTest(name : JUnit_v3.7.java.lang.String)
+				addError(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.java.lang.Throwable)
+				addFailure(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.junit.framework.AssertionFailedError)
+				endTest(test : JUnit_v3.7.junit.framework.Test)
+				#setUp()
+				startTest(test : JUnit_v3.7.junit.framework.Test)
+				testError()
+				testFailure()
+				testStartStop()
+			}
+			'DP role: concreteComponent
+			class TextRunnerTest {
+				<<Create>> TextRunnerTest(name : JUnit_v3.7.java.lang.String)
+				execTest(testClass : JUnit_v3.7.java.lang.String, success : JavaPrimitiveTypes.boolean)
+				testError()
+				testFailure()
+				testSuccess()
+			}
+			'/** 
+			' * A helper test case for testing whether the testing method is run.
+			' */
+			'DP role: concreteComponent
+			class WasRun {
+				fWasRun: JavaPrimitiveTypes.boolean
+				<<Create>> WasRun(name : JUnit_v3.7.java.lang.String)
+				#runTest()
+			}
+			JUnit_v3.7.junit.framework.TestCase <|-- TestImplementorTest
+			JUnit_v3.7.junit.framework.TestCase <|-- ActiveTestTest
+			JUnit_v3.7.junit.framework.TestCase <|-- AssertTest
+			JUnit_v3.7.junit.framework.TestCase <|-- ExceptionTestCaseTest
+			JUnit_v3.7.junit.framework.TestCase <|-- ExtensionTest
+			JUnit_v3.7.junit.framework.TestCase <|-- Failure
+			JUnit_v3.7.junit.framework.TestCase <|-- NoTestCases
+			JUnit_v3.7.junit.framework.TestCase <|-- NotPublicTestCase
+			JUnit_v3.7.junit.framework.TestCase <|-- NotVoidTestCase
+			JUnit_v3.7.junit.framework.TestCase <|-- OneTestCase
+			OneTestCase <|-- InheritedTestCase
+			OneTestCase <|-- OverrideTestCase
+			JUnit_v3.7.junit.framework.TestCase <|-- RepeatedTestTest
+			JUnit_v3.7.junit.framework.TestCase <|-- SorterTest
+			JUnit_v3.7.junit.framework.TestCase <|-- StackFilterTest
+			JUnit_v3.7.junit.framework.TestCase <|-- Success
+			JUnit_v3.7.junit.framework.TestCase <|-- SuiteTest
+			JUnit_v3.7.junit.framework.TestCase <|-- TestCaseClassLoaderTest
+			JUnit_v3.7.junit.framework.TestCase <|-- TestCaseTest
+			JUnit_v3.7.junit.framework.TestCase <|-- TestListenerTest
+			JUnit_v3.7.junit.framework.TestListener <|.. TestListenerTest
+			JUnit_v3.7.junit.framework.TestCase <|-- TextRunnerTest
+			JUnit_v3.7.junit.framework.TestCase <|-- WasRun
+			JUnit_v3.7.junit.framework.TestCase "fTestCase" <-- DoubleTestCase
+			DoubleTestCase "fTest" <-- TestImplementorTest
+			JavaPrimitiveTypes.boolean "fTornDown" <-- TornDown
+			JUnit_v3.7.junit.framework.TestSuite "fSuite" <-- RepeatedTestTest
+			JUnit_v3.7.java.lang.String "fFiltered" <-- StackFilterTest
+			JUnit_v3.7.java.lang.String "fUnfiltered" <-- StackFilterTest
+			JUnit_v3.7.junit.framework.TestResult "fResult" <-- SuiteTest
+			JavaPrimitiveTypes.boolean "fTornDown" <-- TornDown
+			JavaPrimitiveTypes.int "fEndCount" <-- TestListenerTest
+			JavaPrimitiveTypes.int "fErrorCount" <-- TestListenerTest
+			JavaPrimitiveTypes.int "fFailureCount" <-- TestListenerTest
+			JUnit_v3.7.junit.framework.TestResult "fResult" <-- TestListenerTest
+			JavaPrimitiveTypes.int "fStartCount" <-- TestListenerTest
+			JavaPrimitiveTypes.boolean "fWasRun" <-- WasRun
+		}
+		package extensions {
+			'/** 
+			' * A TestCase that expects an Exception of class fExpected to be thrown. The other way to check that an expected exception is thrown is: <pre> try { shouldThrow(); } catch (SpecialException e) { return; } fail("Expected SpecialException"); </pre> To use ExceptionTestCase, create a TestCase like: <pre> new ExceptionTestCase("testShouldThrow", SpecialException.class); </pre>
+			' */
+			'DP role: concreteComponent
+			class ExceptionTestCase {
+				fExpected: JUnit_v3.7.java.lang.Class
+				<<Create>> ExceptionTestCase(name : JUnit_v3.7.java.lang.String, exception : JUnit_v3.7.java.lang.Class)
+				'/** 
+				' * Execute the test method expecting that an Exception of class fExpected or one of its subclasses will be thrown
+				' */
+				#runTest()
+			}
+			'DP role: concreteDecorator
+			class TestSetup {
+				<<Create>> TestSetup(test : JUnit_v3.7.junit.framework.Test)
+				run(result : JUnit_v3.7.junit.framework.TestResult)
+				#setUp()
+				#tearDown()
+			}
+			'DP role: concreteDecorator
+			class TestDecorator {
+				#fTest: JUnit_v3.7.junit.framework.Test
+				<<Create>> TestDecorator(test : JUnit_v3.7.junit.framework.Test)
+				basicRun(result : JUnit_v3.7.junit.framework.TestResult)
+				countTestCases(): JavaPrimitiveTypes.int
+				getTest(): JUnit_v3.7.junit.framework.Test
+				run(result : JUnit_v3.7.junit.framework.TestResult)
+				toString(): JUnit_v3.7.java.lang.String
+			}
+			'/** 
+			' * A Decorator that runs a test repeatedly.
+			' */
+			'DP role: concreteDecorator
+			class RepeatedTest {
+				-fTimesRepeat: JavaPrimitiveTypes.int
+				<<Create>> RepeatedTest(test : JUnit_v3.7.junit.framework.Test, repeat : JavaPrimitiveTypes.int)
+				countTestCases(): JavaPrimitiveTypes.int
+				run(result : JUnit_v3.7.junit.framework.TestResult)
+				toString(): JUnit_v3.7.java.lang.String
+			}
+			JUnit_v3.7.junit.framework.TestSuite <|-- ActiveTestSuite
+			JUnit_v3.7.junit.framework.TestCase <|-- ExceptionTestCase
+			TestDecorator <|-- TestSetup
+			JUnit_v3.7.junit.framework.Assert <|-- TestDecorator
+			JUnit_v3.7.junit.framework.Test <|.. TestDecorator
+			TestDecorator <|-- RepeatedTest
+			JavaPrimitiveTypes.int "fActiveTestDeathCount" <-- ActiveTestSuite
+			JUnit_v3.7.java.lang.Class "fExpected" <-- ExceptionTestCase
+			JUnit_v3.7.junit.framework.Test "fTest" <-- TestDecorator
+			JavaPrimitiveTypes.int "fTimesRepeat" <-- RepeatedTest
+		}
+		package samples {
+			package money {
+				'DP role: concreteComponent
+				class MoneyTest {
+					-f12CHF: Money
+					-f14CHF: Money
+					-f21USD: Money
+					-f7USD: Money
+					-fMB1: MoneyBag
+					-fMB2: MoneyBag
+					<<Create>> MoneyTest(name : JUnit_v3.7.java.lang.String)
+					{static} main(args : JUnit_v3.7.java.lang.String)
+					#setUp()
+					testBagMultiply()
+					testBagNegate()
+					testBagSimpleAdd()
+					testBagSubtract()
+					testBagSumAdd()
+					testIsZero()
+					testMixedSimpleAdd()
+					testMoneyBagEquals()
+					testMoneyBagHash()
+					testMoneyEquals()
+					testMoneyHash()
+					testNormalize()
+					testNormalize2()
+					testNormalize3()
+					testNormalize4()
+					testPrint()
+					testSimpleAdd()
+					testSimpleBagAdd()
+					testSimpleMultiply()
+					testSimpleNegate()
+					testSimpleSubtract()
+				}
+				JUnit_v3.7.junit.framework.TestCase <|-- MoneyTest
+				IMoney <|.. Money
+				IMoney <|.. MoneyBag
+				JUnit_v3.7.java.util.Vector "fMonies" <-- MoneyBag
+				JavaPrimitiveTypes.int "fAmount" <-- Money
+				JUnit_v3.7.java.lang.String "fCurrency" <-- Money
+				Money "f12CHF" <-- MoneyTest
+				Money "f14CHF" <-- MoneyTest
+				Money "f21USD" <-- MoneyTest
+				Money "f7USD" <-- MoneyTest
+				MoneyBag "fMB1" <-- MoneyTest
+				MoneyBag "fMB2" <-- MoneyTest
+			}
+			'/** 
+			' * Some simple tests.
+			' */
+			'DP role: concreteComponent
+			class SimpleTest {
+				#fValue1: JavaPrimitiveTypes.int
+				#fValue2: JavaPrimitiveTypes.int
+				<<Create>> SimpleTest(name : JUnit_v3.7.java.lang.String)
+				#setUp()
+				{static} suite(): JUnit_v3.7.junit.framework.Test
+				testAdd()
+				testDivideByZero()
+				testEquals()
+			}
+			'/** 
+			' * A sample test case, testing <code>java.util.Vector</code>.
+			' */
+			'DP role: concreteComponent
+			class VectorTest {
+				#fEmpty: JUnit_v3.7.java.util.Vector
+				#fFull: JUnit_v3.7.java.util.Vector
+				<<Create>> VectorTest(name : JUnit_v3.7.java.lang.String)
+				{static} main(args : JUnit_v3.7.java.lang.String)
+				#setUp()
+				{static} suite(): JUnit_v3.7.junit.framework.Test
+				testCapacity()
+				testClone()
+				testContains()
+				testElementAt()
+				testRemoveAll()
+				testRemoveElement()
+			}
+			JUnit_v3.7.junit.framework.TestCase <|-- SimpleTest
+			JUnit_v3.7.junit.framework.TestCase <|-- VectorTest
+			JavaPrimitiveTypes.int "fValue1" <-- SimpleTest
+			JavaPrimitiveTypes.int "fValue2" <-- SimpleTest
+			JUnit_v3.7.java.util.Vector "fEmpty" <-- VectorTest
+			JUnit_v3.7.java.util.Vector "fFull" <-- VectorTest
+		}
+	}
+}
+@enduml

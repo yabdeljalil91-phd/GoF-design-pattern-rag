@@ -1,0 +1,30 @@
+@startuml
+package dpd_jdt {
+	package Context {
+		package name {
+			'An ellipse figure.
+			class EllipseFigure {
+				-ellipseFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-fDisplayBox: java.awt.Rectangle
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -6856203289355118951
+				<<Create>> EllipseFigure()
+				<<Create>> EllipseFigure(origin : java.awt.Point, corner : java.awt.Point)
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				connectionInsets(): java.awt.Insets
+				connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Connector
+				displayBox(): java.awt.Rectangle
+				drawBackground(g : java.awt.Graphics)
+				drawFrame(g : java.awt.Graphics)
+				handles(): java.util.Vector
+				read(dr : StorableInput)
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	Context.name.AttributeFigure <|-- Context.name.EllipseFigure
+	JavaPrimitiveTypes.int "ellipseFigureSerializedDataVersion" <-- Context.name.EllipseFigure
+	java.awt.Rectangle "fDisplayBox" <-- Context.name.EllipseFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Context.name.EllipseFigure
+}
+@enduml

@@ -1,0 +1,111 @@
+@startuml
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package openide {
+			package awt {
+				class SpinButton {
+					{const} DEFAULT_MAXIMUM: JavaPrimitiveTypes.int = 100
+					{const} DEFAULT_MINIMUM: JavaPrimitiveTypes.int = 0
+					{const} DEFAULT_ORIENTATION: JavaPrimitiveTypes.boolean = false
+					{const} DEFAULT_REPEAT_DELAY: JavaPrimitiveTypes.int = 300
+					{const} DEFAULT_REPEAT_RATE: JavaPrimitiveTypes.int = 70
+					{const} DEFAULT_STEP: JavaPrimitiveTypes.int = 1
+					-{const} SPIN_DOWN: JavaPrimitiveTypes.boolean = false
+					-{const} SPIN_UP: JavaPrimitiveTypes.boolean = true
+					#arrowsOrientation: JavaPrimitiveTypes.boolean
+					#boundsIgnored: JavaPrimitiveTypes.boolean
+					#maximum: JavaPrimitiveTypes.int
+					#minimum: JavaPrimitiveTypes.int
+					#orientation: JavaPrimitiveTypes.boolean
+					#repeatDelay: JavaPrimitiveTypes.int
+					#repeatRate: JavaPrimitiveTypes.int
+					#repeating: JavaPrimitiveTypes.boolean
+					#rt: RepeatThread
+					#running: JavaPrimitiveTypes.boolean
+					#runningDir: JavaPrimitiveTypes.boolean
+					{const} serialVersionUID: JavaPrimitiveTypes.long = -3525959415481788776
+					-spinButtonListeners: Netbeans_v1.0.x.java.util.Vector
+					#step: JavaPrimitiveTypes.int
+					#value: JavaPrimitiveTypes.int
+					-valueSupport: Netbeans_v1.0.x.java.beans.PropertyChangeSupport
+					<<Create>> SpinButton()
+					addPropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					addSpinButtonListener(spinButtonListener : SpinButtonListener)
+					-countSize(): Netbeans_v1.0.x.java.awt.Dimension
+					getArrowsOrientation(): JavaPrimitiveTypes.boolean
+					getDelay(): JavaPrimitiveTypes.int
+					getMaximum(): JavaPrimitiveTypes.int
+					getMinimum(): JavaPrimitiveTypes.int
+					getMinimumSize(): Netbeans_v1.0.x.java.awt.Dimension
+					getOrientation(): JavaPrimitiveTypes.boolean
+					getPreferredSize(): Netbeans_v1.0.x.java.awt.Dimension
+					getRate(): JavaPrimitiveTypes.int
+					getStep(): JavaPrimitiveTypes.int
+					getValue(): JavaPrimitiveTypes.int
+					isBoundsIgnored(): JavaPrimitiveTypes.boolean
+					isRepeating(): JavaPrimitiveTypes.boolean
+					notifySpinButtonListenersAboutDownMove()
+					notifySpinButtonListenersAboutUpMove()
+					paint(g : Netbeans_v1.0.x.java.awt.Graphics)
+					-paintArrow(g : Netbeans_v1.0.x.java.awt.Graphics, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, w : JavaPrimitiveTypes.int, h : JavaPrimitiveTypes.int, aDir : JavaPrimitiveTypes.boolean)
+					-paintBorder(g : Netbeans_v1.0.x.java.awt.Graphics, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, w : JavaPrimitiveTypes.int, h : JavaPrimitiveTypes.int, isDown : JavaPrimitiveTypes.boolean, aDir : JavaPrimitiveTypes.boolean)
+					removePropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					removeSpinButtonListener(spinButtonListener : SpinButtonListener)
+					#repeatThreadNotify()
+					setArrowsOrientation(aDir : JavaPrimitiveTypes.boolean)
+					setBoundsIgnored(ignored : JavaPrimitiveTypes.boolean)
+					setDelay(aDelay : JavaPrimitiveTypes.int)
+					setForeground(color : Netbeans_v1.0.x.java.awt.Color)
+					setMaximum(aMax : JavaPrimitiveTypes.int)
+					setMinimum(aMin : JavaPrimitiveTypes.int)
+					setOrientation(aDir : JavaPrimitiveTypes.boolean)
+					setRate(aRate : JavaPrimitiveTypes.int)
+					setRepeating(aRepeating : JavaPrimitiveTypes.boolean)
+					setStep(aStep : JavaPrimitiveTypes.int)
+					setValue(aValue : JavaPrimitiveTypes.int)
+					#switchRun(aDirect : JavaPrimitiveTypes.boolean)
+					switchStop()
+				}
+				interface SpinButtonListener {
+					changeValue()
+					moveDown()
+					moveUp()
+				}
+				class SpinButtonAdapter {
+					<<Create>> SpinButtonAdapter()
+					changeValue()
+					moveDown()
+					moveUp()
+				}
+				Netbeans_v1.0.x.java.awt.Canvas <|-- SpinButton
+				SpinButtonListener <|.. SpinButtonAdapter
+				JavaPrimitiveTypes.int "DEFAULT_MAXIMUM" <-- SpinButton
+				JavaPrimitiveTypes.int "DEFAULT_MINIMUM" <-- SpinButton
+				JavaPrimitiveTypes.boolean "DEFAULT_ORIENTATION" <-- SpinButton
+				JavaPrimitiveTypes.int "DEFAULT_REPEAT_DELAY" <-- SpinButton
+				JavaPrimitiveTypes.int "DEFAULT_REPEAT_RATE" <-- SpinButton
+				JavaPrimitiveTypes.int "DEFAULT_STEP" <-- SpinButton
+				JavaPrimitiveTypes.boolean "SPIN_DOWN" <-- SpinButton
+				JavaPrimitiveTypes.boolean "SPIN_UP" <-- SpinButton
+				JavaPrimitiveTypes.boolean "arrowsOrientation" <-- SpinButton
+				JavaPrimitiveTypes.boolean "boundsIgnored" <-- SpinButton
+				JavaPrimitiveTypes.int "maximum" <-- SpinButton
+				JavaPrimitiveTypes.int "minimum" <-- SpinButton
+				JavaPrimitiveTypes.boolean "orientation" <-- SpinButton
+				JavaPrimitiveTypes.int "repeatDelay" <-- SpinButton
+				JavaPrimitiveTypes.int "repeatRate" <-- SpinButton
+				JavaPrimitiveTypes.boolean "repeating" <-- SpinButton
+				JavaPrimitiveTypes.boolean "finish" <-- RepeatThread
+				RepeatThread "rt" <-- SpinButton
+				JavaPrimitiveTypes.boolean "running" <-- SpinButton
+				JavaPrimitiveTypes.boolean "runningDir" <-- SpinButton
+				JavaPrimitiveTypes.long "serialVersionUID" <-- SpinButton
+				Netbeans_v1.0.x.java.util.Vector "spinButtonListeners" <-- SpinButton
+				JavaPrimitiveTypes.int "step" <-- SpinButton
+				JavaPrimitiveTypes.int "value" <-- SpinButton
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "valueSupport" <-- SpinButton
+			}
+		}
+	}
+}
+@enduml

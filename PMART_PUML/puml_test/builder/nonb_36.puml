@@ -1,0 +1,21 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'This source browser allows Elixir to load files.
+			'@author    Chris Seguin
+			class ElixirSourceBrowser {
+				<<Create>> ElixirSourceBrowser()
+				'Determines if the system is in a state where it can browse the source code
+				'@return    true if the source code browsing is enabled
+				canBrowseSource(): JavaPrimitiveTypes.boolean
+				'Actually browses to the file
+				'@param filename  the file
+				'@param line      the line in the file
+				gotoSource(file : java.io.File, line : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	Builder.nonbuilder.SourceBrowser <|-- Builder.nonbuilder.ElixirSourceBrowser
+}
+@enduml

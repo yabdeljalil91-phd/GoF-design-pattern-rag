@@ -1,0 +1,531 @@
+@startuml
+'Design pattern Template Method
+package "JHotDraw v5.1" as JHotDraw_v5.1 {
+	package CH {
+		package ifa {
+			package draw {
+				package figures {
+					'/** 
+					' * A figure that can keep track of an open ended set of attributes. The attributes are stored in a dictionary implemented by FigureAttributes.
+					' * @see Figure
+					' * @see Handle
+					' * @see FigureAttributes
+					' */
+					'DP role: abstractClass
+					abstract class AttributeFigure {
+						-attributeFigureSerializedDataVersion: JavaPrimitiveTypes.int
+						-fAttributes: FigureAttributes
+						-{static} fgDefaultAttributes: FigureAttributes
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = -10857585979273442
+						#<<Create>> AttributeFigure()
+						'/** 
+						' * Draws the figure in the given graphics. Draw is a template method calling drawBackground followed by drawFrame.
+						' */
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						'/** 
+						' * Draws the background of the figure.
+						' * @see #draw
+						' */
+						#drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						'/** 
+						' * Draws the frame of the figure.
+						' * @see #draw
+						' */
+						#drawFrame(g : JHotDraw_v5.1.java.awt.Graphics)
+						'/** 
+						' * Returns the named attribute or null if a a figure doesn't have an attribute. All figures support the attribute names FillColor and FrameColor
+						' */
+						getAttribute(name : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.lang.Object
+						'/** 
+						' * Gets a the default value for a named attribute
+						' * @see getAttribute
+						' */
+						{static} getDefaultAttribute(name : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.lang.Object
+						'/** 
+						' * Gets the fill color of a figure. This is a convenience method.
+						' * @see getAttribute
+						' */
+						getFillColor(): JHotDraw_v5.1.java.awt.Color
+						'/** 
+						' * Gets the frame color of a figure. This is a convenience method.
+						' * @see getAttribute
+						' */
+						getFrameColor(): JHotDraw_v5.1.java.awt.Color
+						-{static} initializeAttributes()
+						'/** 
+						' * Reads the Figure from a StorableInput.
+						' */
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						'/** 
+						' * Sets the named attribute to the new value
+						' */
+						setAttribute(name : JHotDraw_v5.1.java.lang.String, value : JHotDraw_v5.1.java.lang.Object)
+						'/** 
+						' * Stores the Figure to a StorableOutput.
+						' */
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'/** 
+					' * An ellipse figure.
+					' */
+					'DP role: concreteClass
+					class EllipseFigure {
+						-ellipseFigureSerializedDataVersion: JavaPrimitiveTypes.int
+						-fDisplayBox: JHotDraw_v5.1.java.awt.Rectangle
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = -6856203289355118951
+						<<Create>> EllipseFigure()
+						<<Create>> EllipseFigure(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						basicDisplayBox(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						connectionInsets(): JHotDraw_v5.1.java.awt.Insets
+						connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawFrame(g : JHotDraw_v5.1.java.awt.Graphics)
+						handles(): JHotDraw_v5.1.java.util.Vector
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'/** 
+					' * A Figure that shows an Image. Images shown by an image figure are shared by using the Iconkit.
+					' * @see Iconkit
+					' */
+					'DP role: concreteClass
+					class ImageFigure {
+						-fDisplayBox: JHotDraw_v5.1.java.awt.Rectangle
+						-fFileName: JHotDraw_v5.1.java.lang.String
+						-fImage: JHotDraw_v5.1.java.awt.Image
+						-imageFigureSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 148012030121282439
+						<<Create>> ImageFigure()
+						<<Create>> ImageFigure(image : JHotDraw_v5.1.java.awt.Image, fileName : JHotDraw_v5.1.java.lang.String, origin : JHotDraw_v5.1.java.awt.Point)
+						basicDisplayBox(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						-drawGhost(g : JHotDraw_v5.1.java.awt.Graphics)
+						handles(): JHotDraw_v5.1.java.util.Vector
+						'/** 
+						' * Handles asynchroneous image updates.
+						' */
+						imageUpdate(img : JHotDraw_v5.1.java.awt.Image, flags : JavaPrimitiveTypes.int, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, w : JavaPrimitiveTypes.int, h : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Reads the ImageFigure from a StorableInput. It registers the referenced figure to be loaded from the Iconkit.
+						' * @see Iconkit#registerImage
+						' */
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						-readObject(s : JHotDraw_v5.1.java.io.ObjectInputStream)
+						'/** 
+						' * Writes the ImageFigure to a StorableOutput. Only a reference to the image, that is its pathname is saved.
+						' */
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'/** 
+					' * A rectangle figure.
+					' */
+					'DP role: concreteClass
+					class RectangleFigure {
+						-fDisplayBox: JHotDraw_v5.1.java.awt.Rectangle
+						-rectangleFigureSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 184722075881789163
+						<<Create>> RectangleFigure()
+						<<Create>> RectangleFigure(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						basicDisplayBox(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawFrame(g : JHotDraw_v5.1.java.awt.Graphics)
+						handles(): JHotDraw_v5.1.java.util.Vector
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'/** 
+					' * A round rectangle figure.
+					' * @see RadiusHandle
+					' */
+					'DP role: concreteClass
+					class RoundRectangleFigure {
+						-{const} DEFAULT_ARC: JavaPrimitiveTypes.int = 8
+						-fArcHeight: JavaPrimitiveTypes.int
+						-fArcWidth: JavaPrimitiveTypes.int
+						-fDisplayBox: JHotDraw_v5.1.java.awt.Rectangle
+						-roundRectangleSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 7907900248924036885
+						<<Create>> RoundRectangleFigure()
+						<<Create>> RoundRectangleFigure(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						basicDisplayBox(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						connectionInsets(): JHotDraw_v5.1.java.awt.Insets
+						connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawFrame(g : JHotDraw_v5.1.java.awt.Graphics)
+						'/** 
+						' * Gets the arc's width and height.
+						' */
+						getArc(): JHotDraw_v5.1.java.awt.Point
+						handles(): JHotDraw_v5.1.java.util.Vector
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						'/** 
+						' * Sets the arc's witdh and height.
+						' */
+						setArc(width : JavaPrimitiveTypes.int, height : JavaPrimitiveTypes.int)
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'/** 
+					' * A text figure.
+					' * @see TextTool
+					' */
+					'DP role: concreteClass
+					class TextFigure {
+						-fFont: JHotDraw_v5.1.java.awt.Font
+						-fHeight: JavaPrimitiveTypes.int
+						-fIsReadOnly: JavaPrimitiveTypes.boolean
+						-fLocator: JHotDraw_v5.1.CH.ifa.draw.standard.OffsetLocator
+						-fObservedFigure: JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						-fOriginX: JavaPrimitiveTypes.int
+						-fOriginY: JavaPrimitiveTypes.int
+						-fSizeIsDirty: JavaPrimitiveTypes.boolean
+						-fText: JHotDraw_v5.1.java.lang.String
+						-fWidth: JavaPrimitiveTypes.int
+						-{static} fgCurrentFontName: JHotDraw_v5.1.java.lang.String
+						-{static} fgCurrentFontSize: JavaPrimitiveTypes.int
+						-{static} fgCurrentFontStyle: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 4599820785949456124
+						-textFigureSerializedDataVersion: JavaPrimitiveTypes.int
+						<<Create>> TextFigure()
+						'/** 
+						' * Tests whether the figure accepts typing.
+						' */
+						acceptsTyping(): JavaPrimitiveTypes.boolean
+						basicDisplayBox(newOrigin : JHotDraw_v5.1.java.awt.Point, newCorner : JHotDraw_v5.1.java.awt.Point)
+						#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						'/** 
+						' * Updates the location whenever the figure changes itself.
+						' */
+						changed()
+						connect(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						'/** 
+						' * Creates the current font to be used for new text figures.
+						' */
+						{static} createCurrentFont(): JHotDraw_v5.1.java.awt.Font
+						'/** 
+						' * Disconnects the text figure.
+						' */
+						disconnect()
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawFrame(g : JHotDraw_v5.1.java.awt.Graphics)
+						figureChanged(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureInvalidated(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRemoved(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRequestRemove(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRequestUpdate(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						'/** 
+						' * A text figure understands the "FontSize", "FontStyle", and "FontName" attributes.
+						' */
+						getAttribute(name : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.lang.Object
+						'/** 
+						' * Gets the font.
+						' */
+						getFont(): JHotDraw_v5.1.java.awt.Font
+						'/** 
+						' * Gets the text shown by the text figure.
+						' */
+						getText(): JHotDraw_v5.1.java.lang.String
+						handles(): JHotDraw_v5.1.java.util.Vector
+						-markDirty()
+						moveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						'/** 
+						' * Gets the number of columns to be overlaid when the figure is edited.
+						' */
+						overlayColumns(): JavaPrimitiveTypes.int
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						-readObject(s : JHotDraw_v5.1.java.io.ObjectInputStream)
+						'/** 
+						' * Tests whether this figure is read only.
+						' */
+						readOnly(): JavaPrimitiveTypes.boolean
+						release()
+						'/** 
+						' * A text figure understands the "FontSize", "FontStyle", and "FontName" attributes.
+						' */
+						setAttribute(name : JHotDraw_v5.1.java.lang.String, value : JHotDraw_v5.1.java.lang.Object)
+						'/** 
+						' * Sets the current font name
+						' */
+						{static} setCurrentFontName(name : JHotDraw_v5.1.java.lang.String)
+						'/** 
+						' * Sets the current font size.
+						' */
+						{static} setCurrentFontSize(size : JavaPrimitiveTypes.int)
+						'/** 
+						' * Sets the current font style.
+						' */
+						{static} setCurrentFontStyle(style : JavaPrimitiveTypes.int)
+						'/** 
+						' * Sets the font.
+						' */
+						setFont(newFont : JHotDraw_v5.1.java.awt.Font)
+						'/** 
+						' * Sets the read only status of the text figure.
+						' */
+						setReadOnly(isReadOnly : JavaPrimitiveTypes.boolean)
+						'/** 
+						' * Sets the text shown by the text figure.
+						' */
+						setText(newText : JHotDraw_v5.1.java.lang.String)
+						textDisplayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						-textExtent(): JHotDraw_v5.1.java.awt.Dimension
+						'/** 
+						' * Updates the location relative to the connected figure. The TextFigure is centered around the located point.
+						' */
+						#updateLocation()
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'/** 
+					' * A TextFigure specialized to edit numbers.
+					' */
+					'DP role: concreteClass
+					class NumberTextFigure {
+						-numberTextFigureSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = -4056859232918336475
+						<<Create>> NumberTextFigure()
+						'/** 
+						' * Gets the numerical value of the contained text. return the value or 0 in the case of an illegal number format.
+						' */
+						getValue(): JavaPrimitiveTypes.int
+						'/** 
+						' * Gets the number of columns to be used by the text overlay.
+						' * @see FloatingTextField
+						' */
+						overlayColumns(): JavaPrimitiveTypes.int
+						'/** 
+						' * Sets the numberical value of the contained text.
+						' */
+						setValue(value : JavaPrimitiveTypes.int)
+					}
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractFigure <|-- AttributeFigure
+					JHotDraw_v5.1.java.lang.Cloneable <|.. FigureAttributes
+					JHotDraw_v5.1.java.io.Serializable <|.. FigureAttributes
+					AttributeFigure <|-- EllipseFigure
+					AttributeFigure <|-- ImageFigure
+					JHotDraw_v5.1.java.awt.image.ImageObserver <|.. ImageFigure
+					AttributeFigure <|-- RectangleFigure
+					AttributeFigure <|-- RoundRectangleFigure
+					AttributeFigure <|-- TextFigure
+					JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeListener <|.. TextFigure
+					JHotDraw_v5.1.CH.ifa.draw.standard.TextHolder <|.. TextFigure
+					TextFigure <|-- NumberTextFigure
+					JavaPrimitiveTypes.int "attributeFigureSerializedDataVersion" <-- AttributeFigure
+					JHotDraw_v5.1.java.util.Hashtable "fMap" <-- FigureAttributes
+					JavaPrimitiveTypes.int "figureAttributesSerializedDataVersion" <-- FigureAttributes
+					JavaPrimitiveTypes.long "serialVersionUID" <-- FigureAttributes
+					FigureAttributes "fAttributes" <-- AttributeFigure
+					FigureAttributes "fgDefaultAttributes" <-- AttributeFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- AttributeFigure
+					JavaPrimitiveTypes.int "ellipseFigureSerializedDataVersion" <-- EllipseFigure
+					JHotDraw_v5.1.java.awt.Rectangle "fDisplayBox" <-- EllipseFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- EllipseFigure
+					JHotDraw_v5.1.java.awt.Rectangle "fDisplayBox" <-- ImageFigure
+					JHotDraw_v5.1.java.lang.String "fFileName" <-- ImageFigure
+					JHotDraw_v5.1.java.awt.Image "fImage" <-- ImageFigure
+					JavaPrimitiveTypes.int "imageFigureSerializedDataVersion" <-- ImageFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ImageFigure
+					JHotDraw_v5.1.java.awt.Rectangle "fDisplayBox" <-- RectangleFigure
+					JavaPrimitiveTypes.int "rectangleFigureSerializedDataVersion" <-- RectangleFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- RectangleFigure
+					JavaPrimitiveTypes.int "DEFAULT_ARC" <-- RoundRectangleFigure
+					JavaPrimitiveTypes.int "fArcHeight" <-- RoundRectangleFigure
+					JavaPrimitiveTypes.int "fArcWidth" <-- RoundRectangleFigure
+					JHotDraw_v5.1.java.awt.Rectangle "fDisplayBox" <-- RoundRectangleFigure
+					JavaPrimitiveTypes.int "roundRectangleSerializedDataVersion" <-- RoundRectangleFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- RoundRectangleFigure
+					JHotDraw_v5.1.java.awt.Font "fFont" <-- TextFigure
+					JavaPrimitiveTypes.int "fHeight" <-- TextFigure
+					JavaPrimitiveTypes.boolean "fIsReadOnly" <-- TextFigure
+					JHotDraw_v5.1.CH.ifa.draw.standard.OffsetLocator "fLocator" <-- TextFigure
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure "fObservedFigure" <-- TextFigure
+					JavaPrimitiveTypes.int "fOriginX" <-- TextFigure
+					JavaPrimitiveTypes.int "fOriginY" <-- TextFigure
+					JavaPrimitiveTypes.boolean "fSizeIsDirty" <-- TextFigure
+					JHotDraw_v5.1.java.lang.String "fText" <-- TextFigure
+					JavaPrimitiveTypes.int "fWidth" <-- TextFigure
+					JHotDraw_v5.1.java.lang.String "fgCurrentFontName" <-- TextFigure
+					JavaPrimitiveTypes.int "fgCurrentFontSize" <-- TextFigure
+					JavaPrimitiveTypes.int "fgCurrentFontStyle" <-- TextFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- TextFigure
+					JavaPrimitiveTypes.int "textFigureSerializedDataVersion" <-- TextFigure
+					JavaPrimitiveTypes.int "numberTextFigureSerializedDataVersion" <-- NumberTextFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- NumberTextFigure
+				}
+				package contrib {
+					'/** 
+					' * A scalable, rotatable polygon with an arbitrary number of points
+					' */
+					'DP role: concreteClass
+					class PolygonFigure {
+						{const} TOO_CLOSE: JavaPrimitiveTypes.int = 2
+						#fPoly: JHotDraw_v5.1.java.awt.Polygon
+						-polygonFigureSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 6254089689239215026
+						<<Create>> PolygonFigure()
+						<<Create>> PolygonFigure(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						<<Create>> PolygonFigure(p : JHotDraw_v5.1.java.awt.Polygon)
+						'/** 
+						' * Adds a node to the list of points.
+						' */
+						addPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						basicDisplayBox(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						basicMoveBy(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int)
+						'/** 
+						' * replacement for builtin Polygon.getBounds that doesn't always update?
+						' */
+						{static} bounds(p : JHotDraw_v5.1.java.awt.Polygon): JHotDraw_v5.1.java.awt.Rectangle
+						center(): JHotDraw_v5.1.java.awt.Point
+						{static} center(p : JHotDraw_v5.1.java.awt.Polygon): JHotDraw_v5.1.java.awt.Point
+						chop(p : JHotDraw_v5.1.java.awt.Point): JHotDraw_v5.1.java.awt.Point
+						{static} chop(poly : JHotDraw_v5.1.java.awt.Polygon, p : JHotDraw_v5.1.java.awt.Point): JHotDraw_v5.1.java.awt.Point
+						connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						'/** 
+						' * compute distance of point from line segment, or Double.MAX_VALUE if perpendicular projection is outside segment; or If pts on line are same, return distance from point
+						' */
+						{static} distanceFromLine(xa : JavaPrimitiveTypes.int, ya : JavaPrimitiveTypes.int, xb : JavaPrimitiveTypes.int, yb : JavaPrimitiveTypes.int, xc : JavaPrimitiveTypes.int, yc : JavaPrimitiveTypes.int): JavaPrimitiveTypes.double
+						drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawFrame(g : JHotDraw_v5.1.java.awt.Graphics)
+						'/** 
+						' * Gets the segment that is hit by the given point.
+						' * @return the index of the segment or -1 if no segment was hit.
+						' */
+						findSegment(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+						'/** 
+						' * return a copy of the raw polygon
+						' */
+						getPolygon(): JHotDraw_v5.1.java.awt.Polygon
+						handles(): JHotDraw_v5.1.java.util.Vector
+						'/** 
+						' * Insert a node at the given point.
+						' */
+						insertPointAt(p : JHotDraw_v5.1.java.awt.Point, i : JavaPrimitiveTypes.int)
+						isEmpty(): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Creates a locator for the point with the given index.
+						' */
+						{static} locator(pointIndex : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						'/** 
+						' * Return the point on the polygon that is furthest from the center
+						' */
+						outermostPoint(): JHotDraw_v5.1.java.awt.Point
+						pointAt(i : JavaPrimitiveTypes.int): JHotDraw_v5.1.java.awt.Point
+						pointCount(): JavaPrimitiveTypes.int
+						points(): JHotDraw_v5.1.java.util.Enumeration
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						removePointAt(i : JavaPrimitiveTypes.int)
+						'/** 
+						' * Scale and rotate relative to anchor
+						' */
+						scaleRotate(anchor : JHotDraw_v5.1.java.awt.Point, originalPolygon : JHotDraw_v5.1.java.awt.Polygon, p : JHotDraw_v5.1.java.awt.Point)
+						'/** 
+						' * Changes the position of a node.
+						' */
+						setPointAt(p : JHotDraw_v5.1.java.awt.Point, i : JavaPrimitiveTypes.int)
+						'/** 
+						' * Remove points that are nearly colinear with others
+						' */
+						smoothPoints()
+						'/** 
+						' * Splits the segment at the given point if a segment was hit.
+						' * @return the index of the segment or -1 if no segment was hit.
+						' */
+						splitSegment(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'/** 
+					' * A diamond with vertices at the midpoints of its enclosing rectangle
+					' */
+					'DP role: concreteClass
+					class DiamondFigure {
+						<<Create>> DiamondFigure()
+						<<Create>> DiamondFigure(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						connectionInsets(): JHotDraw_v5.1.java.awt.Insets
+						containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						'/** 
+						' * Return the polygon describing the diamond 
+						' */
+						#polygon(): JHotDraw_v5.1.java.awt.Polygon
+					}
+					'/** 
+					' * A triangle with same dimensions as its enclosing rectangle, and apex at any of 8 places
+					' */
+					'DP role: concreteClass
+					class TriangleFigure {
+						#fRotation: JavaPrimitiveTypes.int
+						{static} rotations: JavaPrimitiveTypes.double [*]
+						<<Create>> TriangleFigure()
+						<<Create>> TriangleFigure(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						center(): JHotDraw_v5.1.java.awt.Point
+						chop(p : JHotDraw_v5.1.java.awt.Point): JHotDraw_v5.1.java.awt.Point
+						clone(): JHotDraw_v5.1.java.lang.Object
+						connectionInsets(): JHotDraw_v5.1.java.awt.Insets
+						containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						handles(): JHotDraw_v5.1.java.util.Vector
+						'/** 
+						' * Return the polygon describing the triangle 
+						' */
+						polygon(): JHotDraw_v5.1.java.awt.Polygon
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						rotate(angle : JavaPrimitiveTypes.double)
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					JHotDraw_v5.1.CH.ifa.draw.figures.AttributeFigure <|-- PolygonFigure
+					JHotDraw_v5.1.CH.ifa.draw.figures.RectangleFigure <|-- DiamondFigure
+					JHotDraw_v5.1.CH.ifa.draw.figures.RectangleFigure <|-- TriangleFigure
+					JavaPrimitiveTypes.int "TOO_CLOSE" <-- PolygonFigure
+					JHotDraw_v5.1.java.awt.Polygon "fPoly" <-- PolygonFigure
+					JavaPrimitiveTypes.int "polygonFigureSerializedDataVersion" <-- PolygonFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- PolygonFigure
+					JavaPrimitiveTypes.int "fRotation" <-- TriangleFigure
+					JavaPrimitiveTypes.double "rotations 0..*" <-- TriangleFigure
+				}
+				package samples {
+					package net {
+						'DP role: concreteClass
+						class NodeFigure {
+							-{const} BORDER: JavaPrimitiveTypes.int = 6
+							-fConnectors: JHotDraw_v5.1.java.util.Vector
+							-fConnectorsVisible: JavaPrimitiveTypes.boolean
+							<<Create>> NodeFigure()
+							'/** 
+							' */
+							connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+							'/** 
+							' */
+							connectorVisibility(isVisible : JavaPrimitiveTypes.boolean)
+							'/** 
+							' */
+							-connectors(): JHotDraw_v5.1.java.util.Vector
+							containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+							-createConnectors()
+							displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+							draw(g : JHotDraw_v5.1.java.awt.Graphics)
+							-drawBorder(g : JHotDraw_v5.1.java.awt.Graphics)
+							-drawConnectors(g : JHotDraw_v5.1.java.awt.Graphics)
+							-findConnector(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+							handles(): JHotDraw_v5.1.java.util.Vector
+							-initialize()
+						}
+						JHotDraw_v5.1.CH.ifa.draw.figures.TextFigure <|-- NodeFigure
+						JavaPrimitiveTypes.int "BORDER" <-- NodeFigure
+						JHotDraw_v5.1.java.util.Vector "fConnectors" <-- NodeFigure
+						JavaPrimitiveTypes.boolean "fConnectorsVisible" <-- NodeFigure
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

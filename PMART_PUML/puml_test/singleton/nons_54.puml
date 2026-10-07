@@ -1,0 +1,71 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package nonsingleton {
+			'@class PolyLine2D
+			'@date 08-20-2001
+			'@author Eric Crahen
+			'@version 1.0This class implements Shape, and consists of a series of straight-line segments.  It allows segements to be added and split quickly, and  is very efficent, minimizing the number of new objects  created for most frequently used operations. Segment distance methods should be updated as well as the relativeCCW methods for a complete PolyLine2D implementation
+			abstract class PolyLine2D {
+				#pointCount: JavaPrimitiveTypes.int
+				<<Create>> PolyLine2D()
+				'See if this Point falls on or close to the line
+				contains(pt : java.awt.geom.Point2D): JavaPrimitiveTypes.boolean
+				'See if this Point falls on or close to the line
+				contains(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double): JavaPrimitiveTypes.boolean
+				'See if this Point falls on or close to the line
+				contains(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, tolerance : JavaPrimitiveTypes.double): JavaPrimitiveTypes.boolean
+				'Get the boudns for this rectangle
+				getBounds2D(rc : java.awt.geom.Rectangle2D): java.awt.geom.Rectangle2D
+				'Get the boudns for this rectangle
+				getBounds2D(): java.awt.geom.Rectangle2D
+				'Get the center of the bounding rectangle for this line.
+				'@param Point2D
+				'@return Point2D
+				getCenter(pt : java.awt.geom.Point2D): java.awt.geom.Point2D
+				'Get an arbitrary point in this line
+				getPN(index : JavaPrimitiveTypes.int): java.awt.geom.Point2D
+				'Get the n'th Point2D in the line
+				getPN(index : JavaPrimitiveTypes.int, pt : java.awt.geom.Point2D): java.awt.geom.Point2D
+				getPathIterator(at : java.awt.geom.AffineTransform, flatness : JavaPrimitiveTypes.double): java.awt.geom.PathIterator
+				getPathIterator(at : java.awt.geom.AffineTransform): java.awt.geom.PathIterator
+				'Count the Points in this line
+				getPointCount(): JavaPrimitiveTypes.int
+				'Count the segments in this Line
+				getSegmentCount(): JavaPrimitiveTypes.int
+				'Get the x-value of the n'th point
+				getXN(index : JavaPrimitiveTypes.int): JavaPrimitiveTypes.double
+				'Get the y-value of the n'th point
+				getYN(index : JavaPrimitiveTypes.int): JavaPrimitiveTypes.double
+				'See if this line intersects the rectangle.
+				intersects(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, w : JavaPrimitiveTypes.double, h : JavaPrimitiveTypes.double): JavaPrimitiveTypes.boolean
+				'Join together the two segments joined by a single point in the line
+				join(point : JavaPrimitiveTypes.int)
+				'Get the closest point in the line to another point
+				pointFor(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, tolerance : JavaPrimitiveTypes.double): JavaPrimitiveTypes.int
+				'Get the segment closest to the given point
+				segmentFor(pt : java.awt.geom.Point2D, tolerance : JavaPrimitiveTypes.double): JavaPrimitiveTypes.int
+				'Get the segment closest to the given point
+				segmentFor(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double, tolerance : JavaPrimitiveTypes.double): JavaPrimitiveTypes.int
+				'Set an arbitrary point in this line
+				setPN(index : JavaPrimitiveTypes.int, pt : java.awt.geom.Point2D)
+				'Set an arbitrary point in this line
+				setPN(index : JavaPrimitiveTypes.int, x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double)
+				'Split an existing segment into two bu inserting a point
+				split(segment : JavaPrimitiveTypes.int, x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double): java.awt.geom.Point2D
+				'Split an existing segment into two bu inserting a point
+				split(segment : JavaPrimitiveTypes.int, pt : java.awt.geom.Point2D): java.awt.geom.Point2D
+				toString(): java.lang.String
+				'Translate the entire line
+				translate(x : JavaPrimitiveTypes.double, y : JavaPrimitiveTypes.double)
+			}
+		}
+	}
+	java.io.Serializable <|.. Singleton.nonsingleton.PolyLine2D
+	java.awt.geom.Line2D <|-- Singleton.nonsingleton.PolyLine2D
+	JavaPrimitiveTypes.int "pointCount" <-- Singleton.nonsingleton.PolyLine2D
+	java.awt.geom.Point2D.Double "points 0..*" <-- Singleton.nonsingleton.PolyLine2D.Double
+	java.awt.geom.AffineTransform "affine" <-- Singleton.nonsingleton.PolyLine2D.Iterator
+	JavaPrimitiveTypes.int "index" <-- Singleton.nonsingleton.PolyLine2D.Iterator
+}
+@enduml

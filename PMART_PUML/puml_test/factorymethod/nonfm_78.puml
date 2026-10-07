@@ -1,0 +1,23 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'Stores the current reloader
+			'@author    Chris Seguin
+			class ReloaderSingleton {
+				-{static} isFirstTime: JavaPrimitiveTypes.boolean
+				-{static} singleton: Reloader
+				'Don't allow an instance of this object to be instantiated.
+				-<<Create>> ReloaderSingleton()
+				'Register a reloader for the class diagrams
+				'@param init  the reloader object
+				{static} register(init : Reloader)
+				'Reload the UML class diagrams
+				{static} reload()
+			}
+		}
+	}
+	JavaPrimitiveTypes.boolean "isFirstTime" <-- Factory_method.nonfactorymethod.ReloaderSingleton
+	Factory_method.nonfactorymethod.Reloader "singleton" <-- Factory_method.nonfactorymethod.ReloaderSingleton
+}
+@enduml

@@ -1,0 +1,100 @@
+@startuml
+'Design pattern Iterator
+package "PMD v1.8" as PMD_v1.8 {
+	package net {
+		package sourceforge {
+			package pmd {
+				package jaxen {
+					'/** 
+					' * @author danielsTo change this generated comment go to  Window>Preferences>Java>Code Generation>Code Template
+					' */
+					'DP role: concreteIterator
+					abstract class NodeIterator {
+						-node: PMD_v1.8.net.sourceforge.pmd.ast.Node
+						<<Create>> NodeIterator(contextNode : PMD_v1.8.net.sourceforge.pmd.ast.Node)
+						#getFirstChild(contextNode : PMD_v1.8.net.sourceforge.pmd.ast.Node): PMD_v1.8.net.sourceforge.pmd.ast.Node
+						#getFirstNode(contextNode : PMD_v1.8.net.sourceforge.pmd.ast.Node): PMD_v1.8.net.sourceforge.pmd.ast.Node
+						#getLastChild(contextNode : PMD_v1.8.net.sourceforge.pmd.ast.Node): PMD_v1.8.net.sourceforge.pmd.ast.Node
+						#getNextNode(contextNode : PMD_v1.8.net.sourceforge.pmd.ast.Node): PMD_v1.8.net.sourceforge.pmd.ast.Node
+						#getNextSibling(contextNode : PMD_v1.8.net.sourceforge.pmd.ast.Node): PMD_v1.8.net.sourceforge.pmd.ast.Node
+						-getPositionFromParent(contextNode : PMD_v1.8.net.sourceforge.pmd.ast.Node): JavaPrimitiveTypes.int
+						#getPreviousSibling(contextNode : PMD_v1.8.net.sourceforge.pmd.ast.Node): PMD_v1.8.net.sourceforge.pmd.ast.Node
+						hasNext(): JavaPrimitiveTypes.boolean
+						next(): PMD_v1.8.java.lang.Object
+						remove()
+					}
+					'/** 
+					' * @author danielsTo change this generated comment go to Window>Preferences>Java>Code Generation>Code Template
+					' */
+					'DP role: concreteAggregate
+					class DocumentNavigator {
+						-{const} EMPTY_ITERATOR: PMD_v1.8.java.util.Iterator
+						<<Create>> DocumentNavigator()
+						getAttributeAxisIterator(arg0 : PMD_v1.8.java.lang.Object): PMD_v1.8.java.util.Iterator
+						getAttributeName(arg0 : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.String
+						getAttributeNamespaceUri(arg0 : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.String
+						getAttributeQName(arg0 : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.String
+						getAttributeStringValue(arg0 : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.String
+						'/** 
+						' * Get an iterator over all of this node's children.
+						' * @param contextNode The context node for the child axis.
+						' * @return A possibly-empty iterator (not null).
+						' */
+						getChildAxisIterator(contextNode : PMD_v1.8.java.lang.Object): PMD_v1.8.java.util.Iterator
+						getCommentStringValue(arg0 : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.String
+						getDocumentNode(contextNode : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						getElementName(node : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.String
+						getElementNamespaceUri(arg0 : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.String
+						getElementQName(arg0 : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.String
+						getElementStringValue(arg0 : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.String
+						'/** 
+						' * Get an iterator over all following nodes, depth-first.
+						' * @param contextNode The context node for the following axis.
+						' * @return A possibly-empty iterator (not null).
+						' */
+						getFollowingAxisIterator(contextNode : PMD_v1.8.java.lang.Object): PMD_v1.8.java.util.Iterator
+						'/** 
+						' * Get an iterator over all following siblings.
+						' * @param contextNode the context node for the sibling iterator.
+						' * @return A possibly-empty iterator (not null).
+						' */
+						getFollowingSiblingAxisIterator(contextNode : PMD_v1.8.java.lang.Object): PMD_v1.8.java.util.Iterator
+						getNamespacePrefix(arg0 : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.String
+						getNamespaceStringValue(arg0 : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.String
+						'/** 
+						' * Get a (single-member) iterator over this node's parent.
+						' * @param contextNode the context node for the parent axis.
+						' * @return A possibly-empty iterator (not null).
+						' */
+						getParentAxisIterator(contextNode : PMD_v1.8.java.lang.Object): PMD_v1.8.java.util.Iterator
+						getParentNode(arg0 : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.Object
+						'/** 
+						' * Get an iterator over all preceding nodes, depth-first.
+						' * @param contextNode The context node for the preceding axis.
+						' * @return A possibly-empty iterator (not null).
+						' */
+						getPrecedingAxisIterator(contextNode : PMD_v1.8.java.lang.Object): PMD_v1.8.java.util.Iterator
+						'/** 
+						' * Get an iterator over all preceding siblings.
+						' * @param contextNode The context node for the preceding sibling axis.
+						' * @return A possibly-empty iterator (not null).
+						' */
+						getPrecedingSiblingAxisIterator(contextNode : PMD_v1.8.java.lang.Object): PMD_v1.8.java.util.Iterator
+						getTextStringValue(arg0 : PMD_v1.8.java.lang.Object): PMD_v1.8.java.lang.String
+						isAttribute(arg0 : PMD_v1.8.java.lang.Object): JavaPrimitiveTypes.boolean
+						isComment(arg0 : PMD_v1.8.java.lang.Object): JavaPrimitiveTypes.boolean
+						isDocument(arg0 : PMD_v1.8.java.lang.Object): JavaPrimitiveTypes.boolean
+						isElement(arg0 : PMD_v1.8.java.lang.Object): JavaPrimitiveTypes.boolean
+						isNamespace(arg0 : PMD_v1.8.java.lang.Object): JavaPrimitiveTypes.boolean
+						isProcessingInstruction(arg0 : PMD_v1.8.java.lang.Object): JavaPrimitiveTypes.boolean
+						isText(arg0 : PMD_v1.8.java.lang.Object): JavaPrimitiveTypes.boolean
+					}
+					PMD_v1.8.java.util.Iterator <|.. NodeIterator
+					PMD_v1.8.net.sourceforge.pmd.ast.Node "node" <-- NodeIterator
+					PMD_v1.8.java.util.Iterator "EMPTY_ITERATOR" <-- DocumentNavigator
+				}
+			}
+		}
+	}
+}
+@enduml

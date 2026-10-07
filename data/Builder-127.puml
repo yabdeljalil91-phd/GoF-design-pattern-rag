@@ -1,0 +1,156 @@
+@startuml
+'Design pattern Builder (also resembles Strategy usage via Renderer polymorphism)
+
+package "PMD v1.8" as PMD_v1.8 {
+	package net {
+		package sourceforge {
+			package pmd {
+				package ant {
+					'DP role: Director (Builder Pattern) / Context (Strategy Pattern)
+					class Formatter {
+						' Responsible for configuring and delegating rendering
+						-rendereR: PMD_v1.8.net.sourceforge.pmd.renderers.Renderer
+						-toFile: PMD_v1.8.java.io.File
+						<<Create>> Formatter()
+						getRenderer(): PMD_v1.8.net.sourceforge.pmd.renderers.Renderer
+						getToFileWriter(baseDir : PMD_v1.8.java.lang.String): PMD_v1.8.java.io.Writer
+						isToFileNull(): JavaPrimitiveTypes.boolean
+						setToFile(toFile : PMD_v1.8.java.io.File)
+						setType(type : PMD_v1.8.java.lang.String) ' selects concrete Renderer (delegation)
+						toString(): PMD_v1.8.java.lang.String
+					}
+					' Delegation: Formatter delegates rendering to Renderer
+					PMD_v1.8.net.sourceforge.pmd.renderers.Renderer "renderer" <-- Formatter : uses/delegates >
+					PMD_v1.8.java.io.File "toFile" <-- Formatter : aggregation >
+				}
+
+				package renderers {
+					'DP role: Builder (abstract) / Strategy interface
+					interface Renderer {
+						' Defines rendering algorithm contract
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+
+					'DP role: ConcreteBuilder / ConcreteStrategy
+					class IDEAJRenderer {
+						' Specialized rendering logic for IDEAJ format
+						-args: PMD_v1.8.java.lang.String [*]
+						<<Create>> IDEAJRenderer(args : PMD_v1.8.java.lang.String)
+						-getFullyQualifiedClassName(in : PMD_v1.8.java.lang.String, sourcePath : SourcePath): PMD_v1.8.java.lang.String
+						-getSimpleFileName(in : PMD_v1.8.java.lang.String): PMD_v1.8.java.lang.String
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+						-render(report : PMD_v1.8.net.sourceforge.pmd.Report, sourcePathString : PMD_v1.8.java.lang.String): PMD_v1.8.java.lang.String
+						-render(report : PMD_v1.8.net.sourceforge.pmd.Report, classAndMethod : PMD_v1.8.java.lang.String, file : PMD_v1.8.java.lang.String): PMD_v1.8.java.lang.String
+					}
+
+					'DP role: ConcreteBuilder / ConcreteStrategy
+					class EmacsRenderer {
+						#EOL: PMD_v1.8.java.lang.String
+						<<Create>> EmacsRenderer()
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+
+					'DP role: ConcreteBuilder / ConcreteStrategy
+					class PapariTextRenderer {
+						' Handles colored console output
+						-colorReset: PMD_v1.8.java.lang.String
+						-cyan: PMD_v1.8.java.lang.String
+						-green: PMD_v1.8.java.lang.String
+						-pwd: PMD_v1.8.java.lang.String
+						-redBold: PMD_v1.8.java.lang.String
+						-whiteBold: PMD_v1.8.java.lang.String
+						-yellowBold: PMD_v1.8.java.lang.String
+						<<Create>> PapariTextRenderer()
+						-getLine(sourceFile : PMD_v1.8.java.lang.String, line : JavaPrimitiveTypes.int): PMD_v1.8.java.lang.String
+						-getRelativePath(fileName : PMD_v1.8.java.lang.String): PMD_v1.8.java.lang.String
+						-initColors()
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+
+					'DP role: ConcreteBuilder / ConcreteStrategy
+					class SummaryHTMLRenderer {
+						<<Create>> SummaryHTMLRenderer()
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+						renderSummary(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+
+					'DP role: ConcreteBuilder / ConcreteStrategy
+					class VBHTMLRenderer {
+						<<Create>> VBHTMLRenderer()
+						-footer(): PMD_v1.8.java.lang.String
+						-header(): PMD_v1.8.java.lang.String
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+
+					'DP role: ConcreteBuilder / ConcreteStrategy
+					class HTMLRenderer {
+						<<Create>> HTMLRenderer()
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+						renderBody(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+
+					'DP role: ConcreteBuilder / ConcreteStrategy
+					class XMLRenderer {
+						<<Create>> XMLRenderer()
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+
+					'DP role: ConcreteBuilder / ConcreteStrategy
+					class TextRenderer {
+						<<Create>> TextRenderer()
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+
+					'Inheritance hierarchy (key for pattern detection)
+					Renderer <|.. IDEAJRenderer : realizes >
+					Renderer <|.. EmacsRenderer : realizes >
+					Renderer <|.. PapariTextRenderer : realizes >
+					Renderer <|.. SummaryHTMLRenderer : realizes >
+					Renderer <|.. VBHTMLRenderer : realizes >
+					Renderer <|.. HTMLRenderer : realizes >
+					Renderer <|.. XMLRenderer : realizes >
+					Renderer <|.. TextRenderer : realizes >
+
+					'Internal attribute relationships
+					PMD_v1.8.java.lang.String "args 0..*" <-- IDEAJRenderer : aggregation >
+					PMD_v1.8.java.util.Set "paths" <-- SourcePath
+					PMD_v1.8.java.lang.String "EOL" <-- EmacsRenderer
+					PMD_v1.8.java.lang.String "colorReset" <-- PapariTextRenderer
+					PMD_v1.8.java.lang.String "cyan" <-- PapariTextRenderer
+					PMD_v1.8.java.lang.String "green" <-- PapariTextRenderer
+					PMD_v1.8.java.lang.String "pwd" <-- PapariTextRenderer
+					PMD_v1.8.java.lang.String "redBold" <-- PapariTextRenderer
+					PMD_v1.8.java.lang.String "whiteBold" <-- PapariTextRenderer
+					PMD_v1.8.java.lang.String "yellowBold" <-- PapariTextRenderer
+				}
+
+				'Domain model (used as input to Renderer)
+				class Report {
+					' Acts as Product input for rendering
+				}
+
+				PMD_v1.8.java.util.List "errors" <-- Report
+				PMD_v1.8.java.util.List "listeners" <-- Report
+				PMD_v1.8.java.util.Set "metrics" <-- Report
+				PMD_v1.8.java.util.Set "violations" <-- Report
+
+				PMD_v1.8.java.lang.String "file" <-- ProcessingError
+				PMD_v1.8.java.lang.String "msg" <-- ProcessingError
+				PMD_v1.8.java.lang.String "description" <-- RuleViolation
+				PMD_v1.8.java.lang.String "filename" <-- RuleViolation
+				JavaPrimitiveTypes.int "line" <-- RuleViolation
+
+				JavaPrimitiveTypes.int "LOWEST_PRIORITY" <-- Rule
+				PMD_v1.8.java.lang.String "PRIORITIES 0..*" <-- Rule
+
+				'Association: RuleContext aggregates Report
+				Report "report" <-- RuleContext : aggregation >
+				PMD_v1.8.java.lang.String "sourceCodeFilename" <-- RuleContext
+
+				'Association: RuleViolation references Rule
+				Rule "rule" <-- RuleViolation : association >
+			}
+		}
+	}
+}
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+'Design pattern Singleton
+
+package "Lexi v0.1.1 alpha" as Lexi_v0.1.1_alpha {
+    package com {
+        package jmonkey {
+            package export {
+                
+                'DP role: singleton
+                class Registry {
+                    - {static} _INSTANCE: Registry
+                    # Registry()  ' protected/private constructor
+                    + {static} instance(): Registry
+                    
+                    + commit()
+                    + deleteAll()
+                    
+                    ' Optional: keep key static resources for context
+                    {const} REGISTRY_DIRECTORY: File
+                    {const} RESOURCE_DIRECTORY: File
+                }
+                
+                ' Associations (keep only high-level)
+                File "REGISTRY_DIRECTORY" <-- Registry
+                File "RESOURCE_DIRECTORY" <-- Registry
+            }
+        }
+    }
+}
+@enduml

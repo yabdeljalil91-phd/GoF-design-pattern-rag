@@ -1,0 +1,147 @@
+@startuml
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package openide {
+			package text {
+				class DefaultPrintable {
+					-{const} ARG_SIZE: JavaPrimitiveTypes.int = 3
+					-cancellationDialog: Netbeans_v1.0.x.java.awt.Dialog
+					-cancellationPanel: CancellationPanel
+					-currentLayout: JavaPrimitiveTypes.int
+					-currentLine: JavaPrimitiveTypes.int
+					-currentStyledText: JavaPrimitiveTypes.int
+					-{static} fontInstance: Netbeans_v1.0.x.java.awt.Font
+					-footer: Netbeans_v1.0.x.java.text.MessageFormat
+					-header: Netbeans_v1.0.x.java.text.MessageFormat
+					-lineBreakMeasurer: Netbeans_v1.0.x.java.awt.font.LineBreakMeasurer
+					-lineIndices: JavaPrimitiveTypes.int [*]
+					-maxPage: JavaPrimitiveTypes.int
+					-pageArgs: Netbeans_v1.0.x.java.lang.Object [*]
+					-pageIndices: JavaPrimitiveTypes.int [*]
+					-pageIndicesSize: JavaPrimitiveTypes.int
+					-pageno: JavaPrimitiveTypes.int
+					-printFooter: JavaPrimitiveTypes.boolean
+					-printHeader: JavaPrimitiveTypes.boolean
+					-{static} printSettings: PrintSettings
+					-startLayouts: Netbeans_v1.0.x.java.util.ArrayList
+					-styledTexts: Netbeans_v1.0.x.java.text.AttributedCharacterIterator [*]
+					-textLayouts: Netbeans_v1.0.x.java.util.ArrayList
+					-<<Create>> DefaultPrintable(iter : Netbeans_v1.0.x.java.text.AttributedCharacterIterator, filename : Netbeans_v1.0.x.java.lang.String)
+					<<Create>> DefaultPrintable(doc : Netbeans_v1.0.x.javax.swing.text.Document)
+					closeDialog()
+					-{static} computeStart(rect : Netbeans_v1.0.x.java.awt.geom.Rectangle2D, width : JavaPrimitiveTypes.float, alignment : JavaPrimitiveTypes.int): JavaPrimitiveTypes.float
+					-createCancellationPanel(job : Netbeans_v1.0.x.java.awt.print.PrinterJob)
+					-{static} getFilename(doc : Netbeans_v1.0.x.javax.swing.text.Document): Netbeans_v1.0.x.java.lang.String
+					{static} getFontInstance(): Netbeans_v1.0.x.java.awt.Font
+					-{static} getFooterAlignment(): JavaPrimitiveTypes.int
+					-{static} getFooterFont(): Netbeans_v1.0.x.java.awt.Font
+					-{static} getFooterFormat(): Netbeans_v1.0.x.java.lang.String
+					-{static} getHeaderAlignment(): JavaPrimitiveTypes.int
+					-{static} getHeaderFont(): Netbeans_v1.0.x.java.awt.Font
+					-{static} getHeaderFormat(): Netbeans_v1.0.x.java.lang.String
+					-getImageableXPatch(pf : Netbeans_v1.0.x.java.awt.print.PageFormat): JavaPrimitiveTypes.float
+					-getImageableYPatch(pf : Netbeans_v1.0.x.java.awt.print.PageFormat): JavaPrimitiveTypes.float
+					-{static} getIterators(doc : Netbeans_v1.0.x.javax.swing.text.Document): Netbeans_v1.0.x.java.text.AttributedCharacterIterator
+					-{static} getLineAscentCorrection(): JavaPrimitiveTypes.float
+					-getMeasurer(frc : Netbeans_v1.0.x.java.awt.font.FontRenderContext): Netbeans_v1.0.x.java.awt.font.LineBreakMeasurer
+					-{static} increaseArray(old : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					isCancelled(job : Netbeans_v1.0.x.java.awt.print.PrinterJob): JavaPrimitiveTypes.boolean
+					-isNewline(tl : Netbeans_v1.0.x.java.awt.font.TextLayout, currentLine : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					-layoutForPage(pageNo : JavaPrimitiveTypes.int, wrappingWidth : JavaPrimitiveTypes.float, frc : Netbeans_v1.0.x.java.awt.font.FontRenderContext): Netbeans_v1.0.x.java.awt.font.TextLayout
+					-{static} lineNumbers(): JavaPrimitiveTypes.boolean
+					-{static} lineNumbersFont(): Netbeans_v1.0.x.java.awt.Font
+					-nextLayout(wrappingWidth : JavaPrimitiveTypes.float, frc : Netbeans_v1.0.x.java.awt.font.FontRenderContext): Netbeans_v1.0.x.java.awt.font.TextLayout
+					packDialog()
+					-page2Line(pageNo : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					print(g : Netbeans_v1.0.x.java.awt.Graphics, pf : Netbeans_v1.0.x.java.awt.print.PageFormat, pageNo : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+					-{static} replaceEmptyIterators(iters : Netbeans_v1.0.x.java.text.AttributedCharacterIterator)
+					setCancelled(job : Netbeans_v1.0.x.java.awt.print.PrinterJob)
+					setDialog(d : Netbeans_v1.0.x.java.awt.Dialog)
+					-{static} wrap(): JavaPrimitiveTypes.boolean
+				}
+				class AttributedCharacters {
+					#chars: JavaPrimitiveTypes.char [*]
+					#colors: Netbeans_v1.0.x.java.awt.Color [*]
+					#current: JavaPrimitiveTypes.int
+					#fonts: Netbeans_v1.0.x.java.awt.Font [*]
+					#runLimit: JavaPrimitiveTypes.int [*]
+					#runStart: JavaPrimitiveTypes.int [*]
+					<<Create>> AttributedCharacters()
+					append(c : JavaPrimitiveTypes.char, f : Netbeans_v1.0.x.java.awt.Font, color : Netbeans_v1.0.x.java.awt.Color)
+					append(a : JavaPrimitiveTypes.char, f : Netbeans_v1.0.x.java.awt.Font, color : Netbeans_v1.0.x.java.awt.Color)
+					iterator(): Netbeans_v1.0.x.java.text.AttributedCharacterIterator
+				}
+				Netbeans_v1.0.x.java.awt.print.Printable <|.. DefaultPrintable
+				Netbeans_v1.0.x.org.openide.options.ContextSystemOption <|-- PrintSettings
+				JavaPrimitiveTypes.int "ARG_SIZE" <-- DefaultPrintable
+				Netbeans_v1.0.x.java.awt.Dialog "cancellationDialog" <-- DefaultPrintable
+				Netbeans_v1.0.x.java.text.MessageFormat "format" <-- CancellationPanel
+				Netbeans_v1.0.x.java.awt.print.PrinterJob "job" <-- CancellationPanel
+				Netbeans_v1.0.x.java.lang.Object "msgParams 0..*" <-- CancellationPanel
+				Netbeans_v1.0.x.javax.swing.JLabel "printProgress" <-- CancellationPanel
+				JavaPrimitiveTypes.long "serialVersionUID" <-- CancellationPanel
+				CancellationPanel "cancellationPanel" <-- DefaultPrintable
+				JavaPrimitiveTypes.int "currentLayout" <-- DefaultPrintable
+				JavaPrimitiveTypes.int "currentLine" <-- DefaultPrintable
+				JavaPrimitiveTypes.int "currentStyledText" <-- DefaultPrintable
+				Netbeans_v1.0.x.java.awt.Font "fontInstance" <-- DefaultPrintable
+				Netbeans_v1.0.x.java.text.MessageFormat "footer" <-- DefaultPrintable
+				Netbeans_v1.0.x.java.text.MessageFormat "header" <-- DefaultPrintable
+				Netbeans_v1.0.x.java.awt.font.LineBreakMeasurer "lineBreakMeasurer" <-- DefaultPrintable
+				JavaPrimitiveTypes.int "lineIndices 0..*" <-- DefaultPrintable
+				JavaPrimitiveTypes.int "maxPage" <-- DefaultPrintable
+				Netbeans_v1.0.x.java.lang.Object "pageArgs 0..*" <-- DefaultPrintable
+				JavaPrimitiveTypes.int "pageIndices 0..*" <-- DefaultPrintable
+				JavaPrimitiveTypes.int "pageIndicesSize" <-- DefaultPrintable
+				JavaPrimitiveTypes.int "pageno" <-- DefaultPrintable
+				JavaPrimitiveTypes.boolean "printFooter" <-- DefaultPrintable
+				JavaPrimitiveTypes.boolean "printHeader" <-- DefaultPrintable
+				JavaPrimitiveTypes.int "CENTER" <-- PrintSettings
+				JavaPrimitiveTypes.int "LEFT" <-- PrintSettings
+				Netbeans_v1.0.x.java.lang.String "PROP_FOOTER_ALIGNMENT" <-- PrintSettings
+				Netbeans_v1.0.x.java.lang.String "PROP_FOOTER_FONT" <-- PrintSettings
+				Netbeans_v1.0.x.java.lang.String "PROP_FOOTER_FORMAT" <-- PrintSettings
+				Netbeans_v1.0.x.java.lang.String "PROP_HEADER_ALIGNMENT" <-- PrintSettings
+				Netbeans_v1.0.x.java.lang.String "PROP_HEADER_FONT" <-- PrintSettings
+				Netbeans_v1.0.x.java.lang.String "PROP_HEADER_FORMAT" <-- PrintSettings
+				Netbeans_v1.0.x.java.lang.String "PROP_LINE_ASCENT_CORRECTION" <-- PrintSettings
+				Netbeans_v1.0.x.java.lang.String "PROP_PAGE_FORMAT" <-- PrintSettings
+				Netbeans_v1.0.x.java.lang.String "PROP_WRAP" <-- PrintSettings
+				JavaPrimitiveTypes.int "RIGHT" <-- PrintSettings
+				Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- PrintSettings
+				JavaPrimitiveTypes.int "footerAlignment" <-- PrintSettings
+				Netbeans_v1.0.x.java.awt.Font "footerFont" <-- PrintSettings
+				Netbeans_v1.0.x.java.lang.String "footerFormat" <-- PrintSettings
+				JavaPrimitiveTypes.int "headerAlignment" <-- PrintSettings
+				Netbeans_v1.0.x.java.awt.Font "headerFont" <-- PrintSettings
+				Netbeans_v1.0.x.java.lang.String "headerFormat" <-- PrintSettings
+				JavaPrimitiveTypes.float "lineAscentCorrection" <-- PrintSettings
+				Netbeans_v1.0.x.java.awt.print.PageFormat "pageFormat" <-- PrintSettings
+				JavaPrimitiveTypes.long "serialVersionUID" <-- PrintSettings
+				JavaPrimitiveTypes.boolean "wrap" <-- PrintSettings
+				Netbeans_v1.0.x.java.lang.String "sCENTER" <-- AlignmentEditor
+				Netbeans_v1.0.x.java.lang.String "sLEFT" <-- AlignmentEditor
+				Netbeans_v1.0.x.java.lang.String "sRIGHT" <-- AlignmentEditor
+				Netbeans_v1.0.x.java.lang.String "tags 0..*" <-- AlignmentEditor
+				PrintSettings "printSettings" <-- DefaultPrintable
+				Netbeans_v1.0.x.java.util.ArrayList "startLayouts" <-- DefaultPrintable
+				Netbeans_v1.0.x.java.text.AttributedCharacterIterator "styledTexts 0..*" <-- DefaultPrintable
+				Netbeans_v1.0.x.java.util.ArrayList "textLayouts" <-- DefaultPrintable
+				JavaPrimitiveTypes.char "chars 0..*" <-- AttributedCharacters
+				Netbeans_v1.0.x.java.awt.Color "colors 0..*" <-- AttributedCharacters
+				JavaPrimitiveTypes.int "current" <-- AttributedCharacters
+				Netbeans_v1.0.x.java.awt.Font "fonts 0..*" <-- AttributedCharacters
+				JavaPrimitiveTypes.int "runLimit 0..*" <-- AttributedCharacters
+				JavaPrimitiveTypes.int "runStart 0..*" <-- AttributedCharacters
+				JavaPrimitiveTypes.char "chars 0..*" <-- AttributedCharacterIteratorImpl
+				Netbeans_v1.0.x.java.awt.Color "colors 0..*" <-- AttributedCharacterIteratorImpl
+				JavaPrimitiveTypes.int "current" <-- AttributedCharacterIteratorImpl
+				Netbeans_v1.0.x.java.awt.Font "fonts 0..*" <-- AttributedCharacterIteratorImpl
+				JavaPrimitiveTypes.int "runLimit 0..*" <-- AttributedCharacterIteratorImpl
+				JavaPrimitiveTypes.int "runStart 0..*" <-- AttributedCharacterIteratorImpl
+				Netbeans_v1.0.x.java.util.Set "singleton" <-- AttributedCharacterIteratorImpl
+			}
+		}
+	}
+}
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+package dpd_jdt {
+	package context {
+		package noncontext {
+			'@author  Pavel Buzek
+			'@version
+			interface VcsFactory {
+				getVcsAction(fs : VcsFileSystem): VcsAction
+				getVcsAdvancedCustomizer(): VcsAdvancedCustomizer
+				getVcsDirReader(listener : DirReaderListener, path : java.lang.String, fileSystem : VcsFileSystem): VcsDirReader
+				getVcsDirReaderRecursive(listener : DirReaderListener, path : java.lang.String, fileSystem : VcsFileSystem): VcsDirReader
+			}
+		}
+	}
+}
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'The UML frame
+			'@author    Chris Seguin
+			class UMLFrame {
+				-packageSummary: PackageSummary
+				-splitPane: javax.swing.JSplitPane
+				-view: UMLPackage
+				'Constructor for the UMLFrame object
+				'@param init  Description of Parameter
+				<<Create>> UMLFrame(init : PackageSummary)
+				'Gets the UmlPackage attribute of the UMLFrame object
+				'@return    The UmlPackage value
+				getUmlPackage(): UMLPackage
+				'Description of the Method
+				-setup()
+			}
+		}
+	}
+	javax.swing.JFrame <|-- Builder.nonbuilder.UMLFrame
+	Builder.nonbuilder.PackageSummary "packageSummary" <-- Builder.nonbuilder.UMLFrame
+	javax.swing.JSplitPane "splitPane" <-- Builder.nonbuilder.UMLFrame
+	Builder.nonbuilder.UMLPackage "view" <-- Builder.nonbuilder.UMLFrame
+}
+@enduml

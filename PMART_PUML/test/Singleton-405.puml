@@ -1,0 +1,40 @@
+@startuml
+package "DrJava v20020619" as DrJava_v20020619 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package compiler {
+							class GJv6Compiler {
+								{const} COMPILER_CLASS_NAME: DrJava_v20020619.java.lang.String = gj.v6.JavaCompiler
+								{const} ONLY: CompilerInterface
+								-_compilerLog: OurLog
+								-<<Create>> GJv6Compiler()
+								-_initCompiler(sourceRoot : DrJava_v20020619.java.io.File)
+								compile(sourceRoot : DrJava_v20020619.java.io.File, files : DrJava_v20020619.java.io.File): CompilerError
+								getName(): DrJava_v20020619.java.lang.String
+								isAvailable(): JavaPrimitiveTypes.boolean
+								toString(): DrJava_v20020619.java.lang.String
+							}
+							CompilerInterface <|.. GJv6Compiler
+							DrJava_v20020619.edu.rice.cs.drjava.config.OptionConstants <|.. GJv6Compiler
+							DrJava_v20020619.java.lang.Comparable <|.. CompilerError
+							DrJava_v20020619.java.io.File "_file" <-- CompilerError
+							JavaPrimitiveTypes.boolean "_isWarning" <-- CompilerError
+							JavaPrimitiveTypes.int "_lineNumber" <-- CompilerError
+							DrJava_v20020619.java.lang.String "_message" <-- CompilerError
+							JavaPrimitiveTypes.int "_startColumn" <-- CompilerError
+							DrJava_v20020619.java.lang.String "COMPILER_CLASS_NAME" <-- GJv6Compiler
+							CompilerInterface "ONLY" <-- GJv6Compiler
+							DrJava_v20020619.java.util.LinkedList "_errors" <-- OurLog
+							DrJava_v20020619.java.lang.String "_sourceName" <-- OurLog
+							OurLog "_compilerLog" <-- GJv6Compiler
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

@@ -1,0 +1,102 @@
+@startuml
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package openide {
+			class WizardDescriptor {
+				-{const} CLOSE_PREVENTER: Netbeans_v1.0.x.java.awt.event.ActionListener
+				{const} FINISH_OPTION: Netbeans_v1.0.x.java.lang.Object
+				{const} NEXT_OPTION: Netbeans_v1.0.x.java.lang.Object
+				{const} PREVIOUS_OPTION: Netbeans_v1.0.x.java.lang.Object
+				-cancelButton: Netbeans_v1.0.x.javax.swing.JButton
+				-current: Panel
+				-finishButton: Netbeans_v1.0.x.javax.swing.JButton
+				-listener: Listener
+				-nextButton: Netbeans_v1.0.x.javax.swing.JButton
+				-panels: Iterator
+				-previousButton: Netbeans_v1.0.x.javax.swing.JButton
+				-properties: Netbeans_v1.0.x.java.util.Map
+				-settings: Netbeans_v1.0.x.java.lang.Object
+				-titleFormat: Netbeans_v1.0.x.java.text.MessageFormat
+				<<Create>> WizardDescriptor(wizardPanels : Panel, settings : Netbeans_v1.0.x.java.lang.Object)
+				<<Create>> WizardDescriptor(wizardPanels : Panel)
+				<<Create>> WizardDescriptor(panels : Iterator, settings : Netbeans_v1.0.x.java.lang.Object)
+				<<Create>> WizardDescriptor(panels : Iterator)
+				-convertOptions(options : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.Object
+				getProperty(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.Object
+				getTitleFormat(): Netbeans_v1.0.x.java.text.MessageFormat
+				putProperty(name : Netbeans_v1.0.x.java.lang.String, value : Netbeans_v1.0.x.java.lang.Object)
+				setAdditionalOptions(options : Netbeans_v1.0.x.java.lang.Object)
+				setClosingOptions(options : Netbeans_v1.0.x.java.lang.Object)
+				setOptions(options : Netbeans_v1.0.x.java.lang.Object)
+				setPanels(panels : Iterator)
+				setTitleFormat(format : Netbeans_v1.0.x.java.text.MessageFormat)
+				#updateState()
+			}
+			DialogDescriptor <|-- WizardDescriptor
+			NotifyDescriptor <|-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.Object "CANCEL_OPTION" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "CLOSED_OPTION" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "DEFAULT_OPTION" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "ERROR_MESSAGE" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "INFORMATION_MESSAGE" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "MAXIMUM_TEXT_WIDTH" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "NO_OPTION" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "OK_CANCEL_OPTION" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "OK_OPTION" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "PLAIN_MESSAGE" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_DETAIL" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_MESSAGE" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_MESSAGE_TYPE" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_OPTIONS" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_OPTION_TYPE" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_TITLE" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_VALUE" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "QUESTION_MESSAGE" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "WARNING_MESSAGE" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "YES_NO_CANCEL_OPTION" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "YES_NO_OPTION" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "YES_OPTION" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "adOptions 0..*" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.beans.PropertyChangeSupport "changeSupport" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "message" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "messageType" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "optionType" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "options 0..*" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "title" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "value" <-- NotifyDescriptor
+			JavaPrimitiveTypes.long "serialVersionUID" <-- Exception
+			Netbeans_v1.0.x.javax.swing.JTextField "textField" <-- InputLine
+			JavaPrimitiveTypes.int "BOTTOM_ALIGN" <-- DialogDescriptor
+			JavaPrimitiveTypes.int "DEFAULT_ALIGN" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.Object "DEFAULT_CLOSING_OPTIONS 0..*" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_BUTTON_LISTENER" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_CLOSING_OPTIONS" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_HELP_CTX" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_MODAL" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_OPTIONS_ALIGN" <-- DialogDescriptor
+			JavaPrimitiveTypes.int "RIGHT_ALIGN" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.awt.event.ActionListener "buttonListener" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.Object "closingOptions 0..*" <-- DialogDescriptor
+			Netbeans_v1.0.x.org.openide.util.HelpCtx "helpCtx" <-- DialogDescriptor
+			JavaPrimitiveTypes.boolean "modal" <-- DialogDescriptor
+			JavaPrimitiveTypes.int "optionsAlign" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.awt.event.ActionListener "CLOSE_PREVENTER" <-- WizardDescriptor
+			Netbeans_v1.0.x.java.lang.Object "FINISH_OPTION" <-- WizardDescriptor
+			Netbeans_v1.0.x.java.lang.Object "NEXT_OPTION" <-- WizardDescriptor
+			Netbeans_v1.0.x.java.lang.Object "PREVIOUS_OPTION" <-- WizardDescriptor
+			Netbeans_v1.0.x.javax.swing.JButton "cancelButton" <-- WizardDescriptor
+			Panel "current" <-- WizardDescriptor
+			Netbeans_v1.0.x.javax.swing.JButton "finishButton" <-- WizardDescriptor
+			Listener "listener" <-- WizardDescriptor
+			Netbeans_v1.0.x.javax.swing.JButton "nextButton" <-- WizardDescriptor
+			Iterator "panels" <-- WizardDescriptor
+			Netbeans_v1.0.x.javax.swing.JButton "previousButton" <-- WizardDescriptor
+			Netbeans_v1.0.x.java.util.Map "properties" <-- WizardDescriptor
+			Netbeans_v1.0.x.java.lang.Object "settings" <-- WizardDescriptor
+			Netbeans_v1.0.x.java.text.MessageFormat "titleFormat" <-- WizardDescriptor
+			JavaPrimitiveTypes.int "index" <-- ArrayIterator
+			Panel "panels 0..*" <-- ArrayIterator
+		}
+	}
+}
+@enduml

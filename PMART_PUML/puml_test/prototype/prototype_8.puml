@@ -1,0 +1,27 @@
+@startuml
+package dpd_jdt {
+	package loader {
+		package name {
+			'A Figure that groups a collection of figures.
+			class GroupFigure {
+				-groupFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 8311226373023297933
+				<<Create>> GroupFigure()
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				'GroupFigures cannot be connected
+				canConnect(): JavaPrimitiveTypes.boolean
+				decompose(): FigureEnumeration
+				'Gets the display box. The display box is defined as the union of the contained figures.
+				displayBox(): java.awt.Rectangle
+				'Gets the handles for the GroupFigure.
+				handles(): java.util.Vector
+				'Sets the attribute of all the contained figures.
+				setAttribute(name : java.lang.String, value : java.lang.Object)
+			}
+		}
+	}
+	loader.name.CompositeFigure <|-- loader.name.GroupFigure
+	JavaPrimitiveTypes.int "groupFigureSerializedDataVersion" <-- loader.name.GroupFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- loader.name.GroupFigure
+}
+@enduml

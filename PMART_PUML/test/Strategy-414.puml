@@ -1,0 +1,110 @@
+@startuml
+package "DrJava v20020619" as DrJava_v20020619 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package config {
+						class OptionMapLoader {
+							{static} DEFAULT: OptionMapLoader
+							-{static} DEFAULTS: DefaultOptionMap
+							-{static} DEFAULT_STRINGS: DrJava_v20020619.java.util.Properties
+							-prop: DrJava_v20020619.java.util.Properties
+							<<Create>> OptionMapLoader(is : DrJava_v20020619.java.io.InputStream)
+							-<<Create>> OptionMapLoader(prop : DrJava_v20020619.java.util.Properties)
+							loadInto(map : OptionMap)
+						}
+						interface ParseStrategy {
+							parse(val : DrJava_v20020619.java.lang.String): T
+						}
+						interface FormatStrategy {
+							format(val : T): DrJava_v20020619.java.lang.String
+						}
+						class BooleanOption {
+							<<Create>> BooleanOption(key : DrJava_v20020619.java.lang.String, def : DrJava_v20020619.java.lang.Boolean)
+							parse(s : DrJava_v20020619.java.lang.String): DrJava_v20020619.java.lang.Boolean
+						}
+						class ColorOption {
+							<<Create>> ColorOption(key : DrJava_v20020619.java.lang.String, def : DrJava_v20020619.java.awt.Color)
+							format(c : DrJava_v20020619.java.awt.Color): DrJava_v20020619.java.lang.String
+							parse(s : DrJava_v20020619.java.lang.String): DrJava_v20020619.java.awt.Color
+						}
+						class StringOption {
+							<<Create>> StringOption(key : DrJava_v20020619.java.lang.String, def : DrJava_v20020619.java.lang.String)
+							format(s : DrJava_v20020619.java.lang.String): DrJava_v20020619.java.lang.String
+							parse(s : DrJava_v20020619.java.lang.String): DrJava_v20020619.java.lang.String
+						}
+						class IntegerOption {
+							<<Create>> IntegerOption(key : DrJava_v20020619.java.lang.String, def : DrJava_v20020619.java.lang.Integer)
+							parse(s : DrJava_v20020619.java.lang.String): DrJava_v20020619.java.lang.Integer
+						}
+						class FileOption {
+							<<Create>> FileOption(key : DrJava_v20020619.java.lang.String, def : DrJava_v20020619.java.io.File)
+							format(f : DrJava_v20020619.java.io.File): DrJava_v20020619.java.lang.String
+							parse(s : DrJava_v20020619.java.lang.String): DrJava_v20020619.java.io.File
+						}
+						OptionConstants <|.. OptionMapLoader
+						ConfigurationTool <|-- OptionConstants
+						SavableConfiguration <|-- FileConfiguration
+						Configuration <|-- SavableConfiguration
+						ParseStrategy <|.. OptionParser
+						OptionMap <|.. DefaultOptionMap
+						OptionParser <|-- Option
+						FormatStrategy <|.. Option
+						Option <|-- BooleanOption
+						Option <|-- ColorOption
+						Option <|-- StringOption
+						Option <|-- IntegerOption
+						Option <|-- FileOption
+						T "defaultValue" <-- OptionParser
+						DrJava_v20020619.java.lang.String "name" <-- OptionParser
+						Option "option" <-- OptionEvent
+						T "value" <-- OptionEvent
+						OptionMap "map" <-- Configuration
+						DrJava_v20020619.java.io.File "file" <-- SavableConfiguration
+						DrJava_v20020619.java.io.File "file" <-- FileConfiguration
+						FileConfiguration "CONFIG" <-- ConfigurationTool
+						DrJava_v20020619.java.io.File "PROPERTIES_FILE" <-- ConfigurationTool
+						BooleanOption "DEBUGGER_ADVANCED" <-- OptionConstants
+						BooleanOption "DEBUGGER_ENABLED" <-- OptionConstants
+						ColorOption "DEFINITIONS_COMMENT_COLOR" <-- OptionConstants
+						ColorOption "DEFINITIONS_DOUBLE_QUOTED_COLOR" <-- OptionConstants
+						ColorOption "DEFINITIONS_KEYWORD_COLOR" <-- OptionConstants
+						ColorOption "DEFINITIONS_MATCH_COLOR" <-- OptionConstants
+						ColorOption "DEFINITIONS_NORMAL_COLOR" <-- OptionConstants
+						ColorOption "DEFINITIONS_NUMBER_COLOR" <-- OptionConstants
+						ColorOption "DEFINITIONS_SINGLE_QUOTED_COLOR" <-- OptionConstants
+						ColorOption "DEFINITIONS_TYPE_COLOR" <-- OptionConstants
+						JavaPrimitiveTypes.char "delim" <-- VectorOption
+						DrJava_v20020619.java.lang.String "footer" <-- VectorOption
+						FormatStrategy "formatter" <-- VectorOption
+						DrJava_v20020619.java.lang.String "header" <-- VectorOption
+						ParseStrategy "parser" <-- VectorOption
+						VectorOption "EXTRA_CLASSPATH" <-- OptionConstants
+						StringOption "FONT_DOCLIST_NAME" <-- OptionConstants
+						IntegerOption "FONT_DOCLIST_SIZE" <-- OptionConstants
+						IntegerOption "FONT_DOCLIST_STYLE" <-- OptionConstants
+						StringOption "FONT_MAIN_NAME" <-- OptionConstants
+						IntegerOption "FONT_MAIN_SIZE" <-- OptionConstants
+						IntegerOption "FONT_MAIN_STYLE" <-- OptionConstants
+						StringOption "FONT_TOOLBAR_NAME" <-- OptionConstants
+						IntegerOption "FONT_TOOLBAR_SIZE" <-- OptionConstants
+						IntegerOption "FONT_TOOLBAR_STYLE" <-- OptionConstants
+						IntegerOption "HISTORY_MAX_SIZE" <-- OptionConstants
+						IntegerOption "INDENT_LEVEL" <-- OptionConstants
+						StringOption "JAVAC_LOCATION" <-- OptionConstants
+						StringOption "JSR14_COLLECTIONSPATH" <-- OptionConstants
+						StringOption "JSR14_LOCATION" <-- OptionConstants
+						BooleanOption "TOOLBAR_ICONS_ENABLED" <-- OptionConstants
+						BooleanOption "TOOLBAR_TEXT_ENABLED" <-- OptionConstants
+						StringOption "WORKING_DIRECTORY" <-- OptionConstants
+						DefaultOptionMap "DEFAULTS" <-- OptionMapLoader
+						DrJava_v20020619.java.util.Properties "DEFAULT_STRINGS" <-- OptionMapLoader
+						DrJava_v20020619.java.util.Properties "prop" <-- OptionMapLoader
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

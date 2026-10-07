@@ -1,0 +1,42 @@
+@startuml
+package dpd_jdt {
+	package Context {
+		package nonContext {
+			'This FilterFactory descendant adds the JavaDoc property to every Method, Constructor, Field and class node create for JavaDataObjects
+			'@author Petr Hrebejk
+			class JavaDocPropertySupportFactory {
+				-{const} PROP_JAVADOCCOMMENT: java.lang.String = javadocComment
+				#{const} bundle: java.util.ResourceBundle
+				<<Create>> JavaDocPropertySupportFactory()
+				'Adds JavaDoc property to node for class
+				{static} addClassJavaDocProperty(node : Node)
+				'Adds JavaDoc property to node for field
+				{static} addFieldJavaDocProperty(node : Node)
+				'Adds JavaDoc property to node for method
+				{static} addMethodJavaDocProperty(node : Node)
+				'Create a node property for javadoc comment for class element
+				'@param canW if <code>false</code>, property will be read-only
+				'@return the property
+				#{static} createClassJavaDocProperty(canW : JavaPrimitiveTypes.boolean, node : Node): Node.Property
+				createClassNode(element : ClassElement): Node
+				createConstructorNode(element : ConstructorElement): Node
+				'Create a node property for javadoc comment for method element
+				'@param canW if <code>false</code>, property will be read-only
+				'@return the property
+				#{static} createFieldJavaDocProperty(canW : JavaPrimitiveTypes.boolean, node : Node): Node.Property
+				createFieldNode(element : FieldElement): Node
+				'Create a node property for javadoc comment for field element
+				'@param canW if <code>false</code>, property will be read-only
+				'@return the property
+				#{static} createMethodJavaDocProperty(canW : JavaPrimitiveTypes.boolean, node : Node): Node.Property
+				createMethodNode(element : MethodElement): Node
+			}
+		}
+	}
+	Context.nonContext.FilterFactory <|-- Context.nonContext.JavaDocPropertySupportFactory
+	Context.nonContext.ElementNodeFactory <|.. Context.nonContext.FilterFactory
+	Context.nonContext.ElementNodeFactory "delegate" <-- Context.nonContext.FilterFactory
+	java.lang.String "PROP_JAVADOCCOMMENT" <-- Context.nonContext.JavaDocPropertySupportFactory
+	java.util.ResourceBundle "bundle" <-- Context.nonContext.JavaDocPropertySupportFactory
+}
+@enduml

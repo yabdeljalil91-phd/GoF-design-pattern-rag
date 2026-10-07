@@ -1,0 +1,52 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			'The standard implementation of the Drawing interface.
+			'@see Drawing
+			class StandardDrawing {
+				-drawingSerializedDataVersion: JavaPrimitiveTypes.int
+				-fDrawingLockHolder: java.lang.Thread
+				-fListeners: java.util.Vector
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -2602151437447962046
+				'Constructs the Drawing.
+				<<Create>> StandardDrawing()
+				'Adds a listener for this drawing.
+				addDrawingChangeListener(listener : DrawingChangeListener)
+				basicDisplayBox(p1 : java.awt.Point, p2 : java.awt.Point)
+				'Gets the display box. This is the union of all figures.
+				displayBox(): java.awt.Rectangle
+				'Adds a listener for this drawing.
+				drawingChangeListeners(): java.util.Enumeration
+				'Invalidates a rectangle and merges it with the existing damaged area.
+				'@see FigureChangeListener
+				figureInvalidated(e : FigureChangeEvent)
+				'Handles a removeFromDrawing request that is passed up the figure container hierarchy.
+				'@see FigureChangeListener
+				figureRequestRemove(e : FigureChangeEvent)
+				'Forces an update
+				figureRequestUpdate(e : FigureChangeEvent)
+				'Return's the figure's handles. This is only used when a drawing is nested inside another drawing.
+				handles(): java.util.Vector
+				'Acquires the drawing lock.
+				lock()
+				-readObject(s : java.io.ObjectInputStream)
+				'Removes the figure from the drawing and releases it.
+				remove(figure : Figure): Figure
+				'Removes a listener from this drawing.
+				removeDrawingChangeListener(listener : DrawingChangeListener)
+				'Releases the drawing lock.
+				unlock()
+			}
+		}
+	}
+	Abstractfactory.non_abstract_factory.CompositeFigure <|-- Abstractfactory.non_abstract_factory.StandardDrawing
+	Abstractfactory.non_abstract_factory.Drawing <|-- Abstractfactory.non_abstract_factory.StandardDrawing
+	java.lang.Cloneable <|-- Abstractfactory.non_abstract_factory.Figure
+	java.io.Serializable <|-- Abstractfactory.non_abstract_factory.Figure
+	JavaPrimitiveTypes.int "drawingSerializedDataVersion" <-- Abstractfactory.non_abstract_factory.StandardDrawing
+	java.lang.Thread "fDrawingLockHolder" <-- Abstractfactory.non_abstract_factory.StandardDrawing
+	java.util.Vector "fListeners" <-- Abstractfactory.non_abstract_factory.StandardDrawing
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Abstractfactory.non_abstract_factory.StandardDrawing
+}
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'BorderDecorator decorates an arbitrary Figure with a border.
+			class BorderDecorator {
+				-borderDecoratorSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 1205601808259084917
+				<<Create>> BorderDecorator()
+				<<Create>> BorderDecorator(figure : Figure)
+				-border(): java.awt.Point
+				connectionInsets(): java.awt.Insets
+				'Gets the displaybox including the border.
+				displayBox(): java.awt.Rectangle
+				'Draws a the figure and decorates it with a border.
+				draw(g : java.awt.Graphics)
+				'Invalidates the figure extended by its border.
+				figureInvalidated(e : FigureChangeEvent)
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.DecoratorFigure <|-- Factory_method.nonfactorymethod.BorderDecorator
+	java.lang.Cloneable <|-- Factory_method.nonfactorymethod.Figure
+	java.io.Serializable <|-- Factory_method.nonfactorymethod.Figure
+	JavaPrimitiveTypes.int "borderDecoratorSerializedDataVersion" <-- Factory_method.nonfactorymethod.BorderDecorator
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Factory_method.nonfactorymethod.BorderDecorator
+}
+@enduml

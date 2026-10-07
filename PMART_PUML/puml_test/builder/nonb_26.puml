@@ -1,0 +1,43 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'<p><code>DocumentElement</code> is a simple container element for an XML document. It functions as an intermediate <code>Container</code> which has its own set of <code>Dispatchers</code> for its children. It responds to <code>ParameterEvents</code>, <code>InputEvents</code> and <code>TriggerEvents</code> by simply propagating the event to its children. </p> <p>In response to a <code>RenderEvent</code>, it simply shows or hides the Document Element and, if visible, dispatches a <code>RenderEvent</code> to the children of the <code>DocumentElement</code>. </p> <p>In response to a <code>RecycleEvent</code>, it simply makes the Document Element visible, and dispatches a <code>RecycleEvent</code> to the children of the <code>DocumentElement</code>. </p>
+			'@author Marty Phelan
+			'@version 1.0
+			class DocumentElement {
+				-id: java.lang.String
+				-renderer: DocumentElementRenderer
+				'Constructs a new DocumentElement
+				<<Create>> DocumentElement()
+				'Creates the default DocumentElementRenderer for this component. By Default this methos returns a new DocumentElementRenderer. Override this method to define your own DocumentElementRenderer.
+				#createDefaultRenderer(): DocumentElementRenderer
+				'Returns the id of the node this component is bound to.  This is the node which this component will replicate.
+				getId(): java.lang.String
+				'Get the Renderer for this component.
+				'@return the Renderer for this component.
+				getRenderer(): DocumentElementRenderer
+				'Processes a RecycleEvent recycling self and children, and then by propagating event to listeners.
+				processRecycleEvent(e : RecycleEvent)
+				'Responds to a render event for this component.  This uses the renderer subcomponent to actually render the value. It first notifies any RenderListeners of the event. It then invokes the renderer subcomponent to render the value to the document.
+				'@param e the current render event message
+				'@throws RenderException if problem rendering value to document
+				processRenderEvent(e : RenderEvent)
+				'Sets the id of the node this component is bound to.  This is the node which this component will replicate.
+				setId(newId : java.lang.String)
+			}
+		}
+	}
+	Builder.nonbuilder.DispatchingContainer <|-- Builder.nonbuilder.DocumentElement
+	Builder.nonbuilder.DocumentComponent <|-- Builder.nonbuilder.DocumentElement
+	Builder.nonbuilder.Container <|-- Builder.nonbuilder.DispatchingContainer
+	Builder.nonbuilder.InputDispatcher "inputDispatcher" <-- Builder.nonbuilder.DispatchingContainer
+	Builder.nonbuilder.ParameterDispatcher "parameterDispatcher" <-- Builder.nonbuilder.DispatchingContainer
+	java.util.Map "parameterMap" <-- Builder.nonbuilder.DispatchingContainer
+	Builder.nonbuilder.RecycleDispatcher "recycleDispatcher" <-- Builder.nonbuilder.DispatchingContainer
+	Builder.nonbuilder.RenderDispatcher "renderDispatcher" <-- Builder.nonbuilder.DispatchingContainer
+	Builder.nonbuilder.TriggerDispatcher "triggerDispatcher" <-- Builder.nonbuilder.DispatchingContainer
+	java.lang.String "id" <-- Builder.nonbuilder.DocumentElement
+	Builder.nonbuilder.DocumentElementRenderer "renderer" <-- Builder.nonbuilder.DocumentElement
+}
+@enduml

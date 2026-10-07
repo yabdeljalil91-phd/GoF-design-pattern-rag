@@ -1,0 +1,41 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package nonsingleton {
+			'A handle to connect figures. The connection object to be created is specified by a prototype. <hr> <b>Design Patterns</b><P> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a href=../pattlets/sld029.htm>Prototype</a></b><br> ConnectionHandle creates the connection by cloning a prototype. <hr>
+			'@see ConnectionFigure
+			'@see Object#clone
+			class ConnectionHandle {
+				-fConnection: ConnectionFigure
+				-fPrototype: ConnectionFigure
+				-fTarget: Figure
+				'Constructs a handle with the given owner, locator, and connection prototype
+				<<Create>> ConnectionHandle(owner : Figure, l : Locator, prototype : ConnectionFigure)
+				'Creates the ConnectionFigure. By default the figure prototype is cloned.
+				#createConnection(): ConnectionFigure
+				'Draws the connection handle, by default the outline of a blue circle.
+				draw(g : java.awt.Graphics)
+				-findConnectableFigure(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : Drawing): Figure
+				'Finds a connection end figure.
+				#findConnectionTarget(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : Drawing): Connector
+				#findConnector(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, f : Figure): Connector
+				'Connects the figures if the mouse is released over another figure.
+				invokeEnd(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : DrawingView)
+				'Creates the connection
+				invokeStart(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, view : DrawingView)
+				'Tracks the connection.
+				invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : DrawingView)
+				-startConnector(): Connector
+			}
+		}
+	}
+	Singleton.nonsingleton.LocatorHandle <|-- Singleton.nonsingleton.ConnectionHandle
+	Singleton.nonsingleton.Figure <|-- Singleton.nonsingleton.ConnectionFigure
+	java.lang.Cloneable <|-- Singleton.nonsingleton.Figure
+	java.io.Serializable <|-- Singleton.nonsingleton.Figure
+	java.awt.image.ImageObserver <|-- Singleton.nonsingleton.DrawingView
+	Singleton.nonsingleton.ConnectionFigure "fConnection" <-- Singleton.nonsingleton.ConnectionHandle
+	Singleton.nonsingleton.ConnectionFigure "fPrototype" <-- Singleton.nonsingleton.ConnectionHandle
+	Singleton.nonsingleton.Figure "fTarget" <-- Singleton.nonsingleton.ConnectionHandle
+}
+@enduml

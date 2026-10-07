@@ -1,0 +1,43 @@
+@startuml
+package dpd_jdt {
+	package Doc {
+		package name {
+			'<p><code>DocumentElement</code> is a simple container element for an XML document. It functions as an intermediate <code>Container</code> which has its own set of <code>Dispatchers</code> for its children. It responds to <code>ParameterEvents</code>, <code>InputEvents</code> and <code>TriggerEvents</code> by simply propagating the event to its children. </p> <p>In response to a <code>RenderEvent</code>, it simply shows or hides the Document Element and, if visible, dispatches a <code>RenderEvent</code> to the children of the <code>DocumentElement</code>. </p> <p>In response to a <code>RecycleEvent</code>, it simply makes the Document Element visible, and dispatches a <code>RecycleEvent</code> to the children of the <code>DocumentElement</code>. </p>
+			'@author Marty Phelan
+			'@version 1.0
+			class DocumentElement {
+				-id: java.lang.String
+				-renderer: DocumentElementRenderer
+				'Constructs a new DocumentElement
+				<<Create>> DocumentElement()
+				'Creates the default DocumentElementRenderer for this component. By Default this methos returns a new DocumentElementRenderer. Override this method to define your own DocumentElementRenderer.
+				#createDefaultRenderer(): DocumentElementRenderer
+				'Returns the id of the node this component is bound to.  This is the node which this component will replicate.
+				getId(): java.lang.String
+				'Get the Renderer for this component.
+				'@return the Renderer for this component.
+				getRenderer(): DocumentElementRenderer
+				'Processes a RecycleEvent recycling self and children, and then by propagating event to listeners.
+				processRecycleEvent(e : RecycleEvent)
+				'Responds to a render event for this component.  This uses the renderer subcomponent to actually render the value. It first notifies any RenderListeners of the event. It then invokes the renderer subcomponent to render the value to the document.
+				'@param e the current render event message
+				'@throws RenderException if problem rendering value to document
+				processRenderEvent(e : RenderEvent)
+				'Sets the id of the node this component is bound to.  This is the node which this component will replicate.
+				setId(newId : java.lang.String)
+			}
+		}
+	}
+	Doc.name.DispatchingContainer <|-- Doc.name.DocumentElement
+	Doc.name.DocumentComponent <|-- Doc.name.DocumentElement
+	Doc.name.Container <|-- Doc.name.DispatchingContainer
+	Doc.name.InputDispatcher "inputDispatcher" <-- Doc.name.DispatchingContainer
+	Doc.name.ParameterDispatcher "parameterDispatcher" <-- Doc.name.DispatchingContainer
+	java.util.Map "parameterMap" <-- Doc.name.DispatchingContainer
+	Doc.name.RecycleDispatcher "recycleDispatcher" <-- Doc.name.DispatchingContainer
+	Doc.name.RenderDispatcher "renderDispatcher" <-- Doc.name.DispatchingContainer
+	Doc.name.TriggerDispatcher "triggerDispatcher" <-- Doc.name.DispatchingContainer
+	java.lang.String "id" <-- Doc.name.DocumentElement
+	Doc.name.DocumentElementRenderer "renderer" <-- Doc.name.DocumentElement
+}
+@enduml

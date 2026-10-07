@@ -1,0 +1,41 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			'A round rectangle figure.
+			'@see RadiusHandle
+			class RoundRectangleFigure {
+				-{const} DEFAULT_ARC: JavaPrimitiveTypes.int = 8
+				-fArcHeight: JavaPrimitiveTypes.int
+				-fArcWidth: JavaPrimitiveTypes.int
+				-fDisplayBox: java.awt.Rectangle
+				-roundRectangleSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 7907900248924036885
+				<<Create>> RoundRectangleFigure()
+				<<Create>> RoundRectangleFigure(origin : java.awt.Point, corner : java.awt.Point)
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				connectionInsets(): java.awt.Insets
+				connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Connector
+				displayBox(): java.awt.Rectangle
+				drawBackground(g : java.awt.Graphics)
+				drawFrame(g : java.awt.Graphics)
+				'Gets the arc's width and height.
+				getArc(): java.awt.Point
+				handles(): java.util.Vector
+				read(dr : StorableInput)
+				'Sets the arc's witdh and height.
+				setArc(width : JavaPrimitiveTypes.int, height : JavaPrimitiveTypes.int)
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	Abstractfactory.non_abstract_factory.AttributeFigure <|-- Abstractfactory.non_abstract_factory.RoundRectangleFigure
+	JavaPrimitiveTypes.int "DEFAULT_ARC" <-- Abstractfactory.non_abstract_factory.RoundRectangleFigure
+	JavaPrimitiveTypes.int "fArcHeight" <-- Abstractfactory.non_abstract_factory.RoundRectangleFigure
+	JavaPrimitiveTypes.int "fArcWidth" <-- Abstractfactory.non_abstract_factory.RoundRectangleFigure
+	java.awt.Rectangle "fDisplayBox" <-- Abstractfactory.non_abstract_factory.RoundRectangleFigure
+	JavaPrimitiveTypes.int "roundRectangleSerializedDataVersion" <-- Abstractfactory.non_abstract_factory.RoundRectangleFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Abstractfactory.non_abstract_factory.RoundRectangleFigure
+}
+@enduml

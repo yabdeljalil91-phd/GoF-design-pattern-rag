@@ -1,0 +1,140 @@
+@startuml
+'Design pattern State
+package "JHotDraw v5.1" as JHotDraw_v5.1 {
+	package CH {
+		package ifa {
+			package draw {
+				package standard {
+					'/** 
+					' * Tool to select and manipulate figures. A selection tool is in one of three states, e.g., background selection, figure selection, handle manipulation. The different states are handled by different child tools. <hr> <b>Design Patterns</b><P> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a href=../pattlets/sld032.htm>State</a></b><br> SelectionTool is the StateContext and child is the State. The SelectionTool delegates state specific behavior to its current child tool. <hr>
+					' */
+					'DP role: context
+					class SelectionTool {
+						-fChild: JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+						<<Create>> SelectionTool(view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						'/** 
+						' * Factory method to create an area tracker. It is used to select an area.
+						' */
+						#createAreaTracker(view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView): JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+						'/** 
+						' * Factory method to create a Drag tracker. It is used to drag a figure.
+						' */
+						#createDragTracker(view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView, f : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+						'/** 
+						' * Factory method to create a Handle tracker. It is used to track a handle.
+						' */
+						#createHandleTracker(view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView, handle : JHotDraw_v5.1.CH.ifa.draw.framework.Handle): JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+						'/** 
+						' * Handles mouse down events and starts the corresponding tracker.
+						' */
+						mouseDown(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						'/** 
+						' * Handles mouse drag events. The events are forwarded to the current tracker.
+						' */
+						mouseDrag(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						'/** 
+						' * Handles mouse up events. The events are forwarded to the current tracker.
+						' */
+						mouseUp(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+					}
+					'/** 
+					' * DragTracker implements the dragging of the clicked figure.
+					' * @see SelectionTool
+					' */
+					'DP role: concreteState
+					class DragTracker {
+						-fAnchorFigure: JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						-fLastX: JavaPrimitiveTypes.int
+						-fLastY: JavaPrimitiveTypes.int
+						-fMoved: JavaPrimitiveTypes.boolean
+						<<Create>> DragTracker(view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView, anchor : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						mouseDown(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						mouseDrag(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+					}
+					'/** 
+					' * HandleTracker implements interactions with the handles of a Figure.
+					' * @see SelectionTool
+					' */
+					'DP role: concreteState
+					class HandleTracker {
+						-fAnchorHandle: JHotDraw_v5.1.CH.ifa.draw.framework.Handle
+						<<Create>> HandleTracker(view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView, anchorHandle : JHotDraw_v5.1.CH.ifa.draw.framework.Handle)
+						mouseDown(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						mouseDrag(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						mouseUp(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+					}
+					'/** 
+					' * SelectAreaTracker implements a rubberband selection of an area.
+					' */
+					'DP role: concreteState
+					class SelectAreaTracker {
+						-fSelectGroup: JHotDraw_v5.1.java.awt.Rectangle
+						<<Create>> SelectAreaTracker(view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						-drawXORRect(r : JHotDraw_v5.1.java.awt.Rectangle)
+						-eraseRubberBand()
+						mouseDown(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						mouseDrag(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						mouseUp(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						-rubberBand(x1 : JavaPrimitiveTypes.int, y1 : JavaPrimitiveTypes.int, x2 : JavaPrimitiveTypes.int, y2 : JavaPrimitiveTypes.int)
+						-selectGroup(toggle : JavaPrimitiveTypes.boolean)
+					}
+					AbstractTool <|-- SelectionTool
+					JHotDraw_v5.1.CH.ifa.draw.framework.Tool <|.. AbstractTool
+					AbstractTool <|-- DragTracker
+					AbstractTool <|-- HandleTracker
+					AbstractTool <|-- SelectAreaTracker
+					JavaPrimitiveTypes.int "fAnchorX" <-- AbstractTool
+					JavaPrimitiveTypes.int "fAnchorY" <-- AbstractTool
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView "fView" <-- AbstractTool
+					JHotDraw_v5.1.CH.ifa.draw.framework.Tool "fChild" <-- SelectionTool
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure "fAnchorFigure" <-- DragTracker
+					JavaPrimitiveTypes.int "fLastX" <-- DragTracker
+					JavaPrimitiveTypes.int "fLastY" <-- DragTracker
+					JavaPrimitiveTypes.boolean "fMoved" <-- DragTracker
+					JHotDraw_v5.1.CH.ifa.draw.framework.Handle "fAnchorHandle" <-- HandleTracker
+					JHotDraw_v5.1.java.awt.Rectangle "fSelectGroup" <-- SelectAreaTracker
+				}
+				package framework {
+					'DP role: state
+					interface Tool {
+						activate()
+						deactivate()
+						keyDown(evt : JHotDraw_v5.1.java.awt.event.KeyEvent, key : JavaPrimitiveTypes.int)
+						mouseDown(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						mouseDrag(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						mouseMove(evt : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						mouseUp(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+					}
+					JHotDraw_v5.1.java.awt.image.ImageObserver <|-- DrawingView
+					DrawingChangeListener <|-- DrawingView
+					JHotDraw_v5.1.java.util.EventListener <|-- DrawingChangeListener
+					JHotDraw_v5.1.java.util.EventObject <|-- DrawingChangeEvent
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Drawing
+					FigureChangeListener <|-- Drawing
+					JHotDraw_v5.1.java.io.Serializable <|-- Drawing
+					JHotDraw_v5.1.java.util.EventListener <|-- FigureChangeListener
+					JHotDraw_v5.1.java.util.EventObject <|-- FigureChangeEvent
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Figure
+					JHotDraw_v5.1.java.lang.Cloneable <|-- Figure
+					JHotDraw_v5.1.java.io.Serializable <|-- Figure
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Locator
+					JHotDraw_v5.1.java.io.Serializable <|-- Locator
+					JHotDraw_v5.1.java.lang.Cloneable <|-- Locator
+					JHotDraw_v5.1.java.io.Serializable <|-- Connector
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Connector
+					Figure <|-- ConnectionFigure
+					FigureChangeListener <|-- ConnectionFigure
+					JHotDraw_v5.1.java.util.Enumeration <|-- FigureEnumeration
+					JHotDraw_v5.1.java.io.Serializable <|-- Painter
+					JHotDraw_v5.1.java.awt.Rectangle "fRectangle" <-- DrawingChangeEvent
+					JHotDraw_v5.1.java.awt.Rectangle "fRectangle" <-- FigureChangeEvent
+					JHotDraw_v5.1.java.awt.Rectangle "fgEmptyRectangle" <-- FigureChangeEvent
+					JavaPrimitiveTypes.int "HANDLESIZE" <-- Handle
+					JHotDraw_v5.1.java.lang.String "TYPE" <-- FigureSelection
+					JavaPrimitiveTypes.byte "fData 0..*" <-- FigureSelection
+				}
+			}
+		}
+	}
+}
+@enduml

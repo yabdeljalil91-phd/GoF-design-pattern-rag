@@ -1,0 +1,32 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Creates an object that holds the divided summary panel
+			'@author    Chris Seguin
+			class DividedSummaryPanel {
+				keyPane: javax.swing.JScrollPane
+				splitPane: javax.swing.JSplitPane
+				summaryPane: javax.swing.JScrollPane
+				'Constructor for the DividedSummaryPanel object
+				'@param summary     Description of Parameter
+				'@param umlPackage  Description of Parameter
+				<<Create>> DividedSummaryPanel(summary : PackageSummary, umlPackage : UMLPackage)
+				'Gets the Pane attribute of the DividedSummaryPanel object
+				'@return    The Pane value
+				getPane(): javax.swing.JComponent
+				'Initializes the splitpane
+				'@param summary     Description of Parameter
+				'@param umlPackage  Description of Parameter
+				-init(summary : PackageSummary, umlPackage : UMLPackage)
+				'The main program for the DividedSummaryPanel class
+				'@param args  The command line arguments
+				{static} main(args : java.lang.String)
+			}
+		}
+	}
+	javax.swing.JScrollPane "keyPane" <-- Builder.nonbuilder.DividedSummaryPanel
+	javax.swing.JSplitPane "splitPane" <-- Builder.nonbuilder.DividedSummaryPanel
+	javax.swing.JScrollPane "summaryPane" <-- Builder.nonbuilder.DividedSummaryPanel
+}
+@enduml

@@ -1,0 +1,77 @@
+@startuml
+'Design pattern Singleton (RAG-enhanced for GoF detection)
+
+package "Lexi v0.1.1 alpha" as Lexi_v0.1.1_alpha {
+
+    package com {
+        package jmonkey {
+            package export {
+
+                'DP role: singleton (CONCRETE SINGLETON CLASS)
+                'Purpose: centralized registry for application-wide state/resources
+                class Registry {
+
+                    '========================
+                    ' Singleton core signals
+                    '========================
+
+                    - {static} _INSTANCE: Registry
+                    ' STATIC INSTANCE HOLDER → primary Singleton indicator
+
+                    # Registry()
+                    ' PROTECTED/PRIVATE CONSTRUCTOR → prevents external instantiation
+
+                    + {static} instance(): Registry
+                    ' GLOBAL ACCESS METHOD → controlled retrieval of single instance
+
+                    '========================
+                    ' Business / service operations
+                    '========================
+
+                    + commit()
+                    ' Persist or finalize registry state (global state mutation)
+
+                    + deleteAll()
+                    ' Global destructive operation on registry-managed state
+
+                    '========================
+                    ' Global configuration constants
+                    '========================
+
+                    {const} REGISTRY_DIRECTORY: File
+                    {const} RESOURCE_DIRECTORY: File
+                    ' STATIC CONFIGURATION RESOURCES → shared system-wide context
+                }
+
+                '========================
+                ' Structural relationships
+                '========================
+
+                ' Registry depends on filesystem resources (global configuration binding)
+                File "REGISTRY_DIRECTORY (global config path)" <-- Registry
+                File "RESOURCE_DIRECTORY (global config path)" <-- Registry
+
+                '========================
+                ' RAG FEATURE ANNOTATION BLOCK
+                '========================
+                '
+                ' HIGH CONFIDENCE SINGLETON INDICATORS:
+                ' 1. Static instance field: _INSTANCE
+                ' 2. Restricted constructor: Registry()
+                ' 3. Static accessor: instance()
+                '
+                ' SUPPORTING SIGNALS:
+                ' - Global mutable state (commit/deleteAll)
+                ' - Centralized configuration constants
+                ' - System-wide registry semantics
+                '
+                ' RAG DISCRIMINATORS:
+                ' - NOT Factory: no creation abstraction over multiple types
+                ' - NOT Prototype: no cloning behavior
+                ' - NOT Service Locator (weak overlap but lacks lookup abstraction layer)
+                '
+            }
+        }
+    }
+}
+@enduml

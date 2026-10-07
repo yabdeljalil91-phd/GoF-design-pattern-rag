@@ -1,0 +1,57 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package nonsingleton {
+			'@class ClipboardTool
+			'@date 08-20-2001
+			'@author Eric Crahen
+			'@version 1.0A Clipboard implements the copy/cut/paste actions for a Diagram. A set of actions are inserted into the target Diagrams ActionMap (copy, cut, and paste) that allow the UI to map inputs to these actions as it sees fit.
+			class ClipboardTool {
+				#actionCopy: javax.swing.Action
+				#actionCut: javax.swing.Action
+				#actionPaste: javax.swing.Action
+				-clipboard: java.util.ArrayList
+				-copyboard: java.util.ArrayList
+				#{static} diagramKey: java.lang.ThreadLocal
+				-figures: Figure [*]
+				-related: Figure [*]
+				<<Create>> ClipboardTool()
+				'Copy the current selection from the Diagram to the Clipboard
+				doCopy()
+				'Cut the current selection from the Diagram
+				doCut()
+				'Paste the top of the clipboard stack to the diagram
+				doPaste()
+				-doPaste(figure : Figure, model : DiagramModel, selectionModel : SelectionModel, ui : DiagramUI)
+				'Get the diagram the Clipboard is configured for
+				'@return Diagram
+				{static} getDiagram(): Diagram
+				'Install the support in the specified Diagram
+				'@param Diagram
+				install(diagram : Diagram)
+				'Prepare for a clipboard operation. Copy the current selection into a local array for processing.
+				'@return boolean
+				#prepareSelection(): JavaPrimitiveTypes.boolean
+				'Configure the current context for the given Diagram
+				'@param Diagram
+				'@return Clipboard
+				{static} setDiagram(diagram : Diagram)
+				'Install the support in the specified Diagram
+				'@param Diagram
+				uninstall(diagram : Diagram)
+			}
+		}
+	}
+	Singleton.nonsingleton.AbstractTool <|-- Singleton.nonsingleton.ClipboardTool
+	java.lang.Cloneable <|-- Singleton.nonsingleton.Figure
+	java.io.Serializable <|-- Singleton.nonsingleton.Figure
+	javax.swing.Action "actionCopy" <-- Singleton.nonsingleton.ClipboardTool
+	javax.swing.Action "actionCut" <-- Singleton.nonsingleton.ClipboardTool
+	javax.swing.Action "actionPaste" <-- Singleton.nonsingleton.ClipboardTool
+	java.util.ArrayList "clipboard" <-- Singleton.nonsingleton.ClipboardTool
+	java.util.ArrayList "copyboard" <-- Singleton.nonsingleton.ClipboardTool
+	java.lang.ThreadLocal "diagramKey" <-- Singleton.nonsingleton.ClipboardTool
+	Singleton.nonsingleton.Figure "figures 0..*" <-- Singleton.nonsingleton.ClipboardTool
+	Singleton.nonsingleton.Figure "related 0..*" <-- Singleton.nonsingleton.ClipboardTool
+}
+@enduml

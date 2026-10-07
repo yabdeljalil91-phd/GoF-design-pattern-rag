@@ -1,0 +1,279 @@
+@startuml
+'Design pattern State
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+	package org {
+		package acm {
+			package seguin {
+				package summary {
+					'/** 
+					' * Stores a summary of a java file
+					' * @author     Chris Seguin
+					' * @created    June 6, 1999
+					' */
+					'DP role: context
+					class FileSummary {
+						-delete: JavaPrimitiveTypes.boolean
+						-{static} fileMap: JRefactory_v2.6.24.java.util.HashMap
+						-importList: JRefactory_v2.6.24.java.util.ArrayList
+						-isMoving: JavaPrimitiveTypes.boolean
+						-lastModified: JRefactory_v2.6.24.java.util.Date
+						-theFile: JRefactory_v2.6.24.java.io.File
+						-typeList: JRefactory_v2.6.24.java.util.LinkedList
+						'/** 
+						' * Creates a file map
+						' * @param parentSummary  the parent summary
+						' * @param initFile       the file
+						' */
+						#<<Create>> FileSummary(parentSummary : Summary, initFile : JRefactory_v2.6.24.java.io.File)
+						'/** 
+						' * Provide method to visit a node
+						' * @param visitor  the visitor
+						' * @param data     the data for the visit
+						' * @return          some new data
+						' */
+						accept(visitor : SummaryVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						'/** 
+						' * Add an import summary
+						' * @param importSummary  the summary of what was imported
+						' */
+						#add(importSummary : ImportSummary)
+						'/** 
+						' * Add an type summary
+						' * @param typeSummary  the summary of the type
+						' */
+						#add(typeSummary : TypeSummary)
+						'/** 
+						' * Return the file
+						' * @return    the file object
+						' */
+						getFile(): JRefactory_v2.6.24.java.io.File
+						'/** 
+						' * Get the file summary for a particular file
+						' * @param file  the file we are looking up
+						' * @return       the file summary
+						' */
+						{static} getFileSummary(file : JRefactory_v2.6.24.java.io.File): FileSummary
+						'/** 
+						' * Get the file summary for a particular file
+						' * @param buffer  the buffer that is used to load the summary
+						' * @return         the file summary
+						' */
+						{static} getFileSummary(buffer : JRefactory_v2.6.24.java.lang.String): FileSummary
+						'/** 
+						' * Return the list of imports
+						' * @return    an iterator containing the imports
+						' */
+						getImports(): JRefactory_v2.6.24.java.util.Iterator
+						'/** 
+						' * Get the key that is used to index the files
+						' * @param file  the file we are using to find the key
+						' * @return       the key
+						' */
+						#{static} getKey(file : JRefactory_v2.6.24.java.io.File): JRefactory_v2.6.24.java.lang.String
+						'/** 
+						' * Return the name of the file
+						' * @return    a string containing the name
+						' */
+						getName(): JRefactory_v2.6.24.java.lang.String
+						'/** 
+						' * Counts the types stored in the file
+						' * @return    the number of types in this file
+						' */
+						getTypeCount(): JavaPrimitiveTypes.int
+						'/** 
+						' * Get the list of types stored in this file
+						' * @return    an iterator over the types
+						' */
+						getTypes(): JRefactory_v2.6.24.java.util.Iterator
+						'/** 
+						' * Scans through the tree looking for a type declaration
+						' * @param root  the root of the abstract syntax tree
+						' * @return       true if there is a type node present
+						' */
+						-{static} hasType(root : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Initialization method
+						' */
+						-{static} init()
+						'/** 
+						' * Initialize the import list
+						' */
+						-initImportList()
+						'/** 
+						' * Initialize the type list
+						' */
+						-initTypeList()
+						'/** 
+						' * Has this file been deleted
+						' * @return    true if the file is deleted
+						' */
+						isDeleted(): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Is this file moving to a new package
+						' * @return    true if the file is moving
+						' */
+						isMoving(): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Description of the Method
+						' * @param state  Description of Parameter
+						' * @param file   Description of Parameter
+						' * @return        Description of the Returned Value
+						' */
+						-{static} linkFileSummary(state : SummaryLoaderState, file : JRefactory_v2.6.24.java.io.File): FileSummary
+						'/** 
+						' * Description of the Method
+						' * @param file  Description of Parameter
+						' * @return       Description of the Returned Value
+						' */
+						-{static} loadNewFileSummary(file : JRefactory_v2.6.24.java.io.File): SummaryLoaderState
+						'/** 
+						' * Registers a single new file. This method is used by the rapid metadata reloader
+						' * @param summary  Description of Parameter
+						' */
+						{static} register(summary : FileSummary)
+						'/** 
+						' * Description of the Method
+						' * @param file    Description of Parameter
+						' * @param result  Description of Parameter
+						' * @param root    Description of Parameter
+						' */
+						-{static} reloadFileSummary(file : JRefactory_v2.6.24.java.io.File, result : FileSummary, root : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode)
+						'/** 
+						' * This method allows JBuilder to load a file summary from the buffer
+						' * @param file the file
+						' * @param input the input stream
+						' * @return the file summary loaded
+						' */
+						{static} reloadFromBuffer(file : JRefactory_v2.6.24.java.io.File, input : JRefactory_v2.6.24.java.io.InputStream): FileSummary
+						'/** 
+						' * Remove any file summaries that have been deleted
+						' */
+						{static} removeDeletedSummaries()
+						'/** 
+						' * Remove the file summary for a particular file
+						' * @param file  the file we are looking up
+						' */
+						{static} removeFileSummary(file : JRefactory_v2.6.24.java.io.File)
+						'/** 
+						' * Description of the Method
+						' * @param file  Description of Parameter
+						' */
+						-{static} resetFileSummary(file : JRefactory_v2.6.24.java.io.File, result : FileSummary)
+						'/** 
+						' * Mark whether this file should be deleted
+						' * @param way  the way that this parameter is changing
+						' */
+						setDeleted(way : JavaPrimitiveTypes.boolean)
+						'/** 
+						' * Change whether this file is moving or not
+						' * @param way  the way that this parameter is changing
+						' */
+						setMoving(way : JavaPrimitiveTypes.boolean)
+						'/** 
+						' * Description of the Method
+						' * @return    Description of the Returned Value
+						' */
+						toString(): JRefactory_v2.6.24.java.lang.String
+					}
+					'DP role: concreteState
+					class SummaryLoaderState {
+						{const} IGNORE: JavaPrimitiveTypes.int = 100
+						{const} INITIALIZE: JavaPrimitiveTypes.int = 0
+						{const} LOAD_CLASSBODY: JavaPrimitiveTypes.int = 3
+						{const} LOAD_EXCEPTIONS: JavaPrimitiveTypes.int = 5
+						{const} LOAD_FILE: JavaPrimitiveTypes.int = 1
+						{const} LOAD_INTERFACE_LIST: JavaPrimitiveTypes.int = 4
+						{const} LOAD_METHODBODY: JavaPrimitiveTypes.int = 7
+						{const} LOAD_PARAMETERS: JavaPrimitiveTypes.int = 6
+						{const} LOAD_TYPE: JavaPrimitiveTypes.int = 2
+						-code: JavaPrimitiveTypes.int
+						-file: JRefactory_v2.6.24.java.io.File
+						-stack: JRefactory_v2.6.24.java.util.Stack
+						<<Create>> SummaryLoaderState()
+						finishSummary()
+						getCode(): JavaPrimitiveTypes.int
+						getCurrentSummary(): Summary
+						getFile(): JRefactory_v2.6.24.java.io.File
+						setCode(next : JavaPrimitiveTypes.int)
+						setFile(next : JRefactory_v2.6.24.java.io.File)
+						startSummary(next : Summary)
+					}
+					Summary <|-- FileSummary
+					JRefactory_v2.6.24.java.io.Serializable <|.. Summary
+					Summary <|-- PackageSummary
+					Summary <|-- ImportSummary
+					Summary <|-- TypeSummary
+					Summary <|-- TypeDeclSummary
+					Summary <|-- MethodSummary
+					VariableSummary <|-- ParameterSummary
+					Summary <|-- VariableSummary
+					VariableSummary <|-- FieldSummary
+					VariableSummary <|-- LocalVariableSummary
+					Summary <|-- MessageSendSummary
+					Summary <|-- FieldAccessSummary
+					JavaPrimitiveTypes.int "end" <-- Summary
+					JavaPrimitiveTypes.int "start" <-- Summary
+					JRefactory_v2.6.24.java.util.LinkedList "fileList" <-- PackageSummary
+					JRefactory_v2.6.24.java.lang.String "name" <-- PackageSummary
+					JRefactory_v2.6.24.java.util.HashMap "packageMap" <-- PackageSummary
+					PackageSummary "packageSummary" <-- ImportSummary
+					JRefactory_v2.6.24.java.lang.String "type" <-- ImportSummary
+					JavaPrimitiveTypes.boolean "bInterface" <-- TypeSummary
+					JRefactory_v2.6.24.java.util.LinkedList "fieldList" <-- TypeSummary
+					JRefactory_v2.6.24.java.util.LinkedList "interfaceList" <-- TypeSummary
+					JRefactory_v2.6.24.java.util.LinkedList "methodList" <-- TypeSummary
+					JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder "modifiers" <-- TypeSummary
+					JRefactory_v2.6.24.java.lang.String "name" <-- TypeSummary
+					JavaPrimitiveTypes.int "arrayCount" <-- TypeDeclSummary
+					JRefactory_v2.6.24.java.lang.String "packageName" <-- TypeDeclSummary
+					JavaPrimitiveTypes.boolean "primitive" <-- TypeDeclSummary
+					JRefactory_v2.6.24.java.lang.String "typeName" <-- TypeDeclSummary
+					TypeDeclSummary "parentClass" <-- TypeSummary
+					JRefactory_v2.6.24.java.util.LinkedList "typeList" <-- TypeSummary
+					JavaPrimitiveTypes.int "blockDepth" <-- MethodSummary
+					JavaPrimitiveTypes.int "declarationLine" <-- MethodSummary
+					JRefactory_v2.6.24.java.util.LinkedList "dependencyList" <-- MethodSummary
+					JRefactory_v2.6.24.java.util.LinkedList "exceptionList" <-- MethodSummary
+					JavaPrimitiveTypes.int "maxBlockDepth" <-- MethodSummary
+					JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder "modifiers" <-- MethodSummary
+					JRefactory_v2.6.24.java.lang.String "name" <-- MethodSummary
+					JRefactory_v2.6.24.java.util.LinkedList "parameterList" <-- MethodSummary
+					TypeDeclSummary "returnType" <-- MethodSummary
+					JavaPrimitiveTypes.int "statementCount" <-- MethodSummary
+					JRefactory_v2.6.24.java.lang.StringBuffer "declaration" <-- VariableSummary
+					JRefactory_v2.6.24.java.lang.String "name" <-- VariableSummary
+					TypeDeclSummary "type" <-- VariableSummary
+					JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder "modifiers" <-- FieldSummary
+					JRefactory_v2.6.24.java.lang.String "first" <-- MessageSendSummary
+					JRefactory_v2.6.24.java.lang.String "messageName" <-- MessageSendSummary
+					JRefactory_v2.6.24.java.lang.String "objectName" <-- MessageSendSummary
+					JRefactory_v2.6.24.java.lang.String "packageName" <-- MessageSendSummary
+					JRefactory_v2.6.24.java.lang.String "fieldName" <-- FieldAccessSummary
+					JavaPrimitiveTypes.boolean "isAssignment" <-- FieldAccessSummary
+					JRefactory_v2.6.24.java.lang.String "objectName" <-- FieldAccessSummary
+					JRefactory_v2.6.24.java.lang.String "packageName" <-- FieldAccessSummary
+					JavaPrimitiveTypes.boolean "delete" <-- FileSummary
+					JRefactory_v2.6.24.java.util.HashMap "fileMap" <-- FileSummary
+					JRefactory_v2.6.24.java.util.ArrayList "importList" <-- FileSummary
+					JavaPrimitiveTypes.boolean "isMoving" <-- FileSummary
+					JRefactory_v2.6.24.java.util.Date "lastModified" <-- FileSummary
+					JRefactory_v2.6.24.java.io.File "theFile" <-- FileSummary
+					JRefactory_v2.6.24.java.util.LinkedList "typeList" <-- FileSummary
+					JavaPrimitiveTypes.int "IGNORE" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "INITIALIZE" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_CLASSBODY" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_EXCEPTIONS" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_FILE" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_INTERFACE_LIST" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_METHODBODY" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_PARAMETERS" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "LOAD_TYPE" <-- SummaryLoaderState
+					JavaPrimitiveTypes.int "code" <-- SummaryLoaderState
+					JRefactory_v2.6.24.java.io.File "file" <-- SummaryLoaderState
+					JRefactory_v2.6.24.java.util.Stack "stack" <-- SummaryLoaderState
+				}
+			}
+		}
+	}
+}
+@enduml

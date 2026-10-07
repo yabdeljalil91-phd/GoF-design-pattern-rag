@@ -1,0 +1,32 @@
+@startuml
+'Design pattern Null Object
+package "JHotDraw v5.1" as JHotDraw_v5.1 {
+	package CH {
+		package ifa {
+			package draw {
+				package standard {
+					'/** 
+					' * A handle that doesn't change the owned figure. Its only purpose is to show feedback that a figure is selected. <hr> <b>Design Patterns</b><P> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b>NullObject</b><br> NullObject enables to treat handles that don't do anything in the same way as other handles.
+					' */
+					'DP role: nullObject
+					class NullHandle {
+						#fLocator: JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						<<Create>> NullHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, locator : JHotDraw_v5.1.CH.ifa.draw.framework.Locator)
+						'/** 
+						' * Draws the NullHandle. NullHandles are drawn as a red framed rectangle.
+						' */
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+					}
+					LocatorHandle <|-- NullHandle
+					AbstractHandle <|-- LocatorHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Handle <|.. AbstractHandle
+					JavaPrimitiveTypes.int "HANDLESIZE" <-- AbstractHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure "fOwner" <-- AbstractHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Locator "fLocator" <-- LocatorHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Locator "fLocator" <-- NullHandle
+				}
+			}
+		}
+	}
+}
+@enduml

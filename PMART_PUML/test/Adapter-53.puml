@@ -1,0 +1,876 @@
+@startuml
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package openide {
+			package filesystems {
+				class Repository {
+					-{static} defaultPool: Repository
+					-fileSystems: Netbeans_v1.0.x.java.util.ArrayList
+					-listeners: Netbeans_v1.0.x.java.util.Hashtable
+					-names: Netbeans_v1.0.x.java.util.Hashtable
+					-propListener: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					{const} serialVersionUID: JavaPrimitiveTypes.long = -6344768369160069704
+					-system: FileSystem
+					-vetoListener: Netbeans_v1.0.x.java.beans.VetoableChangeListener
+					<<Create>> Repository(def : FileSystem)
+					addFileSystem(fs : FileSystem)
+					addRepositoryListener(list : RepositoryListener)
+					fileSystems(): Netbeans_v1.0.x.java.util.Enumeration
+					find(aPackage : Netbeans_v1.0.x.java.lang.String, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					findAll(aPackage : Netbeans_v1.0.x.java.lang.String, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.util.Enumeration
+					findAllResources(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.util.Enumeration
+					findFileSystem(systemName : Netbeans_v1.0.x.java.lang.String): FileSystem
+					findResource(name : Netbeans_v1.0.x.java.lang.String): FileObject
+					-fireFileSystem(fs : FileSystem, add : JavaPrimitiveTypes.boolean)
+					-fireFileSystemReordered(perm : JavaPrimitiveTypes.int)
+					getDefaultFileSystem(): FileSystem
+					getFileSystems(): Netbeans_v1.0.x.java.util.Enumeration
+					-init()
+					-{static} isPermutation(perm : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					readExternal(ois : Netbeans_v1.0.x.java.io.ObjectInput)
+					removeFileSystem(fs : FileSystem)
+					removeRepositoryListener(list : RepositoryListener)
+					reorder(perm : JavaPrimitiveTypes.int)
+					toArray(): FileSystem
+					writeExternal(oos : Netbeans_v1.0.x.java.io.ObjectOutput)
+					-writeReplace(): Netbeans_v1.0.x.java.lang.Object
+				}
+				abstract class FileSystem {
+					{const} PROP_HIDDEN: Netbeans_v1.0.x.java.lang.String = hidden
+					{const} PROP_READ_ONLY: Netbeans_v1.0.x.java.lang.String = readOnly
+					{const} PROP_ROOT: Netbeans_v1.0.x.java.lang.String = root
+					{const} PROP_SYSTEM_NAME: Netbeans_v1.0.x.java.lang.String = systemName
+					{const} PROP_VALID: Netbeans_v1.0.x.java.lang.String = valid
+					-{const} STATUS_NONE: Status
+					assigned: JavaPrimitiveTypes.boolean
+					-capability: FileSystemCapability
+					-hidden: JavaPrimitiveTypes.boolean
+					-listenerList: Netbeans_v1.0.x.javax.swing.event.EventListenerList
+					-{static} requests: JavaPrimitiveTypes.int
+					{const} serialVersionUID: JavaPrimitiveTypes.long = -8931487924240189180
+					-systemName: Netbeans_v1.0.x.java.lang.String
+					-valid: JavaPrimitiveTypes.boolean
+					<<Create>> FileSystem()
+					addFileStatusListener(listener : FileStatusListener)
+					addPropertyChangeListener(listener : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					addVetoableChangeListener(listener : Netbeans_v1.0.x.java.beans.VetoableChangeListener)
+					-{static} enterAtomicAction()
+					-{static} exitAtomicAction()
+					find(aPackage : Netbeans_v1.0.x.java.lang.String, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					findResource(name : Netbeans_v1.0.x.java.lang.String): FileObject
+					#fireFileStatusChanged(event : FileStatusEvent)
+					#firePropertyChange(name : Netbeans_v1.0.x.java.lang.String, o : Netbeans_v1.0.x.java.lang.Object, n : Netbeans_v1.0.x.java.lang.Object)
+					#fireVetoableChange(name : Netbeans_v1.0.x.java.lang.String, o : Netbeans_v1.0.x.java.lang.Object, n : Netbeans_v1.0.x.java.lang.Object)
+					getActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					getCapability(): FileSystemCapability
+					getDisplayName(): Netbeans_v1.0.x.java.lang.String
+					getRoot(): FileObject
+					getStatus(): Status
+					{static} getString(s : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+					{static} getString(s : Netbeans_v1.0.x.java.lang.String, obj : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.String
+					{static} getString(s : Netbeans_v1.0.x.java.lang.String, obj1 : Netbeans_v1.0.x.java.lang.Object, obj2 : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.String
+					{static} getString(s : Netbeans_v1.0.x.java.lang.String, obj1 : Netbeans_v1.0.x.java.lang.Object, obj2 : Netbeans_v1.0.x.java.lang.Object, obj3 : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.String
+					getSystemName(): Netbeans_v1.0.x.java.lang.String
+					isDefault(): JavaPrimitiveTypes.boolean
+					isHidden(): JavaPrimitiveTypes.boolean
+					#isPersistent(): JavaPrimitiveTypes.boolean
+					isReadOnly(): JavaPrimitiveTypes.boolean
+					isValid(): JavaPrimitiveTypes.boolean
+					prepareEnvironment(env : Environment)
+					{static} putEventDispatcher(run : EventDispatcher)
+					-readObject(in : Netbeans_v1.0.x.java.io.ObjectInputStream)
+					removeFileStatusListener(listener : FileStatusListener)
+					removePropertyChangeListener(listener : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					removeVetoableChangeListener(listener : Netbeans_v1.0.x.java.beans.VetoableChangeListener)
+					runAtomicAction(run : AtomicAction)
+					#setCapability(capability : FileSystemCapability)
+					setHidden(hide : JavaPrimitiveTypes.boolean)
+					#setSystemName(name : Netbeans_v1.0.x.java.lang.String)
+					setValid(v : JavaPrimitiveTypes.boolean)
+					toString(): Netbeans_v1.0.x.java.lang.String
+				}
+				abstract class FileObject {
+					{const} serialVersionUID: JavaPrimitiveTypes.long = 85305031923497718
+					<<Create>> FileObject()
+					#accept(o : Netbeans_v1.0.x.java.lang.Object): JavaPrimitiveTypes.boolean
+					addFileChangeListener(fcl : FileChangeListener)
+					-constructName(sb : Netbeans_v1.0.x.java.lang.StringBuffer, sepChar : JavaPrimitiveTypes.char)
+					copy(target : FileObject, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					createData(name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					createFolder(name : Netbeans_v1.0.x.java.lang.String): FileObject
+					delete(lock : FileLock)
+					existsExt(ext : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+					#fireFileAttributeChangedEvent(en : Netbeans_v1.0.x.java.util.Enumeration, fe : FileAttributeEvent)
+					#fireFileChangedEvent(en : Netbeans_v1.0.x.java.util.Enumeration, fe : FileEvent)
+					#fireFileDataCreatedEvent(en : Netbeans_v1.0.x.java.util.Enumeration, fe : FileEvent)
+					#fireFileDeletedEvent(en : Netbeans_v1.0.x.java.util.Enumeration, fe : FileEvent)
+					#fireFileFolderCreatedEvent(en : Netbeans_v1.0.x.java.util.Enumeration, fe : FileEvent)
+					#fireFileRenamedEvent(en : Netbeans_v1.0.x.java.util.Enumeration, fe : FileRenameEvent)
+					getAttribute(attrName : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.Object
+					getAttributes(): Netbeans_v1.0.x.java.util.Enumeration
+					getChildren(): FileObject
+					getChildren(rec : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.java.util.Enumeration
+					getData(rec : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.java.util.Enumeration
+					getExt(): Netbeans_v1.0.x.java.lang.String
+					getFileObject(name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					getFileObject(name : Netbeans_v1.0.x.java.lang.String): FileObject
+					getFileSystem(): FileSystem
+					getFolders(rec : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.java.util.Enumeration
+					getInputStream(): Netbeans_v1.0.x.java.io.InputStream
+					getMIMEType(): Netbeans_v1.0.x.java.lang.String
+					getName(): Netbeans_v1.0.x.java.lang.String
+					getOutputStream(lock : FileLock): Netbeans_v1.0.x.java.io.OutputStream
+					getPackageName(separatorChar : JavaPrimitiveTypes.char): Netbeans_v1.0.x.java.lang.String
+					getPackageNameExt(separatorChar : JavaPrimitiveTypes.char, extSepChar : JavaPrimitiveTypes.char): Netbeans_v1.0.x.java.lang.String
+					getParent(): FileObject
+					getSize(): JavaPrimitiveTypes.long
+					getURL(): Netbeans_v1.0.x.java.net.URL
+					hasExt(ext : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+					isData(): JavaPrimitiveTypes.boolean
+					isFolder(): JavaPrimitiveTypes.boolean
+					isReadOnly(): JavaPrimitiveTypes.boolean
+					isRoot(): JavaPrimitiveTypes.boolean
+					isValid(): JavaPrimitiveTypes.boolean
+					lastModified(): Netbeans_v1.0.x.java.util.Date
+					lock(): FileLock
+					move(lock : FileLock, target : FileObject, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String): FileObject
+					-putEventDispatcher(d : EventDispatcher)
+					refresh(expected : JavaPrimitiveTypes.boolean)
+					refresh()
+					removeFileChangeListener(fcl : FileChangeListener)
+					rename(lock : FileLock, name : Netbeans_v1.0.x.java.lang.String, ext : Netbeans_v1.0.x.java.lang.String)
+					setAttribute(attrName : Netbeans_v1.0.x.java.lang.String, value : Netbeans_v1.0.x.java.lang.Object)
+					setImportant(b : JavaPrimitiveTypes.boolean)
+				}
+				interface RepositoryListener {
+					fileSystemAdded(ev : RepositoryEvent)
+					fileSystemPoolReordered(ev : RepositoryReorderedEvent)
+					fileSystemRemoved(ev : RepositoryEvent)
+				}
+				Netbeans_v1.0.x.org.openide.nodes.Node.Cookie <|.. Repository
+				Netbeans_v1.0.x.java.io.Serializable <|.. Repository
+				Netbeans_v1.0.x.java.io.Serializable <|.. FileSystem
+				Netbeans_v1.0.x.java.io.Serializable <|.. FileObject
+				Netbeans_v1.0.x.java.util.EventListener <|-- FileChangeListener
+				FileEvent <|-- FileAttributeEvent
+				Netbeans_v1.0.x.java.util.EventObject <|-- FileEvent
+				FileEvent <|-- FileRenameEvent
+				Netbeans_v1.0.x.java.util.EventListener <|-- FileStatusListener
+				Netbeans_v1.0.x.java.util.EventObject <|-- FileStatusEvent
+				Netbeans_v1.0.x.java.util.EventListener <|-- RepositoryListener
+				Netbeans_v1.0.x.java.util.EventObject <|-- RepositoryEvent
+				Netbeans_v1.0.x.java.util.EventObject <|-- RepositoryReorderedEvent
+				FileSystem <|-- AbstractFileSystem
+				Netbeans_v1.0.x.java.lang.Runnable <|.. RefreshRequest
+				AbstractFolder <|-- AbstractFileObject
+				FileObject <|-- AbstractFolder
+				Netbeans_v1.0.x.java.util.ArrayList "fileSystems" <-- Repository
+				Netbeans_v1.0.x.java.util.Hashtable "listeners" <-- Repository
+				Netbeans_v1.0.x.java.util.Hashtable "names" <-- Repository
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "propListener" <-- Repository
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Repository
+				Netbeans_v1.0.x.java.lang.String "PROP_HIDDEN" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "PROP_READ_ONLY" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "PROP_ROOT" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "PROP_SYSTEM_NAME" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "PROP_VALID" <-- FileSystem
+				Status "STATUS_NONE" <-- FileSystem
+				JavaPrimitiveTypes.boolean "assigned" <-- FileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileObject
+				JavaPrimitiveTypes.boolean "expected" <-- FileEvent
+				FileObject "file" <-- FileEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileEvent
+				JavaPrimitiveTypes.long "time" <-- FileEvent
+				Netbeans_v1.0.x.java.lang.String "name" <-- FileAttributeEvent
+				Netbeans_v1.0.x.java.lang.Object "newValue" <-- FileAttributeEvent
+				Netbeans_v1.0.x.java.lang.Object "oldValue" <-- FileAttributeEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileAttributeEvent
+				Netbeans_v1.0.x.java.lang.String "ext" <-- FileRenameEvent
+				Netbeans_v1.0.x.java.lang.String "name" <-- FileRenameEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileRenameEvent
+				JavaPrimitiveTypes.boolean "locked" <-- FileLock
+				JavaPrimitiveTypes.boolean "compilation" <-- Bean
+				JavaPrimitiveTypes.boolean "debug" <-- Bean
+				JavaPrimitiveTypes.boolean "doc" <-- Bean
+				JavaPrimitiveTypes.boolean "execution" <-- Bean
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Bean
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "supp" <-- Bean
+				FileSystemCapability "capability" <-- FileSystem
+				JavaPrimitiveTypes.boolean "hidden" <-- FileSystem
+				Netbeans_v1.0.x.javax.swing.event.EventListenerList "listenerList" <-- FileSystem
+				JavaPrimitiveTypes.int "requests" <-- FileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileSystem
+				Netbeans_v1.0.x.java.lang.String "systemName" <-- FileSystem
+				JavaPrimitiveTypes.boolean "valid" <-- FileSystem
+				Netbeans_v1.0.x.java.util.Set "files" <-- FileStatusEvent
+				JavaPrimitiveTypes.boolean "icon" <-- FileStatusEvent
+				JavaPrimitiveTypes.boolean "name" <-- FileStatusEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FileStatusEvent
+				FileSystem "system" <-- Repository
+				Netbeans_v1.0.x.java.beans.VetoableChangeListener "vetoListener" <-- Repository
+				JavaPrimitiveTypes.boolean "add" <-- RepositoryEvent
+				FileSystem "fileSystem" <-- RepositoryEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- RepositoryEvent
+				JavaPrimitiveTypes.int "perm 0..*" <-- RepositoryReorderedEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- RepositoryReorderedEvent
+				Netbeans_v1.0.x.org.openide.util.actions.SystemAction "NO_SYSTEM_ACTIONS 0..*" <-- AbstractFileSystem
+				Netbeans_v1.0.x.org.openide.util.actions.SystemAction "SYSTEM_ACTIONS 0..*" <-- AbstractFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Attr
+				Attr "attr" <-- AbstractFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Change
+				Change "change" <-- AbstractFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Info
+				Info "info" <-- AbstractFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- List
+				List "list" <-- AbstractFileSystem
+				JavaPrimitiveTypes.int "REFRESH_COUNT" <-- RefreshRequest
+				Netbeans_v1.0.x.java.util.Enumeration "en" <-- RefreshRequest
+				JavaPrimitiveTypes.int "refreshTime" <-- RefreshRequest
+				Netbeans_v1.0.x.java.lang.ref.Reference "system" <-- RefreshRequest
+				Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task "task" <-- RefreshRequest
+				RefreshRequest "refresher" <-- AbstractFileSystem
+				Netbeans_v1.0.x.java.util.HashMap "EMPTY" <-- AbstractFolder
+				AbstractFileObject "EMPTY_ARRAY 0..*" <-- AbstractFolder
+				JavaPrimitiveTypes.char "EXT_SEP" <-- AbstractFolder
+				Netbeans_v1.0.x.java.lang.String "children 0..*" <-- AbstractFolder
+				Netbeans_v1.0.x.java.lang.ref.Reference "fullName" <-- AbstractFolder
+				Netbeans_v1.0.x.javax.swing.event.EventListenerList "listeners" <-- AbstractFolder
+				Netbeans_v1.0.x.java.util.HashMap "map" <-- AbstractFolder
+				Netbeans_v1.0.x.java.lang.String "name" <-- AbstractFolder
+				FileSystem "system" <-- AbstractFolder
+				Netbeans_v1.0.x.java.lang.String "systemName" <-- AbstractFolder
+				JavaPrimitiveTypes.boolean "closed" <-- NotifyOutputStream
+				JavaPrimitiveTypes.char "EXT_SEP" <-- AbstractFileObject
+				JavaPrimitiveTypes.char "PATH_SEP" <-- AbstractFileObject
+				Netbeans_v1.0.x.java.lang.Boolean "folder" <-- AbstractFileObject
+				Netbeans_v1.0.x.java.util.Date "lastModified" <-- AbstractFileObject
+				Netbeans_v1.0.x.java.lang.ref.Reference "lock" <-- AbstractFileObject
+				JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractFileObject
+				Netbeans_v1.0.x.java.lang.String "fullName" <-- Invalid
+				Netbeans_v1.0.x.java.lang.String "name" <-- Invalid
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Invalid
+				Netbeans_v1.0.x.java.lang.String "fileName" <-- Replace
+				Netbeans_v1.0.x.java.lang.String "fsName" <-- Replace
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Replace
+				AbstractFileObject "root" <-- AbstractFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractFileSystem
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Transfer
+				Transfer "transfer" <-- AbstractFileSystem
+			}
+			package util {
+				abstract class WeakListener {
+					-{static} CLEANER_TASK: Task
+					-{static} CLEANER_TIME: JavaPrimitiveTypes.int
+					-{static} QUEUE: Netbeans_v1.0.x.java.lang.ref.ReferenceQueue
+					-{static} factory: Factory
+					listenerClass: Netbeans_v1.0.x.java.lang.Class
+					-ref: Netbeans_v1.0.x.java.lang.ref.Reference
+					-source: Netbeans_v1.0.x.java.lang.ref.Reference
+					#<<Create>> WeakListener(listenerClass : Netbeans_v1.0.x.java.lang.Class, l : Netbeans_v1.0.x.java.util.EventListener)
+					{static} change(l : Netbeans_v1.0.x.javax.swing.event.ChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.ChangeListener
+					{static} document(l : Netbeans_v1.0.x.javax.swing.event.DocumentListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.DocumentListener
+					{static} fileChange(l : Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+					{static} fileStatus(l : Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener
+					{static} focus(l : Netbeans_v1.0.x.java.awt.event.FocusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.awt.event.FocusListener
+					#get(ev : Netbeans_v1.0.x.java.util.EventObject): Netbeans_v1.0.x.java.util.EventListener
+					{static} node(l : Netbeans_v1.0.x.org.openide.nodes.NodeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.nodes.NodeListener
+					{static} operation(l : Netbeans_v1.0.x.org.openide.loaders.OperationListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.loaders.OperationListener
+					{static} propertyChange(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					-removeListener()
+					-removeListener(source : Netbeans_v1.0.x.java.lang.Object)
+					#removeMethodName(): Netbeans_v1.0.x.java.lang.String
+					{static} repository(l : Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener
+					setSource(source : Netbeans_v1.0.x.java.lang.Object)
+					toString(): Netbeans_v1.0.x.java.lang.String
+					{static} vetoableChange(l : Netbeans_v1.0.x.java.beans.VetoableChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.VetoableChangeListener
+				}
+				class WeakListener12 {
+					<<Create>> WeakListener12()
+					change(l : Netbeans_v1.0.x.javax.swing.event.ChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.ChangeListener
+					document(l : Netbeans_v1.0.x.javax.swing.event.DocumentListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.DocumentListener
+					fileChange(l : Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+					fileStatus(l : Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener
+					focus(l : Netbeans_v1.0.x.java.awt.event.FocusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.awt.event.FocusListener
+					node(l : Netbeans_v1.0.x.org.openide.nodes.NodeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.nodes.NodeListener
+					operation(l : Netbeans_v1.0.x.org.openide.loaders.OperationListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.loaders.OperationListener
+					propertyChange(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					repository(l : Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener
+					vetoableChange(l : Netbeans_v1.0.x.java.beans.VetoableChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.VetoableChangeListener
+				}
+				class WeakListener13 {
+					<<Create>> WeakListener13()
+					change(l : Netbeans_v1.0.x.javax.swing.event.ChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.ChangeListener
+					-{static} create(clazz : Netbeans_v1.0.x.java.lang.Class, listener : Netbeans_v1.0.x.java.util.EventListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.Object
+					document(l : Netbeans_v1.0.x.javax.swing.event.DocumentListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.DocumentListener
+					fileChange(l : Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+					fileStatus(l : Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener
+					focus(l : Netbeans_v1.0.x.java.awt.event.FocusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.awt.event.FocusListener
+					node(l : Netbeans_v1.0.x.org.openide.nodes.NodeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.nodes.NodeListener
+					operation(l : Netbeans_v1.0.x.org.openide.loaders.OperationListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.loaders.OperationListener
+					propertyChange(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					repository(l : Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener
+					vetoableChange(l : Netbeans_v1.0.x.java.beans.VetoableChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.VetoableChangeListener
+				}
+				Netbeans_v1.0.x.java.io.Externalizable <|.. SharedClassObject
+				Netbeans_v1.0.x.java.util.EventListener <|.. WeakListener
+				Netbeans_v1.0.x.java.lang.Runnable <|.. Task
+				Netbeans_v1.0.x.java.util.EventListener <|-- TaskListener
+				Factory <|.. WeakListener12
+				Factory <|.. WeakListener13
+				Netbeans_v1.0.x.java.lang.Object "PROP_SUPPORT" <-- SharedClassObject
+				JavaPrimitiveTypes.int "count" <-- DataEntry
+				Netbeans_v1.0.x.java.util.HashMap "map" <-- DataEntry
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "ref" <-- DataEntry
+				DataEntry "dataEntry" <-- SharedClassObject
+				JavaPrimitiveTypes.long "serialVersionUID" <-- SharedClassObject
+				Netbeans_v1.0.x.java.util.HashMap "values" <-- SharedClassObject
+				Netbeans_v1.0.x.java.lang.Class "clazz" <-- WriteReplace
+				SharedClassObject "object" <-- WriteReplace
+				JavaPrimitiveTypes.long "serialVersionUID" <-- WriteReplace
+				Netbeans_v1.0.x.java.net.URL "helpCtx" <-- HelpCtx
+				Netbeans_v1.0.x.java.lang.String "helpID" <-- HelpCtx
+				JavaPrimitiveTypes.boolean "finished" <-- Task
+				Netbeans_v1.0.x.java.util.HashSet "list" <-- Task
+				Netbeans_v1.0.x.java.lang.Runnable "run" <-- Task
+				JavaPrimitiveTypes.int "priority" <-- Holder
+				Task "task" <-- Holder
+				JavaPrimitiveTypes.long "time" <-- Holder
+				Holder "holder" <-- Task
+				JavaPrimitiveTypes.int "priority" <-- Task
+				JavaPrimitiveTypes.long "time" <-- Task
+				Task "CLEANER_TASK" <-- WeakListener
+				JavaPrimitiveTypes.int "CLEANER_TIME" <-- WeakListener
+				Netbeans_v1.0.x.java.lang.ref.ReferenceQueue "QUEUE" <-- WeakListener
+				JavaPrimitiveTypes.int "CHAIN" <-- Mutex
+				Netbeans_v1.0.x.java.lang.Object "LOCK" <-- Mutex
+				JavaPrimitiveTypes.int "MODE_COUNT" <-- Mutex
+				JavaPrimitiveTypes.int "NONE" <-- Mutex
+				JavaPrimitiveTypes.int "S" <-- Mutex
+				JavaPrimitiveTypes.long "TIMEOUT" <-- Mutex
+				Netbeans_v1.0.x.java.lang.Object "TREELOCK" <-- Mutex
+				JavaPrimitiveTypes.int "X" <-- Mutex
+				JavaPrimitiveTypes.boolean "cmatrix 0..*" <-- Mutex
+				JavaPrimitiveTypes.int "grantedMode" <-- Mutex
+				JavaPrimitiveTypes.boolean "killDeadlocksOn" <-- Mutex
+				JavaPrimitiveTypes.int "readersNo" <-- Mutex
+				Netbeans_v1.0.x.java.util.Map "registeredThreads" <-- Mutex
+				Netbeans_v1.0.x.java.util.List "waiters" <-- Mutex
+				JavaPrimitiveTypes.boolean "left" <-- QueueCell
+				JavaPrimitiveTypes.int "mode" <-- QueueCell
+				JavaPrimitiveTypes.boolean "signal" <-- QueueCell
+				Netbeans_v1.0.x.java.lang.Thread "t" <-- QueueCell
+				JavaPrimitiveTypes.long "timeout" <-- QueueCell
+				JavaPrimitiveTypes.int "counts 0..*" <-- ThreadInfo
+				JavaPrimitiveTypes.boolean "forced" <-- ThreadInfo
+				JavaPrimitiveTypes.int "mode" <-- ThreadInfo
+				Netbeans_v1.0.x.java.util.List "queues 0..*" <-- ThreadInfo
+				JavaPrimitiveTypes.int "rsnapshot" <-- ThreadInfo
+				Netbeans_v1.0.x.java.lang.Thread "t" <-- ThreadInfo
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DeadlockAvoidanceException
+				Factory "factory" <-- WeakListener
+				Netbeans_v1.0.x.java.lang.Class "listenerClass" <-- WeakListener
+				Netbeans_v1.0.x.java.lang.ref.Reference "ref" <-- WeakListener
+				Netbeans_v1.0.x.java.lang.ref.Reference "source" <-- WeakListener
+				WeakListener "weakListener" <-- ListenerReference
+				Netbeans_v1.0.x.java.lang.Object "proxy" <-- ProxyListener
+			}
+		}
+		package netbeans {
+			package modules {
+				package form {
+					class FormEditorModule {
+						-{const} defaultAWTComponents: Netbeans_v1.0.x.java.lang.String [*]
+						-{const} defaultBeansComponents: Netbeans_v1.0.x.java.lang.String [*]
+						-{const} defaultBorders: Netbeans_v1.0.x.java.lang.String [*]
+						-{const} defaultBordersIcons: Netbeans_v1.0.x.java.lang.String [*]
+						-{const} defaultLayoutsComponents: Netbeans_v1.0.x.java.lang.String [*]
+						-{const} defaultLayoutsIcons: Netbeans_v1.0.x.java.lang.String [*]
+						-{const} defaultSwing2Components: Netbeans_v1.0.x.java.lang.String [*]
+						-{const} defaultSwingComponents: Netbeans_v1.0.x.java.lang.String [*]
+						{const} serialVersionUID: JavaPrimitiveTypes.long = 1573432625099425394
+						<<Create>> FormEditorModule()
+						-copyTemplates()
+						-createComponentPalette()
+						-createInstances(folder : Netbeans_v1.0.x.org.openide.filesystems.FileObject, classNames : Netbeans_v1.0.x.java.lang.String, iconNames : Netbeans_v1.0.x.java.lang.String, componentErrors : Netbeans_v1.0.x.java.util.Collection)
+						-formatName(className : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						-installActions()
+						installed()
+						-{static} localizeFile(file : Netbeans_v1.0.x.org.openide.filesystems.FileObject)
+						restored()
+						-{static} timerBeanHack()
+						-uninstallActions()
+						uninstalled()
+					}
+					Netbeans_v1.0.x.org.openide.modules.ModuleInstall <|-- FormEditorModule
+					Netbeans_v1.0.x.java.lang.String "defaultAWTComponents 0..*" <-- FormEditorModule
+					Netbeans_v1.0.x.java.lang.String "defaultBeansComponents 0..*" <-- FormEditorModule
+					Netbeans_v1.0.x.java.lang.String "defaultBorders 0..*" <-- FormEditorModule
+					Netbeans_v1.0.x.java.lang.String "defaultBordersIcons 0..*" <-- FormEditorModule
+					Netbeans_v1.0.x.java.lang.String "defaultLayoutsComponents 0..*" <-- FormEditorModule
+					Netbeans_v1.0.x.java.lang.String "defaultLayoutsIcons 0..*" <-- FormEditorModule
+					Netbeans_v1.0.x.java.lang.String "defaultSwing2Components 0..*" <-- FormEditorModule
+					Netbeans_v1.0.x.java.lang.String "defaultSwingComponents 0..*" <-- FormEditorModule
+					JavaPrimitiveTypes.long "serialVersionUID" <-- FormEditorModule
+				}
+				package javadoc {
+					package search {
+						class JavaDocChildren {
+							-capabilityPCL: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+							-fsPCL: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+							-wCapabilityPCL: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+							-wFsPCL: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+							<<Create>> JavaDocChildren()
+							#addNotify()
+							#createNodes(key : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.nodes.Node
+							fileSystemAdded(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+							fileSystemPoolReordered(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryReorderedEvent)
+							fileSystemRemoved(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+							-getDocFileSystems(): Netbeans_v1.0.x.java.util.Collection
+							-getFSChildren(fs : Netbeans_v1.0.x.org.openide.filesystems.FileSystem): Netbeans_v1.0.x.org.openide.nodes.Children
+							refreshAll()
+							refreshFs(fs : Netbeans_v1.0.x.java.lang.Object)
+							#removeNotify()
+						}
+						Netbeans_v1.0.x.org.openide.nodes.Children.Keys <|-- JavaDocChildren
+						Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener <|.. JavaDocChildren
+						Netbeans_v1.0.x.java.beans.PropertyChangeListener "capabilityPCL" <-- JavaDocChildren
+						Netbeans_v1.0.x.java.beans.PropertyChangeListener "fsPCL" <-- JavaDocChildren
+						Netbeans_v1.0.x.java.beans.PropertyChangeListener "wCapabilityPCL" <-- JavaDocChildren
+						Netbeans_v1.0.x.java.beans.PropertyChangeListener "wFsPCL" <-- JavaDocChildren
+					}
+				}
+				package vcs {
+					class VcsCache {
+						-D: Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug
+						-E: Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug
+						-cacheDir: Netbeans_v1.0.x.java.lang.String
+						-dirsByName: Netbeans_v1.0.x.java.util.Hashtable
+						-fileSystem: VcsFileSystem
+						-lastCanceled: JavaPrimitiveTypes.boolean
+						-localFilesAdd: JavaPrimitiveTypes.boolean
+						localStatusStr: Netbeans_v1.0.x.java.lang.String
+						-numRefreshThreads: JavaPrimitiveTypes.int
+						-pathsQueue: Netbeans_v1.0.x.java.util.Vector
+						<<Create>> VcsCache(fileSystem : VcsFileSystem, cacheDir : Netbeans_v1.0.x.java.lang.String)
+						addFile(path : Netbeans_v1.0.x.java.lang.String)
+						addFolder(path : Netbeans_v1.0.x.java.lang.String)
+						-arrayToLine(sa : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						-deleteDir(dir : Netbeans_v1.0.x.java.io.File): JavaPrimitiveTypes.boolean
+						-deleteDirFromDiskCache(path : Netbeans_v1.0.x.java.lang.String)
+						dirsFirst(path : Netbeans_v1.0.x.java.lang.String, files : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						fileSystemAdded(p1 : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+						fileSystemPoolReordered(p1 : Netbeans_v1.0.x.org.openide.filesystems.RepositoryReorderedEvent)
+						fileSystemRemoved(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+						g(s : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						g(s : Netbeans_v1.0.x.java.lang.String, obj : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.String
+						g(s : Netbeans_v1.0.x.java.lang.String, obj1 : Netbeans_v1.0.x.java.lang.Object, obj2 : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.String
+						g(s : Netbeans_v1.0.x.java.lang.String, obj1 : Netbeans_v1.0.x.java.lang.Object, obj2 : Netbeans_v1.0.x.java.lang.Object, obj3 : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.String
+						getDir(path : Netbeans_v1.0.x.java.lang.String): VcsDir
+						getFile(path : Netbeans_v1.0.x.java.lang.String): VcsFile
+						getFileLocker(path : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						getFileStatus(path : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						getFilesAndSubdirs(path : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						getLocalFilesAndSubdirs(path : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						getLocker(importantFiles : Netbeans_v1.0.x.java.util.Vector): Netbeans_v1.0.x.java.lang.String
+						getStatus(importantFiles : Netbeans_v1.0.x.java.util.Vector): Netbeans_v1.0.x.java.lang.String
+						-heyDoRefreshDir(path : Netbeans_v1.0.x.java.lang.String)
+						-heyDoRefreshDirRecursive(dir : VcsDir)
+						isDir(path : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+						isFile(path : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+						isLocalFilesAdd(): JavaPrimitiveTypes.boolean
+						-lineToStringArray(line : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						-readDir(path : Netbeans_v1.0.x.java.lang.String, recursive : JavaPrimitiveTypes.boolean)
+						readDirFinished(dir : VcsDir, rawData : Netbeans_v1.0.x.java.util.Vector, success : JavaPrimitiveTypes.boolean)
+						readDirFinishedRecursive(dir : VcsDir, rawData : VcsDirContainer, success : JavaPrimitiveTypes.boolean)
+						-readDirFromDiskCache(path : Netbeans_v1.0.x.java.lang.String): VcsDir
+						refreshDir(path : Netbeans_v1.0.x.java.lang.String)
+						refreshDirRecursive(path : Netbeans_v1.0.x.java.lang.String)
+						-refreshLocalFiles(dir : VcsDir, path : Netbeans_v1.0.x.java.lang.String)
+						-refreshLocalFilesRecursively(dir : VcsDir, path : Netbeans_v1.0.x.java.lang.String)
+						-registerInMemoryCache(path : Netbeans_v1.0.x.java.lang.String, dir : VcsDir)
+						-registerInMemoryCacheRecursive(path : Netbeans_v1.0.x.java.lang.String, dir : VcsDir)
+						removeFile(path : Netbeans_v1.0.x.java.lang.String)
+						rename(oldName : Netbeans_v1.0.x.java.lang.String, newName : Netbeans_v1.0.x.java.lang.String)
+						-renameDirInDiskCache(oldName : Netbeans_v1.0.x.java.lang.String, newName : Netbeans_v1.0.x.java.lang.String)
+						-runDirReaderFromQueue()
+						setFileStatus(path : Netbeans_v1.0.x.java.lang.String, status : Netbeans_v1.0.x.java.lang.String)
+						setLocalFilesAdd(localFilesAdd : JavaPrimitiveTypes.boolean)
+						-unregisterFromMemoryCache(path : Netbeans_v1.0.x.java.lang.String)
+						-unregisterFromMemoryCacheRecursive(dir : VcsDir)
+						-writeDirToDiskCache(path : Netbeans_v1.0.x.java.lang.String, rawData : Netbeans_v1.0.x.java.util.Vector)
+						-writeDirToDiskCacheRecursive(dir : VcsDir, rawData : VcsDirContainer)
+					}
+					abstract class VcsFileSystem {
+						-{const} ASK_FOR: Netbeans_v1.0.x.java.lang.String = ASK_FOR
+						-{static} CACHE_ROOT: Netbeans_v1.0.x.java.lang.String
+						-D: Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug
+						-E: Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug
+						-{const} LOCAL_FILES_ADD_VAR: Netbeans_v1.0.x.java.lang.String = SHOWLOCALFILES
+						-{const} LOCK_FILES_ON: Netbeans_v1.0.x.java.lang.String = LOCKFILES
+						-{const} PROMPT_FOR: Netbeans_v1.0.x.java.lang.String = PROMPT_FOR
+						-{const} PROMPT_FOR_LOCK_ON: Netbeans_v1.0.x.java.lang.String = PROMPTFORLOCK
+						#{const} REFRESH_TIME: JavaPrimitiveTypes.int = 0
+						-{const} VAR_FALSE: Netbeans_v1.0.x.java.lang.String = false
+						-{const} VAR_TRUE: Netbeans_v1.0.x.java.lang.String = true
+						-action: VcsAction
+						-advanced: Netbeans_v1.0.x.java.lang.Object
+						-askIfDownloadRecursively: JavaPrimitiveTypes.boolean
+						#cache: VcsCache
+						-cacheId: JavaPrimitiveTypes.long
+						-commandsByName: Netbeans_v1.0.x.java.util.Hashtable
+						-config: Netbeans_v1.0.x.java.lang.String
+						-debug: JavaPrimitiveTypes.boolean
+						-errorDialog: Netbeans_v1.0.x.org.netbeans.modules.vcs.cmdline.ErrorCommandDialog
+						-lastCommandFinished: JavaPrimitiveTypes.boolean
+						-lastCommandState: JavaPrimitiveTypes.boolean
+						-{static} last_refreshTime: JavaPrimitiveTypes.int
+						-{static} last_rootFile: Netbeans_v1.0.x.java.io.File
+						-{static} last_useUnixShell: JavaPrimitiveTypes.boolean
+						-lockFilesOn: JavaPrimitiveTypes.boolean
+						-numDoAutoRefreshes: Netbeans_v1.0.x.java.util.Hashtable
+						-password: Netbeans_v1.0.x.java.lang.String
+						-promptForLockOn: JavaPrimitiveTypes.boolean
+						-promptForLockResult: JavaPrimitiveTypes.boolean
+						-promptForVarsForEachFile: JavaPrimitiveTypes.boolean
+						-readOnly: JavaPrimitiveTypes.boolean
+						#ready: JavaPrimitiveTypes.boolean
+						#refreshTimeToSet: JavaPrimitiveTypes.int
+						-rootFile: Netbeans_v1.0.x.java.io.File
+						{const} serialVersionUID: JavaPrimitiveTypes.long = 8108342718973310275
+						-unimportantNames: Netbeans_v1.0.x.java.util.Vector
+						-useUnixShell: JavaPrimitiveTypes.boolean
+						-variables: Netbeans_v1.0.x.java.util.Vector
+						#variablesByName: Netbeans_v1.0.x.java.util.Hashtable
+						<<Create>> VcsFileSystem()
+						annotateIcon(icon : Netbeans_v1.0.x.java.awt.Image, iconType : JavaPrimitiveTypes.int, files : Netbeans_v1.0.x.java.util.Set): Netbeans_v1.0.x.java.awt.Image
+						annotateName(name : Netbeans_v1.0.x.java.lang.String, files : Netbeans_v1.0.x.java.util.Set): Netbeans_v1.0.x.java.lang.String
+						-checkLocalFolder(name : Netbeans_v1.0.x.java.lang.String)
+						children(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						#computeSystemName(rootFile : Netbeans_v1.0.x.java.io.File): Netbeans_v1.0.x.java.lang.String
+						createData(name : Netbeans_v1.0.x.java.lang.String)
+						-createDir(path : Netbeans_v1.0.x.java.lang.String)
+						createFolder(name : Netbeans_v1.0.x.java.lang.String)
+						#createNewCacheDir(): Netbeans_v1.0.x.java.lang.String
+						debug(msg : Netbeans_v1.0.x.java.lang.String)
+						debugClear()
+						delete(name : Netbeans_v1.0.x.java.lang.String)
+						folder(name : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+						#g(s : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						#g(s : Netbeans_v1.0.x.java.lang.String, obj : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.String
+						#g(s : Netbeans_v1.0.x.java.lang.String, obj1 : Netbeans_v1.0.x.java.lang.Object, obj2 : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.String
+						#g(s : Netbeans_v1.0.x.java.lang.String, obj1 : Netbeans_v1.0.x.java.lang.Object, obj2 : Netbeans_v1.0.x.java.lang.Object, obj3 : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.String
+						getActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+						getAdditionalCommands(): Netbeans_v1.0.x.java.util.Vector
+						getAdvancedConfig(): Netbeans_v1.0.x.java.lang.Object
+						getAskIfDownloadRecursively(): JavaPrimitiveTypes.boolean
+						getBundleProperty(s : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						getCache(): VcsCache
+						getCacheId(): JavaPrimitiveTypes.long
+						getCommand(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.org.netbeans.modules.vcs.cmdline.UserCommand
+						getCommands(): Netbeans_v1.0.x.java.util.Vector
+						getConfig(): Netbeans_v1.0.x.java.lang.String
+						getConfigRoot(): Netbeans_v1.0.x.java.lang.String
+						getConfigRootFO(): Netbeans_v1.0.x.org.openide.filesystems.FileObject
+						getCustomRefreshTime(): JavaPrimitiveTypes.int
+						getDebug(): JavaPrimitiveTypes.boolean
+						getDisplayName(): Netbeans_v1.0.x.java.lang.String
+						getDoAutoRefresh(path : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+						getErrorDialog(): Netbeans_v1.0.x.org.netbeans.modules.vcs.cmdline.ErrorCommandDialog
+						getFile(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.io.File
+						-getImportantFiles(oo : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.util.Vector
+						getLastCommandFinished(): JavaPrimitiveTypes.boolean
+						getLastCommandState(): JavaPrimitiveTypes.boolean
+						getLocalFileFilter(): Netbeans_v1.0.x.java.io.FilenameFilter
+						getNumDoAutoRefresh(path : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.int
+						getPassword(): Netbeans_v1.0.x.java.lang.String
+						getPromptForLockResult(): JavaPrimitiveTypes.boolean
+						getRootDirectory(): Netbeans_v1.0.x.java.io.File
+						getStatus(): Netbeans_v1.0.x.org.openide.filesystems.FileSystem.Status
+						getVariables(): Netbeans_v1.0.x.java.util.Vector
+						getVariablesAsHashtable(): Netbeans_v1.0.x.java.util.Hashtable
+						getVcsFactory(): VcsFactory
+						#init()
+						inputStream(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.io.InputStream
+						isAdditionalCommand(name : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+						isImportant(name : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+						isLockFilesOn(): JavaPrimitiveTypes.boolean
+						isPromptForLockOn(): JavaPrimitiveTypes.boolean
+						isReadOnly(): JavaPrimitiveTypes.boolean
+						isUseUnixShell(): JavaPrimitiveTypes.boolean
+						lastModified(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.util.Date
+						lock(name_ : Netbeans_v1.0.x.java.lang.String)
+						markUnimportant(name : Netbeans_v1.0.x.java.lang.String)
+						mimeType(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						-needAskFor(exec : Netbeans_v1.0.x.java.lang.String, vars : Netbeans_v1.0.x.java.util.Hashtable): Netbeans_v1.0.x.java.lang.String
+						-needPromptFor(exec : Netbeans_v1.0.x.java.lang.String, vars : Netbeans_v1.0.x.java.util.Hashtable): Netbeans_v1.0.x.java.lang.String
+						-needPromptForPR(name : Netbeans_v1.0.x.java.lang.String, exec : Netbeans_v1.0.x.java.lang.String, vars : Netbeans_v1.0.x.java.util.Hashtable): JavaPrimitiveTypes.boolean
+						outputStream(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.io.OutputStream
+						prepareEnvironment(environment : Netbeans_v1.0.x.org.openide.filesystems.FileSystem.Environment)
+						promptForVariables(exec : Netbeans_v1.0.x.java.lang.String, vars : Netbeans_v1.0.x.java.util.Hashtable, forEachFile : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.boolean
+						-readObject(in : Netbeans_v1.0.x.java.io.ObjectInputStream)
+						readOnly(name : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+						removeNumDoAutoRefresh(path : Netbeans_v1.0.x.java.lang.String)
+						rename(oldName : Netbeans_v1.0.x.java.lang.String, newName : Netbeans_v1.0.x.java.lang.String)
+						setAdvancedConfig(advanced : Netbeans_v1.0.x.java.lang.Object)
+						setAskIfDownloadRecursively(ask : JavaPrimitiveTypes.boolean)
+						setCache(cache : VcsCache)
+						setCommands(commands : Netbeans_v1.0.x.java.util.Vector)
+						setConfig(label : Netbeans_v1.0.x.java.lang.String)
+						setCustomRefreshTime(time : JavaPrimitiveTypes.int)
+						setDebug(debug : JavaPrimitiveTypes.boolean)
+						setErrorDialog(errDlg : Netbeans_v1.0.x.org.netbeans.modules.vcs.cmdline.ErrorCommandDialog)
+						setImportant(important : JavaPrimitiveTypes.boolean)
+						-setInitRootDirectory(r : Netbeans_v1.0.x.java.io.File)
+						setLastCommandFinished(lastCommandFinished : JavaPrimitiveTypes.boolean)
+						setLastCommandState(lastCommandState : JavaPrimitiveTypes.boolean)
+						setLockFilesOn(lock : JavaPrimitiveTypes.boolean)
+						setNumDoAutoRefresh(numDoAutoRefresh : JavaPrimitiveTypes.int, path : Netbeans_v1.0.x.java.lang.String)
+						setPassword(password : Netbeans_v1.0.x.java.lang.String)
+						setPromptForLockOn(prompt : JavaPrimitiveTypes.boolean)
+						setPromptForLockResult(promptForLockResult : JavaPrimitiveTypes.boolean)
+						setReadOnly(flag : JavaPrimitiveTypes.boolean)
+						setRootDirectory(r : Netbeans_v1.0.x.java.io.File)
+						setRootFile(rootFile : Netbeans_v1.0.x.java.io.File)
+						#setUseUnixShell(unixShell : JavaPrimitiveTypes.boolean)
+						setValidFS(v : JavaPrimitiveTypes.boolean)
+						setVariables(variables : Netbeans_v1.0.x.java.util.Vector)
+						size(name : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.long
+						statusChanged(path : Netbeans_v1.0.x.java.lang.String, recursively : JavaPrimitiveTypes.boolean)
+						{static} substractRootDir(rDir : Netbeans_v1.0.x.java.lang.String, module : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+						unlock(name : Netbeans_v1.0.x.java.lang.String)
+						#warnDirectoriesDoNotExists()
+						-writeObject(out : Netbeans_v1.0.x.java.io.ObjectOutputStream)
+					}
+					DirReaderListener <|.. VcsCache
+					Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener <|.. VcsCache
+					VcsFile <|-- VcsDir
+					Netbeans_v1.0.x.org.openide.filesystems.AbstractFileSystem <|-- VcsFileSystem
+					Netbeans_v1.0.x.org.openide.filesystems.AbstractFileSystem.List <|.. VcsFileSystem
+					Netbeans_v1.0.x.org.openide.filesystems.AbstractFileSystem.Info <|.. VcsFileSystem
+					Netbeans_v1.0.x.org.openide.filesystems.AbstractFileSystem.Change <|.. VcsFileSystem
+					Netbeans_v1.0.x.org.openide.filesystems.FileSystem.Status <|.. VcsFileSystem
+					Netbeans_v1.0.x.java.io.Serializable <|.. VcsFileSystem
+					Netbeans_v1.0.x.org.openide.util.actions.NodeAction <|-- VcsAction
+					Netbeans_v1.0.x.java.lang.Runnable <|-- VcsDirReader
+					Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug "D" <-- VcsFile
+					Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug "E" <-- VcsFile
+					Netbeans_v1.0.x.java.lang.String "attr" <-- VcsFile
+					Netbeans_v1.0.x.java.lang.String "date" <-- VcsFile
+					JavaPrimitiveTypes.boolean "local" <-- VcsFile
+					Netbeans_v1.0.x.java.lang.String "locker" <-- VcsFile
+					Netbeans_v1.0.x.java.lang.String "name" <-- VcsFile
+					JavaPrimitiveTypes.int "size" <-- VcsFile
+					Netbeans_v1.0.x.java.lang.String "status" <-- VcsFile
+					Netbeans_v1.0.x.java.lang.String "time" <-- VcsFile
+					Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug "E" <-- VcsDir
+					JavaPrimitiveTypes.boolean "beingLoaded" <-- VcsDir
+					Netbeans_v1.0.x.java.util.Vector "files" <-- VcsDir
+					JavaPrimitiveTypes.boolean "loaded" <-- VcsDir
+					Netbeans_v1.0.x.java.lang.String "path" <-- VcsDir
+					Netbeans_v1.0.x.java.util.Vector "subdirs" <-- VcsDir
+					Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug "D" <-- VcsDirContainer
+					Netbeans_v1.0.x.java.lang.Object "element" <-- VcsDirContainer
+					Netbeans_v1.0.x.java.lang.String "name" <-- VcsDirContainer
+					Netbeans_v1.0.x.java.lang.String "path" <-- VcsDirContainer
+					Netbeans_v1.0.x.java.util.Vector "subdirs" <-- VcsDirContainer
+					Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug "D" <-- VcsCache
+					Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug "E" <-- VcsCache
+					Netbeans_v1.0.x.java.lang.String "cacheDir" <-- VcsCache
+					Netbeans_v1.0.x.java.util.Hashtable "dirsByName" <-- VcsCache
+					Netbeans_v1.0.x.java.lang.String "ASK_FOR" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.lang.String "CACHE_ROOT" <-- VcsFileSystem
+					Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug "D" <-- VcsFileSystem
+					Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug "E" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.lang.String "LOCAL_FILES_ADD_VAR" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.lang.String "LOCK_FILES_ON" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.lang.String "PROMPT_FOR" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.lang.String "PROMPT_FOR_LOCK_ON" <-- VcsFileSystem
+					JavaPrimitiveTypes.int "REFRESH_TIME" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.lang.String "VAR_FALSE" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.lang.String "VAR_TRUE" <-- VcsFileSystem
+					Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug "D" <-- VcsAction
+					Netbeans_v1.0.x.org.netbeans.modules.vcs.util.Debug "E" <-- VcsAction
+					VcsFileSystem "fileSystem" <-- VcsAction
+					VcsAction "action" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.lang.Object "advanced" <-- VcsFileSystem
+					JavaPrimitiveTypes.boolean "askIfDownloadRecursively" <-- VcsFileSystem
+					VcsCache "cache" <-- VcsFileSystem
+					JavaPrimitiveTypes.long "cacheId" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.util.Hashtable "commandsByName" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.lang.String "config" <-- VcsFileSystem
+					JavaPrimitiveTypes.boolean "debug" <-- VcsFileSystem
+					Netbeans_v1.0.x.org.netbeans.modules.vcs.cmdline.ErrorCommandDialog "errorDialog" <-- VcsFileSystem
+					JavaPrimitiveTypes.boolean "lastCommandFinished" <-- VcsFileSystem
+					JavaPrimitiveTypes.boolean "lastCommandState" <-- VcsFileSystem
+					JavaPrimitiveTypes.int "last_refreshTime" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.io.File "last_rootFile" <-- VcsFileSystem
+					JavaPrimitiveTypes.boolean "last_useUnixShell" <-- VcsFileSystem
+					JavaPrimitiveTypes.boolean "lockFilesOn" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.util.Hashtable "numDoAutoRefreshes" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.lang.String "password" <-- VcsFileSystem
+					JavaPrimitiveTypes.boolean "promptForLockOn" <-- VcsFileSystem
+					JavaPrimitiveTypes.boolean "promptForLockResult" <-- VcsFileSystem
+					JavaPrimitiveTypes.boolean "promptForVarsForEachFile" <-- VcsFileSystem
+					JavaPrimitiveTypes.boolean "readOnly" <-- VcsFileSystem
+					JavaPrimitiveTypes.boolean "ready" <-- VcsFileSystem
+					JavaPrimitiveTypes.int "refreshTimeToSet" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.io.File "rootFile" <-- VcsFileSystem
+					JavaPrimitiveTypes.long "serialVersionUID" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.util.Vector "unimportantNames" <-- VcsFileSystem
+					JavaPrimitiveTypes.boolean "useUnixShell" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.util.Vector "variables" <-- VcsFileSystem
+					Netbeans_v1.0.x.java.util.Hashtable "variablesByName" <-- VcsFileSystem
+					VcsFileSystem "fileSystem" <-- VcsCache
+					JavaPrimitiveTypes.boolean "lastCanceled" <-- VcsCache
+					JavaPrimitiveTypes.boolean "localFilesAdd" <-- VcsCache
+					Netbeans_v1.0.x.java.lang.String "localStatusStr" <-- VcsCache
+					JavaPrimitiveTypes.int "numRefreshThreads" <-- VcsCache
+					Netbeans_v1.0.x.java.util.Vector "pathsQueue" <-- VcsCache
+				}
+			}
+			package core {
+				class ClassLoaderSupport {
+					-{static} current: ClassLoaderSupport
+					-listener: Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+					-{static} pool: Netbeans_v1.0.x.org.openide.filesystems.Repository
+					<<Create>> ClassLoaderSupport()
+					{static} createClassLoader(): Netbeans_v1.0.x.java.lang.ClassLoader
+					{static} currentClassLoader(): Netbeans_v1.0.x.java.lang.ClassLoader
+					fileAttributeChanged(fe : Netbeans_v1.0.x.org.openide.filesystems.FileAttributeEvent)
+					fileChanged(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					fileDataCreated(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					fileDeleted(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					fileFolderCreated(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					fileRenamed(fe : Netbeans_v1.0.x.org.openide.filesystems.FileRenameEvent)
+					fileSystemAdded(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+					fileSystemPoolReordered(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryReorderedEvent)
+					fileSystemRemoved(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+					#findClass(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.Class
+					-reset()
+					{static} resetLoader()
+					-test(fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject)
+					-testRemove(fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject)
+				}
+				class DataSystem {
+					-{static} def: DataSystem
+					-fileSystemPool: Netbeans_v1.0.x.org.openide.filesystems.Repository
+					filter: Netbeans_v1.0.x.org.openide.loaders.DataFilter
+					-<<Create>> DataSystem(ch : Netbeans_v1.0.x.org.openide.nodes.Children, fsp : Netbeans_v1.0.x.org.openide.filesystems.Repository, filter : Netbeans_v1.0.x.org.openide.loaders.DataFilter)
+					-<<Create>> DataSystem(ch : Netbeans_v1.0.x.org.openide.nodes.Children, filter : Netbeans_v1.0.x.org.openide.loaders.DataFilter)
+					createActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					{static} createRoot(fs : Netbeans_v1.0.x.org.openide.filesystems.FileSystem): Netbeans_v1.0.x.org.openide.loaders.DataFolder
+					fileSystemAdded(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+					fileSystemPoolReordered(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryReorderedEvent)
+					fileSystemRemoved(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+					{static} getDataSystem(filter : Netbeans_v1.0.x.org.openide.loaders.DataFilter): DataSystem
+					{static} getDataSystem(): DataSystem
+					getHandle(): Netbeans_v1.0.x.org.openide.nodes.Node.Handle
+					getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+					getNewTypes(): Netbeans_v1.0.x.org.openide.util.datatransfer.NewType
+					initialize()
+					refresh()
+					refresh(fs : Netbeans_v1.0.x.org.openide.filesystems.FileSystem)
+				}
+				class FSPoolNode {
+					-{static} fsPoolNode: FSPoolNode
+					{const} serialVersionUID: JavaPrimitiveTypes.long = -4473075136923511393
+					-<<Create>> FSPoolNode(children : DSMap)
+					createActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					-{static} createFSPoolNode(): FSPoolNode
+					#createPasteTypes(t : Netbeans_v1.0.x.java.awt.datatransfer.Transferable, l : Netbeans_v1.0.x.java.util.List)
+					fileSystemAdded(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+					fileSystemPoolReordered(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryReorderedEvent)
+					fileSystemRemoved(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+					{static} getFSPoolNode(): FSPoolNode
+					getHandle(): Netbeans_v1.0.x.org.openide.nodes.Node.Handle
+					getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+					getNewTypes(): Netbeans_v1.0.x.org.openide.util.datatransfer.NewType
+					-init()
+					refresh()
+					refresh(fs : Netbeans_v1.0.x.org.openide.filesystems.FileSystem)
+				}
+				class Packages {
+					-{const} MIN_LIMIT: JavaPrimitiveTypes.int = 8
+					-{const} MUL_LIMIT: JavaPrimitiveTypes.int = 2
+					-{const} PRIORITY_READ: JavaPrimitiveTypes.int = 4
+					-{const} PRIORITY_WRITE: JavaPrimitiveTypes.int = 3
+					-PROCESSOR: Netbeans_v1.0.x.org.openide.util.RequestProcessor
+					{const} PROP_LIST: Netbeans_v1.0.x.java.lang.String = list
+					{const} PROP_NAME: Netbeans_v1.0.x.java.lang.String = name
+					-fileFolders: Netbeans_v1.0.x.java.util.TreeSet
+					-indexOfFileSystem: Netbeans_v1.0.x.java.util.Map
+					-pcs: Netbeans_v1.0.x.java.beans.PropertyChangeSupport
+					-{static} ref: Netbeans_v1.0.x.java.lang.ref.Reference
+					-weakFCL: Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+					-weakPCL: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					-<<Create>> Packages()
+					addPropertyChangeListener(pcl : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					compare(o1 : Netbeans_v1.0.x.java.lang.Object, o2 : Netbeans_v1.0.x.java.lang.Object): JavaPrimitiveTypes.int
+					-{static} createFolders(): Netbeans_v1.0.x.java.util.Enumeration
+					-{static} createSubFolders(fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject): Netbeans_v1.0.x.java.util.Enumeration
+					fileAttributeChanged(fe : Netbeans_v1.0.x.org.openide.filesystems.FileAttributeEvent)
+					fileChanged(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					fileDataCreated(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					fileDeleted(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					fileFolderCreated(fe : Netbeans_v1.0.x.org.openide.filesystems.FileEvent)
+					fileRenamed(fe : Netbeans_v1.0.x.org.openide.filesystems.FileRenameEvent)
+					fileSystemAdded(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+					fileSystemPoolReordered(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryReorderedEvent)
+					fileSystemRemoved(ev : Netbeans_v1.0.x.org.openide.filesystems.RepositoryEvent)
+					#finalize()
+					{static} getDefault(): Packages
+					-indexOf(fs : Netbeans_v1.0.x.org.openide.filesystems.FileSystem): JavaPrimitiveTypes.int
+					-initialize()
+					-postTask(r : Netbeans_v1.0.x.java.lang.Runnable)
+					-processPackages(en : Netbeans_v1.0.x.java.util.Enumeration, cnt : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.lang.Runnable
+					propertyChange(p1 : Netbeans_v1.0.x.java.beans.PropertyChangeEvent)
+					-putPackages(source : Netbeans_v1.0.x.org.openide.filesystems.FileObject)
+					-removeFileSystemPackages(fs : Netbeans_v1.0.x.org.openide.filesystems.FileSystem)
+					removePropertyChangeListener(pcl : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					update(ch : PackageChildren)
+				}
+				Netbeans_v1.0.x.org.openide.execution.NbClassLoader <|-- ClassLoaderSupport
+				Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener <|.. ClassLoaderSupport
+				Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener <|.. ClassLoaderSupport
+				Netbeans_v1.0.x.org.openide.nodes.AbstractNode <|-- DataSystem
+				Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener <|.. DataSystem
+				Netbeans_v1.0.x.org.openide.nodes.AbstractNode <|-- FSPoolNode
+				Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener <|.. FSPoolNode
+				Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener <|.. Packages
+				Netbeans_v1.0.x.java.util.Comparator <|.. Packages
+				Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener <|.. Packages
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. Packages
+				Netbeans_v1.0.x.org.openide.nodes.Children.Keys <|-- PackageChildren
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. PackageChildren
+				Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener "listener" <-- ClassLoaderSupport
+				Netbeans_v1.0.x.org.openide.filesystems.Repository "pool" <-- ClassLoaderSupport
+				Netbeans_v1.0.x.org.openide.filesystems.Repository "fileSystemPool" <-- DataSystem
+				Netbeans_v1.0.x.org.openide.loaders.DataFilter "filter" <-- DataSystem
+				Netbeans_v1.0.x.org.openide.loaders.DataFilter "filter" <-- DSHandle
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DSHandle
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FSPoolNode
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FSNHandle
+				Netbeans_v1.0.x.org.openide.filesystems.FileSystem "fs" <-- FSNode
+				Netbeans_v1.0.x.org.openide.cookies.InstanceCookie "cookie" <-- Paste
+				JavaPrimitiveTypes.int "MIN_LIMIT" <-- Packages
+				JavaPrimitiveTypes.int "MUL_LIMIT" <-- Packages
+				JavaPrimitiveTypes.int "PRIORITY_READ" <-- Packages
+				JavaPrimitiveTypes.int "PRIORITY_WRITE" <-- Packages
+				Netbeans_v1.0.x.org.openide.util.RequestProcessor "PROCESSOR" <-- Packages
+				Netbeans_v1.0.x.java.lang.String "PROP_LIST" <-- Packages
+				Netbeans_v1.0.x.java.lang.String "PROP_NAME" <-- Packages
+				Netbeans_v1.0.x.java.util.TreeSet "fileFolders" <-- Packages
+				Netbeans_v1.0.x.java.util.Map "indexOfFileSystem" <-- Packages
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "pcs" <-- Packages
+				Netbeans_v1.0.x.java.lang.ref.Reference "ref" <-- Packages
+				Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener "weakFCL" <-- Packages
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "weakPCL" <-- Packages
+				Netbeans_v1.0.x.org.openide.loaders.DataFilter "DATA_FILTER" <-- PackageChildren
+				Netbeans_v1.0.x.org.openide.loaders.DataFilter "dataFilter" <-- PackageChildren
+				Packages "packages" <-- PackageChildren
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "weakPCL" <-- PackageChildren
+			}
+		}
+	}
+}
+@enduml

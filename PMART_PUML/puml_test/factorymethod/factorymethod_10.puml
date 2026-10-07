@@ -1,0 +1,79 @@
+@startuml
+package dpd_jdt {
+	package Context {
+		package name {
+			'<p><code>DispatchingContainer</code> is a <code>Container</code> which can function as a top or intermediate level <code>Container</code> and has its own set of event <code>Dispatchers</code> for its children. It responds to <code>ParameterEvents</code>, <code>InputEvents</code> and <code>TriggerEvents</code> by simply propagating the event to its children. </p> <p>In response to a <code>RenderEvent</code>, it simply shows or hides the Document Element and, if visible, dispatches a <code>RenderEvent</code> to the children of the <code>DocumentElement</code>. </p> <p>In response to a <code>RecycleEvent</code>, it simply makes the Document Element visible, and dispatches a <code>RecycleEvent</code> to the children of the <code>DocumentElement</code>. </p>
+			'@author Marty Phelan
+			'@version 1.0
+			class DispatchingContainer {
+				-inputDispatcher: InputDispatcher
+				-parameterDispatcher: ParameterDispatcher
+				-parameterMap: java.util.Map
+				-recycleDispatcher: RecycleDispatcher
+				-renderDispatcher: RenderDispatcher
+				-triggerDispatcher: TriggerDispatcher
+				'Constructs a new DispatchingContainer
+				<<Create>> DispatchingContainer()
+				'Create the InputDispatcher for this Container.
+				'@return the InputDispatcher for this Container.
+				#createInputDispatcher(): InputDispatcher
+				'Create the ParameterDispatcher for this Container.
+				'@return the ParameterDispatcher for this Container.
+				#createParameterDispatcher(): ParameterDispatcher
+				'Create the RecycleDispatcher for this Container.
+				'@return the RecycleDispatcher for this Container.
+				#createRecycleDispatcher(): RecycleDispatcher
+				'Create the RenderDispatcher for this Container.
+				'@return the RenderDispatcher for this Container.
+				#createRenderDispatcher(): RenderDispatcher
+				'Create the TriggerDispatcher for this Container.
+				'@return the TriggerDispatcher for this Container.
+				#createTriggerDispatcher(): TriggerDispatcher
+				'Initiate the dispatch of the <code>TriggerEvent</code> to registered components using the current <code>parameterMap</code>.
+				#dispatchActions()
+				'Initiate the dispatch of the <code>InputEvent</code> to registered components using the current <code>parameterMap</code>.
+				#dispatchInput()
+				'Initiate the dispatch of the <code>ParameterEvent</code> to registered components using the current <code>parameterMap</code>.
+				#dispatchParameters()
+				'Initiate the dispatch of the <code>RecycleEvent</code> to registered components.
+				#dispatchRecycle()
+				'Initiate the dispatch of the <code>RenderEvent</code> to registered components.
+				#dispatchRender()
+				'Get the Map of parameters contained in the request. The Map must contain String keys for each parameter and String[] arrays for each parameter value.
+				'@return a Map of parameters contained in the request.
+				getParameterMap(): java.util.Map
+				'Dispatches given <code>InputEvent</code> to children then notifies all <code>InputListeners</code> of event.
+				'@param e the <code>InputEvent</code>
+				'@throws Exception from child or listener in response to event
+				#processInputEvent(e : InputEvent)
+				'Dispatches given <code>ParameterEvent</code> to children then notifies all <code>ParameterListeners</code> of event.
+				'@param e the <code>ParameterEvent</code>
+				'@throws Exception from child or listener in response to event
+				#processParameterEvent(e : ParameterEvent)
+				'Dispatches given <code>RecycleEvent</code> to children then notifies all <code>RecycleListeners</code> of event.
+				'@param e the <code>RecycleEvent</code>
+				'@throws RecycleException from child or listener in response to event
+				processRecycleEvent(e : RecycleEvent)
+				'Notifies all <code>RenderListeners</code> of given <code>RenderEvent</code> then dispatches event to children.
+				'@param e the <code>RenderEvent</code>
+				'@throws RenderException from child or listener in response to event
+				processRenderEvent(e : RenderEvent)
+				'Dispatches given <code>TriggerEvent</code> to children then notifies all <code>TriggerListeners</code> of event.
+				'@param e the <code>TriggerEvent</code>
+				'@throws Exception from child or listener in response to event
+				#processTriggerEvent(e : TriggerEvent)
+				'Set the Map of parameters contained in the request. The Map must contain String keys for each parameter and String[] arrays for each parameter value.
+				'@param map a Map of parameters contained in the request.
+				setParameterMap(map : java.util.Map)
+			}
+		}
+	}
+	Context.name.Container <|-- Context.name.DispatchingContainer
+	Context.name.InputDispatcher "inputDispatcher" <-- Context.name.DispatchingContainer
+	Context.name.ParameterDispatcher "parameterDispatcher" <-- Context.name.DispatchingContainer
+	java.util.Map "parameterMap" <-- Context.name.DispatchingContainer
+	Context.name.RecycleDispatcher "recycleDispatcher" <-- Context.name.DispatchingContainer
+	Context.name.RenderDispatcher "renderDispatcher" <-- Context.name.DispatchingContainer
+	Context.name.TriggerDispatcher "triggerDispatcher" <-- Context.name.DispatchingContainer
+}
+@enduml

@@ -1,0 +1,194 @@
+@startuml
+'Design pattern Adapter
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+	package org {
+		package acm {
+			package seguin {
+				package ide {
+					package command {
+						'/** 
+						' * Creates the menubar for the command line program
+						' * @author    Chris Seguin
+						' */
+						'DP role: client
+						class CommandLineMenu {
+							<<Create>> CommandLineMenu()
+							'/** 
+							' * Creates edit menu
+							' * @return    returns the edit menu
+							' */
+							-createEditMenu(): JRefactory_v2.6.24.javax.swing.JMenu
+							'/** 
+							' * Creates the file menu
+							' * @param panel  the panel
+							' * @return        the file menu
+							' */
+							-createFileMenu(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenu
+							'/** 
+							' * Creates the zoom menu
+							' * @param panel  the panel
+							' * @return        the zoom menu
+							' */
+							-createZoomMenu(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenu
+							'/** 
+							' * Gets the MenuBar attribute of the CommandLineMenu object
+							' * @param panel  Description of Parameter
+							' * @return        The MenuBar value
+							' */
+							getMenuBar(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenuBar
+						}
+					}
+				}
+				package uml {
+					package jpg {
+						'/** 
+						' * Object that handles a mouse event on the save operation.
+						' * @author    Chris Seguin
+						' */
+						'DP role: adapter
+						class SaveAdapter {
+							-diagram: JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage
+							-{static} directory: JRefactory_v2.6.24.java.io.File
+							'/** 
+							' * Constructor for the SaveAdapter object
+							' * @param packageDiagram  Description of Parameter
+							' */
+							<<Create>> SaveAdapter(packageDiagram : JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage)
+							'/** 
+							' * Performs the action
+							' * @param evt  Description of Parameter
+							' */
+							actionPerformed(evt : JRefactory_v2.6.24.java.awt.event.ActionEvent)
+							'/** 
+							' * Gets the Filename to save the file as
+							' * @return    The Filename value
+							' */
+							-getFilename(): JRefactory_v2.6.24.java.lang.String
+						}
+						'/** 
+						' * Description of the Class
+						' * @author    Chris Seguin
+						' */
+						'DP role: adaptee
+						class Save {
+							-diagram: JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage
+							-filename: JRefactory_v2.6.24.java.lang.String
+							'/** 
+							' * Constructor for the Save object
+							' * @param init            Description of Parameter
+							' * @param packageDiagram  Description of Parameter
+							' */
+							<<Create>> Save(init : JRefactory_v2.6.24.java.lang.String, packageDiagram : JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage)
+							'/** 
+							' * Main processing method for the Save object
+							' */
+							run()
+						}
+						JRefactory_v2.6.24.java.awt.event.ActionListener <|.. SaveAdapter
+						JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage "diagram" <-- SaveAdapter
+						JRefactory_v2.6.24.java.io.File "directory" <-- SaveAdapter
+						JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage "diagram" <-- Save
+						JRefactory_v2.6.24.java.lang.String "filename" <-- Save
+					}
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.LinedPanel <|-- UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.io.Saveable <|.. UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.EndPointPanel <|-- UMLType
+					ISourceful <|.. UMLType
+					JRefactory_v2.6.24.javax.swing.JPanel <|-- RoleHolder
+					JRefactory_v2.6.24.java.awt.event.MouseAdapter <|-- UMLMouseAdapter
+					UMLLine <|-- UMLField
+					ISourceful <|.. UMLField
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.EndPointPanel <|-- UMLLine
+					JRefactory_v2.6.24.javax.swing.Icon <|.. UMLIcon
+					JRefactory_v2.6.24.org.acm.seguin.ide.common.ClassListPanel "classListPanel" <-- UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.SegmentedLine "currentLine" <-- UMLPackage
+					JavaPrimitiveTypes.boolean "first" <-- UMLPackage
+					JavaPrimitiveTypes.boolean "hasChanged" <-- UMLPackage
+					JavaPrimitiveTypes.boolean "loading" <-- UMLPackage
+					JRefactory_v2.6.24.java.lang.String "packageName" <-- UMLPackage
+					JRefactory_v2.6.24.javax.swing.JScrollPane "scrollPane" <-- UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary "summary" <-- UMLPackage
+					JavaPrimitiveTypes.int "DEFAULT" <-- UMLType
+					JavaPrimitiveTypes.int "FOREIGN" <-- UMLType
+					JavaPrimitiveTypes.int "SELECTED" <-- UMLType
+					JavaPrimitiveTypes.int "TITLE_BORDER" <-- UMLType
+					JavaPrimitiveTypes.int "borderWidth" <-- UMLType
+					JRefactory_v2.6.24.java.awt.Color "defaultBG" <-- UMLType
+					JRefactory_v2.6.24.java.awt.Color "foreignBG" <-- UMLType
+					JavaPrimitiveTypes.int "high" <-- UMLType
+					JavaPrimitiveTypes.int "lineSize" <-- UMLType
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.SizableLabel "nameLabel" <-- UMLType
+					UMLPackage "parent" <-- UMLType
+					JavaPrimitiveTypes.int "high" <-- RoleHolder
+					JRefactory_v2.6.24.java.util.LinkedList "labels" <-- RoleHolder
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter "panelDragAdapter" <-- RoleHolder
+					JRefactory_v2.6.24.javax.swing.JPanel "child" <-- UMLMouseAdapter
+					UMLPackage "current" <-- UMLMouseAdapter
+					UMLType "type" <-- UMLMouseAdapter
+					UMLMouseAdapter "popupMenuListener" <-- RoleHolder
+					JavaPrimitiveTypes.int "wide" <-- RoleHolder
+					RoleHolder "roles" <-- UMLType
+					JRefactory_v2.6.24.java.awt.Color "selectedBG" <-- UMLType
+					JRefactory_v2.6.24.java.awt.Color "selectedForeignBG" <-- UMLType
+					JavaPrimitiveTypes.int "state" <-- UMLType
+					JavaPrimitiveTypes.int "titleHeight" <-- UMLType
+					JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary "type" <-- UMLType
+					JavaPrimitiveTypes.int "wide" <-- UMLType
+					JavaPrimitiveTypes.int "DEFAULT" <-- UMLLine
+					JavaPrimitiveTypes.int "PRIVATE" <-- UMLLine
+					JavaPrimitiveTypes.int "PROTECTED" <-- UMLLine
+					JavaPrimitiveTypes.int "PROTECTED_PRIVATE" <-- UMLLine
+					JavaPrimitiveTypes.int "PUBLIC" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "abstractFont" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "abstractTitleFont" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "defaultFont" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "font" <-- UMLLine
+					JavaPrimitiveTypes.int "high" <-- UMLLine
+					JavaPrimitiveTypes.int "iconHeight" <-- UMLIcon
+					JavaPrimitiveTypes.int "iconWidth" <-- UMLIcon
+					JavaPrimitiveTypes.double "scale" <-- UMLIcon
+					UMLIcon "icon" <-- UMLLine
+					JavaPrimitiveTypes.int "iconHeight" <-- UMLLine
+					JavaPrimitiveTypes.int "iconMargin" <-- UMLLine
+					JavaPrimitiveTypes.int "iconWidth" <-- UMLLine
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.SizableLabel "label" <-- UMLLine
+					JavaPrimitiveTypes.int "labelMargin" <-- UMLLine
+					UMLType "parent" <-- UMLLine
+					JavaPrimitiveTypes.int "protection" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Color "protectionColors 0..*" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "staticFont" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "titleFont" <-- UMLLine
+					JavaPrimitiveTypes.int "wide" <-- UMLLine
+					JavaPrimitiveTypes.boolean "association" <-- UMLField
+					UMLPackage "current" <-- UMLField
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter "fieldDragAdapter" <-- UMLField
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter "parentDragAdapter" <-- UMLField
+					JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary "summary" <-- UMLField
+				}
+			}
+		}
+	}
+	package java {
+		package awt {
+			package event {
+				'/** 
+				' * The listener interface for receiving action events. The class that is interested in processing an action event implements this interface, and the object created with that class is registered with a component, using the component's {@code addActionListener} method. When the action eventoccurs, that object's  {@code actionPerformed} method isinvoked.
+				' * @see ActionEvent
+				' * @see <a href="https://docs.oracle.com/javase/tutorial/uiswing/events/actionlistener.html">How to Write an Action Listener</a>
+				' * @author Carl Quinn
+				' * @since 1.1
+				' */
+				'DP role: target
+				interface ActionListener {
+					'/** 
+					' * Invoked when an action occurs.
+					' * @param e the event to be processed
+					' */
+					actionPerformed(e : ActionEvent)
+				}
+				JRefactory_v2.6.24.java.util.EventListener <|-- ActionListener
+			}
+		}
+	}
+}
+@enduml

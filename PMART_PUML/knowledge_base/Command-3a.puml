@@ -1,0 +1,78 @@
+@startuml
+title QuickUML 2001 - Extracted Structure for GoF Command Detection
+
+package "QuickUML 2001" {
+
+    ' =========================
+    ' ========= RECEIVER ======
+    ' =========================
+
+    class Diagram {
+        +resize()
+        +create()
+    }
+
+    ' =========================
+    ' ========= COMMAND =======
+    ' =========================
+
+    interface Command {
+        +execute()
+    }
+
+    abstract class FileAction
+    Command <|.. FileAction
+
+    abstract class ExportAction <<concreteCommand>> {
+        +execute()
+        #writeGIF()
+    }
+
+    class PrintableAction <<concreteCommand>> {
+        +execute()
+    }
+
+    class ScaledPrintableAction <<concreteCommand>> {
+        +execute()
+    }
+
+    FileAction <|-- ExportAction
+    Command <|.. PrintableAction
+    PrintableAction <|-- ScaledPrintableAction
+
+    ' =========================
+    ' ========= CLIENT ========
+    ' =========================
+
+    class DiagramContainer <<client>> {
+        -closeAction : Command
+        -copyAction : Command
+        -cutAction : Command
+        -exportAction : Command
+        -pasteAction : Command
+        -printAction : Command
+        -resizeAction : Command
+        -saveAction : Command
+        -scaledPrintAction : Command
+        +createDiagram() : Diagram
+        +setView(diagram : Diagram)
+        +getView() : Diagram
+    }
+
+    DiagramContainer --> Command
+    Command --> Diagram
+
+    ' =========================
+    ' ========= INVOKER =======
+    ' =========================
+
+    class JMenuItem <<invoker>> {
+        -command : Command
+        +setCommand(c : Command)
+        +click()
+    }
+
+    JMenuItem --> Command
+
+}
+@enduml

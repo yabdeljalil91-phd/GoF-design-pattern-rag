@@ -1,0 +1,100 @@
+@startuml
+' Design pattern: Adapter (reinforced for RAG detection)
+
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+
+	package java {
+		package awt {
+			package event {
+
+				'========================
+				' TARGET INTERFACE
+				'========================
+				interface ActionListener {
+					' DP role: Target
+					' Responsibility: Defines standard interface for handling action events
+					actionPerformed(e : ActionEvent)
+				}
+
+				JRefactory_v2.6.24.java.util.EventListener <|-- ActionListener : inheritance (event hierarchy)
+
+			}
+		}
+	}
+
+	package org {
+		package acm {
+			package seguin {
+				package ide {
+					package common {
+
+						'========================
+						' ADAPTEE
+						'========================
+						class MultipleDirClassDiagramReloader {
+							' DP role: Adaptee
+							' Responsibility: Handles reloading logic for multiple directories (core functionality)
+							-list: JRefactory_v2.6.24.java.util.LinkedList
+							-necessary: JavaPrimitiveTypes.boolean
+
+							<<Create>> MultipleDirClassDiagramReloader()
+
+							' Adds directories to internal list
+							addRootDirectory(value : JRefactory_v2.6.24.java.lang.String)
+
+							' Clears internal state
+							clear()
+
+							' Indicates if reload is required
+							isNecessary(): JavaPrimitiveTypes.boolean
+
+							' Core behavior: performs reload
+							reload()
+
+							' Updates reload condition
+							setNecessary(value : JavaPrimitiveTypes.boolean)
+						}
+
+						'========================
+						' ADAPTER (implicit via abstraction layer)
+						'========================
+						class ClassDiagramReloader {
+							' DP role: Adapter
+							' Responsibility: Adapts generic Reloader interface to specific class diagram reloading logic
+							' Acts as bridge between Target interface and Adaptee implementation
+						}
+
+						'========================
+						' CLIENT (contextual)
+						'========================
+						class ClassListPanel {
+							' DP role: Client (uses reloader indirectly)
+							' Responsibility: UI component interacting with UML model and triggering reload behavior
+						}
+
+						'========================
+						' INHERITANCE / IMPLEMENTATION
+						'========================
+						ClassDiagramReloader <|-- MultipleDirClassDiagramReloader : inheritance (specialized adaptee)
+						JRefactory_v2.6.24.org.acm.seguin.uml.loader.Reloader <|.. ClassDiagramReloader : implements Target-like interface
+
+						JRefactory_v2.6.24.javax.swing.JPanel <|-- ClassListPanel : UI inheritance
+
+						'========================
+						' ASSOCIATIONS / STATE
+						'========================
+						JRefactory_v2.6.24.java.util.Vector "umlDiagrams" <-- ClassDiagramReloader : aggregation (managed diagrams)
+
+						JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary "summary" <-- ClassListPanel
+						JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage "umlPackage" <-- ClassListPanel
+
+						JRefactory_v2.6.24.java.util.LinkedList "list" <-- MultipleDirClassDiagramReloader : aggregation (directories)
+						JavaPrimitiveTypes.boolean "necessary" <-- MultipleDirClassDiagramReloader : state flag
+
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

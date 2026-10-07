@@ -1,0 +1,170 @@
+@startuml
+'Enhanced for RAG-based GoF pattern detection (Observer + MVC context)
+
+package "PMD v1.8" as PMD_v1.8 {
+
+package net {
+package sourceforge {
+package pmd {
+package util {
+package viewer {
+
+'========================================================
+package model {
+
+'==================== SUBJECT ====================
+'DP role: Subject + ConcreteSubject (Observer Pattern)
+'Responsibility: maintains application state (AST, XPath results) and notifies observers (views)
+class ViewerModel {
+    -evaluationResults: PMD_v1.8.java.util.List   ' domain state
+    -listeners: PMD_v1.8.java.util.Vector         ' aggregation: list of observers
+    -rootNode: PMD_v1.8.net.sourceforge.pmd.ast.SimpleNode  ' core model state
+
+    <<Create>> ViewerModel()
+
+    '==================== OBSERVER MANAGEMENT ====================
+    addViewerModelListener(l : ViewerModelListener)  ' register observer
+    removeViewerModelListener(l : ViewerModelListener)  ' unregister observer
+
+    '==================== NOTIFICATION ====================
+    #fireViewerModelEvent(e : ViewerModelEvent)  ' notify all observers
+
+    '==================== CORE MODEL LOGIC ====================
+    appendToXPathExpression(pathFragment : PMD_v1.8.java.lang.String, appender : PMD_v1.8.java.lang.Object)
+    commitSource(source : PMD_v1.8.java.lang.String)
+    selectNode(node : PMD_v1.8.net.sourceforge.pmd.ast.SimpleNode, selector : PMD_v1.8.java.lang.Object)
+
+    getLastEvaluationResults(): PMD_v1.8.java.util.List
+    getRootNode(): PMD_v1.8.net.sourceforge.pmd.ast.SimpleNode
+    hasCompiledTree(): JavaPrimitiveTypes.boolean
+}
+
+'==================== OBSERVER ====================
+'DP role: Observer (Observer Pattern)
+'Responsibility: receives updates when model state changes
+interface ViewerModelListener {
+    viewerModelChanged(e : ViewerModelEvent)  ' callback method
+}
+
+'==================== EVENT OBJECT ====================
+'DP role: Event (Observer support class)
+'Responsibility: encapsulates change reason and payload
+class ViewerModelEvent {
+    +reason: JavaPrimitiveTypes.int
+    +parameter: PMD_v1.8.java.lang.Object
+    +source: PMD_v1.8.java.lang.Object
+
+    ' event type constants
+    +CODE_RECOMPILED: JavaPrimitiveTypes.int
+    +NODE_SELECTED: JavaPrimitiveTypes.int
+    +PATH_EXPRESSION_APPENDED: JavaPrimitiveTypes.int
+    +PATH_EXPRESSION_EVALUATED: JavaPrimitiveTypes.int
+}
+
+'==================== RELATIONSHIPS ====================
+'Aggregation: Subject maintains multiple observers
+ViewerModel o--> ViewerModelListener : maintains >
+
+'Association: Subject notifies observers via event
+ViewerModel --> ViewerModelListener : notifies >
+
+'Dependency: Observer receives event object
+ViewerModelListener --> ViewerModelEvent : uses >
+
+}
+
+'========================================================
+package gui {
+
+'==================== CONCRETE OBSERVERS (VIEWS in MVC) ====================
+'All panels act as ConcreteObservers reacting to model updates
+
+'DP role: ConcreteObserver (View)
+class ASTPanel {
+    -model: PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel
+    -tree: PMD_v1.8.javax.swing.JTree
+
+    <<Create>> ASTPanel(model : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel)
+
+    ' Observer callback
+    viewerModelChanged(e : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelEvent)
+
+    ' UI interaction (delegates to model)
+    valueChanged(e : PMD_v1.8.javax.swing.event.TreeSelectionEvent)
+}
+
+'DP role: ConcreteObserver (View)
+class EvaluationResultsPanel {
+    -list: PMD_v1.8.javax.swing.JList
+    -model: PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel
+
+    <<Create>> EvaluationResultsPanel(model : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel)
+
+    viewerModelChanged(e : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelEvent)
+}
+
+'DP role: ConcreteObserver (View + Controller responsibilities)
+class MainFrame {
+    -astPanel: ASTPanel
+    -compileBtn: PMD_v1.8.javax.swing.JButton
+    -evalBtn: PMD_v1.8.javax.swing.JButton
+    -model: PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel
+    -sourcePanel: SourceCodePanel
+    -xPathPanel: XPathPanel
+
+    <<Create>> MainFrame()
+
+    ' Controller behavior
+    actionPerformed(e : PMD_v1.8.java.awt.event.ActionEvent)
+
+    ' Observer callback
+    viewerModelChanged(e : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelEvent)
+}
+
+'DP role: ConcreteObserver (View)
+class SourceCodePanel {
+    -model: PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel
+    -sourceCodeArea: PMD_v1.8.javax.swing.JTextArea
+
+    <<Create>> SourceCodePanel(model : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel)
+
+    viewerModelChanged(e : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelEvent)
+
+    getSourceCode(): PMD_v1.8.java.lang.String
+}
+
+'DP role: ConcreteObserver (View)
+class XPathPanel {
+    -model: PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel
+    -xPathArea: PMD_v1.8.javax.swing.JTextArea
+
+    <<Create>> XPathPanel(model : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel)
+
+    viewerModelChanged(e : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelEvent)
+
+    getXPathExpression(): PMD_v1.8.java.lang.String
+}
+
+'==================== OBSERVER IMPLEMENTATIONS ====================
+ViewerModelListener <|.. ASTPanel
+ViewerModelListener <|.. EvaluationResultsPanel
+ViewerModelListener <|.. MainFrame
+ViewerModelListener <|.. SourceCodePanel
+ViewerModelListener <|.. XPathPanel
+
+'==================== ASSOCIATIONS TO SUBJECT ====================
+'All observers keep reference to Subject (pull model)
+ASTPanel --> ViewerModel : observes >
+EvaluationResultsPanel --> ViewerModel : observes >
+MainFrame --> ViewerModel : observes >
+SourceCodePanel --> ViewerModel : observes >
+XPathPanel --> ViewerModel : observes >
+
+}
+
+}
+}
+}
+}
+}
+@enduml

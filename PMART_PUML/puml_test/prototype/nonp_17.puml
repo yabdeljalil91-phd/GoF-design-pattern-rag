@@ -1,0 +1,24 @@
+@startuml
+package dpd_jdt {
+	package Prototype {
+		package nonprototype {
+			'@class BuildAction
+			'@date 08-20-2001
+			'@author Eric Crahen
+			'@version 1.0
+			class BuildAction {
+				#container: DiagramContainer
+				<<Create>> BuildAction(container : DiagramContainer)
+				actionPerformed(e : java.awt.event.ActionEvent)
+			}
+		}
+	}
+	javax.swing.AbstractAction <|-- Prototype.nonprototype.BuildAction
+	Prototype.nonprototype.DiagramContainer "container" <-- Prototype.nonprototype.BuildAction
+	Prototype.nonprototype.BuildAction.BuildDialog.BrowseAction "browseAction" <-- Prototype.nonprototype.BuildAction.BuildDialog
+	java.lang.String "currentLanguage" <-- Prototype.nonprototype.BuildAction.BuildDialog
+	javax.swing.JTextField "currentPath" <-- Prototype.nonprototype.BuildAction.BuildDialog
+	javax.swing.JTextArea "textArea" <-- Prototype.nonprototype.BuildAction.BuildDialog
+	javax.swing.JCheckBox "useArrays" <-- Prototype.nonprototype.BuildAction.BuildDialog
+}
+@enduml

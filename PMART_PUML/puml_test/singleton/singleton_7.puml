@@ -1,0 +1,18 @@
+@startuml
+package dpd_jdt {
+	package provider {
+		package name {
+			'provider Writable with no data.
+			class NullWritable {
+				-{const} THIS: NullWritable
+				-<<Create>> NullWritable()
+				'Returns the single instance of this class.
+				{static} get(): NullWritable
+				readFields(in : java.io.DataInput)
+				write(out : java.io.DataOutput)
+			}
+		}
+	}
+	provider.name.Writable <|-- provider.name.NullWritable
+}
+@enduml

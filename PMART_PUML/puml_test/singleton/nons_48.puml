@@ -1,0 +1,40 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package nonsingleton {
+			'A line figure.
+			class LineFigure {
+				-lineFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 511503575249212371
+				'Constructs a LineFigure with both start and end set to Point(0,0).
+				<<Create>> LineFigure()
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				'Gets a copy of the end point.
+				endPoint(): java.awt.Point
+				'Sets the end point.
+				endPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Sets the start and end point.
+				setPoints(start : java.awt.Point, end : java.awt.Point)
+				'Gets a copy of the start point.
+				startPoint(): java.awt.Point
+				'Sets the start point.
+				startPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	Singleton.nonsingleton.PolyLineFigure <|-- Singleton.nonsingleton.LineFigure
+	Singleton.nonsingleton.AbstractFigure <|-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_BOTH" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_END" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_NONE" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_START" <-- Singleton.nonsingleton.PolyLineFigure
+	Singleton.nonsingleton.LineDecoration "fEndDecoration" <-- Singleton.nonsingleton.PolyLineFigure
+	java.awt.Color "fFrameColor" <-- Singleton.nonsingleton.PolyLineFigure
+	java.util.Vector "fPoints" <-- Singleton.nonsingleton.PolyLineFigure
+	Singleton.nonsingleton.LineDecoration "fStartDecoration" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "polyLineFigureSerializedDataVersion" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "lineFigureSerializedDataVersion" <-- Singleton.nonsingleton.LineFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Singleton.nonsingleton.LineFigure
+}
+@enduml

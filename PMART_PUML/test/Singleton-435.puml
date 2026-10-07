@@ -1,0 +1,34 @@
+@startuml
+package "DrJava v20030203" as DrJava_v20030203 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package compiler {
+							class JSR14FromSetLocation {
+								<<Create>> JSR14FromSetLocation()
+								-{static} _getClassLoader(): DrJava_v20030203.java.lang.ClassLoader
+								getName(): DrJava_v20030203.java.lang.String
+							}
+							CompilerProxy <|-- JSR14FromSetLocation
+							DrJava_v20030203.edu.rice.cs.drjava.config.OptionConstants <|.. JSR14FromSetLocation
+							CompilerInterface <|.. CompilerProxy
+							DrJava_v20030203.java.lang.Comparable <|.. CompilerError
+							DrJava_v20030203.java.io.File "_file" <-- CompilerError
+							JavaPrimitiveTypes.boolean "_isWarning" <-- CompilerError
+							JavaPrimitiveTypes.int "_lineNumber" <-- CompilerError
+							DrJava_v20030203.java.lang.String "_message" <-- CompilerError
+							JavaPrimitiveTypes.int "_startColumn" <-- CompilerError
+							DrJava_v20030203.java.lang.String "_className" <-- CompilerProxy
+							DrJava_v20030203.java.lang.ClassLoader "_newLoader" <-- CompilerProxy
+							CompilerInterface "_realCompiler" <-- CompilerProxy
+							DrJava_v20030203.java.lang.String "_useOldLoader 0..*" <-- CompilerProxy
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

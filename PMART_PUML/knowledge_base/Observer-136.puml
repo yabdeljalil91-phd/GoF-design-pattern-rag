@@ -1,0 +1,214 @@
+@startuml
+'Design pattern Observer
+package "PMD v1.8" as PMD_v1.8 {
+	package net {
+		package sourceforge {
+			package pmd {
+				package util {
+					package viewer {
+						package model {
+							'/** 
+							' * The model for the viewer gui <p> This is the model part of MVC </p>
+							' * @author Boris Gruschko ( boris at gruschko.org )
+							' * @version $Id: ViewerModel.java,v 1.1 2005/08/05 12:46:14 guehene Exp $
+							' */
+							'DP role: subject
+							'DP role: concreteSubject
+							class ViewerModel {
+								-evaluationResults: PMD_v1.8.java.util.List
+								-listeners: PMD_v1.8.java.util.Vector
+								-rootNode: PMD_v1.8.net.sourceforge.pmd.ast.SimpleNode
+								'/** 
+								' * constructs the model
+								' */
+								<<Create>> ViewerModel()
+								'/** 
+								' * adds a listener to the model
+								' * @param l listener to be added
+								' */
+								addViewerModelListener(l : ViewerModelListener)
+								'/** 
+								' * appends the given fragment to the XPath expression
+								' * @param pathFragment fragment to be added
+								' * @param appender object that is trying to append the fragment
+								' */
+								appendToXPathExpression(pathFragment : PMD_v1.8.java.lang.String, appender : PMD_v1.8.java.lang.Object)
+								'/** 
+								' * commits source code to the model. <p> all existing source will be replaced </p>
+								' * @param source source to be commited
+								' */
+								commitSource(source : PMD_v1.8.java.lang.String)
+								'/** 
+								' * notifes all listener of a change in the model
+								' * @param e change's reason
+								' */
+								#fireViewerModelEvent(e : ViewerModelEvent)
+								'/** 
+								' * retrieves the results of last evaluation
+								' * @return a list containing the nodes selected by the last XPath expressionevaluation
+								' */
+								getLastEvaluationResults(): PMD_v1.8.java.util.List
+								'/** 
+								' * Retrieves AST's root node
+								' * @return AST's root node
+								' */
+								getRootNode(): PMD_v1.8.net.sourceforge.pmd.ast.SimpleNode
+								'/** 
+								' * determines wheteher the model has a compiled tree at it's disposal
+								' * @return true if there is an AST, false otherwise
+								' */
+								hasCompiledTree(): JavaPrimitiveTypes.boolean
+								'/** 
+								' * removes the lisetener from the model
+								' * @param l listener to be removed
+								' */
+								removeViewerModelListener(l : ViewerModelListener)
+								'/** 
+								' * selects the given node in the AST
+								' * @param node node to be selected
+								' * @param selector object which requests the selection
+								' */
+								selectNode(node : PMD_v1.8.net.sourceforge.pmd.ast.SimpleNode, selector : PMD_v1.8.java.lang.Object)
+							}
+							'DP role: observer
+							interface ViewerModelListener {
+								viewerModelChanged(e : ViewerModelEvent)
+							}
+							PMD_v1.8.java.util.List "evaluationResults" <-- ViewerModel
+							PMD_v1.8.java.util.Vector "listeners" <-- ViewerModel
+							PMD_v1.8.net.sourceforge.pmd.ast.SimpleNode "rootNode" <-- ViewerModel
+							JavaPrimitiveTypes.int "CODE_RECOMPILED" <-- ViewerModelEvent
+							JavaPrimitiveTypes.int "NODE_SELECTED" <-- ViewerModelEvent
+							JavaPrimitiveTypes.int "PATH_EXPRESSION_APPENDED" <-- ViewerModelEvent
+							JavaPrimitiveTypes.int "PATH_EXPRESSION_EVALUATED" <-- ViewerModelEvent
+							PMD_v1.8.java.lang.Object "parameter" <-- ViewerModelEvent
+							JavaPrimitiveTypes.int "reason" <-- ViewerModelEvent
+							PMD_v1.8.java.lang.Object "source" <-- ViewerModelEvent
+						}
+						package gui {
+							'/** 
+							' * tree panel GUI
+							' * @author Boris Gruschko ( boris at gruschko.org )
+							' * @version $Id: ASTPanel.java,v 1.1 2005/08/05 12:46:12 guehene Exp $
+							' */
+							'DP role: concreteObserver
+							class ASTPanel {
+								-model: PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel
+								-tree: PMD_v1.8.javax.swing.JTree
+								'/** 
+								' * constructs the panel
+								' * @param model model to attach the panel to
+								' */
+								<<Create>> ASTPanel(model : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel)
+								-init()
+								'/** 
+								' * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
+								' */
+								valueChanged(e : PMD_v1.8.javax.swing.event.TreeSelectionEvent)
+								'/** 
+								' * @see org.gruschko.pmd.viewer.model.ViewerModelListener#viewerModelChanged(org.gruschko.pmd.viewer.model.ViewerModelEvent)
+								' */
+								viewerModelChanged(e : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelEvent)
+							}
+							'/** 
+							' * A panel showing XPath expression evaluation results
+							' * @author Boris Gruschko ( boris at gruschko.org )
+							' * @version $Id: EvaluationResultsPanel.java,v 1.1 2005/08/05 12:46:12 guehene Exp $
+							' */
+							'DP role: concreteObserver
+							class EvaluationResultsPanel {
+								-list: PMD_v1.8.javax.swing.JList
+								-model: PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel
+								'/** 
+								' * constructs the panel
+								' * @param model model to refer to
+								' */
+								<<Create>> EvaluationResultsPanel(model : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel)
+								-init()
+								'/** 
+								' * @see org.gruschko.pmd.viewer.model.ViewerModelListener#viewerModelChanged(org.gruschko.pmd.viewer.model.ViewerModelEvent)
+								' */
+								viewerModelChanged(e : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelEvent)
+							}
+							'/** 
+							' * viewer's main frame
+							' * @author Boris Gruschko ( boris at gruschko.org )
+							' * @version $Id: MainFrame.java,v 1.1 2005/08/05 12:46:12 guehene Exp $
+							' */
+							'DP role: concreteObserver
+							class MainFrame {
+								-astPanel: ASTPanel
+								-compileBtn: PMD_v1.8.javax.swing.JButton
+								-evalBtn: PMD_v1.8.javax.swing.JButton
+								-model: PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel
+								-sourcePanel: SourceCodePanel
+								-xPathPanel: XPathPanel
+								'/** 
+								' * constructs and shows the frame
+								' */
+								<<Create>> MainFrame()
+								'/** 
+								' * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+								' */
+								actionPerformed(e : PMD_v1.8.java.awt.event.ActionEvent)
+								-init()
+								'/** 
+								' * @see org.gruschko.pmd.viewer.model.ViewerModelListener#viewerModelChanged(org.gruschko.pmd.viewer.model.ViewerModelEvent)
+								' */
+								viewerModelChanged(e : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelEvent)
+							}
+							'DP role: concreteObserver
+							class SourceCodePanel {
+								-model: PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel
+								-sourceCodeArea: PMD_v1.8.javax.swing.JTextArea
+								<<Create>> SourceCodePanel(model : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel)
+								getSourceCode(): PMD_v1.8.java.lang.String
+								-init()
+								viewerModelChanged(e : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelEvent)
+							}
+							'DP role: concreteObserver
+							class XPathPanel {
+								-model: PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel
+								-xPathArea: PMD_v1.8.javax.swing.JTextArea
+								<<Create>> XPathPanel(model : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel)
+								getXPathExpression(): PMD_v1.8.java.lang.String
+								-init()
+								viewerModelChanged(e : PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelEvent)
+							}
+							PMD_v1.8.javax.swing.JPanel <|-- ASTPanel
+							PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelListener <|.. ASTPanel
+							PMD_v1.8.javax.swing.event.TreeSelectionListener <|.. ASTPanel
+							PMD_v1.8.javax.swing.JPanel <|-- EvaluationResultsPanel
+							PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelListener <|.. EvaluationResultsPanel
+							PMD_v1.8.javax.swing.JFrame <|-- MainFrame
+							PMD_v1.8.java.awt.event.ActionListener <|.. MainFrame
+							ActionCommands <|.. MainFrame
+							PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelListener <|.. MainFrame
+							PMD_v1.8.javax.swing.JPanel <|-- SourceCodePanel
+							PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelListener <|.. SourceCodePanel
+							PMD_v1.8.javax.swing.JTabbedPane <|-- XPathPanel
+							PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModelListener <|.. XPathPanel
+							PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel "model" <-- ASTPanel
+							PMD_v1.8.javax.swing.JTree "tree" <-- ASTPanel
+							PMD_v1.8.javax.swing.JList "list" <-- EvaluationResultsPanel
+							PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel "model" <-- EvaluationResultsPanel
+							PMD_v1.8.java.lang.String "COMPILE_ACTION" <-- ActionCommands
+							PMD_v1.8.java.lang.String "EVALUATE_ACTION" <-- ActionCommands
+							ASTPanel "astPanel" <-- MainFrame
+							PMD_v1.8.javax.swing.JButton "compileBtn" <-- MainFrame
+							PMD_v1.8.javax.swing.JButton "evalBtn" <-- MainFrame
+							PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel "model" <-- MainFrame
+							PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel "model" <-- SourceCodePanel
+							PMD_v1.8.javax.swing.JTextArea "sourceCodeArea" <-- SourceCodePanel
+							SourceCodePanel "sourcePanel" <-- MainFrame
+							PMD_v1.8.net.sourceforge.pmd.util.viewer.model.ViewerModel "model" <-- XPathPanel
+							PMD_v1.8.javax.swing.JTextArea "xPathArea" <-- XPathPanel
+							XPathPanel "xPathPanel" <-- MainFrame
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

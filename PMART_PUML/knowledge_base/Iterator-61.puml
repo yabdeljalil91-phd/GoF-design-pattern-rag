@@ -1,0 +1,5 @@
+@startuml
+'Design pattern Iterator
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+}
+@enduml

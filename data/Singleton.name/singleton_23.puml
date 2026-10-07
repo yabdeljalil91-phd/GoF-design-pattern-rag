@@ -1,0 +1,47 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package name {
+			'CodeGenerator is a singleton which generates code using Velocity
+			'@author Marty Phelan
+			'@version 1.0
+			class CodeGenerator {
+				{const} TEMPLATES_PATH: java.lang.String = templatesPath
+				-initialized: JavaPrimitiveTypes.boolean
+				-properties: java.util.Properties
+				-{static} singleton: CodeGenerator
+				-velocity: VelocityEngine
+				'Constructs a new CodeGenerator and set default properties
+				-<<Create>> CodeGenerator()
+				'This method creates a node in a given project, according to the packageName and filename provided.
+				'@param sourcePath the base path where to create the source file.
+				'@param packageName The name of the package in which the file will be created.
+				'@param fileName The name of the file to be created.
+				'@return The FileNode which was created.
+				'@throws IOException if creation of file fails
+				-createFile(sourcePath : java.lang.String, packageName : java.lang.String, fileName : java.lang.String): java.io.File
+				'Generates the source code using the Velocity Engine and the template
+				'@param templateName to produce Java code
+				'@param context which contains data to merge into template
+				'@param srcPath is path where source should be stored
+				'@param packageName is java package name which whill be appended to srcPath
+				'@param className is java class name and file name
+				'@throws Exception if problem creating file or running template
+				generateCode(templateName : java.lang.String, context : Context, srcPath : java.lang.String, packageName : java.lang.String, className : java.lang.String)
+				'Gets the singleton instance of the CodeGenerator.
+				'@return a singleton CodeGenerator
+				{static} getInstance(): CodeGenerator
+				'Initializes the CodeGenerator engine if not already initialized Initializes the internal VelocityEngine with this CodeGenerator's properties.  All the properties have default values. This method will simply return if this CodeGenerator is already initialized.
+				'@throws Exception if problem initializing the engine
+				initialize()
+				'Sets all properties used by this CodeGenerator
+				setProperties(properties : java.util.Properties)
+			}
+		}
+	}
+	java.lang.String "TEMPLATES_PATH" <-- Singleton.name.CodeGenerator
+	JavaPrimitiveTypes.boolean "initialized" <-- Singleton.name.CodeGenerator
+	java.util.Properties "properties" <-- Singleton.name.CodeGenerator
+	Singleton.name.VelocityEngine "velocity" <-- Singleton.name.CodeGenerator
+}
+@enduml

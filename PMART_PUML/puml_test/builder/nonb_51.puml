@@ -1,0 +1,29 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Just the package selector area
+			'@author    Chris Seguin
+			class PackageSelectorArea {
+				#listbox: javax.swing.JList
+				-pane: javax.swing.JScrollPane
+				'Constructor for the PackageSelectorArea object
+				<<Create>> PackageSelectorArea()
+				'Gets the ScrollPane attribute of the PackageSelectorArea object
+				'@return    The ScrollPane value
+				getScrollPane(): javax.swing.JScrollPane
+				'Gets the Selection attribute of the PackageSelectorArea object
+				'@return    The Selection value
+				getSelection(): PackageSummary
+				'Loads the package into the listbox
+				loadPackages()
+				'Load the summaries
+				loadSummaries()
+			}
+		}
+	}
+	javax.swing.JPanel <|-- Builder.nonbuilder.PackageSelectorArea
+	javax.swing.JList "listbox" <-- Builder.nonbuilder.PackageSelectorArea
+	javax.swing.JScrollPane "pane" <-- Builder.nonbuilder.PackageSelectorArea
+}
+@enduml

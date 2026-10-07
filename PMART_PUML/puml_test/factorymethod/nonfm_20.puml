@@ -1,0 +1,57 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'@class ClipboardTool
+			'@date 08-20-2001
+			'@author Eric Crahen
+			'@version 1.0A Clipboard implements the copy/cut/paste actions for a Diagram. A set of actions are inserted into the target Diagrams ActionMap (copy, cut, and paste) that allow the UI to map inputs to these actions as it sees fit.
+			class ClipboardTool {
+				#actionCopy: javax.swing.Action
+				#actionCut: javax.swing.Action
+				#actionPaste: javax.swing.Action
+				-clipboard: java.util.ArrayList
+				-copyboard: java.util.ArrayList
+				#{static} diagramKey: java.lang.ThreadLocal
+				-figures: Figure [*]
+				-related: Figure [*]
+				<<Create>> ClipboardTool()
+				'Copy the current selection from the Diagram to the Clipboard
+				doCopy()
+				'Cut the current selection from the Diagram
+				doCut()
+				'Paste the top of the clipboard stack to the diagram
+				doPaste()
+				-doPaste(figure : Figure, model : DiagramModel, selectionModel : SelectionModel, ui : DiagramUI)
+				'Get the diagram the Clipboard is configured for
+				'@return Diagram
+				{static} getDiagram(): Diagram
+				'Install the support in the specified Diagram
+				'@param Diagram
+				install(diagram : Diagram)
+				'Prepare for a clipboard operation. Copy the current selection into a local array for processing.
+				'@return boolean
+				#prepareSelection(): JavaPrimitiveTypes.boolean
+				'Configure the current context for the given Diagram
+				'@param Diagram
+				'@return Clipboard
+				{static} setDiagram(diagram : Diagram)
+				'Install the support in the specified Diagram
+				'@param Diagram
+				uninstall(diagram : Diagram)
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.AbstractTool <|-- Factory_method.nonfactorymethod.ClipboardTool
+	java.lang.Cloneable <|-- Factory_method.nonfactorymethod.Figure
+	java.io.Serializable <|-- Factory_method.nonfactorymethod.Figure
+	javax.swing.Action "actionCopy" <-- Factory_method.nonfactorymethod.ClipboardTool
+	javax.swing.Action "actionCut" <-- Factory_method.nonfactorymethod.ClipboardTool
+	javax.swing.Action "actionPaste" <-- Factory_method.nonfactorymethod.ClipboardTool
+	java.util.ArrayList "clipboard" <-- Factory_method.nonfactorymethod.ClipboardTool
+	java.util.ArrayList "copyboard" <-- Factory_method.nonfactorymethod.ClipboardTool
+	java.lang.ThreadLocal "diagramKey" <-- Factory_method.nonfactorymethod.ClipboardTool
+	Factory_method.nonfactorymethod.Figure "figures 0..*" <-- Factory_method.nonfactorymethod.ClipboardTool
+	Factory_method.nonfactorymethod.Figure "related 0..*" <-- Factory_method.nonfactorymethod.ClipboardTool
+}
+@enduml

@@ -1,0 +1,76 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package name {
+			'Factory for all refactorings
+			'@author    Chris Seguin
+			class RefactoringFactory {
+				-fieldFactory: FieldRefactoringFactory
+				-methodFactory: MethodRefactoringFactory
+				-{static} singleton: RefactoringFactory
+				-typeFactory: TypeRefactoringFactory
+				'Constructor for the RefactoringFactory object
+				#<<Create>> RefactoringFactory()
+				'Adds a feature to the Child attribute of the TypeRefactoringFactory object
+				'@return    Description of the Returned Value
+				addChild(): AddChildRefactoring
+				'Adds a feature to the Parent attribute of the TypeRefactoringFactory object
+				'@return    Description of the Returned Value
+				addParent(): AddAbstractParent
+				'Extracts the interface of a class into a new interface object
+				'@return    Description of the Returned Value
+				extractInterface(): ExtractInterfaceRefactoring
+				'Extracts code from one method to create a new method
+				'@return    Description of the Returned Value
+				extractMethod(): ExtractMethodRefactoring
+				'A standard method to get the factory
+				'@return    Description of the Returned Value
+				{static} get(): RefactoringFactory
+				'Initializes the singleton
+				-{static} init()
+				'Creates a move class refactoring object
+				'@return    the move class refactoring object
+				moveClass(): MoveClass
+				'Moves the method into another class
+				'@return    Description of the Returned Value
+				moveMethod(): MoveMethodRefactoring
+				'Prepare to create a refactoring that operates on files on the disk. This is an IDE's last opportunity to save files before the refactoring is performed. This is not used for ExtractMethod which works on code that is in memory (rather than on the disk)
+				#prepare()
+				'Moves the field into the parent class
+				'@return    Description of the Returned Value
+				pushDownField(): PushDownFieldRefactoring
+				'Moves the method into a child class
+				'@return    Description of the Returned Value
+				pushDownMethod(): PushDownMethodRefactoring
+				'Moves the method signature into the parent class
+				'@return    Description of the Returned Value
+				pushUpAbstractMethod(): PushUpAbstractMethodRefactoring
+				'Moves the field into the child class
+				'@return    Description of the Returned Value
+				pushUpField(): PushUpFieldRefactoring
+				'Moves the method into the parent class
+				'@return    Description of the Returned Value
+				pushUpMethod(): PushUpMethodRefactoring
+				'Description of the Method
+				'@return    Description of the Returned Value
+				removeEmptyClass(): RemoveEmptyClassRefactoring
+				'Description of the Method
+				'@return    Description of the Returned Value
+				renameClass(): RenameClassRefactoring
+				'Renames a field
+				'@return    The refactoring
+				renameField(): RenameFieldRefactoring
+				'Renames a parameter
+				'@return    Description of the Returned Value
+				renameParameter(): RenameParameterRefactoring
+				'This allows someone to replace this factory
+				'@param value  The new Singleton value
+				{static} setSingleton(value : RefactoringFactory)
+			}
+		}
+	}
+	Singleton.name.FieldRefactoringFactory "fieldFactory" <-- Singleton.name.RefactoringFactory
+	Singleton.name.MethodRefactoringFactory "methodFactory" <-- Singleton.name.RefactoringFactory
+	Singleton.name.TypeRefactoringFactory "typeFactory" <-- Singleton.name.RefactoringFactory
+}
+@enduml

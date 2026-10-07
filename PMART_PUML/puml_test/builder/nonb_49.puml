@@ -1,0 +1,21 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Base class for source browsing.  This is the generic base class.
+			'@author    Chris Seguin
+			class NoSourceBrowser {
+				<<Create>> NoSourceBrowser()
+				'Determines if the system is in a state where it can browse the source code
+				'@return    true if the source code browsing is enabled
+				canBrowseSource(): JavaPrimitiveTypes.boolean
+				'Actually browses to the file
+				'@param filename  the file
+				'@param line      the line in the file
+				gotoSource(file : java.io.File, line : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	Builder.nonbuilder.SourceBrowser <|-- Builder.nonbuilder.NoSourceBrowser
+}
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package nonsingleton {
+			class PertDependency {
+				-pertDependencySerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -7959500008698525009
+				<<Create>> PertDependency()
+				canConnect(start : Figure, end : Figure): JavaPrimitiveTypes.boolean
+				handleConnect(start : Figure, end : Figure)
+				handleDisconnect(start : Figure, end : Figure)
+				handles(): java.util.Vector
+			}
+		}
+	}
+	Singleton.nonsingleton.LineConnection <|-- Singleton.nonsingleton.PertDependency
+	Singleton.nonsingleton.ConnectionFigure <|.. Singleton.nonsingleton.LineConnection
+	Singleton.nonsingleton.PolyLineFigure <|-- Singleton.nonsingleton.LineConnection
+	Singleton.nonsingleton.AbstractFigure <|-- Singleton.nonsingleton.PolyLineFigure
+	Singleton.nonsingleton.Figure <|-- Singleton.nonsingleton.ConnectionFigure
+	java.lang.Cloneable <|-- Singleton.nonsingleton.Figure
+	java.io.Serializable <|-- Singleton.nonsingleton.Figure
+	JavaPrimitiveTypes.int "ARROW_TIP_BOTH" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_END" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_NONE" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_START" <-- Singleton.nonsingleton.PolyLineFigure
+	Singleton.nonsingleton.LineDecoration "fEndDecoration" <-- Singleton.nonsingleton.PolyLineFigure
+	java.awt.Color "fFrameColor" <-- Singleton.nonsingleton.PolyLineFigure
+	java.util.Vector "fPoints" <-- Singleton.nonsingleton.PolyLineFigure
+	Singleton.nonsingleton.LineDecoration "fStartDecoration" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.int "polyLineFigureSerializedDataVersion" <-- Singleton.nonsingleton.PolyLineFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Singleton.nonsingleton.PolyLineFigure
+	Singleton.nonsingleton.Connector "fEnd" <-- Singleton.nonsingleton.LineConnection
+	Singleton.nonsingleton.Connector "fStart" <-- Singleton.nonsingleton.LineConnection
+	JavaPrimitiveTypes.int "lineConnectionSerializedDataVersion" <-- Singleton.nonsingleton.LineConnection
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Singleton.nonsingleton.LineConnection
+	JavaPrimitiveTypes.int "pertDependencySerializedDataVersion" <-- Singleton.nonsingleton.PertDependency
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Singleton.nonsingleton.PertDependency
+}
+@enduml

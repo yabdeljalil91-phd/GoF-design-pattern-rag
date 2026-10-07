@@ -1,0 +1,30 @@
+@startuml
+' Singleton class UML for Iconkit (JHotDraw 5.1)
+
+package "JHotDraw v5.1" as JHotDraw {
+
+    class Iconkit {
+        - {const} ID: int = 123
+        - fComponent: java.awt.Component
+        - fMap: java.util.Hashtable
+        - fRegisteredImages: java.util.Vector
+        - {static} fgDebug: boolean
+        - {static} fgIconkit: Iconkit
+
+        ' Constructor
+        <<Create>> Iconkit(component: java.awt.Component)
+
+        ' Instance methods
+        - basicGetImage(filename: String): java.awt.Image
+        - getImage(filename: String): java.awt.Image
+        - loadImage(filename: String): java.awt.Image
+        - loadImageResource(resourcename: String): java.awt.Image
+        - loadRegisteredImages(component: java.awt.Component)
+        - registerAndLoadImage(component: java.awt.Component, fileName: String): java.awt.Image
+        - registerImage(fileName: String)
+
+        ' Static method to get the singleton instance
+        {static} instance(): Iconkit
+    }
+}
+@enduml

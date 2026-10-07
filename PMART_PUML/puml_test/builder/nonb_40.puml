@@ -1,0 +1,29 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'@interface FigureEditor
+			'@date 08-20-2001
+			'@author Eric Crahen
+			'@version 1.0The FigureEditor controls the editing process as far as how the values being editing are interpreted and set, and what listeners need to be notified of those  changes.
+			interface FigureEditor {
+				'Get the extended bounds for a Figure, these are bounds that a component should use to include a small area for decoration, such as different borders, or arrow heads that fall just outside the Figures normal bounds. This allows editors to occupy a space different from the figure when neccessary.
+				'@param Diagram
+				'@param Figure
+				'@param Rectangle2D reuse a rectangle
+				'@return Rectangle2D
+				getDecoratedBounds(diagram : Diagram, figure : Figure, rcBounds : java.awt.geom.Rectangle2D): java.awt.geom.Rectangle2D
+				'Get a Component that can be used to render the editor for a particular figure
+				'@param Diagram
+				'@param Figure
+				'@param boolean
+				'@return Component
+				getFigureEditorComponent(diagram : Diagram, figure : Figure, isSelected : JavaPrimitiveTypes.boolean): java.awt.Component
+			}
+		}
+	}
+	javax.swing.CellEditor <|-- Builder.nonbuilder.FigureEditor
+	java.lang.Cloneable <|-- Builder.nonbuilder.Figure
+	java.io.Serializable <|-- Builder.nonbuilder.Figure
+}
+@enduml

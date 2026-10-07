@@ -1,0 +1,23 @@
+@startuml
+package dpd_jdt {
+	package Java {
+		package name {
+			'A diamond with vertices at the midpoints of its enclosing rectangle
+			class DiamondFigure {
+				<<Create>> DiamondFigure()
+				<<Create>> DiamondFigure(origin : java.awt.Point, corner : java.awt.Point)
+				connectionInsets(): java.awt.Insets
+				containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				draw(g : java.awt.Graphics)
+				'Return the polygon describing the diamond
+				#polygon(): java.awt.Polygon
+			}
+		}
+	}
+	Java.name.RectangleFigure <|-- Java.name.DiamondFigure
+	Java.name.AttributeFigure <|-- Java.name.RectangleFigure
+	java.awt.Rectangle "fDisplayBox" <-- Java.name.RectangleFigure
+	JavaPrimitiveTypes.int "rectangleFigureSerializedDataVersion" <-- Java.name.RectangleFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Java.name.RectangleFigure
+}
+@enduml

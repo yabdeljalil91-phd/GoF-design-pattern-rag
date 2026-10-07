@@ -1,0 +1,95 @@
+@startuml
+package dpd_jdt {
+	package Loader {
+		package name {
+			'A LineConnection is a standard implementation of the ConnectionFigure interface. The interface is implemented with PolyLineFigure.
+			'@see ConnectionFigure
+			class LineConnection {
+				#fEnd: Connector
+				#fStart: Connector
+				-lineConnectionSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 6883731614578414801
+				'Constructs a LineConnection. A connection figure has an arrow decoration at the start and end.
+				<<Create>> LineConnection()
+				'Ensures that a connection is updated if the connection was moved.
+				#basicMoveBy(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int)
+				'Tests whether a figure can be a connection target. ConnectionFigures cannot be connected and return false.
+				canConnect(): JavaPrimitiveTypes.boolean
+				'Tests whether two figures can be connected.
+				canConnect(start : Figure, end : Figure): JavaPrimitiveTypes.boolean
+				'Sets the end figure of the connection.
+				connectEnd(end : Connector)
+				'Sets the start figure of the connection.
+				connectStart(start : Connector)
+				'Tests whether a connection connects the same figures as another ConnectionFigure.
+				connectsSame(other : ConnectionFigure): JavaPrimitiveTypes.boolean
+				'Disconnects the end figure.
+				disconnectEnd()
+				'Disconnects the start figure.
+				disconnectStart()
+				'Gets the end figure of the connection.
+				end(): Connector
+				'Gets the end figure of the connection.
+				endFigure(): Figure
+				'Sets the end point.
+				endPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Gets the end point.
+				endPoint(): java.awt.Point
+				figureChanged(e : FigureChangeEvent)
+				figureInvalidated(e : FigureChangeEvent)
+				figureRemoved(e : FigureChangeEvent)
+				figureRequestRemove(e : FigureChangeEvent)
+				figureRequestUpdate(e : FigureChangeEvent)
+				'Handles the connection of a connection. Override this method to handle this event.
+				#handleConnect(start : Figure, end : Figure)
+				'Handles the disconnection of a connection. Override this method to handle this event.
+				#handleDisconnect(start : Figure, end : Figure)
+				'Gets the handles of the figure. It returns the normal PolyLineHandles but adds ChangeConnectionHandles at the start and end.
+				handles(): java.util.Vector
+				'Inserts the point and updates the connection.
+				insertPointAt(p : java.awt.Point, i : JavaPrimitiveTypes.int)
+				'Lays out the connection. This is called when the connection itself changes. By default the connection is recalculated
+				layoutConnection()
+				read(dr : StorableInput)
+				-readObject(s : java.io.ObjectInputStream)
+				release()
+				'Removes the point and updates the connection.
+				removePointAt(i : JavaPrimitiveTypes.int)
+				'Sets the point and updates the connection.
+				setPointAt(p : java.awt.Point, i : JavaPrimitiveTypes.int)
+				'Gets the start figure of the connection.
+				start(): Connector
+				'Gets the start figure of the connection.
+				startFigure(): Figure
+				'Sets the start point.
+				startPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				'Gets the start point.
+				startPoint(): java.awt.Point
+				'Updates the connection.
+				updateConnection()
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	Loader.name.ConnectionFigure <|.. Loader.name.LineConnection
+	Loader.name.PolyLineFigure <|-- Loader.name.LineConnection
+	Loader.name.AbstractFigure <|-- Loader.name.PolyLineFigure
+	Loader.name.Figure <|-- Loader.name.ConnectionFigure
+	java.lang.Cloneable <|-- Loader.name.Figure
+	java.io.Serializable <|-- Loader.name.Figure
+	JavaPrimitiveTypes.int "ARROW_TIP_BOTH" <-- Loader.name.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_END" <-- Loader.name.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_NONE" <-- Loader.name.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_START" <-- Loader.name.PolyLineFigure
+	Loader.name.LineDecoration "fEndDecoration" <-- Loader.name.PolyLineFigure
+	java.awt.Color "fFrameColor" <-- Loader.name.PolyLineFigure
+	java.util.Vector "fPoints" <-- Loader.name.PolyLineFigure
+	Loader.name.LineDecoration "fStartDecoration" <-- Loader.name.PolyLineFigure
+	JavaPrimitiveTypes.int "polyLineFigureSerializedDataVersion" <-- Loader.name.PolyLineFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Loader.name.PolyLineFigure
+	Loader.name.Connector "fEnd" <-- Loader.name.LineConnection
+	Loader.name.Connector "fStart" <-- Loader.name.LineConnection
+	JavaPrimitiveTypes.int "lineConnectionSerializedDataVersion" <-- Loader.name.LineConnection
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Loader.name.LineConnection
+}
+@enduml

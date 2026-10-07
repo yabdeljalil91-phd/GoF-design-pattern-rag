@@ -1,0 +1,76 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'This class provides C-like formatting functions that allow programmers to convert an integer or floating point number into a string with a specified, width, precision and format.  For instance this might be used to format monetary data to  two decimal places.<P> Each number is passed to a format() method along with formatting  instructions. The format() method returns a formatted string. <P> There are a number of possible things one can do when a number will not fit inside the specified format. You can throw an exception, truncate the number, return an error string, or expand the width. Here I've chosen to expand the width. <P> The rounding of these precisions still needs work. Currently  excess digits are merely truncated.<P>
+			'@Version : 1.0 Revision 1
+			'@Author : Brill Pappin <I>Portions from <CODE>cafeaulait.io.Formatter</CODE> by Elliotte Rusty Harold (elharo@sunsite.unc.edu)</I>
+			class Format {
+				{const} UNIVERSAL_SEPARATOR_CHAR: JavaPrimitiveTypes.char = /
+				-{static} lowercases: JavaPrimitiveTypes.char [*]
+				'Do not allow instances to be created.
+				-<<Create>> Format()
+				'fast lower case conversion. Only works on ascii (not unicode)
+				'@author Jesper J�rgensen, Caput
+				'@param s the string to convert
+				'@return a lower case version of s
+				{static} asciiToLowerCase(s : java.lang.String): java.lang.String
+				'Converts a type Color to an HTML hex colour string  in the format "#RRGGBB"
+				'@param colour Color
+				'@return String
+				{const} colorToHex(colour : java.awt.Color): java.lang.String
+				'It would be nice to add a method to java.lang.String to return an escape safe version of the string so that you can write it to [eg] property files without worrying about reading back in incorrect escaped characters created by any \ characters in the string.<BR> This Method will attempt to do that.
+				'@param s String
+				'@return String
+				{const} escapeSafe(s : java.lang.String): java.lang.String
+				'Converts an array of hash bytes into a hex string.
+				'@param byte hash[]
+				'@return String
+				'@version 1.0
+				'@author Julian Yip Aug. 1998 (Modified Brill Pappin Aug. 1998)
+				{const} hashToHex(hash : JavaPrimitiveTypes.byte): java.lang.String
+				'Converts an HTML "#FFFFFF" hex string to a java.awt.Color
+				'@param value String
+				'@return Color
+				{const} hexToColor(value : java.lang.String): java.awt.Color
+				'Converts a 2 position hex number "NN" string into an integer
+				'@param hex String
+				'@return int
+				{const} hexToInt(hex : java.lang.String): JavaPrimitiveTypes.int
+				'Copy input string to output string keeping wanted characters only.
+				'@return java.lang.String
+				'@param input java.lang.String
+				'@param wantedChars java.lang.String
+				'@author Ian MacMillan Aug. 1998
+				{const} keepChars(input : java.lang.String, wantedChars : java.lang.String): java.lang.String
+				'Converts a universal path into a native path.
+				'@return java.lang.String
+				'@param universalPath java.lang.String
+				{const} nativePath(universalPath : java.lang.String): java.lang.String
+				'Strips the chars in the String argument, out of the input string and returns the resulting string.
+				'@return java.lang.String
+				'@param input java.lang.String
+				'@param chars java.lang.String
+				{const} removeChars(input : java.lang.String, remChars : java.lang.String): java.lang.String
+				'Works like String.trim() but removes the quotes at the beginning and end of a string. This method will do nothing if it does not find quotes <U>at both ends</U> of the string.<BR> "xxxxx" returns xxxxx.
+				'@param s String
+				'@return String
+				{const} removeSurroundingQuotes(s : java.lang.String): java.lang.String
+				'replace substrings within string.
+				{static} replace(s : java.lang.String, sub : java.lang.String, with : java.lang.String): java.lang.String
+				'This method was created in VisualAge.
+				'@return java.lang.String
+				'@param universalPath java.lang.String
+				'@depricated use nativePath(String) instead.
+				{const} systemPath(universalPath : java.lang.String): java.lang.String
+				'converts a native path into a universal one.
+				'@return java.lang.String
+				'@param systemPath java.lang.String
+				{const} universalPath(nativePath : java.lang.String): java.lang.String
+			}
+		}
+	}
+	JavaPrimitiveTypes.char "UNIVERSAL_SEPARATOR_CHAR" <-- Builder.nonbuilder.Format
+	JavaPrimitiveTypes.char "lowercases 0..*" <-- Builder.nonbuilder.Format
+}
+@enduml

@@ -1,0 +1,1195 @@
+@startuml
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package netbeans {
+			package modules {
+				package beans {
+					class EventSetPatternNode {
+						<<Create>> EventSetPatternNode(pattern : EventSetPattern, writeable : JavaPrimitiveTypes.boolean)
+						cloneNode(): Netbeans_v1.0.x.org.openide.nodes.Node
+						#createAddListenerProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						#createIsUnicastProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						#createRemoveListenerProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						#createSheet(): Netbeans_v1.0.x.org.openide.nodes.Sheet
+						#createTypeProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+						#getHintElementFormat(): Netbeans_v1.0.x.org.openide.src.ElementFormat
+						getShortDescription(): Netbeans_v1.0.x.java.lang.String
+						#resolveIconBase(): Netbeans_v1.0.x.java.lang.String
+						setName(name : Netbeans_v1.0.x.java.lang.String)
+						#setPatternName(name : Netbeans_v1.0.x.java.lang.String)
+						testNameValidity(name : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+					}
+					class BeansModule {
+						-brClazz: Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory
+						-brJava: Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory
+						-exClazz: Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory
+						-exJava: Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory
+						{const} serialVersionUID: JavaPrimitiveTypes.long = -7687075984661316111
+						<<Create>> BeansModule()
+						-copyTemplates()
+						installed()
+						-invokeDynamic(className : Netbeans_v1.0.x.java.lang.String, methodName : Netbeans_v1.0.x.java.lang.String, factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						restored()
+						uninstalled()
+					}
+					class PatternsBrowserFactory {
+						-{const} CLASS_ACTIONS: Netbeans_v1.0.x.org.openide.util.actions.SystemAction [*]
+						-writeable: JavaPrimitiveTypes.boolean
+						<<Create>> PatternsBrowserFactory(writeable : JavaPrimitiveTypes.boolean)
+						createClassNode(element : Netbeans_v1.0.x.org.openide.src.ClassElement): Netbeans_v1.0.x.org.openide.nodes.Node
+					}
+					class PatternsExplorerFactory {
+						-writeable: JavaPrimitiveTypes.boolean
+						<<Create>> PatternsExplorerFactory(writeable : JavaPrimitiveTypes.boolean)
+						createClassNode(element : Netbeans_v1.0.x.org.openide.src.ClassElement): Netbeans_v1.0.x.org.openide.nodes.Node
+					}
+					PatternNode <|-- EventSetPatternNode
+					IconBases <|.. EventSetPatternNode
+					Netbeans_v1.0.x.org.openide.nodes.AbstractNode <|-- PatternNode
+					IconBases <|.. PatternNode
+					PatternProperties <|.. PatternNode
+					Netbeans_v1.0.x.java.beans.PropertyChangeListener <|.. PatternNode
+					Netbeans_v1.0.x.org.openide.nodes.Node.Cookie <|.. PatternAnalyser
+					Pattern <|-- EventSetPattern
+					Pattern <|-- PropertyPattern
+					Netbeans_v1.0.x.org.openide.modules.ModuleInstall <|-- BeansModule
+					Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory <|-- PatternsBrowserFactory
+					Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory <|-- PatternsExplorerFactory
+					Netbeans_v1.0.x.java.lang.String "EVENTSET_MULTICAST" <-- IconBases
+					Netbeans_v1.0.x.java.lang.String "EVENTSET_UNICAST" <-- IconBases
+					Netbeans_v1.0.x.java.lang.String "IDXPROPERTY_RO" <-- IconBases
+					Netbeans_v1.0.x.java.lang.String "IDXPROPERTY_RW" <-- IconBases
+					Netbeans_v1.0.x.java.lang.String "IDXPROPERTY_WO" <-- IconBases
+					Netbeans_v1.0.x.java.lang.String "PROPERTY_RO" <-- IconBases
+					Netbeans_v1.0.x.java.lang.String "PROPERTY_RW" <-- IconBases
+					Netbeans_v1.0.x.java.lang.String "PROPERTY_WO" <-- IconBases
+					Netbeans_v1.0.x.java.lang.String "PROP_ADDLISTENER" <-- PatternProperties
+					Netbeans_v1.0.x.java.lang.String "PROP_ESTIMATEDFIELD" <-- PatternProperties
+					Netbeans_v1.0.x.java.lang.String "PROP_GETTER" <-- PatternProperties
+					Netbeans_v1.0.x.java.lang.String "PROP_INDEXEDGETTER" <-- PatternProperties
+					Netbeans_v1.0.x.java.lang.String "PROP_INDEXEDSETTER" <-- PatternProperties
+					Netbeans_v1.0.x.java.lang.String "PROP_INDEXEDTYPE" <-- PatternProperties
+					Netbeans_v1.0.x.java.lang.String "PROP_ISUNICAST" <-- PatternProperties
+					Netbeans_v1.0.x.java.lang.String "PROP_MODE" <-- PatternProperties
+					Netbeans_v1.0.x.java.lang.String "PROP_NAME" <-- PatternProperties
+					Netbeans_v1.0.x.java.lang.String "PROP_REMOVELISTENER" <-- PatternProperties
+					Netbeans_v1.0.x.java.lang.String "PROP_SETTER" <-- PatternProperties
+					Netbeans_v1.0.x.java.lang.String "PROP_TYPE" <-- PatternProperties
+					Netbeans_v1.0.x.org.openide.util.actions.SystemAction "DEFAULT_ACTIONS 0..*" <-- PatternNode
+					Netbeans_v1.0.x.java.lang.String "ICON_AFFECTING_PROPERTIES 0..*" <-- PatternNode
+					Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- PatternNode
+					Netbeans_v1.0.x.java.beans.PropertyChangeListener "listener" <-- PatternNode
+					Netbeans_v1.0.x.java.lang.String "ADD_PREFIX" <-- PatternAnalyser
+					Netbeans_v1.0.x.java.lang.String "GET_PREFIX" <-- PatternAnalyser
+					Netbeans_v1.0.x.java.lang.String "IS_PREFIX" <-- PatternAnalyser
+					JavaPrimitiveTypes.int "PROPERTIES_RESERVE" <-- PatternAnalyser
+					Netbeans_v1.0.x.java.lang.String "REMOVE_PREFIX" <-- PatternAnalyser
+					Netbeans_v1.0.x.java.lang.String "SET_PREFIX" <-- PatternAnalyser
+					Netbeans_v1.0.x.org.openide.src.ClassElement "classElement" <-- PatternAnalyser
+					Netbeans_v1.0.x.java.util.ArrayList "currentEventSetPatterns" <-- PatternAnalyser
+					Netbeans_v1.0.x.java.util.ArrayList "currentIdxPropertyPatterns" <-- PatternAnalyser
+					Netbeans_v1.0.x.java.util.ArrayList "currentPropertyPatterns" <-- PatternAnalyser
+					Netbeans_v1.0.x.java.util.HashMap "eventSetPatterns" <-- PatternAnalyser
+					Netbeans_v1.0.x.java.util.HashMap "idxPropertyPatterns" <-- PatternAnalyser
+					JavaPrimitiveTypes.boolean "ignore" <-- PatternAnalyser
+					Netbeans_v1.0.x.java.util.HashMap "propertyPatterns" <-- PatternAnalyser
+					Netbeans_v1.0.x.java.lang.String "WELL_KNOWN_LISTENERS 0..*" <-- EventSetPattern
+					Netbeans_v1.0.x.org.openide.src.MethodElement "addListenerMethod" <-- EventSetPattern
+					Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- EventSetPattern
+					JavaPrimitiveTypes.boolean "isUnicast" <-- EventSetPattern
+					Netbeans_v1.0.x.java.lang.String "name" <-- EventSetPattern
+					Netbeans_v1.0.x.org.openide.src.MethodElement "removeListenerMethod" <-- EventSetPattern
+					Netbeans_v1.0.x.org.openide.src.Type "type" <-- EventSetPattern
+					Netbeans_v1.0.x.org.openide.src.ClassElement "typeElement" <-- EventSetPattern
+					JavaPrimitiveTypes.int "READ_ONLY" <-- PropertyPattern
+					JavaPrimitiveTypes.int "READ_WRITE" <-- PropertyPattern
+					JavaPrimitiveTypes.int "WRITE_ONLY" <-- PropertyPattern
+					Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- PropertyPattern
+					Netbeans_v1.0.x.org.openide.src.FieldElement "estimatedField" <-- PropertyPattern
+					Netbeans_v1.0.x.org.openide.src.MethodElement "getterMethod" <-- PropertyPattern
+					Netbeans_v1.0.x.java.lang.String "name" <-- PropertyPattern
+					Netbeans_v1.0.x.org.openide.src.MethodElement "setterMethod" <-- PropertyPattern
+					Netbeans_v1.0.x.org.openide.src.Type "type" <-- PropertyPattern
+					PatternAnalyser "patternAnalyser" <-- Pattern
+					Netbeans_v1.0.x.java.beans.PropertyChangeSupport "propertyChangeSupport" <-- Pattern
+					Pattern "pattern" <-- PatternNode
+					Netbeans_v1.0.x.org.openide.src.nodes.SourceOptions "sourceOptions" <-- PatternNode
+					JavaPrimitiveTypes.boolean "writeable" <-- PatternNode
+					Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory "brClazz" <-- BeansModule
+					Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory "brJava" <-- BeansModule
+					Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory "exClazz" <-- BeansModule
+					Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory "exJava" <-- BeansModule
+					JavaPrimitiveTypes.long "serialVersionUID" <-- BeansModule
+					Netbeans_v1.0.x.org.openide.util.actions.SystemAction "CLASS_ACTIONS 0..*" <-- PatternsBrowserFactory
+					JavaPrimitiveTypes.boolean "writeable" <-- PatternsBrowserFactory
+					JavaPrimitiveTypes.boolean "writeable" <-- PatternsExplorerFactory
+				}
+				package clazz {
+					class ClassDataObject {
+						-{const} APPLET: JavaPrimitiveTypes.int = 1
+						-{const} APPLICATION: JavaPrimitiveTypes.int = 2
+						-{const} PROP_ARGV: Netbeans_v1.0.x.java.lang.String = Arguments
+						-{const} PROP_EXECUTION: Netbeans_v1.0.x.java.lang.String = Execution
+						-{const} UNDECIDED: JavaPrimitiveTypes.int = 0
+						-{static} browserFactories: Netbeans_v1.0.x.java.util.ArrayList
+						-cookiesInitialized: JavaPrimitiveTypes.boolean
+						#execSupport: Netbeans_v1.0.x.org.openide.loaders.ExecSupport
+						-{static} explorerFactories: Netbeans_v1.0.x.java.util.ArrayList
+						#instanceSupport: Netbeans_v1.0.x.org.openide.loaders.InstanceSupport
+						{const} serialVersionUID: JavaPrimitiveTypes.long = -7355104884002106137
+						<<Create>> ClassDataObject(fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject, loader : ClassDataLoader)
+						{static} addBrowserFilterFactory(factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						{static} addExplorerFilterFactory(factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						-{static} addFactory(factories : Netbeans_v1.0.x.java.util.List, factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						#createNodeDelegate(): Netbeans_v1.0.x.org.openide.nodes.Node
+						-existInFolder(f : Netbeans_v1.0.x.org.openide.loaders.DataFolder): Netbeans_v1.0.x.java.lang.String
+						getBeanClass(): Netbeans_v1.0.x.java.lang.Class
+						{static} getBrowserFactory(): Netbeans_v1.0.x.org.openide.src.nodes.ElementNodeFactory
+						getClassName(): Netbeans_v1.0.x.java.lang.String
+						getCookie(type : Netbeans_v1.0.x.java.lang.Class): Netbeans_v1.0.x.org.openide.nodes.Node.Cookie
+						getElementsParent(): Netbeans_v1.0.x.org.openide.nodes.Node
+						getExecution(): JavaPrimitiveTypes.boolean
+						{static} getExplorerFactory(): Netbeans_v1.0.x.org.openide.src.nodes.ElementNodeFactory
+						getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+						getModifiers(): Netbeans_v1.0.x.java.lang.String
+						getParams(): Netbeans_v1.0.x.java.lang.String
+						getSuperclass(): Netbeans_v1.0.x.java.lang.Class
+						#handleCopy(f : Netbeans_v1.0.x.org.openide.loaders.DataFolder): Netbeans_v1.0.x.org.openide.loaders.DataObject
+						-initCookies()
+						isApplet(): JavaPrimitiveTypes.boolean
+						isCopyAllowed(): JavaPrimitiveTypes.boolean
+						isExecutable(): JavaPrimitiveTypes.boolean
+						isInterface(): JavaPrimitiveTypes.boolean
+						isJavaBean(): JavaPrimitiveTypes.boolean
+						isMoveAllowed(): JavaPrimitiveTypes.boolean
+						isRenameAllowed(): JavaPrimitiveTypes.boolean
+						-readObject(is : Netbeans_v1.0.x.java.io.ObjectInputStream)
+						{static} removeBrowserFilterFactory(factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						{static} removeExplorerFilterFactory(factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						-{static} removeFactory(factories : Netbeans_v1.0.x.java.util.List, factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						setExecution(internal : JavaPrimitiveTypes.boolean)
+						setParams(params : Netbeans_v1.0.x.java.lang.String)
+					}
+					class ClassElementNodeFactory {
+						-FACTORY_GETTER_NODE: FactoryGetterNode
+						-{static} defaultActions: Netbeans_v1.0.x.org.openide.util.actions.SystemAction [*]
+						-{static} instance: Netbeans_v1.0.x.org.openide.src.nodes.DefaultFactory
+						-tree: JavaPrimitiveTypes.boolean
+						<<Create>> ClassElementNodeFactory()
+						createClassNode(element : Netbeans_v1.0.x.org.openide.src.ClassElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createConstructorNode(element : Netbeans_v1.0.x.org.openide.src.ConstructorElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createFieldNode(element : Netbeans_v1.0.x.org.openide.src.FieldElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createMethodNode(element : Netbeans_v1.0.x.org.openide.src.MethodElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						getDefaultActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+						getGenerateForTree(): JavaPrimitiveTypes.boolean
+						{static} getInstance(): Netbeans_v1.0.x.org.openide.src.nodes.DefaultFactory
+						setGenerateForTree(tree : JavaPrimitiveTypes.boolean)
+					}
+					Netbeans_v1.0.x.org.openide.loaders.MultiDataObject <|-- ClassDataObject
+					Netbeans_v1.0.x.org.openide.cookies.ElementCookie <|.. ClassDataObject
+					Netbeans_v1.0.x.org.openide.loaders.MultiFileLoader <|-- ClassDataLoader
+					Netbeans_v1.0.x.org.openide.src.nodes.DefaultFactory <|-- ClassElementNodeFactory
+					JavaPrimitiveTypes.int "APPLET" <-- ClassDataObject
+					JavaPrimitiveTypes.int "APPLICATION" <-- ClassDataObject
+					Netbeans_v1.0.x.java.lang.String "PROP_ARGV" <-- ClassDataObject
+					Netbeans_v1.0.x.java.lang.String "PROP_EXECUTION" <-- ClassDataObject
+					JavaPrimitiveTypes.int "UNDECIDED" <-- ClassDataObject
+					Netbeans_v1.0.x.java.util.ArrayList "browserFactories" <-- ClassDataObject
+					JavaPrimitiveTypes.boolean "cookiesInitialized" <-- ClassDataObject
+					Netbeans_v1.0.x.org.openide.loaders.ExecSupport "execSupport" <-- ClassDataObject
+					Netbeans_v1.0.x.java.util.ArrayList "explorerFactories" <-- ClassDataObject
+					Netbeans_v1.0.x.org.openide.loaders.InstanceSupport "instanceSupport" <-- ClassDataObject
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ClassDataObject
+					Netbeans_v1.0.x.java.lang.String "CLASS_EXT" <-- ClassDataLoader
+					JavaPrimitiveTypes.char "INNER_CLASS_DIVIDER" <-- ClassDataLoader
+					Netbeans_v1.0.x.java.lang.String "SER_EXT" <-- ClassDataLoader
+					Netbeans_v1.0.x.org.openide.loaders.ExtensionList "extensions" <-- ClassDataLoader
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ClassDataLoader
+					ClassDataObject "cdo" <-- SourceSupport
+					Netbeans_v1.0.x.java.lang.Class "data" <-- SourceSupport
+					FactoryGetterNode "FACTORY_GETTER_NODE" <-- ClassElementNodeFactory
+					Netbeans_v1.0.x.org.openide.util.actions.SystemAction "defaultActions 0..*" <-- ClassElementNodeFactory
+					Netbeans_v1.0.x.org.openide.src.nodes.DefaultFactory "instance" <-- ClassElementNodeFactory
+					JavaPrimitiveTypes.boolean "tree" <-- ClassElementNodeFactory
+				}
+				package java {
+					class JavaDataObject {
+						{const} CONNECT_AUTO: JavaPrimitiveTypes.byte = 2
+						{const} CONNECT_CONFIRM: JavaPrimitiveTypes.byte = 1
+						{const} CONNECT_DEFAULT: JavaPrimitiveTypes.byte = 1
+						{const} CONNECT_NOT: JavaPrimitiveTypes.byte = 0
+						-{const} EA_CONNECTION: Netbeans_v1.0.x.java.lang.String = SourceSync
+						-{const} SKIP_REGISTRATION_PREFIX: Netbeans_v1.0.x.java.lang.String [*]
+						#alteranteParent: Netbeans_v1.0.x.org.openide.nodes.AbstractNode
+						-{static} browserFactories: Netbeans_v1.0.x.java.util.ArrayList
+						-changeListenerHook: Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+						-connectionListener: Netbeans_v1.0.x.org.openide.cookies.ConnectionCookie.Listener
+						#connectionSupport: Netbeans_v1.0.x.org.openide.loaders.ConnectionSupport
+						-{static} ecopts: Netbeans_v1.0.x.org.netbeans.modules.java.settings.ExternalCompilerSettings
+						#editorSupport: JavaEditor
+						#execSupport: Netbeans_v1.0.x.org.openide.loaders.ExecSupport
+						-{static} explorerFactories: Netbeans_v1.0.x.java.util.ArrayList
+						-fileChangeListener: Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+						-instanceSupport: JavaInstanceSupport
+						-{static} jopts: Netbeans_v1.0.x.org.netbeans.modules.java.settings.JavaSettings
+						{const} serialVersionUID: JavaPrimitiveTypes.long = -6035788991669336965
+						#sourceElement: Netbeans_v1.0.x.org.openide.src.SourceElement
+						sourceElementImpl: SourceElementImpl
+						<<Create>> JavaDataObject(pf : Netbeans_v1.0.x.org.openide.filesystems.FileObject, loader : Netbeans_v1.0.x.org.openide.loaders.MultiFileLoader)
+						{static} addBrowserFilterFactory(factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						{static} addExplorerFilterFactory(factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						-{static} addFactory(factories : Netbeans_v1.0.x.java.util.List, factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						addSourceChangeListener(previousPrimary : Netbeans_v1.0.x.org.openide.filesystems.FileObject)
+						#connectionNotify(event : Netbeans_v1.0.x.org.openide.cookies.ConnectionCookie.Event, changeProcessors : Netbeans_v1.0.x.java.util.LinkedList): JavaPrimitiveTypes.boolean
+						#createCompiler(job : Netbeans_v1.0.x.org.openide.compiler.CompilerJob, type : Netbeans_v1.0.x.java.lang.Class): Netbeans_v1.0.x.org.openide.compiler.Compiler
+						{static} createCompilerForFileObject(dependencies : Netbeans_v1.0.x.org.openide.compiler.Compiler, job : Netbeans_v1.0.x.org.openide.compiler.CompilerJob, fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject, type : Netbeans_v1.0.x.java.lang.Class): Netbeans_v1.0.x.org.openide.compiler.Compiler
+						#createJavaEditor(): JavaEditor
+						#createNodeDelegate(): Netbeans_v1.0.x.org.openide.nodes.Node
+						getAllListenersMask(): JavaPrimitiveTypes.int
+						{static} getBrowserFactory(): Netbeans_v1.0.x.org.openide.src.nodes.ElementNodeFactory
+						getConnectionSupport(): Netbeans_v1.0.x.org.openide.loaders.ConnectionSupport
+						getElementsParent(): Netbeans_v1.0.x.org.openide.nodes.Node
+						{static} getExplorerFactory(): Netbeans_v1.0.x.org.openide.src.nodes.ElementNodeFactory
+						-{static} getExternalCompilerSettings(): Netbeans_v1.0.x.org.netbeans.modules.java.settings.ExternalCompilerSettings
+						getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+						getJavaEditor(): JavaEditor
+						-{static} getJavaSettings(): Netbeans_v1.0.x.org.netbeans.modules.java.settings.JavaSettings
+						getSource(): Netbeans_v1.0.x.org.openide.src.SourceElement
+						getSourceElementImpl(): SourceElementImpl
+						getSynchronizationType(): JavaPrimitiveTypes.byte
+						#handleCopy(df : Netbeans_v1.0.x.org.openide.loaders.DataFolder): Netbeans_v1.0.x.org.openide.loaders.DataObject
+						#handleCreateFromTemplate(df : Netbeans_v1.0.x.org.openide.loaders.DataFolder, name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.org.openide.loaders.DataObject
+						#handleMove(df : Netbeans_v1.0.x.org.openide.loaders.DataFolder): Netbeans_v1.0.x.org.openide.filesystems.FileObject
+						#handleRename(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.org.openide.filesystems.FileObject
+						-init()
+						-readObject(in : Netbeans_v1.0.x.java.io.ObjectInputStream)
+						#registerForName(id : Netbeans_v1.0.x.org.openide.src.Identifier, type : Type)
+						-registration(id : Netbeans_v1.0.x.org.openide.src.Identifier, type : Type, register : JavaPrimitiveTypes.boolean)
+						{static} removeBrowserFilterFactory(factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						{static} removeExplorerFilterFactory(factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						-{static} removeFactory(factories : Netbeans_v1.0.x.java.util.List, factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						removeSecondaryEntryAccess(fe : Netbeans_v1.0.x.org.openide.loaders.MultiDataObject.Entry)
+						setModified(modif : JavaPrimitiveTypes.boolean)
+						setSynchronizationType(type : JavaPrimitiveTypes.byte)
+						startChangeProcessors(changeProcessors : Netbeans_v1.0.x.java.util.LinkedList)
+						#unregisterForName(id : Netbeans_v1.0.x.org.openide.src.Identifier, type : Type)
+						updateInstanceCookie()
+						{static} updateSource(jdo : JavaDataObject, dest : Netbeans_v1.0.x.org.openide.filesystems.FileObject, oldName : Netbeans_v1.0.x.java.lang.String, save : JavaPrimitiveTypes.boolean)
+						{static} updateSourceStart(jdo : JavaDataObject, dest : Netbeans_v1.0.x.org.openide.filesystems.FileObject, oldName : Netbeans_v1.0.x.java.lang.String, save : JavaPrimitiveTypes.boolean)
+					}
+					class JavaElementNodeFactory {
+						-{const} CLASS_ACTIONS: Netbeans_v1.0.x.org.openide.util.actions.SystemAction [*]
+						{const} DEFAULT: Netbeans_v1.0.x.org.openide.src.nodes.DefaultFactory
+						-{const} DEFAULT_ACTIONS: Netbeans_v1.0.x.org.openide.util.actions.SystemAction [*]
+						-FACTORY_GETTER_NODE: Netbeans_v1.0.x.org.openide.nodes.Node
+						-{const} INITIALIZER_ACTIONS: Netbeans_v1.0.x.org.openide.util.actions.SystemAction [*]
+						-tree: JavaPrimitiveTypes.boolean
+						<<Create>> JavaElementNodeFactory()
+						#createClassChildren(element : Netbeans_v1.0.x.org.openide.src.ClassElement): Netbeans_v1.0.x.org.openide.nodes.Children
+						createClassNode(element : Netbeans_v1.0.x.org.openide.src.ClassElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createConstructorNode(element : Netbeans_v1.0.x.org.openide.src.ConstructorElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createFieldNode(element : Netbeans_v1.0.x.org.openide.src.FieldElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createInitializerNode(element : Netbeans_v1.0.x.org.openide.src.InitializerElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createMethodNode(element : Netbeans_v1.0.x.org.openide.src.MethodElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						getGenerateForTree(): JavaPrimitiveTypes.boolean
+						setGenerateForTree(tree : JavaPrimitiveTypes.boolean)
+					}
+					Netbeans_v1.0.x.org.openide.loaders.MultiDataObject <|-- JavaDataObject
+					Netbeans_v1.0.x.org.openide.cookies.ElementCookie <|.. JavaDataObject
+					Netbeans_v1.0.x.org.openide.text.EditorSupport <|-- JavaEditor
+					Netbeans_v1.0.x.org.openide.cookies.SourceCookie.Editor <|.. JavaEditor
+					ElementImpl <|-- SourceElementImpl
+					Netbeans_v1.0.x.org.openide.src.Element.Impl <|.. SourceElementImpl
+					Netbeans_v1.0.x.org.openide.src.Element.Impl <|.. ElementImpl
+					Netbeans_v1.0.x.org.openide.src.ElementProperties <|.. ElementImpl
+					Netbeans_v1.0.x.org.openide.cookies.OpenCookie <|.. ElementImpl
+					Item <|.. ElementImpl
+					Netbeans_v1.0.x.org.openide.src.JavaDoc <|.. JavaDocImpl
+					MemberElementImpl <|-- ConstructorElementImpl
+					Netbeans_v1.0.x.org.openide.src.ConstructorElement.Impl <|.. ConstructorElementImpl
+					ElementImpl <|-- MemberElementImpl
+					Netbeans_v1.0.x.org.openide.src.MemberElement.Impl <|.. MemberElementImpl
+					Netbeans_v1.0.x.java.io.Serializable <|.. ElementsCollection
+					Netbeans_v1.0.x.org.openide.src.ElementProperties <|.. ElementsCollection
+					MemberElementImpl <|-- ClassElementImpl
+					Netbeans_v1.0.x.org.openide.src.MemberElement.Impl <|.. ClassElementImpl
+					Netbeans_v1.0.x.javax.swing.text.Element <|.. TextElement
+					Netbeans_v1.0.x.org.openide.src.nodes.DefaultFactory <|-- JavaElementNodeFactory
+					JavaPrimitiveTypes.byte "CONNECT_AUTO" <-- JavaDataObject
+					JavaPrimitiveTypes.byte "CONNECT_CONFIRM" <-- JavaDataObject
+					JavaPrimitiveTypes.byte "CONNECT_DEFAULT" <-- JavaDataObject
+					JavaPrimitiveTypes.byte "CONNECT_NOT" <-- JavaDataObject
+					Netbeans_v1.0.x.java.lang.String "EA_CONNECTION" <-- JavaDataObject
+					Netbeans_v1.0.x.java.lang.String "SKIP_REGISTRATION_PREFIX 0..*" <-- JavaDataObject
+					Netbeans_v1.0.x.org.openide.nodes.AbstractNode "alteranteParent" <-- JavaDataObject
+					Netbeans_v1.0.x.java.util.ArrayList "browserFactories" <-- JavaDataObject
+					Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener "changeListenerHook" <-- JavaDataObject
+					Netbeans_v1.0.x.org.openide.cookies.ConnectionCookie.Listener "connectionListener" <-- JavaDataObject
+					Netbeans_v1.0.x.org.openide.loaders.ConnectionSupport "connectionSupport" <-- JavaDataObject
+					Netbeans_v1.0.x.org.netbeans.modules.java.settings.ExternalCompilerSettings "ecopts" <-- JavaDataObject
+					Netbeans_v1.0.x.java.lang.String "MAGIC_PREFIX" <-- JavaEditor
+					JavaPrimitiveTypes.byte "NEW_LINE_N" <-- JavaEditor
+					JavaPrimitiveTypes.byte "NEW_LINE_R" <-- JavaEditor
+					JavaPrimitiveTypes.byte "NEW_LINE_RN" <-- JavaEditor
+					Netbeans_v1.0.x.java.lang.String "SECTION_MAGICS 0..*" <-- JavaEditor
+					JavaPrimitiveTypes.int "T_BEGIN" <-- JavaEditor
+					JavaPrimitiveTypes.int "T_END" <-- JavaEditor
+					JavaPrimitiveTypes.int "T_FIRST" <-- JavaEditor
+					JavaPrimitiveTypes.int "T_HEADER" <-- JavaEditor
+					JavaPrimitiveTypes.int "T_HEADEREND" <-- JavaEditor
+					JavaPrimitiveTypes.int "T_LAST" <-- JavaEditor
+					JavaPrimitiveTypes.int "T_LINE" <-- JavaEditor
+					JavaPrimitiveTypes.boolean "componentsCreated" <-- JavaEditor
+					JavaPrimitiveTypes.boolean "documentSaved" <-- JavaEditor
+					JavaPrimitiveTypes.boolean "initial" <-- JavaEditor
+					JavaPrimitiveTypes.byte "newLineType" <-- JavaEditor
+					Netbeans_v1.0.x.java.lang.Object "parsedHook" <-- JavaEditor
+					Netbeans_v1.0.x.java.util.HashMap "sections" <-- JavaEditor
+					Netbeans_v1.0.x.org.netbeans.modules.java.settings.JavaSettings "settings" <-- JavaEditor
+					Netbeans_v1.0.x.javax.swing.Timer "timer" <-- JavaEditor
+					Netbeans_v1.0.x.java.lang.String "name" <-- GuardedSection
+					JavaPrimitiveTypes.boolean "valid" <-- GuardedSection
+					Netbeans_v1.0.x.org.openide.text.PositionBounds "body" <-- InteriorSection
+					Netbeans_v1.0.x.org.openide.text.PositionBounds "bottom" <-- InteriorSection
+					Netbeans_v1.0.x.org.openide.text.PositionBounds "header" <-- InteriorSection
+					JavaPrimitiveTypes.int "SELECTED_NODES_DELAY" <-- JavaEditorComponent
+					Netbeans_v1.0.x.javax.swing.event.CaretListener "caretListener" <-- JavaEditorComponent
+					JavaPrimitiveTypes.int "lastCaretOffset" <-- JavaEditorComponent
+					JavaPrimitiveTypes.long "serialVersionUID" <-- Event
+					Listener "parsingListener" <-- JavaEditorComponent
+					JavaPrimitiveTypes.long "serialVersionUID" <-- JavaEditorComponent
+					JavaEditor "support" <-- JavaEditorComponent
+					Netbeans_v1.0.x.javax.swing.Timer "timerSelNodes" <-- JavaEditorComponent
+					Netbeans_v1.0.x.org.openide.text.PositionBounds "bounds" <-- SimpleSection
+					Netbeans_v1.0.x.java.lang.StringBuffer "buf" <-- GuardedReader
+					JavaPrimitiveTypes.int "counter" <-- GuardedReader
+					JavaPrimitiveTypes.boolean "justFilter" <-- GuardedReader
+					Netbeans_v1.0.x.java.util.LinkedList "list" <-- GuardedReader
+					JavaPrimitiveTypes.int "newLineTypes 0..*" <-- GuardedReader
+					JavaPrimitiveTypes.int "position" <-- GuardedReader
+					Netbeans_v1.0.x.java.io.BufferedReader "reader" <-- GuardedReader
+					JavaPrimitiveTypes.int "begin" <-- SectionDesc
+					JavaPrimitiveTypes.int "end" <-- SectionDesc
+					Netbeans_v1.0.x.java.lang.String "name" <-- SectionDesc
+					JavaPrimitiveTypes.int "type" <-- SectionDesc
+					SectionDesc "current" <-- GuardedWriter
+					JavaPrimitiveTypes.int "offsetCounter" <-- GuardedWriter
+					Netbeans_v1.0.x.java.util.Iterator "sections" <-- GuardedWriter
+					JavaPrimitiveTypes.boolean "wasNewLine" <-- GuardedWriter
+					Netbeans_v1.0.x.java.io.BufferedWriter "writer" <-- GuardedWriter
+					JavaPrimitiveTypes.byte "newLineType" <-- NewLineOutputStream
+					Netbeans_v1.0.x.java.io.OutputStream "stream" <-- NewLineOutputStream
+					JavaEditor "editorSupport" <-- JavaDataObject
+					Netbeans_v1.0.x.org.openide.loaders.ExecSupport "execSupport" <-- JavaDataObject
+					Netbeans_v1.0.x.java.util.ArrayList "explorerFactories" <-- JavaDataObject
+					Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener "fileChangeListener" <-- JavaDataObject
+					Netbeans_v1.0.x.org.openide.loaders.MultiDataObject.Entry "entry" <-- JavaInstanceSupport
+					JavaInstanceSupport "instanceSupport" <-- JavaDataObject
+					Netbeans_v1.0.x.org.netbeans.modules.java.settings.JavaSettings "jopts" <-- JavaDataObject
+					JavaPrimitiveTypes.long "serialVersionUID" <-- JavaDataObject
+					Netbeans_v1.0.x.org.openide.src.SourceElement "sourceElement" <-- JavaDataObject
+					Netbeans_v1.0.x.org.openide.text.PositionBounds "bodyBounds" <-- ElementImpl
+					Netbeans_v1.0.x.java.lang.Object "bodyHash" <-- ElementImpl
+					Netbeans_v1.0.x.org.openide.text.PositionBounds "bounds" <-- ElementImpl
+					Netbeans_v1.0.x.org.openide.nodes.CookieSet "cookieSet" <-- ElementImpl
+					Netbeans_v1.0.x.org.openide.text.PositionBounds "docBounds" <-- ElementImpl
+					Netbeans_v1.0.x.org.openide.src.Element "element" <-- ElementImpl
+					Netbeans_v1.0.x.org.openide.text.PositionBounds "headerBounds" <-- ElementImpl
+					ElementImpl "impl" <-- JavaDocImpl
+					Netbeans_v1.0.x.org.openide.src.JavaDoc "javaDoc" <-- JavaDocImpl
+					JavaPrimitiveTypes.int "mod" <-- MemberElementImpl
+					Netbeans_v1.0.x.org.openide.src.Identifier "name" <-- MemberElementImpl
+					JavaPrimitiveTypes.long "serialVersionUID" <-- MemberElementImpl
+					JavaPrimitiveTypes.boolean "updateNeeded" <-- MemberElementImpl
+					Netbeans_v1.0.x.org.openide.src.Identifier "exceptions 0..*" <-- ConstructorElementImpl
+					Netbeans_v1.0.x.org.openide.src.MethodParameter "parameters 0..*" <-- ConstructorElementImpl
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ConstructorElementImpl
+					JavaDocImpl "javadoc" <-- ElementImpl
+					JavaPrimitiveTypes.boolean "locked" <-- ElementImpl
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ElementImpl
+					Netbeans_v1.0.x.java.beans.PropertyChangeSupport "support" <-- ElementImpl
+					Netbeans_v1.0.x.java.lang.ref.Reference "textElementRef" <-- ElementImpl
+					JavaPrimitiveTypes.boolean "valid" <-- ElementImpl
+					Netbeans_v1.0.x.java.util.LinkedList "array" <-- ElementsCollection
+					ElementImpl "owner" <-- ElementsCollection
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ElementsCollection
+					JavaPrimitiveTypes.boolean "skipBoundsCreation" <-- ElementsCollection
+					JavaPrimitiveTypes.long "serialVersionUID" <-- Member
+					Netbeans_v1.0.x.java.util.Comparator "COMPARATORS 0..*" <-- Class
+					Netbeans_v1.0.x.org.openide.src.ClassElement "EMPTY 0..*" <-- Class
+					JavaPrimitiveTypes.long "serialVersionUID" <-- Class
+					Class "classes" <-- ClassElementImpl
+					Netbeans_v1.0.x.java.util.Comparator "COMPARATORS 0..*" <-- Constructor
+					Netbeans_v1.0.x.org.openide.src.ConstructorElement "EMPTY 0..*" <-- Constructor
+					JavaPrimitiveTypes.long "serialVersionUID" <-- Constructor
+					Constructor "constructors" <-- ClassElementImpl
+					Netbeans_v1.0.x.java.util.Comparator "COMPARATORS 0..*" <-- Field
+					Netbeans_v1.0.x.org.openide.src.FieldElement "EMPTY 0..*" <-- Field
+					JavaPrimitiveTypes.long "serialVersionUID" <-- Field
+					Field "fields" <-- ClassElementImpl
+					Netbeans_v1.0.x.java.lang.Object "hook" <-- ClassElementImpl
+					Netbeans_v1.0.x.org.openide.src.InitializerElement "EMPTY 0..*" <-- Initializer
+					JavaPrimitiveTypes.long "serialVersionUID" <-- Initializer
+					Initializer "initializers" <-- ClassElementImpl
+					Netbeans_v1.0.x.org.openide.src.Identifier "interfaces 0..*" <-- ClassElementImpl
+					JavaPrimitiveTypes.boolean "isClass" <-- ClassElementImpl
+					Netbeans_v1.0.x.java.util.Comparator "COMPARATORS 0..*" <-- Method
+					Netbeans_v1.0.x.org.openide.src.MethodElement "EMPTY 0..*" <-- Method
+					JavaPrimitiveTypes.long "serialVersionUID" <-- Method
+					Method "methods" <-- ClassElementImpl
+					JavaPrimitiveTypes.long "serialVersionUID" <-- ClassElementImpl
+					Netbeans_v1.0.x.org.openide.src.Identifier "superclass" <-- ClassElementImpl
+					Netbeans_v1.0.x.java.util.LinkedList "classes" <-- Class
+					Netbeans_v1.0.x.java.util.LinkedList "constructors" <-- Class
+					Netbeans_v1.0.x.java.util.LinkedList "fields" <-- Class
+					ClassElementImpl "impl" <-- Class
+					Netbeans_v1.0.x.java.util.LinkedList "initializers" <-- Class
+					Netbeans_v1.0.x.java.util.LinkedList "methods" <-- Class
+					JavaPrimitiveTypes.boolean "compareName" <-- ConstructorComparator
+					JavaPrimitiveTypes.boolean "compareParams" <-- ConstructorComparator
+					ElementImpl "element" <-- TextElement
+					JavaPrimitiveTypes.boolean "DEBUG" <-- SourceElementImpl
+					Netbeans_v1.0.x.java.lang.ref.Reference "EMPTY_REF" <-- SourceElementImpl
+					Netbeans_v1.0.x.org.openide.util.RequestProcessor "PARSING_RP" <-- SourceElementImpl
+					Netbeans_v1.0.x.java.lang.ref.Reference "dataRef" <-- SourceElementImpl
+					JavaPrimitiveTypes.int "dataRefCounter" <-- SourceElementImpl
+					JavaPrimitiveTypes.boolean "dirty" <-- SourceElementImpl
+					Class "classes" <-- DataRef
+					JavaPrimitiveTypes.boolean "forceParsing" <-- DataRef
+					Netbeans_v1.0.x.org.openide.src.Import "imports 0..*" <-- DataRef
+					Netbeans_v1.0.x.org.openide.text.PositionBounds "importsBounds 0..*" <-- DataRef
+					JavaDataObject "jdo" <-- DataRef
+					JavaPrimitiveTypes.int "number" <-- DataRef
+					Netbeans_v1.0.x.org.openide.text.PositionBounds "packageBounds" <-- DataRef
+					Netbeans_v1.0.x.org.openide.src.Identifier "packageId" <-- DataRef
+					JavaPrimitiveTypes.long "serialVersionUID" <-- DataRef
+					JavaPrimitiveTypes.boolean "virgin" <-- DataRef
+					DataRef "hookForEmptySources" <-- SourceElementImpl
+					JavaDataObject "jdo" <-- SourceElementImpl
+					Netbeans_v1.0.x.java.util.HashMap "map" <-- SourceElementImpl
+					Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task "parsingTask" <-- SourceElementImpl
+					JavaPrimitiveTypes.long "serialVersionUID" <-- SourceElementImpl
+					JavaPrimitiveTypes.int "status" <-- SourceElementImpl
+					Netbeans_v1.0.x.java.lang.ref.Reference "v8Engine" <-- SourceElementImpl
+					JavaPrimitiveTypes.int "filter" <-- Type
+					JavaPrimitiveTypes.long "serialVersionUID" <-- Type
+					SourceElementImpl "sourceElementImpl" <-- JavaDataObject
+					Netbeans_v1.0.x.org.openide.util.actions.SystemAction "CLASS_ACTIONS 0..*" <-- JavaElementNodeFactory
+					Netbeans_v1.0.x.org.openide.src.nodes.DefaultFactory "DEFAULT" <-- JavaElementNodeFactory
+					Netbeans_v1.0.x.org.openide.util.actions.SystemAction "DEFAULT_ACTIONS 0..*" <-- JavaElementNodeFactory
+					Netbeans_v1.0.x.org.openide.nodes.Node "FACTORY_GETTER_NODE" <-- JavaElementNodeFactory
+					Netbeans_v1.0.x.org.openide.util.actions.SystemAction "INITIALIZER_ACTIONS 0..*" <-- JavaElementNodeFactory
+					JavaPrimitiveTypes.boolean "tree" <-- JavaElementNodeFactory
+				}
+				package javadoc {
+					package comments {
+						class JavaDocPropertySupportFactory {
+							-{const} PROP_JAVADOCCOMMENT: Netbeans_v1.0.x.java.lang.String = javadocComment
+							#{const} bundle: Netbeans_v1.0.x.java.util.ResourceBundle
+							<<Create>> JavaDocPropertySupportFactory()
+							{static} addClassJavaDocProperty(node : Netbeans_v1.0.x.org.openide.nodes.Node)
+							{static} addFieldJavaDocProperty(node : Netbeans_v1.0.x.org.openide.nodes.Node)
+							{static} addMethodJavaDocProperty(node : Netbeans_v1.0.x.org.openide.nodes.Node)
+							#{static} createClassJavaDocProperty(canW : JavaPrimitiveTypes.boolean, node : Netbeans_v1.0.x.org.openide.nodes.Node): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+							createClassNode(element : Netbeans_v1.0.x.org.openide.src.ClassElement): Netbeans_v1.0.x.org.openide.nodes.Node
+							createConstructorNode(element : Netbeans_v1.0.x.org.openide.src.ConstructorElement): Netbeans_v1.0.x.org.openide.nodes.Node
+							#{static} createFieldJavaDocProperty(canW : JavaPrimitiveTypes.boolean, node : Netbeans_v1.0.x.org.openide.nodes.Node): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+							createFieldNode(element : Netbeans_v1.0.x.org.openide.src.FieldElement): Netbeans_v1.0.x.org.openide.nodes.Node
+							#{static} createMethodJavaDocProperty(canW : JavaPrimitiveTypes.boolean, node : Netbeans_v1.0.x.org.openide.nodes.Node): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+							createMethodNode(element : Netbeans_v1.0.x.org.openide.src.MethodElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						}
+						Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory <|-- JavaDocPropertySupportFactory
+						Netbeans_v1.0.x.java.lang.String "PROP_JAVADOCCOMMENT" <-- JavaDocPropertySupportFactory
+						Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- JavaDocPropertySupportFactory
+					}
+					class JavadocModule {
+						-{static} numberOfStarts: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 984124010415492146
+						<<Create>> JavadocModule()
+						{static} installJavadocDirectories()
+						installed()
+						-invokeDynamic(className : Netbeans_v1.0.x.java.lang.String, methodName : Netbeans_v1.0.x.java.lang.String, factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						{static} mount(root : Netbeans_v1.0.x.java.io.File, testSearchability : JavaPrimitiveTypes.boolean)
+						readExternal(objectInput : Netbeans_v1.0.x.java.io.ObjectInput)
+						restored()
+						uninstalled()
+						writeExternal(objectOutput : Netbeans_v1.0.x.java.io.ObjectOutput)
+					}
+					Netbeans_v1.0.x.org.openide.modules.ModuleInstall <|-- JavadocModule
+					JavaPrimitiveTypes.int "numberOfStarts" <-- JavadocModule
+					JavaPrimitiveTypes.long "serialVersionUID" <-- JavadocModule
+				}
+				package rmi {
+					class RMIModule {
+						{static} rp: Netbeans_v1.0.x.org.openide.util.RequestProcessor
+						{const} serialVersionUID: JavaPrimitiveTypes.long = -4791113880926743826
+						<<Create>> RMIModule()
+						closing(): JavaPrimitiveTypes.boolean
+						-copyOther()
+						-copyTemplates()
+						{static} getRP(): Netbeans_v1.0.x.org.openide.util.RequestProcessor
+						installed()
+						-invokeDynamic(className : Netbeans_v1.0.x.java.lang.String, methodName : Netbeans_v1.0.x.java.lang.String, factory : Netbeans_v1.0.x.org.openide.src.nodes.FilterFactory)
+						restored()
+						-{static} startRP()
+						-{static} stopRP()
+						uninstalled()
+					}
+					Netbeans_v1.0.x.org.openide.modules.ModuleInstall <|-- RMIModule
+					Netbeans_v1.0.x.org.openide.util.RequestProcessor "rp" <-- RMIModule
+					JavaPrimitiveTypes.long "serialVersionUID" <-- RMIModule
+				}
+			}
+		}
+		package openide {
+			package nodes {
+				class AbstractNode {
+					-{const} DEFAULT_ICON_BASE: Netbeans_v1.0.x.java.lang.String = /org/openide/resources/defaultNode
+					-{const} ICON_BASE: JavaPrimitiveTypes.int = -1
+					-{const} NO_NEW_TYPES: Netbeans_v1.0.x.org.openide.util.datatransfer.NewType [*]
+					-{const} NO_PASTE_TYPES: Netbeans_v1.0.x.org.openide.util.datatransfer.PasteType [*]
+					-{const} NO_PROPERTY_SETS: PropertySet [*]
+					-{const} OPENED_ICON_BASE: JavaPrimitiveTypes.int = 3
+					-cookieL: Netbeans_v1.0.x.javax.swing.event.ChangeListener
+					-cookieSet: CookieSet
+					-defaultAction: Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					#displayFormat: Netbeans_v1.0.x.java.text.MessageFormat
+					-iconBase: Netbeans_v1.0.x.java.lang.Object [*]
+					-{const} icons: Netbeans_v1.0.x.java.text.MessageFormat [*]
+					-{static} moduleTestIcons: Netbeans_v1.0.x.java.lang.Boolean
+					-sheet: Sheet
+					-sheetL: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					#systemActions: Netbeans_v1.0.x.org.openide.util.actions.SystemAction [*]
+					<<Create>> AbstractNode(children : Children)
+					canCopy(): JavaPrimitiveTypes.boolean
+					canCut(): JavaPrimitiveTypes.boolean
+					canDestroy(): JavaPrimitiveTypes.boolean
+					canRename(): JavaPrimitiveTypes.boolean
+					clipboardCopy(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+					clipboardCut(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+					cloneNode(): Node
+					#createActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					#createPasteTypes(t : Netbeans_v1.0.x.java.awt.datatransfer.Transferable, s : Netbeans_v1.0.x.java.util.List)
+					#createSheet(): Sheet
+					drag(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+					-findIcon(type : JavaPrimitiveTypes.int, ib : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.awt.Image
+					getActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					getCookie(type : Netbeans_v1.0.x.java.lang.Class): Cookie
+					getCookieSet(): CookieSet
+					getCustomizer(): Netbeans_v1.0.x.java.awt.Component
+					getDefaultAction(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					getDropType(t : Netbeans_v1.0.x.java.awt.datatransfer.Transferable, action : JavaPrimitiveTypes.int, index : JavaPrimitiveTypes.int): Netbeans_v1.0.x.org.openide.util.datatransfer.PasteType
+					getHandle(): Handle
+					getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+					getIcon(type : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.awt.Image
+					getNewTypes(): Netbeans_v1.0.x.org.openide.util.datatransfer.NewType
+					getOpenedIcon(type : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.awt.Image
+					getPasteTypes(t : Netbeans_v1.0.x.java.awt.datatransfer.Transferable): Netbeans_v1.0.x.org.openide.util.datatransfer.PasteType
+					getPropertySets(): PropertySet
+					#getSheet(): Sheet
+					hasCustomizer(): JavaPrimitiveTypes.boolean
+					#setCookieSet(s : CookieSet)
+					setDefaultAction(action : Netbeans_v1.0.x.org.openide.util.actions.SystemAction)
+					setIconBase(base : Netbeans_v1.0.x.java.lang.String)
+					setName(s : Netbeans_v1.0.x.java.lang.String)
+					#setSheet(s : Sheet)
+				}
+				abstract class Node {
+					{const} EMPTY: Node
+					{const} PROP_COOKIE: Netbeans_v1.0.x.java.lang.String = cookie
+					{const} PROP_DISPLAY_NAME: Netbeans_v1.0.x.java.lang.String = displayName
+					{const} PROP_ICON: Netbeans_v1.0.x.java.lang.String = icon
+					{const} PROP_NAME: Netbeans_v1.0.x.java.lang.String = name
+					{const} PROP_OPENED_ICON: Netbeans_v1.0.x.java.lang.String = openedIcon
+					{const} PROP_PARENT_NODE: Netbeans_v1.0.x.java.lang.String = parentNode
+					{const} PROP_PROPERTY_SETS: Netbeans_v1.0.x.java.lang.String = propertySets
+					{const} PROP_SHORT_DESCRIPTION: Netbeans_v1.0.x.java.lang.String = shortDescription
+					hierarchy: Children
+					-listeners: Netbeans_v1.0.x.javax.swing.event.EventListenerList
+					-parent: Children
+					#<<Create>> Node(h : Children)
+					addNodeListener(l : NodeListener)
+					addPropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					assignTo(parent : Children, index : JavaPrimitiveTypes.int)
+					canCopy(): JavaPrimitiveTypes.boolean
+					canCut(): JavaPrimitiveTypes.boolean
+					canDestroy(): JavaPrimitiveTypes.boolean
+					canRename(): JavaPrimitiveTypes.boolean
+					clipboardCopy(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+					clipboardCut(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+					#clone(): Netbeans_v1.0.x.java.lang.Object
+					cloneNode(): Node
+					deassignFrom(parent : Children)
+					destroy()
+					drag(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+					#fireCookieChange()
+					#fireDisplayNameChange(o : Netbeans_v1.0.x.java.lang.String, n : Netbeans_v1.0.x.java.lang.String)
+					#fireIconChange()
+					#fireNameChange(o : Netbeans_v1.0.x.java.lang.String, n : Netbeans_v1.0.x.java.lang.String)
+					-fireNodeDestroyed()
+					#fireOpenedIconChange()
+					fireOwnPropertyChange(name : Netbeans_v1.0.x.java.lang.String, o : Netbeans_v1.0.x.java.lang.Object, n : Netbeans_v1.0.x.java.lang.Object)
+					fireParentNodeChange(o : Node, n : Node)
+					#firePropertyChange(name : Netbeans_v1.0.x.java.lang.String, o : Netbeans_v1.0.x.java.lang.Object, n : Netbeans_v1.0.x.java.lang.Object)
+					#firePropertySetsChange(o : PropertySet, n : PropertySet)
+					fireReorderChange(indices : JavaPrimitiveTypes.int)
+					#fireShortDescriptionChange(o : Netbeans_v1.0.x.java.lang.String, n : Netbeans_v1.0.x.java.lang.String)
+					fireSubNodesChange(addAction : JavaPrimitiveTypes.boolean, delta : Node, from : Node)
+					getActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					getChildren(): Children
+					getContextActions(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					getContextMenu(): Netbeans_v1.0.x.javax.swing.JPopupMenu
+					getCookie(type : Netbeans_v1.0.x.java.lang.Class): Cookie
+					getCustomizer(): Netbeans_v1.0.x.java.awt.Component
+					getDefaultAction(): Netbeans_v1.0.x.org.openide.util.actions.SystemAction
+					getDropType(t : Netbeans_v1.0.x.java.awt.datatransfer.Transferable, action : JavaPrimitiveTypes.int, index : JavaPrimitiveTypes.int): Netbeans_v1.0.x.org.openide.util.datatransfer.PasteType
+					getHandle(): Handle
+					getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+					getIcon(type : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.awt.Image
+					getNewTypes(): Netbeans_v1.0.x.org.openide.util.datatransfer.NewType
+					getOpenedIcon(type : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.awt.Image
+					getParentNode(): Node
+					getPasteTypes(t : Netbeans_v1.0.x.java.awt.datatransfer.Transferable): Netbeans_v1.0.x.org.openide.util.datatransfer.PasteType
+					getPropertySets(): PropertySet
+					{static} getString(resName : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.String
+					hasCustomizer(): JavaPrimitiveTypes.boolean
+					isLeaf(): JavaPrimitiveTypes.boolean
+					removeNodeListener(l : NodeListener)
+					removePropertyChangeListener(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener)
+					setDisplayName(s : Netbeans_v1.0.x.java.lang.String)
+					setName(s : Netbeans_v1.0.x.java.lang.String)
+					setShortDescription(s : Netbeans_v1.0.x.java.lang.String)
+					toString(): Netbeans_v1.0.x.java.lang.String
+				}
+				Node <|-- AbstractNode
+				Netbeans_v1.0.x.java.beans.FeatureDescriptor <|-- Node
+				NodeAdapter <|-- ChildrenArray
+				NodeListener <|.. NodeAdapter
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|-- NodeListener
+				NodeEvent <|-- NodeMemberEvent
+				Netbeans_v1.0.x.java.util.EventObject <|-- NodeEvent
+				NodeEvent <|-- NodeReorderEvent
+				Property <|-- PropertySupport
+				Node <|-- FilterNode
+				Netbeans_v1.0.x.java.lang.String "PROP_COOKIE" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_DISPLAY_NAME" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_ICON" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_NAME" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_OPENED_ICON" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_PARENT_NODE" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_PROPERTY_SETS" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_SHORT_DESCRIPTION" <-- Node
+				Netbeans_v1.0.x.org.openide.util.Mutex "MUTEX" <-- Children
+				Netbeans_v1.0.x.java.lang.ref.Reference "array" <-- Children
+				Netbeans_v1.0.x.java.util.Collection "entries" <-- Children
+				Netbeans_v1.0.x.java.util.Map "map" <-- Children
+				Node "parent" <-- Children
+				Entry "entry" <-- Info
+				JavaPrimitiveTypes.int "length" <-- Info
+				JavaPrimitiveTypes.long "serialVersionUID" <-- NodeEvent
+				JavaPrimitiveTypes.boolean "add" <-- NodeMemberEvent
+				Node "delta 0..*" <-- NodeMemberEvent
+				Node "from 0..*" <-- NodeMemberEvent
+				JavaPrimitiveTypes.int "indices 0..*" <-- NodeMemberEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- NodeMemberEvent
+				JavaPrimitiveTypes.int "newIndices 0..*" <-- NodeReorderEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- NodeReorderEvent
+				Children "children" <-- ChildrenArray
+				Netbeans_v1.0.x.java.util.WeakHashMap "map" <-- ChildrenArray
+				Node "nodes 0..*" <-- ChildrenArray
+				Netbeans_v1.0.x.java.util.Collection "nodes" <-- Array
+				Entry "nodesEntry" <-- Array
+				Node "ARRAY 0..*" <-- Empty
+				JavaPrimitiveTypes.boolean "before" <-- Keys
+				Netbeans_v1.0.x.java.lang.Object "key" <-- KE
+				Netbeans_v1.0.x.java.util.Map "nodes" <-- Map
+				Netbeans_v1.0.x.java.lang.Object "key" <-- ME
+				Node "node" <-- ME
+				Netbeans_v1.0.x.java.util.Comparator "comp" <-- SortedArray
+				Netbeans_v1.0.x.java.util.Comparator "comp" <-- SortedMap
+				Children "hierarchy" <-- Node
+				Netbeans_v1.0.x.javax.swing.event.EventListenerList "listeners" <-- Node
+				Children "parent" <-- Node
+				Netbeans_v1.0.x.java.lang.Class "type" <-- Property
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Handle
+				Netbeans_v1.0.x.java.lang.Class "elementType" <-- IndexedProperty
+				Netbeans_v1.0.x.java.lang.String "DEFAULT_ICON_BASE" <-- AbstractNode
+				JavaPrimitiveTypes.int "ICON_BASE" <-- AbstractNode
+				Netbeans_v1.0.x.org.openide.util.datatransfer.NewType "NO_NEW_TYPES 0..*" <-- AbstractNode
+				Netbeans_v1.0.x.org.openide.util.datatransfer.PasteType "NO_PASTE_TYPES 0..*" <-- AbstractNode
+				PropertySet "NO_PROPERTY_SETS 0..*" <-- AbstractNode
+				JavaPrimitiveTypes.int "OPENED_ICON_BASE" <-- AbstractNode
+				Netbeans_v1.0.x.javax.swing.event.ChangeListener "cookieL" <-- AbstractNode
+				Netbeans_v1.0.x.java.util.HashSet "list" <-- CookieSet
+				Netbeans_v1.0.x.java.util.HashMap "map" <-- CookieSet
+				CookieSet "cookieSet" <-- AbstractNode
+				Netbeans_v1.0.x.org.openide.util.actions.SystemAction "defaultAction" <-- AbstractNode
+				Netbeans_v1.0.x.java.text.MessageFormat "displayFormat" <-- AbstractNode
+				Netbeans_v1.0.x.java.lang.Object "iconBase 0..*" <-- AbstractNode
+				Netbeans_v1.0.x.java.text.MessageFormat "icons 0..*" <-- AbstractNode
+				Netbeans_v1.0.x.java.lang.Boolean "moduleTestIcons" <-- AbstractNode
+				Netbeans_v1.0.x.java.lang.String "EXPERT" <-- Sheet
+				Netbeans_v1.0.x.java.lang.String "PROPERTIES" <-- Sheet
+				PropertySet "array 0..*" <-- Sheet
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "propL" <-- Sheet
+				Netbeans_v1.0.x.java.util.ArrayList "sets" <-- Sheet
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "supp" <-- Sheet
+				Property "array 0..*" <-- Set
+				Netbeans_v1.0.x.java.util.ArrayList "props" <-- Set
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "supp" <-- Set
+				Sheet "sheet" <-- AbstractNode
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "sheetL" <-- AbstractNode
+				Netbeans_v1.0.x.org.openide.util.actions.SystemAction "systemActions 0..*" <-- AbstractNode
+				JavaPrimitiveTypes.boolean "canR" <-- PropertySupport
+				JavaPrimitiveTypes.boolean "canW" <-- PropertySupport
+				Node "node" <-- Name
+				Netbeans_v1.0.x.java.lang.reflect.Method "getter" <-- Reflection
+				Netbeans_v1.0.x.java.lang.Object "instance" <-- Reflection
+				Netbeans_v1.0.x.java.lang.Class "propertyEditorClass" <-- Reflection
+				Netbeans_v1.0.x.java.lang.reflect.Method "setter" <-- Reflection
+				JavaPrimitiveTypes.int "DELEGATE_ALL" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_DESTROY" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_GET_ACTIONS" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_GET_CONTEXT_ACTIONS" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_GET_DISPLAY_NAME" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_GET_NAME" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_GET_SHORT_DESCRIPTION" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_SET_DISPLAY_NAME" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_SET_NAME" <-- FilterNode
+				JavaPrimitiveTypes.int "DELEGATE_SET_SHORT_DESCRIPTION" <-- FilterNode
+				JavaPrimitiveTypes.int "delegateMask" <-- FilterNode
+				NodeListener "nodeL" <-- FilterNode
+				Node "original" <-- FilterNode
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener "propL" <-- FilterNode
+				NodeListener "nodeL" <-- Children
+				Node "original" <-- Children
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "children" <-- ChildrenAdapter
+				Handle "original" <-- FilterHandle
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FilterHandle
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "children" <-- NodeAdapter
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "fn" <-- NodeAdapter
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "fn" <-- PropertyChangeAdapter
+				Netbeans_v1.0.x.java.util.HashSet "listeners" <-- Support
+			}
+			package src {
+				package nodes {
+					class FilterFactory {
+						-delegate: ElementNodeFactory
+						<<Create>> FilterFactory()
+						attachTo(factory : ElementNodeFactory)
+						createClassNode(element : Netbeans_v1.0.x.org.openide.src.ClassElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createConstructorNode(element : Netbeans_v1.0.x.org.openide.src.ConstructorElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createErrorNode(): Netbeans_v1.0.x.org.openide.nodes.Node
+						createFieldNode(element : Netbeans_v1.0.x.org.openide.src.FieldElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createInitializerNode(element : Netbeans_v1.0.x.org.openide.src.InitializerElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createMethodNode(element : Netbeans_v1.0.x.org.openide.src.MethodElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createWaitNode(): Netbeans_v1.0.x.org.openide.nodes.Node
+					}
+					class DefaultFactory {
+						-{const} CATEGORY_ACTIONS: Netbeans_v1.0.x.org.openide.util.actions.SystemAction [*]
+						{const} CATEGORY_ICONS: Netbeans_v1.0.x.java.lang.String [*]
+						{const} FILTERS: JavaPrimitiveTypes.int [*]
+						{const} NAMES: Netbeans_v1.0.x.java.lang.String [*]
+						{const} READ_ONLY: DefaultFactory
+						{const} READ_WRITE: DefaultFactory
+						{const} SHORTDESCRS: Netbeans_v1.0.x.java.lang.String [*]
+						-writeable: JavaPrimitiveTypes.boolean
+						<<Create>> DefaultFactory(writeable : JavaPrimitiveTypes.boolean)
+						#createClassChildren(element : Netbeans_v1.0.x.org.openide.src.ClassElement): Netbeans_v1.0.x.org.openide.nodes.Children
+						#createClassChildren(element : Netbeans_v1.0.x.org.openide.src.ClassElement, factory : ElementNodeFactory): Netbeans_v1.0.x.org.openide.nodes.Children
+						createClassNode(element : Netbeans_v1.0.x.org.openide.src.ClassElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createConstructorNode(element : Netbeans_v1.0.x.org.openide.src.ConstructorElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createErrorNode(): Netbeans_v1.0.x.org.openide.nodes.Node
+						createFieldNode(element : Netbeans_v1.0.x.org.openide.src.FieldElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createInitializerNode(element : Netbeans_v1.0.x.org.openide.src.InitializerElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createMethodNode(element : Netbeans_v1.0.x.org.openide.src.MethodElement): Netbeans_v1.0.x.org.openide.nodes.Node
+						createWaitNode(): Netbeans_v1.0.x.org.openide.nodes.Node
+						isWriteable(): JavaPrimitiveTypes.boolean
+					}
+					abstract class ElementNode {
+						-{const} ICON_AFFECTING_PROPERTIES: Netbeans_v1.0.x.java.lang.String [*]
+						{static} bundle: Netbeans_v1.0.x.java.util.ResourceBundle
+						#element: Netbeans_v1.0.x.org.openide.src.Element
+						#elementFormat: Netbeans_v1.0.x.org.openide.src.ElementFormat
+						-listener: Netbeans_v1.0.x.java.beans.PropertyChangeListener
+						#{const} sourceOptions: SourceOptions
+						#writeable: JavaPrimitiveTypes.boolean
+						<<Create>> ElementNode(element : Netbeans_v1.0.x.org.openide.src.Element, children : Netbeans_v1.0.x.org.openide.nodes.Children, writeable : JavaPrimitiveTypes.boolean)
+						canCopy(): JavaPrimitiveTypes.boolean
+						canCut(): JavaPrimitiveTypes.boolean
+						canDestroy(): JavaPrimitiveTypes.boolean
+						canRename(): JavaPrimitiveTypes.boolean
+						clipboardCopy(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+						clipboardCut(): Netbeans_v1.0.x.java.awt.datatransfer.Transferable
+						equals(o : Netbeans_v1.0.x.java.lang.Object): JavaPrimitiveTypes.boolean
+						getCookie(type : Netbeans_v1.0.x.java.lang.Class): Netbeans_v1.0.x.org.openide.nodes.Node.Cookie
+						getElementFormat(): Netbeans_v1.0.x.org.openide.src.ElementFormat
+						getHelpCtx(): Netbeans_v1.0.x.org.openide.util.HelpCtx
+						#getHintElementFormat(): Netbeans_v1.0.x.org.openide.src.ElementFormat
+						#getIconAffectingProperties(): Netbeans_v1.0.x.java.lang.String
+						getShortDescription(): Netbeans_v1.0.x.java.lang.String
+						hashCode(): JavaPrimitiveTypes.int
+						#resolveIconBase(): Netbeans_v1.0.x.java.lang.String
+						setActions(actions : Netbeans_v1.0.x.org.openide.util.actions.SystemAction)
+						setElementFormat(elementFormat : Netbeans_v1.0.x.org.openide.src.ElementFormat)
+						superFireCookieChange()
+						superPropertyChange(name : Netbeans_v1.0.x.java.lang.String, o : Netbeans_v1.0.x.java.lang.Object, n : Netbeans_v1.0.x.java.lang.Object)
+						superSetName(name : Netbeans_v1.0.x.java.lang.String)
+						superShortDescriptionChange(o : Netbeans_v1.0.x.java.lang.String, n : Netbeans_v1.0.x.java.lang.String)
+					}
+					abstract class MemberElementNode {
+						<<Create>> MemberElementNode(element : Netbeans_v1.0.x.org.openide.src.MemberElement, children : Netbeans_v1.0.x.org.openide.nodes.Children, writeable : JavaPrimitiveTypes.boolean)
+						#createModifiersProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						#createNameProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						setName(str : Netbeans_v1.0.x.java.lang.String)
+						testJavaId(str : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+					}
+					class ClassElementNode {
+						-{const} ICON_AFFECTING_PROPERTIES: Netbeans_v1.0.x.java.lang.String [*]
+						-{const} MENU_CREATE_BLOCK: Netbeans_v1.0.x.java.lang.String
+						-{const} MENU_CREATE_CLASS: Netbeans_v1.0.x.java.lang.String
+						-{const} MENU_CREATE_CONSTRUCTOR: Netbeans_v1.0.x.java.lang.String
+						-{const} MENU_CREATE_INTERFACE: Netbeans_v1.0.x.java.lang.String
+						-{const} MENU_CREATE_METHOD: Netbeans_v1.0.x.java.lang.String
+						-{const} MENU_CREATE_VARIABLE: Netbeans_v1.0.x.java.lang.String
+						<<Create>> ClassElementNode(element : Netbeans_v1.0.x.org.openide.src.ClassElement, children : Netbeans_v1.0.x.org.openide.nodes.Children, writeable : JavaPrimitiveTypes.boolean)
+						#createInterfacesProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						#createPasteTypes(t : Netbeans_v1.0.x.java.awt.datatransfer.Transferable, s : Netbeans_v1.0.x.java.util.List)
+						#createSheet(): Netbeans_v1.0.x.org.openide.nodes.Sheet
+						#createSuperclassProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						destroy()
+						getCustomizer(): Netbeans_v1.0.x.java.awt.Component
+						#getHintElementFormat(): Netbeans_v1.0.x.org.openide.src.ElementFormat
+						#getIconAffectingProperties(): Netbeans_v1.0.x.java.lang.String
+						getNewTypes(): Netbeans_v1.0.x.org.openide.util.datatransfer.NewType
+						hasCustomizer(): JavaPrimitiveTypes.boolean
+						pasteElement(addingElement : Netbeans_v1.0.x.org.openide.src.Element, delete : JavaPrimitiveTypes.boolean)
+						#resolveIconBase(): Netbeans_v1.0.x.java.lang.String
+					}
+					class ConstructorElementNode {
+						<<Create>> ConstructorElementNode(element : Netbeans_v1.0.x.org.openide.src.ConstructorElement, writeable : JavaPrimitiveTypes.boolean)
+						canRename(): JavaPrimitiveTypes.boolean
+						#createExceptionsProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						#createParametersProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						#createSheet(): Netbeans_v1.0.x.org.openide.nodes.Sheet
+						destroy()
+						getCustomizer(): Netbeans_v1.0.x.java.awt.Component
+						#getHintElementFormat(): Netbeans_v1.0.x.org.openide.src.ElementFormat
+						hasCustomizer(): JavaPrimitiveTypes.boolean
+						#resolveIconBase(): Netbeans_v1.0.x.java.lang.String
+					}
+					class FieldElementNode {
+						<<Create>> FieldElementNode(element : Netbeans_v1.0.x.org.openide.src.FieldElement, writeable : JavaPrimitiveTypes.boolean)
+						#createInitValueProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						#createSheet(): Netbeans_v1.0.x.org.openide.nodes.Sheet
+						#createTypeProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						destroy()
+						getCustomizer(): Netbeans_v1.0.x.java.awt.Component
+						#getHintElementFormat(): Netbeans_v1.0.x.org.openide.src.ElementFormat
+						hasCustomizer(): JavaPrimitiveTypes.boolean
+						#resolveIconBase(): Netbeans_v1.0.x.java.lang.String
+					}
+					class InitializerElementNode {
+						-{const} ICON_AFFECTING_PROPERTIES: Netbeans_v1.0.x.java.lang.String [*]
+						<<Create>> InitializerElementNode(element : Netbeans_v1.0.x.org.openide.src.InitializerElement, writeable : JavaPrimitiveTypes.boolean)
+						canRename(): JavaPrimitiveTypes.boolean
+						#createSheet(): Netbeans_v1.0.x.org.openide.nodes.Sheet
+						#createStaticProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						destroy()
+						#getHintElementFormat(): Netbeans_v1.0.x.org.openide.src.ElementFormat
+						#getIconAffectingProperties(): Netbeans_v1.0.x.java.lang.String
+						#resolveIconBase(): Netbeans_v1.0.x.java.lang.String
+					}
+					class MethodElementNode {
+						<<Create>> MethodElementNode(element : Netbeans_v1.0.x.org.openide.src.MethodElement, writeable : JavaPrimitiveTypes.boolean)
+						canRename(): JavaPrimitiveTypes.boolean
+						#createReturnProperty(canW : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.org.openide.nodes.Node.Property
+						#createSheet(): Netbeans_v1.0.x.org.openide.nodes.Sheet
+						destroy()
+						#getHintElementFormat(): Netbeans_v1.0.x.org.openide.src.ElementFormat
+						#resolveIconBase(): Netbeans_v1.0.x.java.lang.String
+					}
+					Netbeans_v1.0.x.org.openide.options.SystemOption <|-- SourceOptions
+					ElementNodeFactory <|.. FilterFactory
+					ElementNodeFactory <|.. DefaultFactory
+					IconStrings <|.. DefaultFactory
+					Netbeans_v1.0.x.org.openide.nodes.Children.Keys <|-- ClassChildren
+					Netbeans_v1.0.x.org.openide.cookies.FilterCookie <|.. ClassChildren
+					SourceElementFilter <|-- ClassElementFilter
+					Netbeans_v1.0.x.org.openide.nodes.AbstractNode <|-- ElementNode
+					IconStrings <|.. ElementNode
+					Netbeans_v1.0.x.org.openide.src.ElementProperties <|.. ElementNode
+					ElementNode <|-- MemberElementNode
+					MemberElementNode <|-- ClassElementNode
+					MemberElementNode <|-- ConstructorElementNode
+					MemberElementNode <|-- FieldElementNode
+					ElementNode <|-- InitializerElementNode
+					ConstructorElementNode <|-- MethodElementNode
+					Netbeans_v1.0.x.org.openide.src.ElementFormat "DEFAULT_FORMATS_LONG 0..*" <-- SourceOptions
+					Netbeans_v1.0.x.org.openide.src.ElementFormat "DEFAULT_FORMATS_SHORT 0..*" <-- SourceOptions
+					Netbeans_v1.0.x.java.lang.String "PROP_CATEGORIES_USAGE" <-- SourceOptions
+					Netbeans_v1.0.x.java.lang.String "PROP_CLASS_FORMAT" <-- SourceOptions
+					Netbeans_v1.0.x.java.lang.String "PROP_CONSTRUCTOR_FORMAT" <-- SourceOptions
+					Netbeans_v1.0.x.java.lang.String "PROP_FIELD_FORMAT" <-- SourceOptions
+					Netbeans_v1.0.x.java.lang.String "PROP_INITIALIZER_FORMAT" <-- SourceOptions
+					Netbeans_v1.0.x.java.lang.String "PROP_INTERFACE_FORMAT" <-- SourceOptions
+					Netbeans_v1.0.x.java.lang.String "PROP_METHOD_FORMAT" <-- SourceOptions
+					Netbeans_v1.0.x.java.lang.String "PROP_NAMES 0..*" <-- SourceOptions
+					JavaPrimitiveTypes.byte "T_CLASS" <-- SourceOptions
+					JavaPrimitiveTypes.byte "T_CONSTRUCTOR" <-- SourceOptions
+					JavaPrimitiveTypes.byte "T_FIELD" <-- SourceOptions
+					JavaPrimitiveTypes.byte "T_INITIALIZER" <-- SourceOptions
+					JavaPrimitiveTypes.byte "T_INTERFACE" <-- SourceOptions
+					JavaPrimitiveTypes.byte "T_METHOD" <-- SourceOptions
+					Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- SourceOptions
+					JavaPrimitiveTypes.boolean "categories" <-- SourceOptions
+					Netbeans_v1.0.x.org.openide.src.ElementFormat "formats 0..*" <-- SourceOptions
+					JavaPrimitiveTypes.long "serialVersionUID" <-- SourceOptions
+					ElementNodeFactory "delegate" <-- FilterFactory
+					Netbeans_v1.0.x.java.lang.String "CLASS" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "CONSTRUCTORS_CATEGORY" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "CONSTRUCTOR_PACKAGE" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "CONSTRUCTOR_PRIVATE" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "CONSTRUCTOR_PROTECTED" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "CONSTRUCTOR_PUBLIC" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "ERROR" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "FIELDS_CATEGORY" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "FIELD_PACKAGE" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "FIELD_PRIVATE" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "FIELD_PROTECTED" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "FIELD_PUBLIC" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "FIELD_ST_PACKAGE" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "FIELD_ST_PRIVATE" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "FIELD_ST_PROTECTED" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "FIELD_ST_PUBLIC" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "INITIALIZER" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "INITIALIZER_ST" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "INTERFACE" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "METHODS_CATEGORY" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "METHOD_PACKAGE" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "METHOD_PRIVATE" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "METHOD_PROTECTED" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "METHOD_PUBLIC" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "METHOD_ST_PACKAGE" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "METHOD_ST_PRIVATE" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "METHOD_ST_PROTECTED" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "METHOD_ST_PUBLIC" <-- IconStrings
+					Netbeans_v1.0.x.java.lang.String "WAIT" <-- IconStrings
+					Netbeans_v1.0.x.org.openide.util.actions.SystemAction "CATEGORY_ACTIONS 0..*" <-- DefaultFactory
+					Netbeans_v1.0.x.java.lang.String "CATEGORY_ICONS 0..*" <-- DefaultFactory
+					JavaPrimitiveTypes.int "FILTERS 0..*" <-- DefaultFactory
+					Netbeans_v1.0.x.java.lang.String "NAMES 0..*" <-- DefaultFactory
+					Netbeans_v1.0.x.java.lang.String "SHORTDESCRS 0..*" <-- DefaultFactory
+					JavaPrimitiveTypes.boolean "writeable" <-- DefaultFactory
+					Netbeans_v1.0.x.org.openide.src.ClassElement "element" <-- ElementCategoryNode
+					JavaPrimitiveTypes.int "newTypeIndex" <-- ElementCategoryNode
+					JavaPrimitiveTypes.int "PPP_MASK" <-- ClassChildren
+					Netbeans_v1.0.x.java.util.Comparator "comparator" <-- ClassChildren
+					Netbeans_v1.0.x.java.util.Collection "cpl 0..*" <-- ClassChildren
+					Netbeans_v1.0.x.org.openide.src.ClassElement "element" <-- ClassChildren
+					ElementNodeFactory "factory" <-- ClassChildren
+					JavaPrimitiveTypes.int "ALL" <-- SourceElementFilter
+					JavaPrimitiveTypes.int "ALL_MODIFIERS" <-- SourceElementFilter
+					JavaPrimitiveTypes.int "CLASS" <-- SourceElementFilter
+					JavaPrimitiveTypes.int "DEFAULT_ORDER 0..*" <-- SourceElementFilter
+					JavaPrimitiveTypes.int "IMPORT" <-- SourceElementFilter
+					JavaPrimitiveTypes.int "INTERFACE" <-- SourceElementFilter
+					JavaPrimitiveTypes.int "PACKAGE" <-- SourceElementFilter
+					JavaPrimitiveTypes.int "PRIVATE" <-- SourceElementFilter
+					JavaPrimitiveTypes.int "PROTECTED" <-- SourceElementFilter
+					JavaPrimitiveTypes.int "PUBLIC" <-- SourceElementFilter
+					JavaPrimitiveTypes.boolean "allClasses" <-- SourceElementFilter
+					JavaPrimitiveTypes.int "modifiers" <-- SourceElementFilter
+					JavaPrimitiveTypes.int "order 0..*" <-- SourceElementFilter
+					JavaPrimitiveTypes.int "ALL" <-- ClassElementFilter
+					JavaPrimitiveTypes.int "CONSTRUCTOR" <-- ClassElementFilter
+					JavaPrimitiveTypes.int "DEFAULT_ORDER 0..*" <-- ClassElementFilter
+					JavaPrimitiveTypes.int "EXTENDS" <-- ClassElementFilter
+					JavaPrimitiveTypes.int "FIELD" <-- ClassElementFilter
+					JavaPrimitiveTypes.int "IMPLEMENTS" <-- ClassElementFilter
+					JavaPrimitiveTypes.int "METHOD" <-- ClassElementFilter
+					JavaPrimitiveTypes.int "STATIC" <-- ClassElementFilter
+					JavaPrimitiveTypes.boolean "sorted" <-- ClassElementFilter
+					ClassElementFilter "filter" <-- ClassChildren
+					JavaPrimitiveTypes.boolean "nodesInited" <-- ClassChildren
+					ElementListener "propL" <-- ClassChildren
+					Netbeans_v1.0.x.java.util.HashMap "propToFilter" <-- ClassChildren
+					Netbeans_v1.0.x.java.beans.PropertyChangeListener "wPropL" <-- ClassChildren
+					Netbeans_v1.0.x.java.lang.String "ICON_AFFECTING_PROPERTIES 0..*" <-- ElementNode
+					Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- ElementNode
+					Netbeans_v1.0.x.org.openide.src.Element "element" <-- ElementNode
+					Netbeans_v1.0.x.org.openide.src.ElementFormat "elementFormat" <-- ElementNode
+					Netbeans_v1.0.x.java.beans.PropertyChangeListener "listener" <-- ElementNode
+					SourceOptions "sourceOptions" <-- ElementNode
+					JavaPrimitiveTypes.boolean "writeable" <-- ElementNode
+					Netbeans_v1.0.x.java.lang.String "ICON_AFFECTING_PROPERTIES 0..*" <-- ClassElementNode
+					Netbeans_v1.0.x.java.lang.String "MENU_CREATE_BLOCK" <-- ClassElementNode
+					Netbeans_v1.0.x.java.lang.String "MENU_CREATE_CLASS" <-- ClassElementNode
+					Netbeans_v1.0.x.java.lang.String "MENU_CREATE_CONSTRUCTOR" <-- ClassElementNode
+					Netbeans_v1.0.x.java.lang.String "MENU_CREATE_INTERFACE" <-- ClassElementNode
+					Netbeans_v1.0.x.java.lang.String "MENU_CREATE_METHOD" <-- ClassElementNode
+					Netbeans_v1.0.x.java.lang.String "MENU_CREATE_VARIABLE" <-- ClassElementNode
+					Netbeans_v1.0.x.java.lang.String "ICON_AFFECTING_PROPERTIES 0..*" <-- InitializerElementNode
+				}
+				MemberElement <|-- ClassElement
+				Element <|-- MemberElement
+				Netbeans_v1.0.x.java.lang.Cloneable <|.. MemberElement
+				Netbeans_v1.0.x.java.io.Serializable <|.. Element
+				ElementProperties <|.. Element
+				Netbeans_v1.0.x.org.openide.nodes.Node.Cookie <|.. Element
+				MemberElement <|-- ConstructorElement
+				Netbeans_v1.0.x.java.text.Format <|-- ElementFormat
+				Netbeans_v1.0.x.java.io.Serializable <|.. Identifier
+				Netbeans_v1.0.x.java.lang.Cloneable <|.. Type
+				Netbeans_v1.0.x.java.io.Serializable <|.. Type
+				Netbeans_v1.0.x.java.io.Serializable <|.. MethodParameter
+				MemberElement <|-- FieldElement
+				Element <|-- InitializerElement
+				Netbeans_v1.0.x.java.lang.Cloneable <|.. InitializerElement
+				ConstructorElement <|-- MethodElement
+				Element <|-- SourceElement
+				Netbeans_v1.0.x.java.io.Serializable <|.. Import
+				Netbeans_v1.0.x.java.lang.String "PROP_ALL_CLASSES" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_BODY" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_CLASSES" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_CLASS_OR_INTERFACE" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_CONSTRUCTORS" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_EXCEPTIONS" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_FIELDS" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_IMPORTS" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_INITIALIZERS" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_INIT_VALUE" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_INTERFACES" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_METHODS" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_MODIFIERS" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_NAME" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_PACKAGE" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_PARAMETERS" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_RETURN" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_STATIC" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_STATUS" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_SUPERCLASS" <-- ElementProperties
+				Netbeans_v1.0.x.java.lang.String "PROP_TYPE" <-- ElementProperties
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Impl
+				Impl "impl" <-- Element
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Element
+				JavaPrimitiveTypes.int "BODY_BEGIN" <-- ElementPrinter
+				JavaPrimitiveTypes.int "BODY_END" <-- ElementPrinter
+				JavaPrimitiveTypes.int "ELEMENT_BEGIN" <-- ElementPrinter
+				JavaPrimitiveTypes.int "ELEMENT_END" <-- ElementPrinter
+				JavaPrimitiveTypes.int "HEADER_BEGIN" <-- ElementPrinter
+				JavaPrimitiveTypes.int "HEADER_END" <-- ElementPrinter
+				JavaPrimitiveTypes.int "JAVADOC_BEGIN" <-- ElementPrinter
+				JavaPrimitiveTypes.int "JAVADOC_END" <-- ElementPrinter
+				Netbeans_v1.0.x.java.lang.String "MSG_BAD_ARGUMENT" <-- ElementFormat
+				Netbeans_v1.0.x.java.lang.String "MSG_BAD_PATTERN" <-- ElementFormat
+				Netbeans_v1.0.x.java.lang.String "MSG_NO_PARSING" <-- ElementFormat
+				Netbeans_v1.0.x.java.lang.String "PROPERTIES_NAMES 0..*" <-- ElementFormat
+				Netbeans_v1.0.x.java.lang.String "PROPERTIES_NAMES_INDEX" <-- ElementFormat
+				JavaPrimitiveTypes.byte "STATUS_INSIDE" <-- ElementFormat
+				JavaPrimitiveTypes.byte "STATUS_OUTSIDE" <-- ElementFormat
+				JavaPrimitiveTypes.byte "STATUS_RBRACE" <-- ElementFormat
+				Netbeans_v1.0.x.java.util.ResourceBundle "bundle" <-- ElementFormat
+				Netbeans_v1.0.x.java.util.LinkedList "list" <-- ElementFormat
+				Netbeans_v1.0.x.java.lang.String "pattern" <-- ElementFormat
+				JavaPrimitiveTypes.long "serialVersionUID" <-- ElementFormat
+				JavaPrimitiveTypes.boolean "source" <-- ElementFormat
+				JavaPrimitiveTypes.char "kind" <-- Tag
+				Netbeans_v1.0.x.java.lang.String "prefix" <-- Tag
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Tag
+				Netbeans_v1.0.x.java.lang.String "suffix" <-- Tag
+				Netbeans_v1.0.x.java.lang.String "fullName" <-- Identifier
+				JavaPrimitiveTypes.int "namePos" <-- Identifier
+				Resolver "resolver" <-- Identifier
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Identifier
+				Netbeans_v1.0.x.java.lang.String "sourceName" <-- Identifier
+				Netbeans_v1.0.x.java.lang.String "L_BOOLEAN" <-- Type
+				Netbeans_v1.0.x.java.lang.String "L_BYTE" <-- Type
+				Netbeans_v1.0.x.java.lang.String "L_CHAR" <-- Type
+				Netbeans_v1.0.x.java.lang.String "L_DOUBLE" <-- Type
+				Netbeans_v1.0.x.java.lang.String "L_FLOAT" <-- Type
+				Netbeans_v1.0.x.java.lang.String "L_INT" <-- Type
+				Netbeans_v1.0.x.java.lang.String "L_LONG" <-- Type
+				Netbeans_v1.0.x.java.lang.String "L_SHORT" <-- Type
+				Netbeans_v1.0.x.java.lang.String "L_VOID" <-- Type
+				Netbeans_v1.0.x.java.lang.String "PRIMITIVE_NAMES 0..*" <-- Type
+				JavaPrimitiveTypes.int "T_ARRAY" <-- Type
+				JavaPrimitiveTypes.int "T_BOOLEAN" <-- Type
+				JavaPrimitiveTypes.int "T_BYTE" <-- Type
+				JavaPrimitiveTypes.int "T_CHAR" <-- Type
+				JavaPrimitiveTypes.int "T_CLASS" <-- Type
+				JavaPrimitiveTypes.int "T_DOUBLE" <-- Type
+				JavaPrimitiveTypes.int "T_FLOAT" <-- Type
+				JavaPrimitiveTypes.int "T_INT" <-- Type
+				JavaPrimitiveTypes.int "T_LONG" <-- Type
+				JavaPrimitiveTypes.int "T_PRIMITIVE" <-- Type
+				JavaPrimitiveTypes.int "T_SHORT" <-- Type
+				JavaPrimitiveTypes.int "T_VOID" <-- Type
+				Identifier "classType" <-- Type
+				JavaPrimitiveTypes.int "kind" <-- Type
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Type
+				Netbeans_v1.0.x.java.util.HashMap "text2type" <-- Type
+				Netbeans_v1.0.x.java.lang.String "delim" <-- ArrayTag
+				JavaPrimitiveTypes.long "serialVersionUID" <-- ArrayTag
+				ElementFormat "HEADER_FORMAT" <-- ConstructorElement
+				JavaPrimitiveTypes.long "serialVersionUID" <-- ConstructorElement
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Impl
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Impl
+				JavaPrimitiveTypes.boolean "fin" <-- MethodParameter
+				Netbeans_v1.0.x.java.lang.String "name" <-- MethodParameter
+				JavaPrimitiveTypes.long "serialVersionUID" <-- MethodParameter
+				Type "type" <-- MethodParameter
+				Type "params 0..*" <-- Key
+				Element "element" <-- Memory
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Memory
+				Netbeans_v1.0.x.java.beans.PropertyChangeSupport "support" <-- Memory
+				JavaPrimitiveTypes.int "mod" <-- Memory
+				Identifier "name" <-- Memory
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Memory
+				Netbeans_v1.0.x.java.lang.String "body" <-- Memory
+				Identifier "exceptions 0..*" <-- Memory
+				Method "javaDoc" <-- Memory
+				MethodParameter "parameters 0..*" <-- Memory
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Memory
+				ElementFormat "FIELD_FORMAT" <-- FieldElement
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FieldElement
+				ClassElement "declaringClass" <-- InitializerElement
+				JavaPrimitiveTypes.long "serialVersionUID" <-- InitializerElement
+				ElementFormat "HEADER_FORMAT" <-- MethodElement
+				JavaPrimitiveTypes.long "serialVersionUID" <-- MethodElement
+				ClassElement "declaringClass" <-- MemberElement
+				JavaPrimitiveTypes.long "serialVersionUID" <-- MemberElement
+				JavaPrimitiveTypes.boolean "CLASS" <-- ClassElement
+				ElementFormat "HEADER_FORMAT 0..*" <-- ClassElement
+				JavaPrimitiveTypes.boolean "INTERFACE" <-- ClassElement
+				Identifier "ROOT_OBJECT" <-- ClassElement
+				Netbeans_v1.0.x.java.util.List "finders" <-- ClassElement
+				JavaPrimitiveTypes.long "serialVersionUID" <-- ClassElement
+				JavaPrimitiveTypes.int "STATUS_ERROR" <-- SourceElement
+				JavaPrimitiveTypes.int "STATUS_NOT" <-- SourceElement
+				JavaPrimitiveTypes.int "STATUS_OK" <-- SourceElement
+				JavaPrimitiveTypes.int "STATUS_PARTIAL" <-- SourceElement
+				JavaPrimitiveTypes.long "serialVersionUID" <-- SourceElement
+				JavaPrimitiveTypes.boolean "CLASS" <-- Import
+				JavaPrimitiveTypes.boolean "PACKAGE" <-- Import
+				Identifier "id" <-- Import
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Import
+				JavaPrimitiveTypes.boolean "wholePackage" <-- Import
+				SourceElement "source" <-- ClassElement
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Class
+			}
+			Netbeans_v1.0.x.java.io.Serializable <|.. ServiceType
+			Netbeans_v1.0.x.java.lang.String "PROP_NAME" <-- ServiceType
+			Netbeans_v1.0.x.java.lang.String "name" <-- ServiceType
+			JavaPrimitiveTypes.long "serialVersionUID" <-- ServiceType
+			Netbeans_v1.0.x.java.beans.PropertyChangeSupport "supp" <-- ServiceType
+			Netbeans_v1.0.x.java.lang.String "className" <-- Handle
+			Netbeans_v1.0.x.java.lang.String "name" <-- Handle
+			JavaPrimitiveTypes.long "serialVersionUID" <-- Handle
+			ServiceType "serviceType" <-- Handle
+			JavaPrimitiveTypes.long "serialVersionUID" <-- Registry
+		}
+	}
+}
+@enduml

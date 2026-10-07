@@ -1,0 +1,64 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			class IntHashtable {
+				-count: JavaPrimitiveTypes.int
+				-loadFactor: JavaPrimitiveTypes.float
+				-table: IntHashtableEntry [*]
+				-threshold: JavaPrimitiveTypes.int
+				<<Create>> IntHashtable(initialCapacity : JavaPrimitiveTypes.int, loadFactor : JavaPrimitiveTypes.float)
+				<<Create>> IntHashtable(initialCapacity : JavaPrimitiveTypes.int)
+				<<Create>> IntHashtable()
+				clear()
+				clone(): java.lang.Object
+				contains(value : java.lang.Object): JavaPrimitiveTypes.boolean
+				containsKey(key : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				elements(): java.util.Enumeration
+				get(key : JavaPrimitiveTypes.int): java.lang.Object
+				get(okey : java.lang.Object): java.lang.Object
+				isEmpty(): JavaPrimitiveTypes.boolean
+				keys(): java.util.Enumeration
+				put(key : JavaPrimitiveTypes.int, value : java.lang.Object): java.lang.Object
+				put(okey : java.lang.Object, value : java.lang.Object): java.lang.Object
+				#rehash()
+				remove(key : JavaPrimitiveTypes.int): java.lang.Object
+				remove(okey : java.lang.Object): java.lang.Object
+				size(): JavaPrimitiveTypes.int
+				toString(): java.lang.String
+			}
+			class IntHashtableEntry {
+				hash: JavaPrimitiveTypes.int
+				key: JavaPrimitiveTypes.int
+				next: IntHashtableEntry
+				value: java.lang.Object
+				<<Create>> IntHashtableEntry()
+				#clone(): java.lang.Object
+			}
+			class IntHashtableEnumerator {
+				entry: IntHashtableEntry
+				index: JavaPrimitiveTypes.int
+				keys: JavaPrimitiveTypes.boolean
+				table: IntHashtableEntry [*]
+				<<Create>> IntHashtableEnumerator(table : IntHashtableEntry, keys : JavaPrimitiveTypes.boolean)
+				hasMoreElements(): JavaPrimitiveTypes.boolean
+				nextElement(): java.lang.Object
+			}
+		}
+	}
+	java.lang.Cloneable <|.. Abstractfactory.non_abstract_factory.IntHashtable
+	java.util.Dictionary <|-- Abstractfactory.non_abstract_factory.IntHashtable
+	java.util.Enumeration <|.. Abstractfactory.non_abstract_factory.IntHashtableEnumerator
+	JavaPrimitiveTypes.int "count" <-- Abstractfactory.non_abstract_factory.IntHashtable
+	JavaPrimitiveTypes.float "loadFactor" <-- Abstractfactory.non_abstract_factory.IntHashtable
+	JavaPrimitiveTypes.int "hash" <-- Abstractfactory.non_abstract_factory.IntHashtableEntry
+	JavaPrimitiveTypes.int "key" <-- Abstractfactory.non_abstract_factory.IntHashtableEntry
+	java.lang.Object "value" <-- Abstractfactory.non_abstract_factory.IntHashtableEntry
+	Abstractfactory.non_abstract_factory.IntHashtableEntry "table 0..*" <-- Abstractfactory.non_abstract_factory.IntHashtable
+	JavaPrimitiveTypes.int "threshold" <-- Abstractfactory.non_abstract_factory.IntHashtable
+	Abstractfactory.non_abstract_factory.IntHashtableEntry "entry" <-- Abstractfactory.non_abstract_factory.IntHashtableEnumerator
+	JavaPrimitiveTypes.int "index" <-- Abstractfactory.non_abstract_factory.IntHashtableEnumerator
+	JavaPrimitiveTypes.boolean "keys" <-- Abstractfactory.non_abstract_factory.IntHashtableEnumerator
+	Abstractfactory.non_abstract_factory.IntHashtableEntry "table 0..*" <-- Abstractfactory.non_abstract_factory.IntHashtableEnumerator
+}
+@enduml

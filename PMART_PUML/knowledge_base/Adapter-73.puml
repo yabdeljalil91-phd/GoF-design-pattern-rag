@@ -1,0 +1,1083 @@
+@startuml
+'Design pattern Adapter
+package "JHotDraw v5.1" as JHotDraw_v5.1 {
+	package CH {
+		package ifa {
+			package draw {
+				package standard {
+					'/** 
+					' * The standard implementation of DrawingView.
+					' * @see DrawingView
+					' * @see Painter
+					' * @see Tool
+					' */
+					'DP role: client
+					class StandardDrawingView {
+						-drawingViewSerializedDataVersion: JavaPrimitiveTypes.int
+						-fBackgrounds: JHotDraw_v5.1.java.util.Vector
+						-fConstrainer: JHotDraw_v5.1.CH.ifa.draw.framework.PointConstrainer
+						-fDamage: JHotDraw_v5.1.java.awt.Rectangle
+						-fDrawing: JHotDraw_v5.1.CH.ifa.draw.framework.Drawing
+						-fEditor: JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor
+						-fForegrounds: JHotDraw_v5.1.java.util.Vector
+						-fLastClick: JHotDraw_v5.1.java.awt.Point
+						-fSelection: JHotDraw_v5.1.java.util.Vector
+						-fSelectionHandles: JHotDraw_v5.1.java.util.Vector
+						-fUpdateStrategy: JHotDraw_v5.1.CH.ifa.draw.framework.Painter
+						-fViewSize: JHotDraw_v5.1.java.awt.Dimension
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = -3878153366174603336
+						'/** 
+						' * Constructs the view.
+						' */
+						<<Create>> StandardDrawingView(editor : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor, width : JavaPrimitiveTypes.int, height : JavaPrimitiveTypes.int)
+						'/** 
+						' * Adds a figure to the drawing.
+						' * @return the added figure.
+						' */
+						add(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						'/** 
+						' * Adds a vector of figures to the drawing.
+						' */
+						addAll(figures : JHotDraw_v5.1.java.util.Vector)
+						'/** 
+						' * Adds a background.
+						' */
+						addBackground(painter : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						'/** 
+						' * Adds a foreground.
+						' */
+						addForeground(painter : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						'/** 
+						' * Adds a figure to the current selection.
+						' */
+						addToSelection(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						'/** 
+						' * Adds a vector of figures to the current selection.
+						' */
+						addToSelectionAll(figures : JHotDraw_v5.1.java.util.Vector)
+						'/** 
+						' * Refreshes the drawing if there is some accumulated damage
+						' */
+						checkDamage()
+						-checkMinimumSize()
+						'/** 
+						' * Clears the current selection.
+						' */
+						clearSelection()
+						'/** 
+						' * Constrains a point to the current grid.
+						' */
+						#constrainPoint(p : JHotDraw_v5.1.java.awt.Point): JHotDraw_v5.1.java.awt.Point
+						'/** 
+						' * Draws the contents of the drawing view. The view has three layers: background, drawing, handles. The layers are drawn in back to front order.
+						' */
+						drawAll(g : JHotDraw_v5.1.java.awt.Graphics)
+						'/** 
+						' * Draws the background. If a background pattern is set it is used to fill the background. Otherwise the background is filled in the background color.
+						' */
+						drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						'/** 
+						' * Draws the drawing.
+						' */
+						drawDrawing(g : JHotDraw_v5.1.java.awt.Graphics)
+						'/** 
+						' * Draws the currently active handles.
+						' */
+						drawHandles(g : JHotDraw_v5.1.java.awt.Graphics)
+						-drawPainters(g : JHotDraw_v5.1.java.awt.Graphics, v : JHotDraw_v5.1.java.util.Vector)
+						'/** 
+						' * Gets the drawing.
+						' */
+						drawing(): JHotDraw_v5.1.CH.ifa.draw.framework.Drawing
+						drawingInvalidated(e : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingChangeEvent)
+						drawingRequestUpdate(e : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingChangeEvent)
+						'/** 
+						' * Gets the editor.
+						' */
+						editor(): JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor
+						'/** 
+						' * Finds a handle at the given coordinates.
+						' * @return the hit handle, null if no handle is found.
+						' */
+						findHandle(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Handle
+						'/** 
+						' * Freezes the view by acquiring the drawing lock.
+						' * @see Drawing#lock
+						' */
+						freezeView()
+						'/** 
+						' * Gets the current constrainer.
+						' */
+						getConstrainer(): JHotDraw_v5.1.CH.ifa.draw.framework.PointConstrainer
+						'/** 
+						' * Gets the current selection as a FigureSelection. A FigureSelection can be cut, copied, pasted.
+						' */
+						getFigureSelection(): JHotDraw_v5.1.CH.ifa.draw.framework.FigureSelection
+						'/** 
+						' * Gets the minimum dimension of the drawing.
+						' */
+						getMinimumSize(): JHotDraw_v5.1.java.awt.Dimension
+						'/** 
+						' * Gets the preferred dimension of the drawing..
+						' */
+						getPreferredSize(): JHotDraw_v5.1.java.awt.Dimension
+						'/** 
+						' * Handles cursor keys by moving all the selected figures one grid point in the cursor direction.
+						' */
+						#handleCursorKey(key : JavaPrimitiveTypes.int)
+						isFocusTraversable(): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Handles key down events. Cursor keys are handled by the view the other key events are delegated to the currently active tool.
+						' * @return whether the event was handled.
+						' */
+						keyPressed(e : JHotDraw_v5.1.java.awt.event.KeyEvent)
+						keyReleased(e : JHotDraw_v5.1.java.awt.event.KeyEvent)
+						keyTyped(e : JHotDraw_v5.1.java.awt.event.KeyEvent)
+						'/** 
+						' * Gets the position of the last click inside the view.
+						' */
+						lastClick(): JHotDraw_v5.1.java.awt.Point
+						mouseClicked(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						'/** 
+						' * Handles mouse drag events. The event is delegated to the currently active tool.
+						' * @return whether the event was handled.
+						' */
+						mouseDragged(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						mouseEntered(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						mouseExited(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						'/** 
+						' * Handles mouse move events. The event is delegated to the currently active tool.
+						' * @return whether the event was handled.
+						' */
+						mouseMoved(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						'/** 
+						' * Handles mouse down events. The event is delegated to the currently active tool.
+						' * @return whether the event was handled.
+						' */
+						mousePressed(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						'/** 
+						' * Handles mouse up events. The event is delegated to the currently active tool.
+						' * @return whether the event was handled.
+						' */
+						mouseReleased(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						-moveSelection(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int)
+						'/** 
+						' * Paints the drawing view. The actual drawing is delegated to the current update strategy.
+						' * @see Painter
+						' */
+						paint(g : JHotDraw_v5.1.java.awt.Graphics)
+						-readObject(s : JHotDraw_v5.1.java.io.ObjectInputStream)
+						'/** 
+						' * Removes a figure from the drawing.
+						' * @return the removed figure
+						' */
+						remove(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						'/** 
+						' * Removes a background.
+						' */
+						removeBackground(painter : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						'/** 
+						' * Removes a foreground.
+						' */
+						removeForeground(painter : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						'/** 
+						' * Removes a figure from the selection.
+						' */
+						removeFromSelection(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						repairDamage()
+						'/** 
+						' * Gets the currently selected figures.
+						' * @return a vector with the selected figures. The vectoris a copy of the current selection.
+						' */
+						selection(): JHotDraw_v5.1.java.util.Vector
+						'/** 
+						' * Informs that the current selection changed. By default this event is forwarded to the drawing editor.
+						' */
+						#selectionChanged()
+						'/** 
+						' * Gets the number of selected figures.
+						' */
+						selectionCount(): JavaPrimitiveTypes.int
+						'/** 
+						' * Gets an enumeration over the currently selected figures.
+						' */
+						selectionElements(): JHotDraw_v5.1.CH.ifa.draw.framework.FigureEnumeration
+						'/** 
+						' * Gets an enumeration of the currently active handles.
+						' */
+						-selectionHandles(): JHotDraw_v5.1.java.util.Enumeration
+						'/** 
+						' * Gets the currently selected figures in Z order.
+						' * @see #selection
+						' * @return a vector with the selected figures. The vectoris a copy of the current selection.
+						' */
+						selectionZOrdered(): JHotDraw_v5.1.java.util.Vector
+						'/** 
+						' * Sets the grid spacing that is used to constrain points.
+						' */
+						setConstrainer(c : JHotDraw_v5.1.CH.ifa.draw.framework.PointConstrainer)
+						'/** 
+						' * Sets the current display update strategy.
+						' * @see UpdateStrategy
+						' */
+						setDisplayUpdate(updateStrategy : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						'/** 
+						' * Sets and installs another drawing in the view.
+						' */
+						setDrawing(d : JHotDraw_v5.1.CH.ifa.draw.framework.Drawing)
+						'/** 
+						' * Sets the view's editor.
+						' */
+						setEditor(editor : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor)
+						'/** 
+						' * If a figure isn't selected it is added to the selection. Otherwise it is removed from the selection.
+						' */
+						toggleSelection(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						'/** 
+						' * Gets the current tool.
+						' */
+						tool(): JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+						'/** 
+						' * Unfreezes the view by releasing the drawing lock.
+						' * @see Drawing#unlock
+						' */
+						unfreezeView()
+						'/** 
+						' * Updates the drawing view.
+						' */
+						update(g : JHotDraw_v5.1.java.awt.Graphics)
+					}
+					'/** 
+					' * HandleTracker implements interactions with the handles of a Figure.
+					' * @see SelectionTool
+					' */
+					'DP role: client
+					class HandleTracker {
+						-fAnchorHandle: JHotDraw_v5.1.CH.ifa.draw.framework.Handle
+						<<Create>> HandleTracker(view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView, anchorHandle : JHotDraw_v5.1.CH.ifa.draw.framework.Handle)
+						mouseDown(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						mouseDrag(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						mouseUp(e : JHotDraw_v5.1.java.awt.event.MouseEvent, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+					}
+					'/** 
+					' * A handle to reconnect the end point of a connection to another figure.
+					' */
+					'DP role: adapter
+					class ChangeConnectionEndHandle {
+						'/** 
+						' * Constructs the connection handle.
+						' */
+						<<Create>> ChangeConnectionEndHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						'/** 
+						' * Sets the end of the connection.
+						' */
+						#connect(c : JHotDraw_v5.1.CH.ifa.draw.framework.Connector)
+						'/** 
+						' * Disconnects the end figure.
+						' */
+						#disconnect()
+						'/** 
+						' * Returns the end point of the connection.
+						' */
+						locate(): JHotDraw_v5.1.java.awt.Point
+						'/** 
+						' * Sets the end point of the connection.
+						' */
+						#setPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						'/** 
+						' * Gets the end figure of a connection.
+						' */
+						#target(): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+					}
+					'/** 
+					' * Handle to reconnect the start of a connection to another figure.
+					' */
+					'DP role: adapter
+					class ChangeConnectionStartHandle {
+						'/** 
+						' * Constructs the connection handle for the given start figure.
+						' */
+						<<Create>> ChangeConnectionStartHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						'/** 
+						' * Sets the start of the connection.
+						' */
+						#connect(c : JHotDraw_v5.1.CH.ifa.draw.framework.Connector)
+						'/** 
+						' * Disconnects the start figure.
+						' */
+						#disconnect()
+						'/** 
+						' * Returns the start point of the connection.
+						' */
+						locate(): JHotDraw_v5.1.java.awt.Point
+						'/** 
+						' * Sets the start point of the connection.
+						' */
+						#setPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						'/** 
+						' * Gets the start figure of a connection.
+						' */
+						#target(): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+					}
+					'/** 
+					' * A LocatorHandle implements a Handle by delegating the location requests to a Locator object.
+					' * @see Locator
+					' */
+					'DP role: adapter
+					class LocatorHandle {
+						-fLocator: JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						'/** 
+						' * Initializes the LocatorHandle with the given Locator.
+						' */
+						<<Create>> LocatorHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, l : JHotDraw_v5.1.CH.ifa.draw.framework.Locator)
+						'/** 
+						' * Locates the handle on the figure by forwarding the request to its figure.
+						' */
+						locate(): JHotDraw_v5.1.java.awt.Point
+					}
+					'/** 
+					' * A handle to connect figures. The connection object to be created is specified by a prototype. <hr> <b>Design Patterns</b><P> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a href=../pattlets/sld029.htm>Prototype</a></b><br> ConnectionHandle creates the connection by cloning a prototype. <hr>
+					' * @see ConnectionFigure
+					' * @see Object#clone
+					' */
+					'DP role: adapter
+					class ConnectionHandle {
+						-fConnection: JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure
+						-fPrototype: JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure
+						-fTarget: JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						'/** 
+						' * Constructs a handle with the given owner, locator, and connection prototype
+						' */
+						<<Create>> ConnectionHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, l : JHotDraw_v5.1.CH.ifa.draw.framework.Locator, prototype : JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure)
+						'/** 
+						' * Creates the ConnectionFigure. By default the figure prototype is cloned.
+						' */
+						#createConnection(): JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure
+						'/** 
+						' * Draws the connection handle, by default the outline of a blue circle.
+						' */
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						-findConnectableFigure(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : JHotDraw_v5.1.CH.ifa.draw.framework.Drawing): JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						'/** 
+						' * Finds a connection end figure.
+						' */
+						#findConnectionTarget(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : JHotDraw_v5.1.CH.ifa.draw.framework.Drawing): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						#findConnector(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, f : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						'/** 
+						' * Connects the figures if the mouse is released over another figure.
+						' */
+						invokeEnd(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						'/** 
+						' * Creates the connection
+						' */
+						invokeStart(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						'/** 
+						' * Tracks the connection.
+						' */
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						-startConnector(): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+					}
+					'DP role: adapter
+					class EastHandle {
+						<<Create>> EastHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+					}
+					'DP role: adapter
+					class NorthEastHandle {
+						<<Create>> NorthEastHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+					}
+					'DP role: adapter
+					class NorthHandle {
+						<<Create>> NorthHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+					}
+					'DP role: adapter
+					class NorthWestHandle {
+						<<Create>> NorthWestHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+					}
+					'/** 
+					' * A handle that doesn't change the owned figure. Its only purpose is to show feedback that a figure is selected. <hr> <b>Design Patterns</b><P> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b>NullObject</b><br> NullObject enables to treat handles that don't do anything in the same way as other handles.
+					' */
+					'DP role: adapter
+					class NullHandle {
+						#fLocator: JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						<<Create>> NullHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, locator : JHotDraw_v5.1.CH.ifa.draw.framework.Locator)
+						'/** 
+						' * Draws the NullHandle. NullHandles are drawn as a red framed rectangle.
+						' */
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+					}
+					'DP role: adapter
+					class SouthEastHandle {
+						<<Create>> SouthEastHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+					}
+					'DP role: adapter
+					class SouthHandle {
+						<<Create>> SouthHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+					}
+					'DP role: adapter
+					class SouthWestHandle {
+						<<Create>> SouthWestHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+					}
+					'DP role: adapter
+					class WestHandle {
+						<<Create>> WestHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+					}
+					JHotDraw_v5.1.java.awt.Panel <|-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView <|.. StandardDrawingView
+					JHotDraw_v5.1.java.awt.event.MouseListener <|.. StandardDrawingView
+					JHotDraw_v5.1.java.awt.event.MouseMotionListener <|.. StandardDrawingView
+					JHotDraw_v5.1.java.awt.event.KeyListener <|.. StandardDrawingView
+					AbstractTool <|-- HandleTracker
+					JHotDraw_v5.1.CH.ifa.draw.framework.Tool <|.. AbstractTool
+					ChangeConnectionHandle <|-- ChangeConnectionEndHandle
+					AbstractHandle <|-- ChangeConnectionHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Handle <|.. AbstractHandle
+					ChangeConnectionHandle <|-- ChangeConnectionStartHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure <|.. AbstractFigure
+					AbstractHandle <|-- LocatorHandle
+					LocatorHandle <|-- ConnectionHandle
+					LocatorHandle <|-- EastHandle
+					LocatorHandle <|-- NorthEastHandle
+					LocatorHandle <|-- NorthHandle
+					LocatorHandle <|-- NorthWestHandle
+					LocatorHandle <|-- NullHandle
+					LocatorHandle <|-- SouthEastHandle
+					LocatorHandle <|-- SouthHandle
+					LocatorHandle <|-- SouthWestHandle
+					LocatorHandle <|-- WestHandle
+					AbstractLocator <|-- OffsetLocator
+					JHotDraw_v5.1.CH.ifa.draw.framework.Locator <|.. AbstractLocator
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|.. AbstractLocator
+					JHotDraw_v5.1.java.lang.Cloneable <|.. AbstractLocator
+					JavaPrimitiveTypes.int "drawingViewSerializedDataVersion" <-- StandardDrawingView
+					JHotDraw_v5.1.java.util.Vector "fBackgrounds" <-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.PointConstrainer "fConstrainer" <-- StandardDrawingView
+					JHotDraw_v5.1.java.awt.Rectangle "fDamage" <-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.Drawing "fDrawing" <-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor "fEditor" <-- StandardDrawingView
+					JHotDraw_v5.1.java.util.Vector "fForegrounds" <-- StandardDrawingView
+					JHotDraw_v5.1.java.awt.Point "fLastClick" <-- StandardDrawingView
+					JHotDraw_v5.1.java.util.Vector "fSelection" <-- StandardDrawingView
+					JHotDraw_v5.1.java.util.Vector "fSelectionHandles" <-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.Painter "fUpdateStrategy" <-- StandardDrawingView
+					JHotDraw_v5.1.java.awt.Dimension "fViewSize" <-- StandardDrawingView
+					JavaPrimitiveTypes.long "serialVersionUID" <-- StandardDrawingView
+					JavaPrimitiveTypes.int "fAnchorX" <-- AbstractTool
+					JavaPrimitiveTypes.int "fAnchorY" <-- AbstractTool
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView "fView" <-- AbstractTool
+					JHotDraw_v5.1.CH.ifa.draw.framework.Handle "fAnchorHandle" <-- HandleTracker
+					JavaPrimitiveTypes.int "HANDLESIZE" <-- AbstractHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure "fOwner" <-- AbstractHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure "fConnection" <-- ChangeConnectionHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Connector "fOriginalTarget" <-- ChangeConnectionHandle
+					JHotDraw_v5.1.java.awt.Point "fStart" <-- ChangeConnectionHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure "fTarget" <-- ChangeConnectionHandle
+					JavaPrimitiveTypes.int "abstractFigureSerializedDataVersion" <-- AbstractFigure
+					JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeListener "fListener" <-- AbstractFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractFigure
+					JHotDraw_v5.1.CH.ifa.draw.framework.Locator "fLocator" <-- LocatorHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure "fConnection" <-- ConnectionHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure "fPrototype" <-- ConnectionHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure "fTarget" <-- ConnectionHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Locator "fLocator" <-- NullHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Locator "fBase" <-- OffsetLocator
+					JavaPrimitiveTypes.int "fOffsetX" <-- OffsetLocator
+					JavaPrimitiveTypes.int "fOffsetY" <-- OffsetLocator
+					JavaPrimitiveTypes.int "offsetLocatorSerializedDataVersion" <-- OffsetLocator
+					JavaPrimitiveTypes.long "serialVersionUID" <-- OffsetLocator
+				}
+				package framework {
+					'DP role: adaptee
+					interface Figure {
+						addFigureChangeListener(l : FigureChangeListener)
+						addToContainer(c : FigureChangeListener)
+						basicDisplayBox(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						canConnect(): JavaPrimitiveTypes.boolean
+						center(): JHotDraw_v5.1.java.awt.Point
+						changed()
+						clone(): JHotDraw_v5.1.java.lang.Object
+						connectedTextLocator(text : Figure): Locator
+						connectionInsets(): JHotDraw_v5.1.java.awt.Insets
+						connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Connector
+						connectorVisibility(isVisible : JavaPrimitiveTypes.boolean)
+						containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						decompose(): FigureEnumeration
+						displayBox(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						displayBox(r : JHotDraw_v5.1.java.awt.Rectangle)
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						figures(): FigureEnumeration
+						findFigureInside(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Figure
+						getAttribute(name : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.lang.Object
+						handles(): JHotDraw_v5.1.java.util.Vector
+						includes(figure : Figure): JavaPrimitiveTypes.boolean
+						invalidate()
+						isEmpty(): JavaPrimitiveTypes.boolean
+						listener(): FigureChangeListener
+						moveBy(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int)
+						release()
+						removeFigureChangeListener(l : FigureChangeListener)
+						removeFromContainer(c : FigureChangeListener)
+						setAttribute(name : JHotDraw_v5.1.java.lang.String, value : JHotDraw_v5.1.java.lang.Object)
+						size(): JHotDraw_v5.1.java.awt.Dimension
+						willChange()
+					}
+					'DP role: adaptee
+					interface Locator {
+						locate(owner : Figure): JHotDraw_v5.1.java.awt.Point
+					}
+					'DP role: adaptee
+					interface ConnectionFigure {
+						canConnect(start : Figure, end : Figure): JavaPrimitiveTypes.boolean
+						connectEnd(end : Connector)
+						connectStart(start : Connector)
+						connectsSame(other : ConnectionFigure): JavaPrimitiveTypes.boolean
+						disconnectEnd()
+						disconnectStart()
+						end(): Connector
+						endPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						endPoint(): JHotDraw_v5.1.java.awt.Point
+						joinSegments(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						pointAt(index : JavaPrimitiveTypes.int): JHotDraw_v5.1.java.awt.Point
+						pointCount(): JavaPrimitiveTypes.int
+						setPointAt(p : JHotDraw_v5.1.java.awt.Point, index : JavaPrimitiveTypes.int)
+						splitSegment(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+						start(): Connector
+						startPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						startPoint(): JHotDraw_v5.1.java.awt.Point
+						updateConnection()
+					}
+					'DP role: target
+					interface Handle {
+						{const} HANDLESIZE: JavaPrimitiveTypes.int = 8
+						containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						invokeEnd(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : DrawingView)
+						invokeEnd(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int, drawing : Drawing)
+						invokeStart(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : Drawing)
+						invokeStart(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, view : DrawingView)
+						invokeStep(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int, drawing : Drawing)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : DrawingView)
+						locate(): JHotDraw_v5.1.java.awt.Point
+						owner(): Figure
+					}
+					JHotDraw_v5.1.java.awt.image.ImageObserver <|-- DrawingView
+					DrawingChangeListener <|-- DrawingView
+					JHotDraw_v5.1.java.util.EventListener <|-- DrawingChangeListener
+					JHotDraw_v5.1.java.util.EventObject <|-- DrawingChangeEvent
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Drawing
+					FigureChangeListener <|-- Drawing
+					JHotDraw_v5.1.java.io.Serializable <|-- Drawing
+					JHotDraw_v5.1.java.util.EventListener <|-- FigureChangeListener
+					JHotDraw_v5.1.java.util.EventObject <|-- FigureChangeEvent
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Figure
+					JHotDraw_v5.1.java.lang.Cloneable <|-- Figure
+					JHotDraw_v5.1.java.io.Serializable <|-- Figure
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Locator
+					JHotDraw_v5.1.java.io.Serializable <|-- Locator
+					JHotDraw_v5.1.java.lang.Cloneable <|-- Locator
+					JHotDraw_v5.1.java.io.Serializable <|-- Connector
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Connector
+					Figure <|-- ConnectionFigure
+					FigureChangeListener <|-- ConnectionFigure
+					JHotDraw_v5.1.java.util.Enumeration <|-- FigureEnumeration
+					JHotDraw_v5.1.java.io.Serializable <|-- Painter
+					JHotDraw_v5.1.java.awt.Rectangle "fRectangle" <-- DrawingChangeEvent
+					JHotDraw_v5.1.java.awt.Rectangle "fRectangle" <-- FigureChangeEvent
+					JHotDraw_v5.1.java.awt.Rectangle "fgEmptyRectangle" <-- FigureChangeEvent
+					JavaPrimitiveTypes.int "HANDLESIZE" <-- Handle
+					JHotDraw_v5.1.java.lang.String "TYPE" <-- FigureSelection
+					JavaPrimitiveTypes.byte "fData 0..*" <-- FigureSelection
+				}
+				package figures {
+					'/** 
+					' * A Handle to move an ElbowConnection left/right or up/down.
+					' */
+					'DP role: adapter
+					class ElbowHandle {
+						-fLastX: JavaPrimitiveTypes.int
+						-fLastY: JavaPrimitiveTypes.int
+						-fSegment: JavaPrimitiveTypes.int
+						<<Create>> ElbowHandle(owner : LineConnection, segment : JavaPrimitiveTypes.int)
+						-constrainX(x : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+						-constrainY(y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						invokeStart(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						-isVertical(p1 : JHotDraw_v5.1.java.awt.Point, p2 : JHotDraw_v5.1.java.awt.Point): JavaPrimitiveTypes.boolean
+						locate(): JHotDraw_v5.1.java.awt.Point
+						-ownerConnection(): LineConnection
+					}
+					'DP role: adaptee
+					class LineConnection {
+						#fEnd: JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						#fStart: JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						-lineConnectionSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 6883731614578414801
+						<<Create>> LineConnection()
+						#basicMoveBy(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int)
+						canConnect(): JavaPrimitiveTypes.boolean
+						canConnect(start : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, end : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JavaPrimitiveTypes.boolean
+						connectEnd(end : JHotDraw_v5.1.CH.ifa.draw.framework.Connector)
+						connectStart(start : JHotDraw_v5.1.CH.ifa.draw.framework.Connector)
+						connectsSame(other : JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure): JavaPrimitiveTypes.boolean
+						disconnectEnd()
+						disconnectStart()
+						end(): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						endFigure(): JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						endPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						endPoint(): JHotDraw_v5.1.java.awt.Point
+						figureChanged(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureInvalidated(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRemoved(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRequestRemove(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRequestUpdate(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						#handleConnect(start : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, end : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						#handleDisconnect(start : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, end : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						handles(): JHotDraw_v5.1.java.util.Vector
+						insertPointAt(p : JHotDraw_v5.1.java.awt.Point, i : JavaPrimitiveTypes.int)
+						layoutConnection()
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						-readObject(s : JHotDraw_v5.1.java.io.ObjectInputStream)
+						release()
+						removePointAt(i : JavaPrimitiveTypes.int)
+						setPointAt(p : JHotDraw_v5.1.java.awt.Point, i : JavaPrimitiveTypes.int)
+						start(): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						startFigure(): JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						startPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						startPoint(): JHotDraw_v5.1.java.awt.Point
+						updateConnection()
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'DP role: adaptee
+					class PolyLineFigure {
+						{const} ARROW_TIP_BOTH: JavaPrimitiveTypes.int = 3
+						{const} ARROW_TIP_END: JavaPrimitiveTypes.int = 2
+						{const} ARROW_TIP_NONE: JavaPrimitiveTypes.int = 0
+						{const} ARROW_TIP_START: JavaPrimitiveTypes.int = 1
+						#fEndDecoration: LineDecoration
+						#fFrameColor: JHotDraw_v5.1.java.awt.Color
+						#fPoints: JHotDraw_v5.1.java.util.Vector
+						#fStartDecoration: LineDecoration
+						-polyLineFigureSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = -7951352179906577773
+						<<Create>> PolyLineFigure()
+						<<Create>> PolyLineFigure(size : JavaPrimitiveTypes.int)
+						<<Create>> PolyLineFigure(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						addPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						basicDisplayBox(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						#basicMoveBy(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int)
+						connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-decorate(g : JHotDraw_v5.1.java.awt.Graphics)
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						findSegment(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+						getAttribute(name : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.lang.Object
+						#getFrameColor(): JHotDraw_v5.1.java.awt.Color
+						handles(): JHotDraw_v5.1.java.util.Vector
+						insertPointAt(p : JHotDraw_v5.1.java.awt.Point, i : JavaPrimitiveTypes.int)
+						isEmpty(): JavaPrimitiveTypes.boolean
+						joinSegments(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						{static} locator(pointIndex : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						pointAt(i : JavaPrimitiveTypes.int): JHotDraw_v5.1.java.awt.Point
+						pointCount(): JavaPrimitiveTypes.int
+						points(): JHotDraw_v5.1.java.util.Enumeration
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						removePointAt(i : JavaPrimitiveTypes.int)
+						setAttribute(name : JHotDraw_v5.1.java.lang.String, value : JHotDraw_v5.1.java.lang.Object)
+						setEndDecoration(l : LineDecoration)
+						#setFrameColor(c : JHotDraw_v5.1.java.awt.Color)
+						setPointAt(p : JHotDraw_v5.1.java.awt.Point, i : JavaPrimitiveTypes.int)
+						setStartDecoration(l : LineDecoration)
+						splitSegment(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'/** 
+					' * A Handle to change the font size by direct manipulation.
+					' */
+					'DP role: adapter
+					class FontSizeHandle {
+						-fFont: JHotDraw_v5.1.java.awt.Font
+						-fSize: JavaPrimitiveTypes.int
+						<<Create>> FontSizeHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, l : JHotDraw_v5.1.CH.ifa.draw.framework.Locator)
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						invokeStart(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+					}
+					'/** 
+					' * A Handle for a GroupFigure.
+					' */
+					'DP role: adapter
+					class GroupHandle {
+						<<Create>> GroupHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, locator : JHotDraw_v5.1.CH.ifa.draw.framework.Locator)
+						'/** 
+						' * Draws the Group handle.
+						' */
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+					}
+					'/** 
+					' * A handle for a node on the polyline.
+					' */
+					'DP role: adapter
+					class PolyLineHandle {
+						-fAnchor: JHotDraw_v5.1.java.awt.Point
+						-fIndex: JavaPrimitiveTypes.int
+						'/** 
+						' * Constructs a poly line handle.
+						' * @param owner the owning polyline figure.
+						' * @l the locator
+						' * @index the index of the node associated with this handle.
+						' */
+						<<Create>> PolyLineHandle(owner : PolyLineFigure, l : JHotDraw_v5.1.CH.ifa.draw.framework.Locator, index : JavaPrimitiveTypes.int)
+						invokeStart(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						-myOwner(): PolyLineFigure
+					}
+					'/** 
+					' * A Handle to manipulate the radius of a round corner rectangle.
+					' */
+					'DP role: adapter
+					class RadiusHandle {
+						-{const} OFFSET: JavaPrimitiveTypes.int = 4
+						-fOwner: RoundRectangleFigure
+						-fRadius: JHotDraw_v5.1.java.awt.Point
+						<<Create>> RadiusHandle(owner : RoundRectangleFigure)
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						invokeStart(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						locate(): JHotDraw_v5.1.java.awt.Point
+					}
+					'DP role: adaptee
+					class RoundRectangleFigure {
+						-{const} DEFAULT_ARC: JavaPrimitiveTypes.int = 8
+						-fArcHeight: JavaPrimitiveTypes.int
+						-fArcWidth: JavaPrimitiveTypes.int
+						-fDisplayBox: JHotDraw_v5.1.java.awt.Rectangle
+						-roundRectangleSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 7907900248924036885
+						<<Create>> RoundRectangleFigure()
+						<<Create>> RoundRectangleFigure(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						basicDisplayBox(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						connectionInsets(): JHotDraw_v5.1.java.awt.Insets
+						connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawFrame(g : JHotDraw_v5.1.java.awt.Graphics)
+						getArc(): JHotDraw_v5.1.java.awt.Point
+						handles(): JHotDraw_v5.1.java.util.Vector
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						setArc(width : JavaPrimitiveTypes.int, height : JavaPrimitiveTypes.int)
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'/** 
+					' * A text figure.
+					' * @see TextTool
+					' */
+					'DP role: adaptee
+					class TextFigure {
+						-fFont: JHotDraw_v5.1.java.awt.Font
+						-fHeight: JavaPrimitiveTypes.int
+						-fIsReadOnly: JavaPrimitiveTypes.boolean
+						-fLocator: JHotDraw_v5.1.CH.ifa.draw.standard.OffsetLocator
+						-fObservedFigure: JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						-fOriginX: JavaPrimitiveTypes.int
+						-fOriginY: JavaPrimitiveTypes.int
+						-fSizeIsDirty: JavaPrimitiveTypes.boolean
+						-fText: JHotDraw_v5.1.java.lang.String
+						-fWidth: JavaPrimitiveTypes.int
+						-{static} fgCurrentFontName: JHotDraw_v5.1.java.lang.String
+						-{static} fgCurrentFontSize: JavaPrimitiveTypes.int
+						-{static} fgCurrentFontStyle: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 4599820785949456124
+						-textFigureSerializedDataVersion: JavaPrimitiveTypes.int
+						<<Create>> TextFigure()
+						'/** 
+						' * Tests whether the figure accepts typing.
+						' */
+						acceptsTyping(): JavaPrimitiveTypes.boolean
+						basicDisplayBox(newOrigin : JHotDraw_v5.1.java.awt.Point, newCorner : JHotDraw_v5.1.java.awt.Point)
+						#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						'/** 
+						' * Updates the location whenever the figure changes itself.
+						' */
+						changed()
+						connect(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						'/** 
+						' * Creates the current font to be used for new text figures.
+						' */
+						{static} createCurrentFont(): JHotDraw_v5.1.java.awt.Font
+						'/** 
+						' * Disconnects the text figure.
+						' */
+						disconnect()
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawFrame(g : JHotDraw_v5.1.java.awt.Graphics)
+						figureChanged(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureInvalidated(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRemoved(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRequestRemove(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRequestUpdate(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						'/** 
+						' * A text figure understands the "FontSize", "FontStyle", and "FontName" attributes.
+						' */
+						getAttribute(name : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.lang.Object
+						'/** 
+						' * Gets the font.
+						' */
+						getFont(): JHotDraw_v5.1.java.awt.Font
+						'/** 
+						' * Gets the text shown by the text figure.
+						' */
+						getText(): JHotDraw_v5.1.java.lang.String
+						handles(): JHotDraw_v5.1.java.util.Vector
+						-markDirty()
+						moveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						'/** 
+						' * Gets the number of columns to be overlaid when the figure is edited.
+						' */
+						overlayColumns(): JavaPrimitiveTypes.int
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						-readObject(s : JHotDraw_v5.1.java.io.ObjectInputStream)
+						'/** 
+						' * Tests whether this figure is read only.
+						' */
+						readOnly(): JavaPrimitiveTypes.boolean
+						release()
+						'/** 
+						' * A text figure understands the "FontSize", "FontStyle", and "FontName" attributes.
+						' */
+						setAttribute(name : JHotDraw_v5.1.java.lang.String, value : JHotDraw_v5.1.java.lang.Object)
+						'/** 
+						' * Sets the current font name
+						' */
+						{static} setCurrentFontName(name : JHotDraw_v5.1.java.lang.String)
+						'/** 
+						' * Sets the current font size.
+						' */
+						{static} setCurrentFontSize(size : JavaPrimitiveTypes.int)
+						'/** 
+						' * Sets the current font style.
+						' */
+						{static} setCurrentFontStyle(style : JavaPrimitiveTypes.int)
+						'/** 
+						' * Sets the font.
+						' */
+						setFont(newFont : JHotDraw_v5.1.java.awt.Font)
+						'/** 
+						' * Sets the read only status of the text figure.
+						' */
+						setReadOnly(isReadOnly : JavaPrimitiveTypes.boolean)
+						'/** 
+						' * Sets the text shown by the text figure.
+						' */
+						setText(newText : JHotDraw_v5.1.java.lang.String)
+						textDisplayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						-textExtent(): JHotDraw_v5.1.java.awt.Dimension
+						'/** 
+						' * Updates the location relative to the connected figure. The TextFigure is centered around the located point.
+						' */
+						#updateLocation()
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractHandle <|-- ElbowHandle
+					PolyLineFigure <|-- LineConnection
+					JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure <|.. LineConnection
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractFigure <|-- PolyLineFigure
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- LineDecoration
+					JHotDraw_v5.1.java.lang.Cloneable <|-- LineDecoration
+					JHotDraw_v5.1.java.io.Serializable <|-- LineDecoration
+					JHotDraw_v5.1.CH.ifa.draw.standard.LocatorHandle <|-- FontSizeHandle
+					JHotDraw_v5.1.CH.ifa.draw.standard.NullHandle <|-- GroupHandle
+					JHotDraw_v5.1.CH.ifa.draw.standard.LocatorHandle <|-- PolyLineHandle
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractFigure <|-- AttributeFigure
+					JHotDraw_v5.1.java.lang.Cloneable <|.. FigureAttributes
+					JHotDraw_v5.1.java.io.Serializable <|.. FigureAttributes
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractHandle <|-- RadiusHandle
+					AttributeFigure <|-- RoundRectangleFigure
+					AttributeFigure <|-- RectangleFigure
+					AttributeFigure <|-- TextFigure
+					JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeListener <|.. TextFigure
+					JHotDraw_v5.1.CH.ifa.draw.standard.TextHolder <|.. TextFigure
+					JavaPrimitiveTypes.int "fLastX" <-- ElbowHandle
+					JavaPrimitiveTypes.int "fLastY" <-- ElbowHandle
+					JavaPrimitiveTypes.int "fSegment" <-- ElbowHandle
+					JavaPrimitiveTypes.int "ARROW_TIP_BOTH" <-- PolyLineFigure
+					JavaPrimitiveTypes.int "ARROW_TIP_END" <-- PolyLineFigure
+					JavaPrimitiveTypes.int "ARROW_TIP_NONE" <-- PolyLineFigure
+					JavaPrimitiveTypes.int "ARROW_TIP_START" <-- PolyLineFigure
+					LineDecoration "fEndDecoration" <-- PolyLineFigure
+					JHotDraw_v5.1.java.awt.Color "fFrameColor" <-- PolyLineFigure
+					JHotDraw_v5.1.java.util.Vector "fPoints" <-- PolyLineFigure
+					LineDecoration "fStartDecoration" <-- PolyLineFigure
+					JavaPrimitiveTypes.int "polyLineFigureSerializedDataVersion" <-- PolyLineFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- PolyLineFigure
+					JHotDraw_v5.1.CH.ifa.draw.framework.Connector "fEnd" <-- LineConnection
+					JHotDraw_v5.1.CH.ifa.draw.framework.Connector "fStart" <-- LineConnection
+					JavaPrimitiveTypes.int "lineConnectionSerializedDataVersion" <-- LineConnection
+					JavaPrimitiveTypes.long "serialVersionUID" <-- LineConnection
+					JHotDraw_v5.1.java.awt.Font "fFont" <-- FontSizeHandle
+					JavaPrimitiveTypes.int "fSize" <-- FontSizeHandle
+					JHotDraw_v5.1.java.awt.Point "fAnchor" <-- PolyLineHandle
+					JavaPrimitiveTypes.int "fIndex" <-- PolyLineHandle
+					JavaPrimitiveTypes.int "attributeFigureSerializedDataVersion" <-- AttributeFigure
+					JHotDraw_v5.1.java.util.Hashtable "fMap" <-- FigureAttributes
+					JavaPrimitiveTypes.int "figureAttributesSerializedDataVersion" <-- FigureAttributes
+					JavaPrimitiveTypes.long "serialVersionUID" <-- FigureAttributes
+					FigureAttributes "fAttributes" <-- AttributeFigure
+					FigureAttributes "fgDefaultAttributes" <-- AttributeFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- AttributeFigure
+					JavaPrimitiveTypes.int "OFFSET" <-- RadiusHandle
+					JavaPrimitiveTypes.int "DEFAULT_ARC" <-- RoundRectangleFigure
+					JavaPrimitiveTypes.int "fArcHeight" <-- RoundRectangleFigure
+					JavaPrimitiveTypes.int "fArcWidth" <-- RoundRectangleFigure
+					JHotDraw_v5.1.java.awt.Rectangle "fDisplayBox" <-- RoundRectangleFigure
+					JavaPrimitiveTypes.int "roundRectangleSerializedDataVersion" <-- RoundRectangleFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- RoundRectangleFigure
+					RoundRectangleFigure "fOwner" <-- RadiusHandle
+					JHotDraw_v5.1.java.awt.Point "fRadius" <-- RadiusHandle
+					JHotDraw_v5.1.java.awt.Rectangle "fDisplayBox" <-- RectangleFigure
+					JavaPrimitiveTypes.int "rectangleFigureSerializedDataVersion" <-- RectangleFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- RectangleFigure
+					JHotDraw_v5.1.java.awt.Font "fFont" <-- TextFigure
+					JavaPrimitiveTypes.int "fHeight" <-- TextFigure
+					JavaPrimitiveTypes.boolean "fIsReadOnly" <-- TextFigure
+					JHotDraw_v5.1.CH.ifa.draw.standard.OffsetLocator "fLocator" <-- TextFigure
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure "fObservedFigure" <-- TextFigure
+					JavaPrimitiveTypes.int "fOriginX" <-- TextFigure
+					JavaPrimitiveTypes.int "fOriginY" <-- TextFigure
+					JavaPrimitiveTypes.boolean "fSizeIsDirty" <-- TextFigure
+					JHotDraw_v5.1.java.lang.String "fText" <-- TextFigure
+					JavaPrimitiveTypes.int "fWidth" <-- TextFigure
+					JHotDraw_v5.1.java.lang.String "fgCurrentFontName" <-- TextFigure
+					JavaPrimitiveTypes.int "fgCurrentFontSize" <-- TextFigure
+					JavaPrimitiveTypes.int "fgCurrentFontStyle" <-- TextFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- TextFigure
+					JavaPrimitiveTypes.int "textFigureSerializedDataVersion" <-- TextFigure
+				}
+				package contrib {
+					'/** 
+					' * A handle for a node on the polygon.
+					' */
+					'DP role: adapter
+					class PolygonHandle {
+						-fIndex: JavaPrimitiveTypes.int
+						-fLocator: JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						'/** 
+						' * Constructs a polygon handle.
+						' * @param owner the owning polygon figure.
+						' * @l the locator
+						' * @index the index of the node associated with this handle.
+						' */
+						<<Create>> PolygonHandle(owner : PolygonFigure, l : JHotDraw_v5.1.CH.ifa.draw.framework.Locator, index : JavaPrimitiveTypes.int)
+						invokeEnd(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						locate(): JHotDraw_v5.1.java.awt.Point
+						-myOwner(): PolygonFigure
+					}
+					'DP role: adaptee
+					class PolygonFigure {
+						{const} TOO_CLOSE: JavaPrimitiveTypes.int = 2
+						#fPoly: JHotDraw_v5.1.java.awt.Polygon
+						-polygonFigureSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 6254089689239215026
+						<<Create>> PolygonFigure()
+						<<Create>> PolygonFigure(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						<<Create>> PolygonFigure(p : JHotDraw_v5.1.java.awt.Polygon)
+						addPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						basicDisplayBox(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						basicMoveBy(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int)
+						{static} bounds(p : JHotDraw_v5.1.java.awt.Polygon): JHotDraw_v5.1.java.awt.Rectangle
+						center(): JHotDraw_v5.1.java.awt.Point
+						{static} center(p : JHotDraw_v5.1.java.awt.Polygon): JHotDraw_v5.1.java.awt.Point
+						chop(p : JHotDraw_v5.1.java.awt.Point): JHotDraw_v5.1.java.awt.Point
+						{static} chop(poly : JHotDraw_v5.1.java.awt.Polygon, p : JHotDraw_v5.1.java.awt.Point): JHotDraw_v5.1.java.awt.Point
+						connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Connector
+						containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						{static} distanceFromLine(xa : JavaPrimitiveTypes.int, ya : JavaPrimitiveTypes.int, xb : JavaPrimitiveTypes.int, yb : JavaPrimitiveTypes.int, xc : JavaPrimitiveTypes.int, yc : JavaPrimitiveTypes.int): JavaPrimitiveTypes.double
+						drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawFrame(g : JHotDraw_v5.1.java.awt.Graphics)
+						findSegment(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+						getPolygon(): JHotDraw_v5.1.java.awt.Polygon
+						handles(): JHotDraw_v5.1.java.util.Vector
+						insertPointAt(p : JHotDraw_v5.1.java.awt.Point, i : JavaPrimitiveTypes.int)
+						isEmpty(): JavaPrimitiveTypes.boolean
+						{static} locator(pointIndex : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						outermostPoint(): JHotDraw_v5.1.java.awt.Point
+						pointAt(i : JavaPrimitiveTypes.int): JHotDraw_v5.1.java.awt.Point
+						pointCount(): JavaPrimitiveTypes.int
+						points(): JHotDraw_v5.1.java.util.Enumeration
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						removePointAt(i : JavaPrimitiveTypes.int)
+						scaleRotate(anchor : JHotDraw_v5.1.java.awt.Point, originalPolygon : JHotDraw_v5.1.java.awt.Polygon, p : JHotDraw_v5.1.java.awt.Point)
+						setPointAt(p : JHotDraw_v5.1.java.awt.Point, i : JavaPrimitiveTypes.int)
+						smoothPoints()
+						splitSegment(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'/** 
+					' * A Handle to scale and rotate a PolygonFigure
+					' */
+					'DP role: adapter
+					class PolygonScaleHandle {
+						-fCurrent: JHotDraw_v5.1.java.awt.Point
+						-fOrigPoly: JHotDraw_v5.1.java.awt.Polygon
+						-fOrigin: JHotDraw_v5.1.java.awt.Point
+						<<Create>> PolygonScaleHandle(owner : PolygonFigure)
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						getOrigin(): JHotDraw_v5.1.java.awt.Point
+						invokeEnd(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int, drawing : JHotDraw_v5.1.CH.ifa.draw.framework.Drawing)
+						invokeStart(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : JHotDraw_v5.1.CH.ifa.draw.framework.Drawing)
+						invokeStep(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int, drawing : JHotDraw_v5.1.CH.ifa.draw.framework.Drawing)
+						locate(): JHotDraw_v5.1.java.awt.Point
+					}
+					'/** 
+					' * A Handle to rotate a TriangleFigure
+					' */
+					'DP role: adapter
+					class TriangleRotationHandle {
+						-fCenter: JHotDraw_v5.1.java.awt.Point
+						-fOrigin: JHotDraw_v5.1.java.awt.Point
+						<<Create>> TriangleRotationHandle(owner : TriangleFigure)
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						getOrigin(): JHotDraw_v5.1.java.awt.Point
+						invokeEnd(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int, drawing : JHotDraw_v5.1.CH.ifa.draw.framework.Drawing)
+						invokeStart(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : JHotDraw_v5.1.CH.ifa.draw.framework.Drawing)
+						invokeStep(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int, drawing : JHotDraw_v5.1.CH.ifa.draw.framework.Drawing)
+						locate(): JHotDraw_v5.1.java.awt.Point
+					}
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractHandle <|-- PolygonHandle
+					JHotDraw_v5.1.CH.ifa.draw.figures.AttributeFigure <|-- PolygonFigure
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractHandle <|-- PolygonScaleHandle
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractHandle <|-- TriangleRotationHandle
+					JHotDraw_v5.1.CH.ifa.draw.figures.RectangleFigure <|-- TriangleFigure
+					JavaPrimitiveTypes.int "fIndex" <-- PolygonHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Locator "fLocator" <-- PolygonHandle
+					JavaPrimitiveTypes.int "TOO_CLOSE" <-- PolygonFigure
+					JHotDraw_v5.1.java.awt.Polygon "fPoly" <-- PolygonFigure
+					JavaPrimitiveTypes.int "polygonFigureSerializedDataVersion" <-- PolygonFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- PolygonFigure
+					JHotDraw_v5.1.java.awt.Point "fCurrent" <-- PolygonScaleHandle
+					JHotDraw_v5.1.java.awt.Polygon "fOrigPoly" <-- PolygonScaleHandle
+					JHotDraw_v5.1.java.awt.Point "fOrigin" <-- PolygonScaleHandle
+					JHotDraw_v5.1.java.awt.Point "fCenter" <-- TriangleRotationHandle
+					JHotDraw_v5.1.java.awt.Point "fOrigin" <-- TriangleRotationHandle
+					JavaPrimitiveTypes.int "fRotation" <-- TriangleFigure
+					JavaPrimitiveTypes.double "rotations 0..*" <-- TriangleFigure
+				}
+			}
+		}
+	}
+}
+@enduml

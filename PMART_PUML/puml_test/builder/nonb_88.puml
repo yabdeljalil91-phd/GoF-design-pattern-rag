@@ -1,0 +1,50 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			class NodeFigure {
+				-{const} BORDER: JavaPrimitiveTypes.int = 6
+				-fConnectors: java.util.Vector
+				-fConnectorsVisible: JavaPrimitiveTypes.boolean
+				<<Create>> NodeFigure()
+				connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Connector
+				connectorVisibility(isVisible : JavaPrimitiveTypes.boolean)
+				-connectors(): java.util.Vector
+				containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				-createConnectors()
+				displayBox(): java.awt.Rectangle
+				draw(g : java.awt.Graphics)
+				-drawBorder(g : java.awt.Graphics)
+				-drawConnectors(g : java.awt.Graphics)
+				-findConnector(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Connector
+				handles(): java.util.Vector
+				-initialize()
+			}
+		}
+	}
+	Builder.nonbuilder.TextFigure <|-- Builder.nonbuilder.NodeFigure
+	Builder.nonbuilder.AttributeFigure <|-- Builder.nonbuilder.TextFigure
+	Builder.nonbuilder.FigureChangeListener <|-- Builder.nonbuilder.TextFigure
+	Builder.nonbuilder.TextHolder <|-- Builder.nonbuilder.TextFigure
+	java.lang.Cloneable <|-- Builder.nonbuilder.Figure
+	java.io.Serializable <|-- Builder.nonbuilder.Figure
+	java.awt.Font "fFont" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "fHeight" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.boolean "fIsReadOnly" <-- Builder.nonbuilder.TextFigure
+	Builder.nonbuilder.OffsetLocator "fLocator" <-- Builder.nonbuilder.TextFigure
+	Builder.nonbuilder.Figure "fObservedFigure" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "fOriginX" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "fOriginY" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.boolean "fSizeIsDirty" <-- Builder.nonbuilder.TextFigure
+	java.lang.String "fText" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "fWidth" <-- Builder.nonbuilder.TextFigure
+	java.lang.String "fgCurrentFontName" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontSize" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontStyle" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "textFigureSerializedDataVersion" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "BORDER" <-- Builder.nonbuilder.NodeFigure
+	java.util.Vector "fConnectors" <-- Builder.nonbuilder.NodeFigure
+	JavaPrimitiveTypes.boolean "fConnectorsVisible" <-- Builder.nonbuilder.NodeFigure
+}
+@enduml

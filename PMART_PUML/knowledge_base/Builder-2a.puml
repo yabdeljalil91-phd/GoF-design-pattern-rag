@@ -1,0 +1,130 @@
+@startuml
+title QuickUML 2001 - Extracted Structure for GoF Builder Detection
+
+package "QuickUML 2001" {
+
+    ' =========================
+    ' ========= PRODUCT =======
+    ' =========================
+
+    class MetaComponent {
+        -name : String
+        -type : String
+    }
+
+    class MetaClass <<product>> {
+        -anInterface : boolean
+        -attributeList
+        -methodList
+        -interfaceList
+        -superClass : MetaClass
+        +addAttribute()
+        +addMethod()
+        +addInterface()
+        +setSuperClass()
+    }
+
+    class MetaAttribute
+    class MetaMethod
+    class MetaConstructor
+    class MetaParameter
+    class MetaAssociation <<product>>
+    class MetaComposition <<product>>
+
+    MetaComponent <|-- MetaClass
+    MetaComponent <|-- MetaAttribute
+    MetaComponent <|-- MetaParameter
+    MetaAttribute <|-- MetaMethod
+    MetaMethod <|-- MetaConstructor
+    MetaAttribute <|-- MetaAssociation
+    MetaAttribute <|-- MetaComposition
+
+    MetaClass --> MetaAttribute
+    MetaClass --> MetaMethod
+    MetaClass --> MetaClass
+
+    ' =========================
+    ' ========= CONTEXT =======
+    ' =========================
+
+    class Context {
+        -model
+        -classes
+        -errors
+        -warnings
+        -wantArrays : boolean
+    }
+
+    Context --> MetaClass
+
+    ' =========================
+    ' ========= BUILDER =======
+    ' =========================
+
+    interface CodeBuilder <<builder>> {
+        +build(ctx : Context)
+    }
+
+    abstract class AbstractBuilder
+    CodeBuilder <|.. AbstractBuilder
+
+    ' -------------------------
+    ' Concrete Builders
+    ' -------------------------
+
+    class ClassBuilder <<concreteBuilder>> {
+        +build(ctx : Context)
+    }
+
+    class AssociationBuilder <<concreteBuilder>> {
+        +build(ctx : Context)
+    }
+
+    class CompositionBuilder <<concreteBuilder>> {
+        +build(ctx : Context)
+    }
+
+    class InheritanceBuilder <<concreteBuilder>> {
+        +build(ctx : Context)
+    }
+
+    class RealizationBuilder <<concreteBuilder>> {
+        +build(ctx : Context)
+    }
+
+    class ObjectBuilder
+    CodeBuilder <|.. ObjectBuilder
+
+    class CPlusPlusBuilder <<concreteBuilder>> {
+        -prefix : String
+        +build(ctx : Context)
+    }
+
+    class JavaBuilder <<concreteBuilder>> {
+        -prefix : String
+        +build(ctx : Context)
+    }
+
+    AbstractBuilder <|-- ClassBuilder
+    AbstractBuilder <|-- AssociationBuilder
+    AbstractBuilder <|-- CompositionBuilder
+    AbstractBuilder <|-- InheritanceBuilder
+
+    CodeBuilder <|.. RealizationBuilder
+    ObjectBuilder <|-- CPlusPlusBuilder
+    ObjectBuilder <|-- JavaBuilder
+
+    ' =========================
+    ' ========= DIRECTOR ======
+    ' =========================
+
+    class BuildAction <<director>> {
+        -container
+        +actionPerformed()
+    }
+
+    BuildAction --> CodeBuilder
+    CodeBuilder --> Context
+
+}
+@enduml

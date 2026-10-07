@@ -1,0 +1,70 @@
+@startuml
+' --- JRefactory Design Pattern Analysis ---
+' This diagram highlights the Builder and Template Method patterns 
+' used in the refactoring engine.
+
+package "org.acm.seguin.refactor" {
+    
+    ' Role: Template Method (Abstract Class)
+    ' Responsibility: Defines the skeleton of a refactoring algorithm.
+    abstract class Refactoring {
+        # {abstract} preconditions()
+        # {abstract} transform()
+        + run()
+    }
+    note left: **Role: Template Method**\nDefines the lifecycle\nof a refactoring operation.
+
+    package "method" {
+        
+        ' Role: Director (Builder Pattern) / Concrete Class (Template Method)
+        ' Responsibility: Orchestrates the extraction process and uses EMBuilder to create the new AST node.
+        class ExtractMethodRefactoring {
+            - empf: EMParameterFinder
+            - root: SimpleNode
+            # preconditions()
+            # transform()
+            - replaceExtractedMethod(result, builder)
+        }
+        note right of ExtractMethodRefactoring: **Role: Director / ConcreteClass**\nControls the building of the\nextracted method structure.
+
+        ' Role: ConcreteBuilder
+        ' Responsibility: Provides specific steps to build a method invocation or assignment node.
+        class EMBuilder {
+            + build(): Node
+            + setMethodName(name)
+            + setParameters(list)
+            - buildMethodInvocation(...)
+        }
+        note bottom of EMBuilder: **Role: ConcreteBuilder**\nConstructs the new AST 'Product'.
+    }
+}
+
+package "org.acm.seguin.parser" {
+    ' Role: Product / Component
+    ' Responsibility: The resulting object being built or manipulated.
+    interface Node {
+        jjtAccept(visitor, data)
+        jjtAddChild(n, i)
+    }
+    note top of Node: **Role: Product**\nThe complex object created\nby the Builder.
+}
+
+' --- KEY RELATIONSHIPS FOR RAG DETECTION ---
+
+' Inheritance for Template Method Pattern
+Refactoring <|-- ExtractMethodRefactoring : "implements lifecycle"
+
+' Association/Delegation for Builder Pattern
+' The Director (ExtractMethodRefactoring) uses the Builder (EMBuilder)
+ExtractMethodRefactoring ..> EMBuilder : "directs building via"
+
+' Builder creates the Product
+EMBuilder ..> Node : "produces"
+
+' Aggregation: The Refactoring context holds the AST root
+ExtractMethodRefactoring o-- Node : "manipulates"
+
+' Summary for RAG:
+' 1. Builder Pattern: EMBuilder (Builder), ExtractMethodRefactoring (Director), Node (Product).
+' 2. Template Method Pattern: Refactoring (Abstract), ExtractMethodRefactoring (Concrete).
+@enduml

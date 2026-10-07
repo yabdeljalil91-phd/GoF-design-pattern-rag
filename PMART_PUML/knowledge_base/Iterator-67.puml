@@ -1,0 +1,86 @@
+@startuml
+'Design pattern Iterator
+package "JUnit v3.7" as JUnit_v3.7 {
+	package junit {
+		package swingui {
+			'/** 
+			' * A test class selector. A simple dialog to pick the name of a test suite.
+			' */
+			'DP role: client
+			class TestSelector {
+				-fCancel: JUnit_v3.7.javax.swing.JButton
+				-fDescription: JUnit_v3.7.javax.swing.JLabel
+				-fList: JUnit_v3.7.javax.swing.JList
+				-fOk: JUnit_v3.7.javax.swing.JButton
+				-fScrolledList: JUnit_v3.7.javax.swing.JScrollPane
+				-fSelectedItem: JUnit_v3.7.java.lang.String
+				<<Create>> TestSelector(parent : JUnit_v3.7.java.awt.Frame, testCollector : JUnit_v3.7.junit.runner.TestCollector)
+				-addListeners()
+				checkEnableOK(e : JUnit_v3.7.javax.swing.event.ListSelectionEvent)
+				-createTestList(collector : JUnit_v3.7.junit.runner.TestCollector): JUnit_v3.7.java.util.Vector
+				-defineLayout()
+				getSelectedItem(): JUnit_v3.7.java.lang.String
+				isEmpty(): JavaPrimitiveTypes.boolean
+				keySelectTestClass(ch : JavaPrimitiveTypes.char)
+				okSelected()
+			}
+			JUnit_v3.7.javax.swing.JDialog <|-- TestSelector
+			JUnit_v3.7.javax.swing.JButton "fCancel" <-- TestSelector
+			JUnit_v3.7.javax.swing.JLabel "fDescription" <-- TestSelector
+			JUnit_v3.7.javax.swing.JList "fList" <-- TestSelector
+			JUnit_v3.7.javax.swing.JButton "fOk" <-- TestSelector
+			JUnit_v3.7.javax.swing.JScrollPane "fScrolledList" <-- TestSelector
+			JUnit_v3.7.java.lang.String "fSelectedItem" <-- TestSelector
+			JUnit_v3.7.java.util.Vector "fOther" <-- ParallelSwapper
+			JUnit_v3.7.javax.swing.Icon "fLeafIcon" <-- TestCellRenderer
+			JUnit_v3.7.javax.swing.Icon "fSuiteIcon" <-- TestCellRenderer
+		}
+		package runner {
+			'DP role: aggregate
+			interface TestCollector {
+				collectTests(): JUnit_v3.7.java.util.Enumeration
+			}
+			'/** 
+			' * An implementation of a TestCollector that loads all classes on the class path and tests whether it is assignable from Test or provides a static suite method.
+			' * @see TestCollector
+			' */
+			'DP role: concreteAggregate
+			class LoadingTestCollector {
+				fLoader: TestCaseClassLoader
+				<<Create>> LoadingTestCollector()
+				classFromFile(classFileName : JUnit_v3.7.java.lang.String): JUnit_v3.7.java.lang.Class
+				hasPublicConstructor(testClass : JUnit_v3.7.java.lang.Class): JavaPrimitiveTypes.boolean
+				hasSuiteMethod(testClass : JUnit_v3.7.java.lang.Class): JavaPrimitiveTypes.boolean
+				#isTestClass(classFileName : JUnit_v3.7.java.lang.String): JavaPrimitiveTypes.boolean
+				isTestClass(testClass : JUnit_v3.7.java.lang.Class): JavaPrimitiveTypes.boolean
+			}
+			'/** 
+			' * An implementation of a TestCollector that considers a class to be a test class when it contains the pattern "Test" in its name
+			' * @see TestCollector
+			' */
+			'DP role: concreteAggregate
+			class SimpleTestCollector {
+				<<Create>> SimpleTestCollector()
+				#isTestClass(classFileName : JUnit_v3.7.java.lang.String): JavaPrimitiveTypes.boolean
+			}
+			ClassPathTestCollector <|-- LoadingTestCollector
+			TestCollector <|.. ClassPathTestCollector
+			JUnit_v3.7.java.lang.ClassLoader <|-- TestCaseClassLoader
+			ClassPathTestCollector <|-- SimpleTestCollector
+			JavaPrimitiveTypes.int "SUFFIX_LENGTH" <-- ClassPathTestCollector
+			JUnit_v3.7.java.lang.String "EXCLUDED_FILE" <-- TestCaseClassLoader
+			JUnit_v3.7.java.lang.String "defaultExclusions 0..*" <-- TestCaseClassLoader
+			JUnit_v3.7.java.util.Vector "fExcluded" <-- TestCaseClassLoader
+			JUnit_v3.7.java.util.Vector "fPathItems" <-- TestCaseClassLoader
+			TestCaseClassLoader "fLoader" <-- LoadingTestCollector
+		}
+	}
+	package java {
+		package util {
+			'DP role: iterator
+			interface Enumeration {
+			}
+		}
+	}
+}
+@enduml

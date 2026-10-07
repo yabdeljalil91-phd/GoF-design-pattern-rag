@@ -1,0 +1,26 @@
+@startuml
+package dpd_jdt {
+	package File {
+		package name {
+			'@class FileAction
+			'@date 08-20-2001
+			'@author Eric Crahen
+			'@version 1.0Action that provides a smarter JFileChooser
+			abstract class FileAction {
+				-chooser: SmartChooser
+				'Create a new action
+				<<Create>> FileAction(name : java.lang.String, icon : javax.swing.Icon)
+				'Create a new action
+				<<Create>> FileAction(name : java.lang.String)
+				'Get the JFileChooser shared among all FileActions
+				#getChooser(): SmartChooser
+			}
+		}
+	}
+	javax.swing.AbstractAction <|-- File.name.FileAction
+	java.io.File "lastDirectory" <-- File.name.FileAction.SmartChooser
+	File.name.FileAction.SmartChooser "chooser" <-- File.name.FileAction
+	java.lang.String "description" <-- File.name.FileAction.SimpleFilter
+	java.lang.String "extensions 0..*" <-- File.name.FileAction.SimpleFilter
+}
+@enduml

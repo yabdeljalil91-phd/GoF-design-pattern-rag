@@ -1,0 +1,135 @@
+@startuml
+'Design pattern Adapter
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+	package org {
+		package acm {
+			package seguin {
+				package ide {
+					package command {
+						'/** 
+						' * Creates the menubar for the command line program
+						' * @author    Chris Seguin
+						' */
+						'DP role: client
+						class CommandLineMenu {
+							<<Create>> CommandLineMenu()
+							'/** 
+							' * Creates edit menu
+							' * @return    returns the edit menu
+							' */
+							-createEditMenu(): JRefactory_v2.6.24.javax.swing.JMenu
+							'/** 
+							' * Creates the file menu
+							' * @param panel  the panel
+							' * @return        the file menu
+							' */
+							-createFileMenu(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenu
+							'/** 
+							' * Creates the zoom menu
+							' * @param panel  the panel
+							' * @return        the zoom menu
+							' */
+							-createZoomMenu(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenu
+							'/** 
+							' * Gets the MenuBar attribute of the CommandLineMenu object
+							' * @param panel  Description of Parameter
+							' * @return        The MenuBar value
+							' */
+							getMenuBar(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenuBar
+						}
+					}
+					package common {
+						'/** 
+						' * General software component that can perform an undo operation
+						' * @author    Chris Seguin
+						' */
+						'DP role: adapter
+						class UndoAdapter {
+							<<Create>> UndoAdapter()
+							'/** 
+							' * When the menu item is selected, do this
+							' * @param evt  The event
+							' */
+							actionPerformed(evt : JRefactory_v2.6.24.java.awt.event.ActionEvent)
+						}
+						JRefactory_v2.6.24.java.awt.event.ActionListener <|.. UndoAdapter
+					}
+				}
+				package refactor {
+					package undo {
+						'/** 
+						' * Stores the undo operation. The undo operation consists of a description of the refactoring that was performed to create this UndoAction and a list of files that have changed. <P> The files that have changed are indexed files, in that they have an index appended to the name of the file.
+						' * @author    Chris Seguin
+						' */
+						'DP role: adaptee
+						class UndoAction {
+							-description: JRefactory_v2.6.24.java.lang.String
+							-list: JRefactory_v2.6.24.java.util.LinkedList
+							'/** 
+							' * Constructor for the UndoAction object
+							' * @param init  the description of the action
+							' */
+							<<Create>> UndoAction(init : JRefactory_v2.6.24.java.lang.String)
+							'/** 
+							' * Adds a file to this action
+							' * @param oldFile  the original file
+							' * @param newFile  the new file
+							' */
+							add(oldFile : JRefactory_v2.6.24.java.io.File, newFile : JRefactory_v2.6.24.java.io.File)
+							'/** 
+							' * Finds the next slot to store the original file
+							' * @param dir   the directory that the original file is contained in
+							' * @param name  the name of the original file
+							' * @return       Description of the Returned Value
+							' */
+							-findNextStorageSlot(dir : JRefactory_v2.6.24.java.io.File, name : JRefactory_v2.6.24.java.lang.String): JRefactory_v2.6.24.java.io.File
+							'/** 
+							' * Gets the Description attribute of the UndoAction object
+							' * @return    The Description value
+							' */
+							getDescription(): JRefactory_v2.6.24.java.lang.String
+							'/** 
+							' * Gets the NextName attribute of the UndoAction object
+							' * @param name     Description of Parameter
+							' * @param index    Description of Parameter
+							' * @param pattern  Description of Parameter
+							' * @return          The NextName value
+							' */
+							-getNextName(name : JRefactory_v2.6.24.java.lang.String, index : JavaPrimitiveTypes.int, pattern : JRefactory_v2.6.24.java.lang.String): JRefactory_v2.6.24.java.lang.String
+							'/** 
+							' * Undo the current action
+							' */
+							undo()
+						}
+						JRefactory_v2.6.24.java.io.Serializable <|.. UndoAction
+						JRefactory_v2.6.24.java.lang.String "description" <-- UndoAction
+						JRefactory_v2.6.24.java.util.LinkedList "list" <-- UndoAction
+					}
+				}
+			}
+		}
+	}
+	package java {
+		package awt {
+			package event {
+				'/** 
+				' * The listener interface for receiving action events. The class that is interested in processing an action event implements this interface, and the object created with that class is registered with a component, using the component's {@code addActionListener} method. When the action eventoccurs, that object's  {@code actionPerformed} method isinvoked.
+				' * @see ActionEvent
+				' * @see <a href="https://docs.oracle.com/javase/tutorial/uiswing/events/actionlistener.html">How to Write an Action Listener</a>
+				' * @author Carl Quinn
+				' * @since 1.1
+				' */
+				'DP role: target
+				interface ActionListener {
+					'/** 
+					' * Invoked when an action occurs.
+					' * @param e the event to be processed
+					' */
+					actionPerformed(e : ActionEvent)
+				}
+				JRefactory_v2.6.24.java.util.EventListener <|-- ActionListener
+			}
+		}
+	}
+}
+@enduml

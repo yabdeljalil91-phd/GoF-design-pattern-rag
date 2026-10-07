@@ -1,0 +1,44 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			'Responsible for containing the editor operations. These are the aspects that the refactoring tool requires to integrate the pretty printer, the extract method, and other refactorings with the particular IDE.<P> The developer of this class must remember that in order to perform a setStringInIDE, the developer must first call the getStringInIDE and assure that no one else invokes the getStringInIDE before they can invoke the setStringInIDE.
+			'@author    Chris Seguin
+			abstract class EditorOperations {
+				-{static} singleton: EditorOperations
+				<<Create>> EditorOperations()
+				'Get the current editor operations
+				'@return    The editor operations
+				{static} get(): EditorOperations
+				'Returns the frame that contains the editor. If this is not available or you want dialog boxes to be centered on the screen return null from this operation.
+				'@return    the frame
+				getEditorFrame(): javax.swing.JFrame
+				'Gets the File attribute of the EditorOperations object
+				'@return    The File value
+				getFile(): java.io.File
+				'Gets the LineNumber attribute of the EditorOperations object
+				'@return    The LineNumber value
+				getLineNumber(): JavaPrimitiveTypes.int
+				'Gets the SelectionFromIDE attribute of the EditorOperations object
+				'@return    The SelectionFromIDE value
+				getSelectionFromIDE(): java.lang.String
+				'Gets the StringFromIDE attribute of the EditorOperations object
+				'@return    The StringFromIDE value
+				getStringFromIDE(): java.lang.String
+				'Returns true if the current file being edited is a java file
+				'@return    true if the current file is a java file
+				isJavaFile(): JavaPrimitiveTypes.boolean
+				'Registers an editor operations
+				'@param ops  the new editor operations object
+				{static} register(ops : EditorOperations)
+				'Sets the LineNumber attribute of the EditorOperations object
+				'@param value  The new LineNumber value
+				setLineNumber(value : JavaPrimitiveTypes.int)
+				'Sets the StringInIDE attribute of the EditorOperations object
+				'@param value  The new StringInIDE value
+				setStringInIDE(value : java.lang.String)
+			}
+		}
+	}
+}
+@enduml

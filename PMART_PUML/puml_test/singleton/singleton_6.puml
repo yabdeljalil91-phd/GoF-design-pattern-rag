@@ -1,0 +1,32 @@
+@startuml
+package dpd_jdt {
+	package ressource {
+		package name {
+			'Class responsible for computing the size of a label
+			'@author    Chris Seguin
+			class LabelSizeComputation {
+				-g: java.awt.Graphics
+				-{static} ressource: LabelSizeComputation
+				'Constructor for the LabelSizeComputation object
+				-<<Create>> LabelSizeComputation()
+				'Computes the size of a piece of text given a font
+				'@param text  the text
+				'@param font  the font
+				'@return       information about the size of the text
+				compute(text : java.lang.String, font : java.awt.Font): TextInfo
+				'Computes the size of a piece of text given a font
+				'@param text  the text
+				'@param font  the font
+				'@return       information about the size of the text
+				computeHeight(text : java.lang.String, font : java.awt.Font): JavaPrimitiveTypes.int
+				'Factory method for this object
+				'@return    Creates a single instance of this object
+				{static} get(): LabelSizeComputation
+				'Initializer for the ressource
+				-{static} init()
+			}
+		}
+	}
+	java.awt.Graphics "g" <-- ressource.name.LabelSizeComputation
+}
+@enduml

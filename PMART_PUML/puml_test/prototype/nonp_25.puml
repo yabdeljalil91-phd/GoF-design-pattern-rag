@@ -1,0 +1,61 @@
+@startuml
+package dpd_jdt {
+	package Prototype {
+		package nonprototype {
+			'File node representing a UML class diagram
+			'@author    Chris Seguin
+			class UMLNode {
+				-packageDiagram: UMLPackage
+				-packageName: java.lang.String
+				'Constructor for the UMLNode object
+				'@param project                     Description of Parameter
+				'@param parent                      Description of Parameter
+				'@param url                         Description of Parameter
+				'@exception DuplicateNodeException  Description of Exception
+				<<Create>> UMLNode(project : Project, parent : Node, url : Url)
+				'Description of the Method
+				-{static} cleanJBuilderSetting()
+				'Gets the Diagram attribute of the UMLNode object
+				'@return    The Diagram value
+				getDiagram(): UMLPackage
+				'Gets the DisplayIcon attribute of the UMLNode object
+				'@return    The DisplayIcon value
+				getDisplayIcon(): javax.swing.Icon
+				'Gets the DisplayName attribute of the UMLNode object
+				'@return    The DisplayName value
+				getDisplayName(): java.lang.String
+				'Initialize the open tools
+				'@param majorVersion  the version number
+				'@param minorVersion  the version number
+				{static} initOpenTool(majorVersion : JavaPrimitiveTypes.byte, minorVersion : JavaPrimitiveTypes.byte)
+				'Determines if the diagram has been modified
+				'@return    true if it has
+				isModified(): JavaPrimitiveTypes.boolean
+				'Gets the Persistant attribute of the UMLNode object
+				'@return    The Persistant value
+				isPersistant(): JavaPrimitiveTypes.boolean
+				'Saves the diagram to the disk
+				'@exception IOException          Description of Exception
+				'@exception InvalidUrlException  Description of Exception
+				save()
+				'Description of the Method
+				'@param url                         Description of Parameter
+				'@exception IOException             Description of Exception
+				'@exception InvalidUrlException     Description of Exception
+				'@exception DuplicateNodeException  Description of Exception
+				saveAs(url : Url)
+				'Sets the Diagram attribute of the UMLNode object
+				'@param diagram  The new Diagram value
+				setDiagram(diagram : UMLPackage)
+				'Setup the key maps
+				'@param prettyPrint    the pretty print action
+				'@param extractMethod  the extract method action
+				-{static} setupKeys(prettyPrint : javax.swing.Action, extractMethod : javax.swing.Action)
+			}
+		}
+	}
+	Prototype.nonprototype.FileNode <|-- Prototype.nonprototype.UMLNode
+	Prototype.nonprototype.UMLPackage "packageDiagram" <-- Prototype.nonprototype.UMLNode
+	java.lang.String "packageName" <-- Prototype.nonprototype.UMLNode
+}
+@enduml

@@ -1,0 +1,375 @@
+@startuml
+package dpd_jdt {
+	package test {
+		package name {
+			'The service Registry class stores  properties used by the services.<BR> To get a working registry, you must use the static methods:<BR> <UL> <LI> Registry.loadForClass(Class)::Registry            <LI> Registry.loadForName(String)::Registry </UL><P> loadForClass(Class) returns a registry that  is guaranteed to be unique to the class. It  essentially calles loadForName(class.getName()),  except that the class name will be MD5 encrypted. If you requre the that the registry be accessible to more basic operation, then user the loadForName(String).<P> Be careful with loadForName(String) as it id possible to load the registry for another application.<P> A check for Registry.isRegistry(String|Class) will tell you if  there is already a registry on a particular name in the system.<P> get methods the return numbers may thor NumberFormatException if you try and get a value that is not a number, with a numeric getter.<P> Array value may also throw unexpected exceptions if the data type  in incorrect, or if the stored version of the property is corrupt.
+			'@version 0.1 Revision 3
+			'@author Brill Pappin 14-SEP-1999
+			class Registry {
+				{const} REGISTRY_DIRECTORY: java.io.File
+				{const} RESOURCE_DIRECTORY: java.io.File
+				{const} TYPE_BOOLEAN_SINGLE: JavaPrimitiveTypes.int = 32
+				{const} TYPE_BYTE_ARRAY: JavaPrimitiveTypes.int = 128
+				{const} TYPE_BYTE_SINGLE: JavaPrimitiveTypes.int = 64
+				{const} TYPE_CHAR_ARRAY: JavaPrimitiveTypes.int = 256
+				{const} TYPE_CHAR_SINGLE: JavaPrimitiveTypes.int = 240
+				{const} TYPE_CORRUPT: JavaPrimitiveTypes.int = 16384
+				{const} TYPE_DOUBLE_SINGLE: JavaPrimitiveTypes.int = 4096
+				{const} TYPE_FLOAT_SINGLE: JavaPrimitiveTypes.int = 8192
+				{const} TYPE_INT_ARRAY: JavaPrimitiveTypes.int = 2048
+				{const} TYPE_INT_SINGLE: JavaPrimitiveTypes.int = 1024
+				{const} TYPE_LONG_SINGLE: JavaPrimitiveTypes.int = 3840
+				{const} TYPE_NULL: JavaPrimitiveTypes.int = 0
+				{const} TYPE_OBJECT_ARRAY: JavaPrimitiveTypes.int = 16
+				{const} TYPE_OBJECT_SINGLE: JavaPrimitiveTypes.int = 8
+				{const} TYPE_SHORT_SINGLE: JavaPrimitiveTypes.int = 512
+				{const} TYPE_STRING_ARRAY: JavaPrimitiveTypes.int = 4
+				{const} TYPE_STRING_SINGLE: JavaPrimitiveTypes.int = 2
+				{const} VERSION: JavaPrimitiveTypes.int [*]
+				-{static} _INSTANCE: Registry
+				#<<Create>> Registry()
+				'Loads a registry with no data.
+				'@return com.jmonkey.office.service.Registry
+				{const} blankRegistery(): Registry
+				'Commits the registry data to disk. Registry objects created from streams, or as blanks mush have their file set  before they can be commited.
+				'@exception java.io.IOException if the commit fails.
+				commit()
+				'Deletes all data in the Registry.
+				deleteAll()
+				'Removes the specified group from the Registry.
+				'@param group java.lang.String
+				deleteGroup(group : java.lang.String)
+				'Deletes the specified key from the specified group.
+				'@param group java.lang.String
+				'@param key java.lang.String the key to delete.
+				deleteProperty(group : java.lang.String, key : java.lang.String)
+				'Dumps the contents of the registry  to the comsole. Used for debugging.
+				dump()
+				'Creates an MD5 Hash from the input string.
+				'@param decrypted java.lang.String
+				'@return java.lang.String
+				{const} encryptMD5(decrypted : java.lang.String): java.lang.String
+				'This method checks a directory to make sure it  exists. If it doesn't, it is created.
+				'@return java.lang.String the absolute path to the ensured directory.
+				'@param directory java.lang.String the directory to ensure.
+				{const} ensureDirectory(directory : java.lang.String): java.lang.String
+				'Return the group data for the specified group. The group data will no longer be referenced to  the regisatry, as if group.clone() was called.
+				'@param group java.lang.String
+				'@return java.util.Properties
+				exportGroup(group : java.lang.String): java.util.Properties
+				'Gets a boolean value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue boolean
+				'@return boolean
+				getBoolean(group : java.lang.String, key : java.lang.String, defaultValue : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.boolean
+				'Gets a byte value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue byte
+				'@return byte
+				getByte(group : java.lang.String, key : java.lang.String, defaultValue : JavaPrimitiveTypes.byte): JavaPrimitiveTypes.byte
+				'Gets a byte array value
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue byte[]
+				'@return byte[]
+				getByteArray(group : java.lang.String, key : java.lang.String, defaultValue : JavaPrimitiveTypes.byte): JavaPrimitiveTypes.byte
+				'Gets a char value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue char
+				'@return char
+				getChar(group : java.lang.String, key : java.lang.String, defaultValue : JavaPrimitiveTypes.char): JavaPrimitiveTypes.char
+				'Gets a char array value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue char[]
+				'@return char[]
+				getCharArray(group : java.lang.String, key : java.lang.String, defaultValue : JavaPrimitiveTypes.char): JavaPrimitiveTypes.char
+				'Gets a double value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue double
+				'@return double
+				getDouble(group : java.lang.String, key : java.lang.String, defaultValue : JavaPrimitiveTypes.double): JavaPrimitiveTypes.double
+				'Gets the file that data will be commited to.
+				'@return java.io.File
+				getFile(): java.io.File
+				'Gets a float value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue float
+				'@return float
+				getFloat(group : java.lang.String, key : java.lang.String, defaultValue : JavaPrimitiveTypes.float): JavaPrimitiveTypes.float
+				'Return an array of of groups.
+				'@return java.lang.String[]
+				getGroups(): java.util.Enumeration
+				'Gets an int value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue int
+				'@return int
+				getInteger(group : java.lang.String, key : java.lang.String, defaultValue : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+				'Gets an int array value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue int[]
+				'@return int[]
+				getIntegerArray(group : java.lang.String, key : java.lang.String, defaultValue : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+				'Return an array of keys for the specified group.
+				'@param group java.lang.String
+				'@return java.lang.String[]
+				getKeys(group : java.lang.String): java.util.Enumeration
+				'Gets a long value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue long
+				'@return long
+				getLong(group : java.lang.String, key : java.lang.String, defaultValue : JavaPrimitiveTypes.long): JavaPrimitiveTypes.long
+				'Gets a value The default value will be  added to the Registry, unless it is null.  In the case where the default value is  null, it may or may not be returned  depending on the implementation.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue java.lang.Object[]
+				'@return java.lang.Object[]
+				getObject(group : java.lang.String, key : java.lang.String, defaultValue : java.lang.Object): java.lang.Object
+				'Gets a value The default value will be  added to the Registry, unless it is null.  In the case where the default value is  null, it may or may not be returned  depending on the implementation.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue lava.lang.Object
+				'@return java.lang.Object
+				getObject(group : java.lang.String, key : java.lang.String, defaultValue : java.lang.Object): java.lang.Object
+				'Gets a short value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue short
+				'@return short
+				getShort(group : java.lang.String, key : java.lang.String, defaultValue : JavaPrimitiveTypes.short): JavaPrimitiveTypes.short
+				'Gets a string value. The default value will be  added to the Registry, unless it is null.  In the case where the default value is  null, it may or may not be returned  depending on the implementation.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue java.lang.String
+				'@return java.lang.String
+				getString(group : java.lang.String, key : java.lang.String, defaultValue : java.lang.String): java.lang.String
+				'Gets a string array value The default value will be  added to the Registry, unless it is null.  In the case where the default value is  null, it may or may not be returned  depending on the implementation.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param defaultValue java.lang.String[]
+				'@return java.lang.String[]
+				getStringArray(group : java.lang.String, key : java.lang.String, defaultValue : java.lang.String): java.lang.String
+				'Returns the type of the specified property.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@return int
+				getType(group : java.lang.String, key : java.lang.String): JavaPrimitiveTypes.int
+				'Converts an array of hash bytes into a hex string.
+				'@param byte hash[]
+				'@return String
+				'@version 1.0
+				'@author Julian Yip Aug. 1998 (Modified Brill Pappin Aug. 1998)
+				-{const} hashToHex(hash : JavaPrimitiveTypes.byte): java.lang.String
+				'Imports the specified group. Does nothing  if the group alreay exists. The original data will be cloned before being added to the registry. so that an external reference does not exist.
+				'@param group java.lang.String
+				'@param java.util.Properties
+				importGroup(group : java.lang.String, properties : java.util.Properties)
+				-{static} instance(): Registry
+				'indicates that the registry is no longer in sync  with the stored version. This occures when the contents of the registry have been changed, and are not stored.  Calling commit() will sync the registry with the stored  version.
+				isAltered(): JavaPrimitiveTypes.boolean
+				'Tests if the property specified is an array type.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@return boolean
+				isArrayType(group : java.lang.String, key : java.lang.String): JavaPrimitiveTypes.boolean
+				'Tests for the existance of the specified group.
+				'@param group java.lang.String
+				'@return boolean true if it exists, false otherwise.
+				isGroup(group : java.lang.String): JavaPrimitiveTypes.boolean
+				'Tests for the existance of the specified property  in the specified group.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@return boolean true if it exists, false otherwise.
+				isProperty(group : java.lang.String, key : java.lang.String): JavaPrimitiveTypes.boolean
+				'Tests for the existance of a Registry for the specified class.
+				'@param testClass java.lang.Class
+				'@return boolean true if the Registry exists, false otherwise.
+				{const} isRegistry(testClass : java.lang.Class): JavaPrimitiveTypes.boolean
+				'Tests for the existance of a Registry for the specified name.
+				'@param name java.lang.String
+				'@return boolean true if the Registry exists, false otherwise.
+				{const} isRegistry(name : java.lang.String): JavaPrimitiveTypes.boolean
+				'Tests for the existance of a Registry for the specified name.
+				'@param name java.lang.String
+				'@return boolean true if the Registry exists, false otherwise.
+				{const} isRegistry(name : java.lang.String, encrypted : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.boolean
+				'Loads a registry guaranteed to be unique and constant  for the specified class. If the Registry does not yet  exist, it will be created.
+				'@param requestingClass java.lang.Class the class requesting a Registry.
+				'@return com.jmonkey.office.service.Registry
+				'@exception java.io.IOException
+				{const} loadForClass(requestingClass : java.lang.Class): Registry
+				'Loads a registry with the specified name. If the Registry does not yet exist, it  will be created.
+				'@param name java.lang.String the name of the Registry.
+				'@return com.jmonkey.office.service.Registry
+				'@exception java.io.IOException
+				{const} loadForName(name : java.lang.String): Registry
+				'Loads a registry with the specified name. If the Registry does not yet exist, it  will be created.
+				'@param name java.lang.String the name of the Registry.
+				'@param encrypted boolean specify that the name should be MD% encrypted.
+				'@return com.jmonkey.office.service.Registry
+				'@exception java.io.IOException
+				{const} loadForName(name : java.lang.String, encrypted : JavaPrimitiveTypes.boolean): Registry
+				'Loads a registry that reads its data from the specified Reader.
+				'@param reader java.io.Reader
+				'@return com.jmonkey.office.service.Registry
+				'@exception java.io.IOException
+				{const} loadForReader(reader : java.io.Reader): Registry
+				'adds the specified Registry to this Registry,  The current registry will have its elements replaced,  if there are any duplicate keys.
+				'@param com.jmonkey.office.service.Registry
+				mergRegistry(registry : Registry)
+				'Reads data into this Registry from the specified Reader. Any values previously stored in the Registry will be removed first.
+				'@param reader java.io.Reader
+				'@exception java.io.IOException
+				read(reader : java.io.Reader)
+				'Return the group data for the specified group. The group will maintain its reference in the  registry. This is used to change the group externally fromt he registry. Not recomended
+				'@param group java.lang.String
+				'@return java.util.Properties
+				referenceGroup(group : java.lang.String): java.util.Properties
+				'Replaces the Registry in group, with the specified Registry.
+				'@param group java.lang.String the group to replace.
+				'@param properties java.util.Properties the group data.
+				replaceGroup(group : java.lang.String, properties : java.util.Properties)
+				'Reverts to the registry last commited. Registry objects created from streams, or as blanks mush have their file set  and be commited, before they can be reverted.
+				'@exception java.io.IOException if the commit fails.
+				revert()
+				'Sets the file that data will be commited to.
+				'@param file java.io.File
+				setFile(file : java.io.File)
+				'Sets a byte array value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value byte[]
+				setProperty(group : java.lang.String, key : java.lang.String, value : JavaPrimitiveTypes.byte)
+				'Sets a char array value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value char[]
+				setProperty(group : java.lang.String, key : java.lang.String, value : JavaPrimitiveTypes.char)
+				'Sets an int array value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value int[]
+				setProperty(group : java.lang.String, key : java.lang.String, value : JavaPrimitiveTypes.int)
+				'Sets a value
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value lava.lang.Object[]
+				setProperty(group : java.lang.String, key : java.lang.String, value : java.lang.Object)
+				'Sets a string array value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value java.lang.String[]
+				setProperty(group : java.lang.String, key : java.lang.String, value : java.lang.String)
+				'Sets a byte value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value byte
+				setProperty(group : java.lang.String, key : java.lang.String, value : JavaPrimitiveTypes.byte)
+				'Sets a char value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value char
+				setProperty(group : java.lang.String, key : java.lang.String, value : JavaPrimitiveTypes.char)
+				'Sets a double value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value double
+				setProperty(group : java.lang.String, key : java.lang.String, value : JavaPrimitiveTypes.double)
+				'Sets a float value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value float
+				setProperty(group : java.lang.String, key : java.lang.String, value : JavaPrimitiveTypes.float)
+				'Sets an int value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value int
+				setProperty(group : java.lang.String, key : java.lang.String, value : JavaPrimitiveTypes.int)
+				'Sets a long value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value long
+				setProperty(group : java.lang.String, key : java.lang.String, value : JavaPrimitiveTypes.long)
+				'Sets a value
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value lava.lang.Object
+				setProperty(group : java.lang.String, key : java.lang.String, value : java.lang.Object)
+				'Sets a string value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value java.lang.String
+				setProperty(group : java.lang.String, key : java.lang.String, value : java.lang.String)
+				'Sets a short value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value short
+				setProperty(group : java.lang.String, key : java.lang.String, value : JavaPrimitiveTypes.short)
+				'Sets a boolean value.
+				'@param group java.lang.String
+				'@param key java.lang.String
+				'@param value boolean
+				setProperty(group : java.lang.String, key : java.lang.String, value : JavaPrimitiveTypes.boolean)
+				'Returns the number of  groups in the registry.
+				'@return int
+				size(): JavaPrimitiveTypes.int
+				'Returns the number of properties  in the specified group.
+				'@param group java.lang.String
+				'@return int
+				sizeOf(group : java.lang.String): JavaPrimitiveTypes.int
+				'Writes the data in this Registry to the specified Writer.
+				'@param writer java.io.Writer
+				'@exception java.io.IOException
+				write(writer : java.io.Writer)
+			}
+		}
+	}
+	java.io.File "REGISTRY_DIRECTORY" <-- test.name.Registry
+	java.io.File "RESOURCE_DIRECTORY" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_BOOLEAN_SINGLE" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_BYTE_ARRAY" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_BYTE_SINGLE" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_CHAR_ARRAY" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_CHAR_SINGLE" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_CORRUPT" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_DOUBLE_SINGLE" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_FLOAT_SINGLE" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_INT_ARRAY" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_INT_SINGLE" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_LONG_SINGLE" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_NULL" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_OBJECT_ARRAY" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_OBJECT_SINGLE" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_SHORT_SINGLE" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_STRING_ARRAY" <-- test.name.Registry
+	JavaPrimitiveTypes.int "TYPE_STRING_SINGLE" <-- test.name.Registry
+	JavaPrimitiveTypes.int "VERSION 0..*" <-- test.name.Registry
+	JavaPrimitiveTypes.boolean "_ALTERED" <-- test.name.Registry.Impl
+	java.io.File "_DATA_FILE" <-- test.name.Registry.Impl
+	java.util.Hashtable "_GROUPS" <-- test.name.Registry.Impl
+	java.lang.String "_ID_BOO" <-- test.name.Registry.Impl
+	java.lang.String "_ID_BYA" <-- test.name.Registry.Impl
+	java.lang.String "_ID_BYT" <-- test.name.Registry.Impl
+	java.lang.String "_ID_CHA" <-- test.name.Registry.Impl
+	java.lang.String "_ID_CHR" <-- test.name.Registry.Impl
+	java.lang.String "_ID_DBL" <-- test.name.Registry.Impl
+	java.lang.String "_ID_FLT" <-- test.name.Registry.Impl
+	java.lang.String "_ID_INA" <-- test.name.Registry.Impl
+	java.lang.String "_ID_INT" <-- test.name.Registry.Impl
+	java.lang.String "_ID_LON" <-- test.name.Registry.Impl
+	java.lang.String "_ID_OBA" <-- test.name.Registry.Impl
+	java.lang.String "_ID_OBJ" <-- test.name.Registry.Impl
+	java.lang.String "_ID_SHO" <-- test.name.Registry.Impl
+	java.lang.String "_ID_STA" <-- test.name.Registry.Impl
+	java.lang.String "_ID_STR" <-- test.name.Registry.Impl
+	java.lang.String "_PROPERTY_CHAR_ENCODING" <-- test.name.Registry.Impl
+}
+@enduml

@@ -1,0 +1,55 @@
+@startuml
+package "DrJava v20040326" as DrJava_v20040326 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package compiler {
+							class CompilerProxy {
+								-_className: DrJava_v20040326.java.lang.String
+								-_newLoader: DrJava_v20040326.java.lang.ClassLoader
+								-_realCompiler: CompilerInterface
+								-{const} _useOldLoader: DrJava_v20040326.java.lang.String [*]
+								<<Create>> CompilerProxy(className : DrJava_v20040326.java.lang.String, newLoader : DrJava_v20040326.java.lang.ClassLoader)
+								-_recreateCompiler()
+								addToBootClassPath(cp : DrJava_v20040326.java.io.File)
+								compile(sourceRoot : DrJava_v20040326.java.io.File, files : DrJava_v20040326.java.io.File): CompilerError
+								compile(sourceRoots : DrJava_v20040326.java.io.File, files : DrJava_v20040326.java.io.File): CompilerError
+								getName(): DrJava_v20040326.java.lang.String
+								isAvailable(): JavaPrimitiveTypes.boolean
+								setAllowAssertions(allow : JavaPrimitiveTypes.boolean)
+								setExtraClassPath(extraClassPath : DrJava_v20040326.java.lang.String)
+								toString(): DrJava_v20040326.java.lang.String
+							}
+							interface CompilerInterface {
+								addToBootClassPath(s : DrJava_v20040326.java.io.File)
+								compile(sourceRoot : DrJava_v20040326.java.io.File, files : DrJava_v20040326.java.io.File): CompilerError
+								compile(sourceRoots : DrJava_v20040326.java.io.File, files : DrJava_v20040326.java.io.File): CompilerError
+								getName(): DrJava_v20040326.java.lang.String
+								isAvailable(): JavaPrimitiveTypes.boolean
+								setAllowAssertions(allow : JavaPrimitiveTypes.boolean)
+								setExtraClassPath(extraClassPath : DrJava_v20040326.java.lang.String)
+								toString(): DrJava_v20040326.java.lang.String
+							}
+							CompilerInterface <|.. CompilerProxy
+							DrJava_v20040326.java.lang.Comparable <|.. CompilerError
+							DrJava_v20040326.java.io.Serializable <|.. CompilerError
+							DrJava_v20040326.java.io.File "_file" <-- CompilerError
+							JavaPrimitiveTypes.boolean "_isWarning" <-- CompilerError
+							JavaPrimitiveTypes.int "_lineNumber" <-- CompilerError
+							DrJava_v20040326.java.lang.String "_message" <-- CompilerError
+							JavaPrimitiveTypes.boolean "_noLocation" <-- CompilerError
+							JavaPrimitiveTypes.int "_startColumn" <-- CompilerError
+							DrJava_v20040326.java.lang.String "_className" <-- CompilerProxy
+							DrJava_v20040326.java.lang.ClassLoader "_newLoader" <-- CompilerProxy
+							CompilerInterface "_realCompiler" <-- CompilerProxy
+							DrJava_v20040326.java.lang.String "_useOldLoader 0..*" <-- CompilerProxy
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

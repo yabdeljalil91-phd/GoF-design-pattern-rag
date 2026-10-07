@@ -1,0 +1,54 @@
+@startuml
+package dpd_jdt {
+	package Prototype {
+		package nonprototype {
+			'The implementation of hierarchy nodes factory for the class loader.
+			'@author Petr Hamernik, Dafe Simonek
+			class ClassElementNodeFactory {
+				-FACTORY_GETTER_NODE: FactoryGetterNode
+				-{static} defaultActions: SystemAction [*]
+				-{static} instance: DefaultFactory
+				-tree: JavaPrimitiveTypes.boolean
+				'Creates new factory.
+				<<Create>> ClassElementNodeFactory()
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createClassNode(element : ClassElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createConstructorNode(element : ConstructorElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createFieldNode(element : FieldElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createMethodNode(element : MethodElement): Node
+				'Convenience method for obtaining default actions of nodes
+				getDefaultActions(): SystemAction
+				'Returns true if generate nodes for tree.
+				'@returns true if generate nodes for tree.
+				getGenerateForTree(): JavaPrimitiveTypes.boolean
+				'Returns instance of this element node factory
+				{static} getInstance(): DefaultFactory
+				'If true generate nodes for tree.
+				setGenerateForTree(tree : JavaPrimitiveTypes.boolean)
+			}
+		}
+	}
+	Prototype.nonprototype.DefaultFactory <|-- Prototype.nonprototype.ClassElementNodeFactory
+	Prototype.nonprototype.ElementNodeFactory <|.. Prototype.nonprototype.DefaultFactory
+	Prototype.nonprototype.IconStrings <|-- Prototype.nonprototype.DefaultFactory
+	Prototype.nonprototype.SystemAction "CATEGORY_ACTIONS 0..*" <-- Prototype.nonprototype.DefaultFactory
+	java.lang.String "CATEGORY_ICONS 0..*" <-- Prototype.nonprototype.DefaultFactory
+	JavaPrimitiveTypes.int "FILTERS 0..*" <-- Prototype.nonprototype.DefaultFactory
+	java.lang.String "NAMES 0..*" <-- Prototype.nonprototype.DefaultFactory
+	java.lang.String "SHORTDESCRS 0..*" <-- Prototype.nonprototype.DefaultFactory
+	JavaPrimitiveTypes.boolean "writeable" <-- Prototype.nonprototype.DefaultFactory
+	Prototype.nonprototype.ClassElement "element" <-- Prototype.nonprototype.DefaultFactory.ElementCategoryNode
+	JavaPrimitiveTypes.int "newTypeIndex" <-- Prototype.nonprototype.DefaultFactory.ElementCategoryNode
+	Prototype.nonprototype.ClassElementNodeFactory.FactoryGetterNode "FACTORY_GETTER_NODE" <-- Prototype.nonprototype.ClassElementNodeFactory
+	Prototype.nonprototype.SystemAction "defaultActions 0..*" <-- Prototype.nonprototype.ClassElementNodeFactory
+	Prototype.nonprototype.DefaultFactory "instance" <-- Prototype.nonprototype.ClassElementNodeFactory
+	JavaPrimitiveTypes.boolean "tree" <-- Prototype.nonprototype.ClassElementNodeFactory
+}
+@enduml

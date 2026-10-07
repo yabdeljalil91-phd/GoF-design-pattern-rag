@@ -1,0 +1,42 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Refactory extension loads the refactory tool into memory
+			'@author     Chris Seguin
+			'@created    April 4, 2000
+			class RefactoryExtension {
+				{static} base: java.lang.String
+				-manager: UMLDocManager
+				<<Create>> RefactoryExtension()
+				'Removes the extension mechanism
+				'@return    Always returns true
+				destroy(): JavaPrimitiveTypes.boolean
+				'Gets the CardName attribute of the Refactory
+				'@return    The CardName value
+				getCardName(): java.lang.String
+				'Gets the Name attribute of the Refactory extension
+				'@return    The Name value
+				getName(): java.lang.String
+				'Initializes the extension
+				'@param args  the arguments
+				'@return       true if installed
+				init(args : java.lang.String): JavaPrimitiveTypes.boolean
+				'Listener for GUI change events
+				'@param msg  the message
+				update(msg : Message)
+				'Opportunity to veto a message
+				'@param msg  the message
+				veto(msg : Message)
+			}
+		}
+	}
+	Builder.nonbuilder.PrettyPrinterExtension <|-- Builder.nonbuilder.RefactoryExtension
+	ApplicationBus.ICard <|-- Builder.nonbuilder.RefactoryExtension
+	Builder.nonbuilder.IExtension <|-- Builder.nonbuilder.PrettyPrinterExtension
+	Builder.nonbuilder.DocManager <|-- Builder.nonbuilder.UMLDocManager
+	java.lang.String "base" <-- Builder.nonbuilder.RefactoryExtension
+	Builder.nonbuilder.SingleDirClassDiagramReloader "reloader" <-- Builder.nonbuilder.UMLDocManager
+	Builder.nonbuilder.UMLDocManager "manager" <-- Builder.nonbuilder.RefactoryExtension
+}
+@enduml

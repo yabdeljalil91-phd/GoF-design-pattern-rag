@@ -1,0 +1,247 @@
+@startuml
+' Design pattern: Builder (QuickUML 2001)
+' Enhanced for RAG + GoF decomposition (Multi-Builder orchestration architecture)
+
+package "QuickUML 2001" as QuickUML_2001 {
+
+    package uml {
+        package ui {
+
+            '====================================================
+            ' UI LAYER (Builder orchestration trigger)
+            '====================================================
+
+            class BuildAction {
+
+                '================================================
+                ' DIRECTOR ROLE SIGNAL (Builder pattern)
+                '================================================
+                #container: DiagramContainer
+
+                ' Construction entry point (triggers build pipeline)
+                <<Create>> BuildAction(container : DiagramContainer)
+
+                ' Event-driven build invocation
+                actionPerformed(e : QuickUML_2001.java.awt.event.ActionEvent)
+            }
+
+            QuickUML_2001.javax.swing.AbstractAction <|-- BuildAction
+        }
+
+        package builder {
+
+            '====================================================
+            ' BUILDER ABSTRACTION
+            '====================================================
+
+            interface CodeBuilder {
+                build(ctx : Context)
+            }
+
+            '====================================================
+            ' PRODUCT SPACE (Meta-model output artifacts)
+            '====================================================
+
+            class MetaClass {
+
+                -anInterface: JavaPrimitiveTypes.boolean
+                -attributeList: QuickUML_2001.java.util.Vector
+                -attributeNamingComponent: NamingComponent
+                -interfaceList: QuickUML_2001.java.util.Vector
+                -methodList: QuickUML_2001.java.util.Vector
+                -superClass: MetaClass
+
+                <<Create>> MetaClass(
+                    name : QuickUML_2001.java.lang.String,
+                    anInterface : JavaPrimitiveTypes.boolean
+                )
+
+                ' Structural construction operations
+                addAttribute(attr : MetaAttribute)
+                addInterface(c : MetaClass)
+                addInterface(c : MetaClass, validate : JavaPrimitiveTypes.boolean)
+                addMethod(m : MetaMethod)
+                addMethod(m : MetaMethod, replace : JavaPrimitiveTypes.boolean)
+
+                ' Semantic / structural queries
+                compareTo(o : QuickUML_2001.java.lang.Object): JavaPrimitiveTypes.int
+                getAttributes(): QuickUML_2001.java.util.Iterator
+                getInterfaces(): QuickUML_2001.java.util.Iterator
+                getMethods(): QuickUML_2001.java.util.Iterator
+
+                getCompatibleInterface(metaClass : MetaClass): MetaClass
+                getProperName(): QuickUML_2001.java.lang.String
+                getSuperClass(): MetaClass
+                getType(): QuickUML_2001.java.lang.String
+
+                hasInterface(metaClass : MetaClass): JavaPrimitiveTypes.boolean
+                isAncestorOf(c : MetaClass): JavaPrimitiveTypes.boolean
+                isInterface(): JavaPrimitiveTypes.boolean
+
+                setName(name : QuickUML_2001.java.lang.String)
+                setSuperClass(c : MetaClass)
+                toString(): QuickUML_2001.java.lang.String
+            }
+
+            '====================================================
+            ' CONCRETE BUILDERS (specialized model extraction)
+            '====================================================
+
+            class AssociationBuilder {
+                <<Create>> AssociationBuilder()
+                build(ctx : Context)
+                #buildAssociation(ctx : Context, sourceClass : MetaClass, sinkClass : MetaClass)
+                #identifyAssociations(ctx : Context)
+                #compatibleFigures(...)
+                #validFigure(...)
+            }
+
+            class ClassBuilder {
+                <<Create>> ClassBuilder()
+                build(ctx : Context)
+                #identifyClasses(ctx : Context)
+                #identifyInterfaces(ctx : Context)
+                #identifyAttributes(...)
+                #identifyMethods(...)
+                #checkContext(ctx : Context)
+            }
+
+            class CompositionBuilder {
+                <<Create>> CompositionBuilder()
+                build(ctx : Context)
+                #identifyCompositions(ctx : Context)
+                #compatibleFigures(...)
+                #validFigure(...)
+            }
+
+            class InheritanceBuilder {
+                <<Create>> InheritanceBuilder()
+                build(ctx : Context)
+                #buildGeneralization(...)
+                #identifyGeneralizations(ctx : Context)
+                #compatibleFigures(...)
+            }
+
+            class RealizationBuilder {
+                <<Create>> RealizationBuilder()
+                build(ctx : Context)
+                #identifyRealizations(ctx : Context)
+                #buildRealization(...)
+                #checkContext(ctx : Context)
+            }
+
+            '====================================================
+            ' PRODUCT GENERATORS (language-specific backends)
+            '====================================================
+
+            class CPlusPlusBuilder {
+                #{const} attributeComparator: MetaAccessComparator
+                #prefix: QuickUML_2001.java.lang.String
+
+                <<Create>> CPlusPlusBuilder(prefix : QuickUML_2001.java.lang.String)
+
+                build(ctx : Context)
+
+                #writeHeader(...)
+                #writeSource(...)
+                #writeHeaderMethods(...)
+            }
+
+            class JavaBuilder {
+                #prefix: QuickUML_2001.java.lang.String
+
+                <<Create>> JavaBuilder(prefix : QuickUML_2001.java.lang.String)
+
+                build(ctx : Context)
+
+                #writeAttributes(...)
+                #writeMethods(...)
+                #writeConstructor(...)
+            }
+
+            '====================================================
+            ' PRODUCT TYPES (output model elements)
+            '====================================================
+
+            class MetaAssociation {
+                <<Create>> MetaAssociation(description : QuickUML_2001.java.lang.String)
+            }
+
+            class MetaComposition {
+                <<Create>> MetaComposition(description : QuickUML_2001.java.lang.String)
+            }
+
+            '====================================================
+            ' BUILDER HIERARCHY (pattern structure)
+            '====================================================
+
+            CodeBuilder <|.. AbstractBuilder
+
+            AbstractBuilder <|-- AssociationBuilder
+            AbstractBuilder <|-- ClassBuilder
+            AbstractBuilder <|-- CompositionBuilder
+            AbstractBuilder <|-- InheritanceBuilder
+
+            CodeBuilder <|.. ObjectBuilder
+            ObjectBuilder <|-- CPlusPlusBuilder
+            ObjectBuilder <|-- JavaBuilder
+            CodeBuilder <|.. RealizationBuilder
+
+            '====================================================
+            ' PRODUCT HIERARCHY
+            '====================================================
+
+            MetaComponent <|-- MetaClass
+            MetaComponent <|-- MetaAttribute
+            MetaAttribute <|-- MetaMethod
+            MetaAttribute <|-- MetaAssociation
+            MetaAttribute <|-- MetaComposition
+            MetaMethod <|-- MetaConstructor
+
+            QuickUML_2001.java.lang.Comparable <|.. MetaComponent
+
+            '====================================================
+            ' CONTEXT (Director workspace / intermediate model)
+            '====================================================
+
+            Context o-- "classes" MetaClass
+            Context o-- "errors" java.util.Vector
+            Context o-- "warnings" java.util.Vector
+            Context o-- "model" DiagramModel
+            Context o-- "comparator" MetaClassComparator
+            Context o-- "wantArrays" boolean
+
+            '====================================================
+            ' BUILDER ORCHESTRATION (composition of responsibilities)
+            '====================================================
+
+            ObjectBuilder o-- AssociationBuilder
+            ObjectBuilder o-- ClassBuilder
+            ObjectBuilder o-- CompositionBuilder
+            ObjectBuilder o-- InheritanceBuilder
+            ObjectBuilder o-- RealizationBuilder
+
+            '====================================================
+            ' RAG-ORIENTED DESIGN PATTERN INTERPRETATION
+            '====================================================
+            '
+            ' PRIMARY PATTERN: Builder (multi-stage model extraction pipeline)
+            '
+            ' ARCHITECTURAL STRUCTURE:
+            ' - Director: BuildAction (UI trigger)
+            ' - Builders: specialized extraction passes
+            ' - Product: MetaClass hierarchy
+            ' - Context: shared intermediate model
+            '
+            ' KEY INSIGHT FOR LLM CLASSIFICATION:
+            ' This is NOT a single Builder instance:
+            '   → it is a multi-builder pipeline system
+            '
+            ' SECONDARY PATTERNS:
+            ' - Composite orchestration (ObjectBuilder aggregates builders)
+            ' - Strategy-like variation across builders
+            '
+        }
+    }
+}
+@enduml

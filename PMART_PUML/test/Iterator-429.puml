@@ -1,0 +1,84 @@
+@startuml
+package "DrJava v20030203" as DrJava_v20030203 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package definitions {
+							package reducedmodel {
+								class ReducedModelComment {
+									_walker: Iterator
+									<<Create>> ReducedModelComment()
+									-_checkPreviousInsertBackSlash()
+									-_checkPreviousInsertCommentChar(special : DrJava_v20030203.java.lang.String)
+									-_checkPreviousInsertSpecial(special : DrJava_v20030203.java.lang.String)
+									-_getDistToPreviousNewline(copyCursor : Iterator): JavaPrimitiveTypes.int
+									-_getQuoteType(quote : DrJava_v20030203.java.lang.String): DrJava_v20030203.java.lang.String
+									-_insertNewEndOfLine()
+									-_insertNewQuote(quote : DrJava_v20030203.java.lang.String)
+									-_updateBasedOnCurrentState()
+									delete(count : JavaPrimitiveTypes.int)
+									getDistToCurrentBraceNewline(braceInfo : IndentInfo)
+									getDistToIndentNewline(braceInfo : IndentInfo)
+									getDistToNextNewline(): JavaPrimitiveTypes.int
+									getDistToPreviousNewline(braceInfo : IndentInfo)
+									getDistToPreviousNewline(relLoc : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+									insertChar(ch : JavaPrimitiveTypes.char)
+									#insertGapBetweenMultiCharBrace(length : JavaPrimitiveTypes.int)
+									insertNewline()
+									insertQuote(quote : DrJava_v20030203.java.lang.String)
+									-insertSpecial(special : DrJava_v20030203.java.lang.String)
+									move(count : JavaPrimitiveTypes.int)
+									#resetLocation()
+									#stateAtRelLocation(relLocation : JavaPrimitiveTypes.int): ReducedModelState
+								}
+								class TokenList {
+								}
+								class ModelList {
+								}
+								AbstractReducedModel <|-- ReducedModelComment
+								ReducedModelStates <|.. AbstractReducedModel
+								ReducedModelState <|-- Free
+								ReducedModelStates <|.. ReducedModelState
+								ReducedModelStates <|.. ReducedToken
+								ReducedModelState <|-- InsideBlockComment
+								ReducedModelState <|-- InsideDoubleQuote
+								ReducedModelState <|-- InsideLineComment
+								ReducedModelState <|-- InsideSingleQuote
+								ReducedModelState <|-- Stutter
+								ReducedModelState "_state" <-- ReducedToken
+								ReducedToken "_item" <-- Node
+								Node "_point" <-- Iterator
+								JavaPrimitiveTypes.int "_pos" <-- Iterator
+								JavaPrimitiveTypes.int "_offset" <-- Iterator
+								Free "FREE" <-- ReducedModelStates
+								InsideBlockComment "INSIDE_BLOCK_COMMENT" <-- ReducedModelStates
+								InsideDoubleQuote "INSIDE_DOUBLE_QUOTE" <-- ReducedModelStates
+								InsideLineComment "INSIDE_LINE_COMMENT" <-- ReducedModelStates
+								InsideSingleQuote "INSIDE_SINGLE_QUOTE" <-- ReducedModelStates
+								Stutter "STUTTER" <-- ReducedModelStates
+								JavaPrimitiveTypes.char "PTR_CHAR" <-- AbstractReducedModel
+								Iterator "_cursor" <-- AbstractReducedModel
+								TokenList "_tokens" <-- AbstractReducedModel
+								Iterator "_walker" <-- ReducedModelComment
+								DrJava_v20030203.java.lang.String "braceType" <-- IndentInfo
+								DrJava_v20030203.java.lang.String "braceTypeCurrent" <-- IndentInfo
+								JavaPrimitiveTypes.int "distToBrace" <-- IndentInfo
+								JavaPrimitiveTypes.int "distToBraceCurrent" <-- IndentInfo
+								JavaPrimitiveTypes.int "distToNewline" <-- IndentInfo
+								JavaPrimitiveTypes.int "distToNewlineCurrent" <-- IndentInfo
+								JavaPrimitiveTypes.int "distToPrevNewline" <-- IndentInfo
+								DrJava_v20030203.java.lang.String "noBrace" <-- IndentInfo
+								DrJava_v20030203.java.lang.String "openBracket" <-- IndentInfo
+								DrJava_v20030203.java.lang.String "openParen" <-- IndentInfo
+								DrJava_v20030203.java.lang.String "openSquiggly" <-- IndentInfo
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

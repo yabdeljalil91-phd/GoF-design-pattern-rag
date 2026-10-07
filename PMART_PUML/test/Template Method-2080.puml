@@ -1,0 +1,35 @@
+@startuml
+package "DrJava v20040326" as DrJava_v20040326 {
+	package edu {
+		package rice {
+			package cs {
+				package util {
+					package newjvm {
+						abstract class AbstractSlaveJVM {
+							{const} CHECK_MAIN_VM_ALIVE_MINUTES: JavaPrimitiveTypes.int = 1
+							#_pollMasterThreadName: DrJava_v20040326.java.lang.String
+							#_quitSlaveThreadName: DrJava_v20040326.java.lang.String
+							<<Create>> AbstractSlaveJVM()
+							#beforeQuit()
+							#handleStart(master : MasterRemote)
+							quit()
+							#quitFailed(th : DrJava_v20040326.java.lang.Throwable)
+							start(master : MasterRemote)
+						}
+						interface SlaveRemote {
+							quit()
+							start(master : MasterRemote)
+						}
+						SlaveRemote <|.. AbstractSlaveJVM
+						DrJava_v20040326.java.rmi.Remote <|-- SlaveRemote
+						DrJava_v20040326.java.rmi.Remote <|-- MasterRemote
+						JavaPrimitiveTypes.int "CHECK_MAIN_VM_ALIVE_MINUTES" <-- AbstractSlaveJVM
+						DrJava_v20040326.java.lang.String "_pollMasterThreadName" <-- AbstractSlaveJVM
+						DrJava_v20040326.java.lang.String "_quitSlaveThreadName" <-- AbstractSlaveJVM
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

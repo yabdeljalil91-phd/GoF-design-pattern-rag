@@ -1,0 +1,46 @@
+@startuml
+package "DrJava v20030203" as DrJava_v20030203 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package compiler {
+							class GJv6Compiler {
+								{const} COMPILER_CLASS_NAME: DrJava_v20030203.java.lang.String = gj.v6.JavaCompiler
+								{const} ONLY: CompilerInterface
+								-_compilerLog: OurLog
+								-_extraClassPath: DrJava_v20030203.java.lang.String
+								-<<Create>> GJv6Compiler()
+								-_initCompiler(sourceRoots : DrJava_v20030203.java.io.File)
+								addToBootClassPath(cp : DrJava_v20030203.java.io.File)
+								compile(sourceRoot : DrJava_v20030203.java.io.File, files : DrJava_v20030203.java.io.File): CompilerError
+								compile(sourceRoots : DrJava_v20030203.java.io.File, files : DrJava_v20030203.java.io.File): CompilerError
+								getName(): DrJava_v20030203.java.lang.String
+								#getSourceRootString(sourceRoots : DrJava_v20030203.java.io.File): DrJava_v20030203.java.lang.String
+								isAvailable(): JavaPrimitiveTypes.boolean
+								setAllowAssertions(allow : JavaPrimitiveTypes.boolean)
+								setExtraClassPath(extraClassPath : DrJava_v20030203.java.lang.String)
+								toString(): DrJava_v20030203.java.lang.String
+							}
+							CompilerInterface <|.. GJv6Compiler
+							DrJava_v20030203.java.lang.Comparable <|.. CompilerError
+							DrJava_v20030203.java.io.File "_file" <-- CompilerError
+							JavaPrimitiveTypes.boolean "_isWarning" <-- CompilerError
+							JavaPrimitiveTypes.int "_lineNumber" <-- CompilerError
+							DrJava_v20030203.java.lang.String "_message" <-- CompilerError
+							JavaPrimitiveTypes.int "_startColumn" <-- CompilerError
+							DrJava_v20030203.java.lang.String "COMPILER_CLASS_NAME" <-- GJv6Compiler
+							CompilerInterface "ONLY" <-- GJv6Compiler
+							DrJava_v20030203.java.util.LinkedList "_errors" <-- OurLog
+							DrJava_v20030203.java.lang.String "_sourceName" <-- OurLog
+							OurLog "_compilerLog" <-- GJv6Compiler
+							DrJava_v20030203.java.lang.String "_extraClassPath" <-- GJv6Compiler
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

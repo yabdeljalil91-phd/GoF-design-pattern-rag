@@ -1,0 +1,151 @@
+@startuml
+'Design pattern Observer (enhanced for RAG detection)
+
+package "JUnit v3.7" as JUnit_v3.7 {
+
+	package junit {
+		package framework {
+
+			'==================== SUBJECT ====================
+			'DP role: ConcreteSubject (Observer Pattern)
+			'Responsibility: maintains test execution state and notifies listeners
+			class TestResult {
+
+				'==================== OBSERVER STORAGE ====================
+				#fListeners: JUnit_v3.7.java.util.Vector  ' aggregation: list of observers
+
+				'==================== STATE ====================
+				#fErrors: JUnit_v3.7.java.util.Vector
+				#fFailures: JUnit_v3.7.java.util.Vector
+				#fRunTests: JavaPrimitiveTypes.int
+				-fStop: JavaPrimitiveTypes.boolean
+
+				<<Create>> TestResult()
+
+				'==================== OBSERVER MANAGEMENT ====================
+				addListener(listener : TestListener)  ' register observer
+				removeListener(listener : TestListener)  ' unregister observer
+				-cloneListeners(): JUnit_v3.7.java.util.Vector  ' safe iteration copy
+
+				'==================== NOTIFICATION EVENTS ====================
+				startTest(test : Test)   ' notify observers: test started
+				endTest(test : Test)     ' notify observers: test finished
+				addError(test : Test, t : JUnit_v3.7.java.lang.Throwable)  ' notify observers
+				addFailure(test : Test, t : AssertionFailedError)         ' notify observers
+
+				'==================== CORE LOGIC ====================
+				#run(test : TestCase)
+				runProtected(test : Test, p : Protectable)
+				stop()
+				shouldStop(): JavaPrimitiveTypes.boolean
+			}
+
+			'==================== OBSERVER ====================
+			'DP role: Observer (Observer Pattern)
+			'Responsibility: receives updates from TestResult
+			interface TestListener {
+				startTest(test : Test)
+				endTest(test : Test)
+				addError(test : Test, t : JUnit_v3.7.java.lang.Throwable)
+				addFailure(test : Test, t : AssertionFailedError)
+			}
+
+			'==================== RELATIONSHIPS ====================
+			' Aggregation: Subject maintains observers
+			JUnit_v3.7.java.util.Vector "fListeners" <-- TestResult : aggregates >
+
+			' Association: Subject notifies Observer
+			TestResult --> TestListener : notifies >
+
+			'==================== OTHER DOMAIN STRUCTURE ====================
+			JUnit_v3.7.java.lang.Error <|-- AssertionFailedError
+			Assert <|-- TestCase
+			Test <|.. TestCase
+			Test <|.. TestSuite
+		}
+
+		'==================== CONCRETE OBSERVERS ====================
+		package awtui {
+
+			'DP role: ConcreteObserver
+			'Responsibility: UI reacting to test execution events
+			class TestRunner {
+				#fTestResult: JUnit_v3.7.junit.framework.TestResult
+
+				<<Create>> TestRunner()
+
+				' Observer callbacks
+				startTest(test : JUnit_v3.7.junit.framework.Test)
+				endTest(test : JUnit_v3.7.junit.framework.Test)
+				addError(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.java.lang.Throwable)
+				addFailure(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.junit.framework.AssertionFailedError)
+			}
+
+			' Association: observer depends on subject
+			JUnit_v3.7.junit.framework.TestResult "fTestResult" <-- TestRunner : observes >
+		}
+
+		package swingui {
+
+			'DP role: ConcreteObserver
+			class TestRunner {
+				-fTestResult: JUnit_v3.7.junit.framework.TestResult
+
+				startTest(test : JUnit_v3.7.junit.framework.Test)
+				endTest(test : JUnit_v3.7.junit.framework.Test)
+				addError(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.java.lang.Throwable)
+				addFailure(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.junit.framework.AssertionFailedError)
+			}
+
+			'DP role: ConcreteObserver
+			class TestSuitePanel {
+
+				startTest(test : JUnit_v3.7.junit.framework.Test)
+				endTest(test : JUnit_v3.7.junit.framework.Test)
+				addError(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.java.lang.Throwable)
+				addFailure(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.junit.framework.AssertionFailedError)
+			}
+
+			' Implements observer interface
+			JUnit_v3.7.junit.framework.TestListener <|.. TestSuitePanel : observes >
+
+			' Association to subject
+			JUnit_v3.7.junit.framework.TestResult "fTestResult" <-- TestRunner : observes >
+		}
+
+		package textui {
+
+			'DP role: ConcreteObserver
+			class TestRunner {
+				startTest(test : JUnit_v3.7.junit.framework.Test)
+				endTest(test : JUnit_v3.7.junit.framework.Test)
+				addError(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.java.lang.Throwable)
+				addFailure(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.junit.framework.AssertionFailedError)
+			}
+
+			' Association to subject
+			JUnit_v3.7.junit.framework.TestResult <-- TestRunner : observes >
+		}
+
+		package tests {
+
+			'DP role: ConcreteObserver
+			'Responsibility: test verifying observer behavior
+			class TestListenerTest {
+				-fResult: JUnit_v3.7.junit.framework.TestResult
+
+				startTest(test : JUnit_v3.7.junit.framework.Test)
+				endTest(test : JUnit_v3.7.junit.framework.Test)
+				addError(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.java.lang.Throwable)
+				addFailure(test : JUnit_v3.7.junit.framework.Test, t : JUnit_v3.7.junit.framework.AssertionFailedError)
+			}
+
+			' Implements observer interface
+			JUnit_v3.7.junit.framework.TestListener <|.. TestListenerTest : observes >
+
+			' Association to subject
+			JUnit_v3.7.junit.framework.TestResult "fResult" <-- TestListenerTest : observes >
+		}
+	}
+}
+@enduml

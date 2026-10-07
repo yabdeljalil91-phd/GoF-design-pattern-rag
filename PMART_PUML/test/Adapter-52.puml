@@ -1,0 +1,129 @@
+@startuml
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package openidex {
+			package search {
+				abstract class Scanner {
+					#listener: ScannerListener
+					<<Create>> Scanner()
+					add(st : SearchType)
+					addScannerListener(l : ScannerListener)
+					#notifyFound(nodes : Netbeans_v1.0.x.org.openide.nodes.Node)
+					removeScannerListener(l : ScannerListener)
+					scan(nodes : Netbeans_v1.0.x.org.openide.nodes.Node)
+				}
+				interface ScannerListener {
+					scannerFound(event : ScannerEvent)
+				}
+				Netbeans_v1.0.x.java.util.EventListener <|-- ScannerListener
+				Netbeans_v1.0.x.org.openide.ServiceType <|-- SearchType
+				Netbeans_v1.0.x.java.lang.Cloneable <|.. SearchType
+				Netbeans_v1.0.x.org.openide.util.Task <|-- SearchTask
+				Netbeans_v1.0.x.org.openide.nodes.Node "found 0..*" <-- ScannerEvent
+				ScannerListener "listener" <-- Scanner
+				Netbeans_v1.0.x.java.lang.String "PROP_VALID" <-- SearchType
+				JavaPrimitiveTypes.long "serialVersionUID" <-- SearchType
+				JavaPrimitiveTypes.boolean "valid" <-- SearchType
+			}
+		}
+		package openide {
+			package nodes {
+				interface NodeAcceptor {
+					acceptNodes(nodes : Node): JavaPrimitiveTypes.boolean
+				}
+				Netbeans_v1.0.x.java.beans.FeatureDescriptor <|-- Node
+				NodeAdapter <|-- ChildrenArray
+				NodeListener <|.. NodeAdapter
+				Netbeans_v1.0.x.java.beans.PropertyChangeListener <|-- NodeListener
+				NodeEvent <|-- NodeMemberEvent
+				Netbeans_v1.0.x.java.util.EventObject <|-- NodeEvent
+				NodeEvent <|-- NodeReorderEvent
+				Netbeans_v1.0.x.java.lang.String "PROP_COOKIE" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_DISPLAY_NAME" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_ICON" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_NAME" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_OPENED_ICON" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_PARENT_NODE" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_PROPERTY_SETS" <-- Node
+				Netbeans_v1.0.x.java.lang.String "PROP_SHORT_DESCRIPTION" <-- Node
+				Netbeans_v1.0.x.org.openide.util.Mutex "MUTEX" <-- Children
+				Netbeans_v1.0.x.java.lang.ref.Reference "array" <-- Children
+				Netbeans_v1.0.x.java.util.Collection "entries" <-- Children
+				Netbeans_v1.0.x.java.util.Map "map" <-- Children
+				Node "parent" <-- Children
+				Entry "entry" <-- Info
+				JavaPrimitiveTypes.int "length" <-- Info
+				JavaPrimitiveTypes.long "serialVersionUID" <-- NodeEvent
+				JavaPrimitiveTypes.boolean "add" <-- NodeMemberEvent
+				Node "delta 0..*" <-- NodeMemberEvent
+				Node "from 0..*" <-- NodeMemberEvent
+				JavaPrimitiveTypes.int "indices 0..*" <-- NodeMemberEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- NodeMemberEvent
+				JavaPrimitiveTypes.int "newIndices 0..*" <-- NodeReorderEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- NodeReorderEvent
+				Children "children" <-- ChildrenArray
+				Netbeans_v1.0.x.java.util.WeakHashMap "map" <-- ChildrenArray
+				Node "nodes 0..*" <-- ChildrenArray
+				Netbeans_v1.0.x.java.util.Collection "nodes" <-- Array
+				Entry "nodesEntry" <-- Array
+				Node "ARRAY 0..*" <-- Empty
+				JavaPrimitiveTypes.boolean "before" <-- Keys
+				Netbeans_v1.0.x.java.lang.Object "key" <-- KE
+				Netbeans_v1.0.x.java.util.Map "nodes" <-- Map
+				Netbeans_v1.0.x.java.lang.Object "key" <-- ME
+				Node "node" <-- ME
+				Netbeans_v1.0.x.java.util.Comparator "comp" <-- SortedArray
+				Netbeans_v1.0.x.java.util.Comparator "comp" <-- SortedMap
+				Children "hierarchy" <-- Node
+				Netbeans_v1.0.x.javax.swing.event.EventListenerList "listeners" <-- Node
+				Children "parent" <-- Node
+				Netbeans_v1.0.x.java.lang.Class "type" <-- Property
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Handle
+				Netbeans_v1.0.x.java.lang.Class "elementType" <-- IndexedProperty
+			}
+			Netbeans_v1.0.x.java.io.Serializable <|.. ServiceType
+			Netbeans_v1.0.x.java.lang.String "PROP_NAME" <-- ServiceType
+			Netbeans_v1.0.x.java.lang.String "name" <-- ServiceType
+			JavaPrimitiveTypes.long "serialVersionUID" <-- ServiceType
+			Netbeans_v1.0.x.java.beans.PropertyChangeSupport "supp" <-- ServiceType
+			Netbeans_v1.0.x.java.lang.String "className" <-- Handle
+			Netbeans_v1.0.x.java.lang.String "name" <-- Handle
+			JavaPrimitiveTypes.long "serialVersionUID" <-- Handle
+			ServiceType "serviceType" <-- Handle
+			JavaPrimitiveTypes.long "serialVersionUID" <-- Registry
+		}
+		package netbeans {
+			package modules {
+				package search {
+					class SearchResultIntersection {
+						-TRACE: JavaPrimitiveTypes.boolean = false
+						-cache: Netbeans_v1.0.x.java.util.HashMap
+						-scanners: JavaPrimitiveTypes.int
+						-target: Netbeans_v1.0.x.org.openidex.search.ScannerListener
+						<<Create>> SearchResultIntersection(target : Netbeans_v1.0.x.org.openidex.search.ScannerListener, scanTasks : JavaPrimitiveTypes.int)
+						-cacheHit(node : Netbeans_v1.0.x.org.openide.nodes.Node): JavaPrimitiveTypes.boolean
+						scannerFound(se : Netbeans_v1.0.x.org.openidex.search.ScannerEvent)
+						-t(msg : Netbeans_v1.0.x.java.lang.String)
+					}
+					Netbeans_v1.0.x.org.openidex.search.ScannerListener <|.. SearchResultIntersection
+					Netbeans_v1.0.x.org.openidex.search.SearchTask <|-- SearchTaskImpl
+					JavaPrimitiveTypes.boolean "TRACE" <-- SearchResultIntersection
+					Netbeans_v1.0.x.java.util.HashMap "cache" <-- SearchResultIntersection
+					JavaPrimitiveTypes.int "scanners" <-- SearchResultIntersection
+					Netbeans_v1.0.x.org.openidex.search.ScannerListener "target" <-- SearchResultIntersection
+					JavaPrimitiveTypes.boolean "TRACE" <-- SearchTaskImpl
+					Netbeans_v1.0.x.java.util.Vector "found" <-- SearchTaskImpl
+					Netbeans_v1.0.x.java.lang.ThreadGroup "group" <-- SearchTaskImpl
+					Netbeans_v1.0.x.org.openide.nodes.NodeAcceptor "na" <-- SearchTaskImpl
+					Netbeans_v1.0.x.org.openide.nodes.Node "nodes 0..*" <-- SearchTaskImpl
+					JavaPrimitiveTypes.boolean "stop" <-- SearchTaskImpl
+					Netbeans_v1.0.x.java.util.Vector "threads" <-- SearchTaskImpl
+					Netbeans_v1.0.x.org.openidex.search.SearchType "types 0..*" <-- SearchTaskImpl
+					Netbeans_v1.0.x.org.openide.nodes.NodeAcceptor "acceptor" <-- AcceptAdapter
+					Netbeans_v1.0.x.org.openide.nodes.Node "nodes 0..*" <-- ScannerThread
+				}
+			}
+		}
+	}
+}
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+package dpd_jdt {
+	package Ressource {
+		package name {
+			class PertDependency {
+				-pertDependencySerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -7959500008698525009
+				<<Create>> PertDependency()
+				canConnect(start : Figure, end : Figure): JavaPrimitiveTypes.boolean
+				handleConnect(start : Figure, end : Figure)
+				handleDisconnect(start : Figure, end : Figure)
+				handles(): java.util.Vector
+			}
+		}
+	}
+	Ressource.name.LineConnection <|-- Ressource.name.PertDependency
+	Ressource.name.ConnectionFigure <|.. Ressource.name.LineConnection
+	Ressource.name.PolyLineFigure <|-- Ressource.name.LineConnection
+	Ressource.name.AbstractFigure <|-- Ressource.name.PolyLineFigure
+	Ressource.name.Figure <|-- Ressource.name.ConnectionFigure
+	java.lang.Cloneable <|-- Ressource.name.Figure
+	java.io.Serializable <|-- Ressource.name.Figure
+	JavaPrimitiveTypes.int "ARROW_TIP_BOTH" <-- Ressource.name.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_END" <-- Ressource.name.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_NONE" <-- Ressource.name.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_START" <-- Ressource.name.PolyLineFigure
+	Ressource.name.LineDecoration "fEndDecoration" <-- Ressource.name.PolyLineFigure
+	java.awt.Color "fFrameColor" <-- Ressource.name.PolyLineFigure
+	java.util.Vector "fPoints" <-- Ressource.name.PolyLineFigure
+	Ressource.name.LineDecoration "fStartDecoration" <-- Ressource.name.PolyLineFigure
+	JavaPrimitiveTypes.int "polyLineFigureSerializedDataVersion" <-- Ressource.name.PolyLineFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Ressource.name.PolyLineFigure
+	Ressource.name.Connector "fEnd" <-- Ressource.name.LineConnection
+	Ressource.name.Connector "fStart" <-- Ressource.name.LineConnection
+	JavaPrimitiveTypes.int "lineConnectionSerializedDataVersion" <-- Ressource.name.LineConnection
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Ressource.name.LineConnection
+	JavaPrimitiveTypes.int "pertDependencySerializedDataVersion" <-- Ressource.name.PertDependency
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Ressource.name.PertDependency
+}
+@enduml

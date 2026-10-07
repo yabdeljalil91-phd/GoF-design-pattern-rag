@@ -1,0 +1,59 @@
+@startuml
+'Design pattern Adapter
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+	package org {
+		package acm {
+			package seguin {
+				package ide {
+					package common {
+						'/** 
+						' * Loads the class diagrams based on a single directory
+						' * @author    Chris Seguin
+						' */
+						'DP role: adaptee
+						class MultipleDirClassDiagramReloader {
+							-list: JRefactory_v2.6.24.java.util.LinkedList
+							-necessary: JavaPrimitiveTypes.boolean
+							'/** 
+							' * Constructor for the MultipleDirClassDiagramReloader object
+							' */
+							<<Create>> MultipleDirClassDiagramReloader()
+							'/** 
+							' * Sets the directory to load the data from
+							' * @param value  the directory
+							' */
+							addRootDirectory(value : JRefactory_v2.6.24.java.lang.String)
+							'/** 
+							' * Clears all directories in the list
+							' */
+							clear()
+							'/** 
+							' * Gets the Necessary attribute of the MultipleDirClassDiagramReloader object
+							' * @return    The Necessary value
+							' */
+							isNecessary(): JavaPrimitiveTypes.boolean
+							'/** 
+							' * Reload the summary information and update the diagrams
+							' */
+							reload()
+							'/** 
+							' * Sets the Necessary attribute of the MultipleDirClassDiagramReloader object
+							' * @param value  The new Necessary value
+							' */
+							setNecessary(value : JavaPrimitiveTypes.boolean)
+						}
+						ClassDiagramReloader <|-- MultipleDirClassDiagramReloader
+						JRefactory_v2.6.24.org.acm.seguin.uml.loader.Reloader <|.. ClassDiagramReloader
+						JRefactory_v2.6.24.javax.swing.JPanel <|-- ClassListPanel
+						JRefactory_v2.6.24.java.util.Vector "umlDiagrams" <-- ClassDiagramReloader
+						JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary "summary" <-- ClassListPanel
+						JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage "umlPackage" <-- ClassListPanel
+						JRefactory_v2.6.24.java.util.LinkedList "list" <-- MultipleDirClassDiagramReloader
+						JavaPrimitiveTypes.boolean "necessary" <-- MultipleDirClassDiagramReloader
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

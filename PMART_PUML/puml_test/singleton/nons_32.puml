@@ -1,0 +1,36 @@
+@startuml
+package dpd_jdt {
+	package Holder {
+		package nonHolder {
+			'Factory for node viewers
+			'@author    Chris Seguin
+			class UMLNodeViewerFactory {
+				-{static} factory: UMLNodeViewerFactory
+				-reloader: MultipleDirClassDiagramReloader
+				'Constructor for the UMLNodeViewerFactory object
+				-<<Create>> UMLNodeViewerFactory()
+				'Determines if this factory can view this type of file
+				'@param node  the type of file
+				'@return       true if it can be displayed
+				canDisplayNode(node : Node): JavaPrimitiveTypes.boolean
+				'Creates the node viewer
+				'@param context  the information about what is to be displayed
+				'@return          the viewer
+				createNodeViewer(context : Context): NodeViewer
+				'Creates the node viewer
+				'@param summary  Description of Parameter
+				'@return          the viewer
+				createNodeViewer(summary : PackageSummary): NodeViewer
+				'Gets the Factory attribute of the UMLNodeViewerFactory class
+				'@return    The Factory value
+				{static} getFactory(): UMLNodeViewerFactory
+				'Gets the class diagram reloader
+				'@return    the reloader
+				getReloader(): MultipleDirClassDiagramReloader
+			}
+		}
+	}
+	Holder.nonHolder.NodeViewerFactory <|-- Holder.nonHolder.UMLNodeViewerFactory
+	Holder.nonHolder.MultipleDirClassDiagramReloader "reloader" <-- Holder.nonHolder.UMLNodeViewerFactory
+}
+@enduml

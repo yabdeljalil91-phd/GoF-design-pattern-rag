@@ -1,0 +1,207 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			class EditorActionManager {
+				{const} ALIGN_CENTER_ACTION_PREFIX: java.lang.String = Align Center
+				{const} ALIGN_JUSTIFIED_ACTION_PREFIX: java.lang.String = Align Justified
+				{const} ALIGN_LEFT_ACTION_PREFIX: java.lang.String = Align Left
+				{const} ALIGN_RIGHT_ACTION_PREFIX: java.lang.String = Align Right
+				{const} BEEP_ACTION_PREFIX: java.lang.String = Beep
+				{const} BOLD_ACTION_PREFIX: java.lang.String = Bold
+				{const} COLOUR_BLACK: JavaPrimitiveTypes.int
+				{const} COLOUR_BLUE: JavaPrimitiveTypes.int
+				{const} COLOUR_CHOOSER_ACTION_PREFIX: java.lang.String = Colour Chooser...
+				{const} COLOUR_CYAN: JavaPrimitiveTypes.int
+				{const} COLOUR_DARKGRAY: JavaPrimitiveTypes.int
+				{const} COLOUR_GRAY: JavaPrimitiveTypes.int
+				{const} COLOUR_GREEN: JavaPrimitiveTypes.int
+				{const} COLOUR_LIGHTGRAY: JavaPrimitiveTypes.int
+				{const} COLOUR_MAGENTA: JavaPrimitiveTypes.int
+				{const} COLOUR_ORANGE: JavaPrimitiveTypes.int
+				{const} COLOUR_PINK: JavaPrimitiveTypes.int
+				{const} COLOUR_RED: JavaPrimitiveTypes.int
+				{const} COLOUR_WHITE: JavaPrimitiveTypes.int
+				{const} COLOUR_YELLOW: JavaPrimitiveTypes.int
+				{const} COPY_ACTION_PREFIX: java.lang.String = Copy
+				{const} CUT_ACTION_PREFIX: java.lang.String = Cut
+				{const} FILE_NEW_ACTION_PREFIX: java.lang.String = New
+				{const} FILE_OPENAS_ACTION_PREFIX: java.lang.String = Open As...
+				{const} FILE_OPEN_ACTION_PREFIX: java.lang.String = Open...
+				{const} FILE_REVERT_ACTION_PREFIX: java.lang.String = Revert To Saved
+				{const} FILE_SAVEAS_ACTION_PREFIX: java.lang.String = Save As...
+				{const} FILE_SAVECOPY_ACTION_PREFIX: java.lang.String = Save Copy...
+				{const} FILE_SAVE_ACTION_PREFIX: java.lang.String = Save
+				{const} FONT_CHOOSER_ACTION_PREFIX: java.lang.String = Font Chooser...
+				{const} ITALIC_ACTION_PREFIX: java.lang.String = Italic
+				{const} PASTE_ACTION_PREFIX: java.lang.String = Paste
+				{const} REDO_ACTION_PREFIX: java.lang.String = Redo
+				{const} REPLACE_ACTION_PREFIX: java.lang.String = Find & Replace...
+				{const} SEARCH_ACTION_PREFIX: java.lang.String = Find...
+				{const} SELECTALL_ACTION_PREFIX: java.lang.String = Select All
+				{const} SELECTNONE_ACTION_PREFIX: java.lang.String = Select None
+				{const} STRIKETHROUGH_ACTION_PREFIX: java.lang.String = Strikethrough
+				{const} UNDERLINE_ACTION_PREFIX: java.lang.String = Underline
+				{const} UNDO_ACTION_PREFIX: java.lang.String = Undo
+				-{static} _ACTIONS: java.util.Map
+				-_ATTRIBUTE_TRACKER: javax.swing.event.CaretListener
+				-{static} _EDITOR: Editor
+				-{static} _INSTANCE: EditorActionManager
+				-<<Create>> EditorActionManager()
+				'Add an editor to the action manager.
+				'@param editor com.jmonkey.office.common.Editor
+				{static} activate(editor : Editor)
+				-create16x16ColourRec(c : java.awt.Component, colour : java.awt.Color): java.awt.Image
+				'Create the default actions of the type: FONT_COLOUR_ACTION <P>
+				'@param colour java.awt.Color the colour to assign the action.
+				'@return javax.swing.Action[]
+				createDefaultColourActions(): javax.swing.Action
+				'Create the default font family actions.
+				'@return javax.swing.Action[]
+				createDefaultFontFaceActions(): javax.swing.Action
+				'Creates a range of FontSize actions from the  begin number to the end number, with the  specified granularity. <P> i.e. A granularity of two, will increase the  range by 2. So, the number of actions produced  will be ((end - begin) / 2) or begin, begin + 2,  begin + 4, begin + 6 [up to] end.
+				'@param int begin start of the range.
+				'@param int end end of the range.
+				'@param int granularity range granularity (divide by).
+				createFontSizeActionRange(begin : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int, granularity : JavaPrimitiveTypes.int): javax.swing.Action
+				'Copies the key/values in <code>element</code>s AttributeSet into <code>set</code>. This does not copy component, icon, or element names attributes. Subclasses may wish to refine what is and what isn't copied here. But be sure to first remove all the attributes that are in <code>set</code>.<p> This is called anytime the caret moves over a different location.
+				#createInputAttributes(element : javax.swing.text.Element, set : javax.swing.text.MutableAttributeSet)
+				'Remove an editor to the action manager.
+				'@param editor com.jmonkey.office.common.Editor
+				{static} deactivate(editor : Editor)
+				'Sets the enabled attribute of all actions  matching or containing the specified pattern. To disable a specific action, use a specific  name. if the name is found in the list, it is the only one disabled. Otherwise, all  actions that contain the pattern will be enabled/disabled.
+				'@param pattern java.lang.String
+				'@param enabled boolean
+				{const} enableAction(pattern : java.lang.String, enabled : JavaPrimitiveTypes.boolean)
+				'Sets the enabled attribute of all format actions .
+				'@param enabled boolean
+				{const} enableColourActions(enabled : JavaPrimitiveTypes.boolean)
+				'Sets the enabled attribute of all Document actions .
+				'@param enabled boolean
+				{const} enableDocumentActions(enabled : JavaPrimitiveTypes.boolean)
+				'Sets the enabled attribute of all format actions .
+				'@param enabled boolean
+				{const} enableFontActions(enabled : JavaPrimitiveTypes.boolean)
+				'Sets the enabled attribute of all format actions .
+				'@param enabled boolean
+				{const} enableFormatActions(enabled : JavaPrimitiveTypes.boolean)
+				'Sets the enabled attribute of all Generic actions .
+				'@param enabled boolean
+				{const} enableGenericActions(enabled : JavaPrimitiveTypes.boolean)
+				{const} getActiveEditor(): Editor
+				getAlignCenterAction(): javax.swing.Action
+				getAlignJustifyAction(): javax.swing.Action
+				getAlignLeftAction(): javax.swing.Action
+				getAlignRightAction(): javax.swing.Action
+				getBeepAction(): javax.swing.Action
+				getBoldAction(): javax.swing.Action
+				getColourAction(name : java.lang.String, colour : java.awt.Color): javax.swing.Action
+				getColourAtCaret(): java.awt.Color
+				getColourChooserAction(component : javax.swing.JFrame): javax.swing.Action
+				getCopyAction(): javax.swing.Action
+				getCutAction(): javax.swing.Action
+				getFontChooserAction(component : javax.swing.JFrame): javax.swing.Action
+				'@param font java.awt.Font the font to use as a template.
+				getFontFaceAction(font : java.awt.Font): javax.swing.Action
+				getFontFaceAction(name : java.lang.String): javax.swing.Action
+				getFontSizeAction(size : JavaPrimitiveTypes.int): javax.swing.Action
+				getItalicAction(): javax.swing.Action
+				getNewAction(component : javax.swing.JFrame, agent : FileActionListener): javax.swing.Action
+				getOpenAction(component : javax.swing.JFrame, agent : FileActionListener): javax.swing.Action
+				getOpenAsAction(component : javax.swing.JFrame, agent : FileActionListener): javax.swing.Action
+				getPasteAction(): javax.swing.Action
+				getRedoAction(): javax.swing.Action
+				getReplaceAction(component : javax.swing.JFrame): javax.swing.Action
+				getRevertAction(component : javax.swing.JFrame, agent : FileActionListener): javax.swing.Action
+				getSaveAction(component : javax.swing.JFrame, agent : FileActionListener): javax.swing.Action
+				getSaveAsAction(component : javax.swing.JFrame, agent : FileActionListener): javax.swing.Action
+				getSaveCopyAction(component : javax.swing.JFrame, agent : FileActionListener): javax.swing.Action
+				getSearchAction(component : javax.swing.JFrame): javax.swing.Action
+				getSelectAllAction(): javax.swing.Action
+				getSelectNoneAction(): javax.swing.Action
+				getStrikeThroughAction(): javax.swing.Action
+				getUnderlineAction(): javax.swing.Action
+				getUndoAction(): javax.swing.Action
+				{const} instance(): EditorActionManager
+				'Returns true if there is an active  editor in the action manager. false otherwise.
+				'@return boolean
+				{const} isActiveEditor(): JavaPrimitiveTypes.boolean
+				'Applies the given attributes to character  content.  If there is a selection, the attributes are applied to the selection range.  If there is no selection, the attributes are applied to the input attribute set which defines the attributes for any new text that gets inserted.
+				'@param editor the editor
+				'@param attr the attributes
+				'@param replace   if true, then replace the existing attributes first
+				#setCharacterAttributes(editor : javax.swing.JEditorPane, attr : javax.swing.text.AttributeSet, replace : JavaPrimitiveTypes.boolean)
+				'Applies the given attributes to paragraphs.  If there is a selection, the attributes are applied to the paragraphs that intersect the selection. if there is no selection, the attributes are applied to the paragraph at the current caret position.
+				'@param editor the editor
+				'@param attr the attributes
+				'@param replace   if true, replace the existing attributes first
+				#setParagraphAttributes(editor : javax.swing.JEditorPane, attr : javax.swing.text.AttributeSet, replace : JavaPrimitiveTypes.boolean)
+				'Returns a running thread wrapping the runnable object.
+				'@param r java.lang.Runnable
+				'@return java.lang.Thread
+				{const} threads(r : java.lang.Runnable): java.lang.Runnable
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.ActionManager <|-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "ALIGN_CENTER_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "ALIGN_JUSTIFIED_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "ALIGN_LEFT_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "ALIGN_RIGHT_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "BEEP_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "BOLD_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "COLOUR_BLACK" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "COLOUR_BLUE" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "COLOUR_CHOOSER_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "COLOUR_CYAN" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "COLOUR_DARKGRAY" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "COLOUR_GRAY" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "COLOUR_GREEN" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "COLOUR_LIGHTGRAY" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "COLOUR_MAGENTA" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "COLOUR_ORANGE" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "COLOUR_PINK" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "COLOUR_RED" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "COLOUR_WHITE" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "COLOUR_YELLOW" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "COPY_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "CUT_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "FILE_NEW_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "FILE_OPENAS_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "FILE_OPEN_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "FILE_REVERT_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "FILE_SAVEAS_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "FILE_SAVECOPY_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "FILE_SAVE_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "FONT_CHOOSER_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "ITALIC_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "PASTE_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "REDO_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "REPLACE_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "SEARCH_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "SELECTALL_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "SELECTNONE_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "STRIKETHROUGH_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "UNDERLINE_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.lang.String "UNDO_ACTION_PREFIX" <-- Factory_method.nonfactorymethod.EditorActionManager
+	java.util.Map "_ACTIONS" <-- Factory_method.nonfactorymethod.EditorActionManager
+	javax.swing.event.CaretListener "_ATTRIBUTE_TRACKER" <-- Factory_method.nonfactorymethod.EditorActionManager
+	Factory_method.nonfactorymethod.Editor "_EDITOR" <-- Factory_method.nonfactorymethod.EditorActionManager
+	JavaPrimitiveTypes.int "a" <-- Factory_method.nonfactorymethod.EditorActionManager.AlignmentAction
+	javax.swing.JFrame "_PARENT" <-- Factory_method.nonfactorymethod.EditorActionManager.ColourChooserAction
+	javax.swing.JFrame "_PARENT" <-- Factory_method.nonfactorymethod.EditorActionManager.FontChooserAction
+	java.lang.String "family" <-- Factory_method.nonfactorymethod.EditorActionManager.FontFamilyAction
+	JavaPrimitiveTypes.int "size" <-- Factory_method.nonfactorymethod.EditorActionManager.FontSizeAction
+	java.awt.Color "fg" <-- Factory_method.nonfactorymethod.EditorActionManager.ForegroundAction
+	java.lang.String "name" <-- Factory_method.nonfactorymethod.EditorActionManager.ForegroundAction
+	Factory_method.nonfactorymethod.FileActionListener "_LISTENER" <-- Factory_method.nonfactorymethod.EditorActionManager.NewAction
+	Factory_method.nonfactorymethod.FileActionListener "_LISTENER" <-- Factory_method.nonfactorymethod.EditorActionManager.OpenAction
+	Factory_method.nonfactorymethod.FileActionListener "_LISTENER" <-- Factory_method.nonfactorymethod.EditorActionManager.OpenAsAction
+	javax.swing.JFrame "_PARENT" <-- Factory_method.nonfactorymethod.EditorActionManager.ReplaceAction
+	Factory_method.nonfactorymethod.FileActionListener "_LISTENER" <-- Factory_method.nonfactorymethod.EditorActionManager.RevertAction
+	Factory_method.nonfactorymethod.FileActionListener "_LISTENER" <-- Factory_method.nonfactorymethod.EditorActionManager.SaveAction
+	Factory_method.nonfactorymethod.FileActionListener "_LISTENER" <-- Factory_method.nonfactorymethod.EditorActionManager.SaveAsAction
+	Factory_method.nonfactorymethod.FileActionListener "_LISTENER" <-- Factory_method.nonfactorymethod.EditorActionManager.SaveCopyAction
+	javax.swing.JFrame "_PARENT" <-- Factory_method.nonfactorymethod.EditorActionManager.SearchAction
+}
+@enduml

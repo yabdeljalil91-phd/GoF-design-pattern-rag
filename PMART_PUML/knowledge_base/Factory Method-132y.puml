@@ -1,0 +1,1165 @@
+@startuml
+'Design pattern Factory Method
+package "PMD v1.8" as PMD_v1.8 {
+	package net {
+		package sourceforge {
+			package pmd {
+				package ast {
+					'DP role: concreteProduct
+					class JavaParser {
+						-isJDK15: JavaPrimitiveTypes.boolean
+						-jj_2_rtns: JJCalls [*]
+						-jj_endpos: JavaPrimitiveTypes.int
+						-jj_expentries: PMD_v1.8.java.util.Vector
+						-jj_expentry: JavaPrimitiveTypes.int [*]
+						-jj_gc: JavaPrimitiveTypes.int
+						-jj_gen: JavaPrimitiveTypes.int
+						-jj_kind: JavaPrimitiveTypes.int
+						-jj_la: JavaPrimitiveTypes.int
+						-jj_la1: JavaPrimitiveTypes.int [*]
+						-{static} jj_la1_0: JavaPrimitiveTypes.int [*]
+						-{static} jj_la1_1: JavaPrimitiveTypes.int [*]
+						-{static} jj_la1_2: JavaPrimitiveTypes.int [*]
+						-{static} jj_la1_3: JavaPrimitiveTypes.int [*]
+						-jj_lastpos: Token
+						-jj_lasttokens: JavaPrimitiveTypes.int [*]
+						-jj_ls: LookaheadSuccess
+						jj_nt: Token
+						-jj_ntk: JavaPrimitiveTypes.int
+						-jj_rescan: JavaPrimitiveTypes.boolean
+						-jj_scanpos: Token
+						-jj_semLA: JavaPrimitiveTypes.boolean
+						#jjtree: JJTJavaParserState
+						lookingAhead: JavaPrimitiveTypes.boolean
+						token: Token
+						token_source: JavaParserTokenManager
+						-usingAssertAsIdentifier: JavaPrimitiveTypes.boolean
+						<<Create>> JavaParser(stream : CharStream)
+						<<Create>> JavaParser(tm : JavaParserTokenManager)
+						AdditiveExpression()
+						AllocationExpression()
+						AndExpression()
+						ArgumentList()
+						Arguments()
+						ArrayDimsAndInits()
+						ArrayInitializer()
+						AssertStatement()
+						AssignmentOperator()
+						Block()
+						BlockStatement()
+						BooleanLiteral()
+						BreakStatement()
+						CastExpression()
+						CastLookahead()
+						ClassBody()
+						ClassBodyDeclaration()
+						ClassDeclaration()
+						CompilationUnit(): ASTCompilationUnit
+						ConditionalAndExpression()
+						ConditionalExpression()
+						ConditionalOrExpression()
+						ConstructorDeclaration()
+						ContinueStatement()
+						DoStatement()
+						EmptyStatement()
+						EnumDeclaration()
+						EnumElement()
+						EqualityExpression()
+						ExclusiveOrExpression()
+						ExplicitConstructorInvocation()
+						Expression()
+						FieldDeclaration()
+						ForInit()
+						ForStatement()
+						ForUpdate()
+						FormalParameter()
+						FormalParameters()
+						IfStatement()
+						ImportDeclaration()
+						InclusiveOrExpression()
+						Initializer()
+						InstanceOfExpression()
+						InterfaceDeclaration()
+						InterfaceMemberDeclaration()
+						LabeledStatement()
+						Literal()
+						LocalVariableDeclaration()
+						MethodDeclaration()
+						MethodDeclarationLookahead()
+						MethodDeclarator()
+						MultiplicativeExpression()
+						Name()
+						NameList()
+						NestedClassDeclaration()
+						NestedInterfaceDeclaration()
+						NullLiteral()
+						PackageDeclaration()
+						PostfixExpression()
+						PreDecrementExpression()
+						PreIncrementExpression()
+						PrimaryExpression()
+						PrimaryPrefix()
+						PrimarySuffix()
+						PrimitiveType()
+						ReInit(stream : CharStream)
+						ReInit(tm : JavaParserTokenManager)
+						RelationalExpression()
+						ResultType()
+						ReturnStatement()
+						ShiftExpression()
+						Statement()
+						StatementExpression()
+						StatementExpressionList()
+						SwitchLabel()
+						SwitchStatement()
+						SynchronizedStatement()
+						ThrowStatement()
+						TryStatement()
+						Type()
+						TypeDeclaration()
+						UnaryExpression()
+						UnaryExpressionNotPlusMinus()
+						UnmodifiedClassDeclaration()
+						UnmodifiedInterfaceDeclaration()
+						VariableDeclarator()
+						VariableDeclaratorId()
+						VariableInitializer()
+						WhileStatement()
+						-checkForBadAssertUsage(in : PMD_v1.8.java.lang.String, usage : PMD_v1.8.java.lang.String)
+						-checkForBadEnumUsage(in : PMD_v1.8.java.lang.String, usage : PMD_v1.8.java.lang.String)
+						-checkForDiscard(node : SimpleNode)
+						disable_tracing()
+						-discardNodes(node : ASTCompilationUnit)
+						enable_tracing()
+						-enumLookahead(): JavaPrimitiveTypes.boolean
+						generateParseException(): ParseException
+						getNextToken(): Token
+						getToken(index : JavaPrimitiveTypes.int): Token
+						-isNextTokenAnAssert(): JavaPrimitiveTypes.boolean
+						-jj_2_1(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_10(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_11(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_12(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_13(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_14(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_15(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_16(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_17(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_18(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_19(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_2(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_20(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_21(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_22(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_23(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_24(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_25(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_26(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_27(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_28(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_29(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_3(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_30(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_31(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_32(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_33(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_34(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_35(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_36(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_4(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_5(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_6(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_7(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_8(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_2_9(xla : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						-jj_3R_100(): JavaPrimitiveTypes.boolean
+						-jj_3R_101(): JavaPrimitiveTypes.boolean
+						-jj_3R_102(): JavaPrimitiveTypes.boolean
+						-jj_3R_103(): JavaPrimitiveTypes.boolean
+						-jj_3R_104(): JavaPrimitiveTypes.boolean
+						-jj_3R_105(): JavaPrimitiveTypes.boolean
+						-jj_3R_106(): JavaPrimitiveTypes.boolean
+						-jj_3R_107(): JavaPrimitiveTypes.boolean
+						-jj_3R_108(): JavaPrimitiveTypes.boolean
+						-jj_3R_109(): JavaPrimitiveTypes.boolean
+						-jj_3R_110(): JavaPrimitiveTypes.boolean
+						-jj_3R_111(): JavaPrimitiveTypes.boolean
+						-jj_3R_112(): JavaPrimitiveTypes.boolean
+						-jj_3R_113(): JavaPrimitiveTypes.boolean
+						-jj_3R_114(): JavaPrimitiveTypes.boolean
+						-jj_3R_115(): JavaPrimitiveTypes.boolean
+						-jj_3R_116(): JavaPrimitiveTypes.boolean
+						-jj_3R_117(): JavaPrimitiveTypes.boolean
+						-jj_3R_118(): JavaPrimitiveTypes.boolean
+						-jj_3R_119(): JavaPrimitiveTypes.boolean
+						-jj_3R_120(): JavaPrimitiveTypes.boolean
+						-jj_3R_121(): JavaPrimitiveTypes.boolean
+						-jj_3R_122(): JavaPrimitiveTypes.boolean
+						-jj_3R_123(): JavaPrimitiveTypes.boolean
+						-jj_3R_124(): JavaPrimitiveTypes.boolean
+						-jj_3R_125(): JavaPrimitiveTypes.boolean
+						-jj_3R_126(): JavaPrimitiveTypes.boolean
+						-jj_3R_127(): JavaPrimitiveTypes.boolean
+						-jj_3R_128(): JavaPrimitiveTypes.boolean
+						-jj_3R_129(): JavaPrimitiveTypes.boolean
+						-jj_3R_130(): JavaPrimitiveTypes.boolean
+						-jj_3R_131(): JavaPrimitiveTypes.boolean
+						-jj_3R_132(): JavaPrimitiveTypes.boolean
+						-jj_3R_133(): JavaPrimitiveTypes.boolean
+						-jj_3R_134(): JavaPrimitiveTypes.boolean
+						-jj_3R_135(): JavaPrimitiveTypes.boolean
+						-jj_3R_136(): JavaPrimitiveTypes.boolean
+						-jj_3R_137(): JavaPrimitiveTypes.boolean
+						-jj_3R_138(): JavaPrimitiveTypes.boolean
+						-jj_3R_139(): JavaPrimitiveTypes.boolean
+						-jj_3R_140(): JavaPrimitiveTypes.boolean
+						-jj_3R_141(): JavaPrimitiveTypes.boolean
+						-jj_3R_142(): JavaPrimitiveTypes.boolean
+						-jj_3R_143(): JavaPrimitiveTypes.boolean
+						-jj_3R_144(): JavaPrimitiveTypes.boolean
+						-jj_3R_145(): JavaPrimitiveTypes.boolean
+						-jj_3R_146(): JavaPrimitiveTypes.boolean
+						-jj_3R_147(): JavaPrimitiveTypes.boolean
+						-jj_3R_148(): JavaPrimitiveTypes.boolean
+						-jj_3R_149(): JavaPrimitiveTypes.boolean
+						-jj_3R_150(): JavaPrimitiveTypes.boolean
+						-jj_3R_151(): JavaPrimitiveTypes.boolean
+						-jj_3R_152(): JavaPrimitiveTypes.boolean
+						-jj_3R_153(): JavaPrimitiveTypes.boolean
+						-jj_3R_154(): JavaPrimitiveTypes.boolean
+						-jj_3R_155(): JavaPrimitiveTypes.boolean
+						-jj_3R_156(): JavaPrimitiveTypes.boolean
+						-jj_3R_157(): JavaPrimitiveTypes.boolean
+						-jj_3R_158(): JavaPrimitiveTypes.boolean
+						-jj_3R_159(): JavaPrimitiveTypes.boolean
+						-jj_3R_160(): JavaPrimitiveTypes.boolean
+						-jj_3R_161(): JavaPrimitiveTypes.boolean
+						-jj_3R_162(): JavaPrimitiveTypes.boolean
+						-jj_3R_163(): JavaPrimitiveTypes.boolean
+						-jj_3R_164(): JavaPrimitiveTypes.boolean
+						-jj_3R_165(): JavaPrimitiveTypes.boolean
+						-jj_3R_166(): JavaPrimitiveTypes.boolean
+						-jj_3R_167(): JavaPrimitiveTypes.boolean
+						-jj_3R_168(): JavaPrimitiveTypes.boolean
+						-jj_3R_169(): JavaPrimitiveTypes.boolean
+						-jj_3R_170(): JavaPrimitiveTypes.boolean
+						-jj_3R_171(): JavaPrimitiveTypes.boolean
+						-jj_3R_172(): JavaPrimitiveTypes.boolean
+						-jj_3R_173(): JavaPrimitiveTypes.boolean
+						-jj_3R_174(): JavaPrimitiveTypes.boolean
+						-jj_3R_175(): JavaPrimitiveTypes.boolean
+						-jj_3R_176(): JavaPrimitiveTypes.boolean
+						-jj_3R_177(): JavaPrimitiveTypes.boolean
+						-jj_3R_178(): JavaPrimitiveTypes.boolean
+						-jj_3R_179(): JavaPrimitiveTypes.boolean
+						-jj_3R_180(): JavaPrimitiveTypes.boolean
+						-jj_3R_181(): JavaPrimitiveTypes.boolean
+						-jj_3R_182(): JavaPrimitiveTypes.boolean
+						-jj_3R_183(): JavaPrimitiveTypes.boolean
+						-jj_3R_184(): JavaPrimitiveTypes.boolean
+						-jj_3R_185(): JavaPrimitiveTypes.boolean
+						-jj_3R_186(): JavaPrimitiveTypes.boolean
+						-jj_3R_187(): JavaPrimitiveTypes.boolean
+						-jj_3R_188(): JavaPrimitiveTypes.boolean
+						-jj_3R_189(): JavaPrimitiveTypes.boolean
+						-jj_3R_190(): JavaPrimitiveTypes.boolean
+						-jj_3R_191(): JavaPrimitiveTypes.boolean
+						-jj_3R_192(): JavaPrimitiveTypes.boolean
+						-jj_3R_193(): JavaPrimitiveTypes.boolean
+						-jj_3R_194(): JavaPrimitiveTypes.boolean
+						-jj_3R_195(): JavaPrimitiveTypes.boolean
+						-jj_3R_196(): JavaPrimitiveTypes.boolean
+						-jj_3R_197(): JavaPrimitiveTypes.boolean
+						-jj_3R_198(): JavaPrimitiveTypes.boolean
+						-jj_3R_199(): JavaPrimitiveTypes.boolean
+						-jj_3R_200(): JavaPrimitiveTypes.boolean
+						-jj_3R_201(): JavaPrimitiveTypes.boolean
+						-jj_3R_202(): JavaPrimitiveTypes.boolean
+						-jj_3R_203(): JavaPrimitiveTypes.boolean
+						-jj_3R_204(): JavaPrimitiveTypes.boolean
+						-jj_3R_205(): JavaPrimitiveTypes.boolean
+						-jj_3R_206(): JavaPrimitiveTypes.boolean
+						-jj_3R_207(): JavaPrimitiveTypes.boolean
+						-jj_3R_208(): JavaPrimitiveTypes.boolean
+						-jj_3R_209(): JavaPrimitiveTypes.boolean
+						-jj_3R_210(): JavaPrimitiveTypes.boolean
+						-jj_3R_211(): JavaPrimitiveTypes.boolean
+						-jj_3R_212(): JavaPrimitiveTypes.boolean
+						-jj_3R_213(): JavaPrimitiveTypes.boolean
+						-jj_3R_214(): JavaPrimitiveTypes.boolean
+						-jj_3R_215(): JavaPrimitiveTypes.boolean
+						-jj_3R_216(): JavaPrimitiveTypes.boolean
+						-jj_3R_217(): JavaPrimitiveTypes.boolean
+						-jj_3R_218(): JavaPrimitiveTypes.boolean
+						-jj_3R_219(): JavaPrimitiveTypes.boolean
+						-jj_3R_220(): JavaPrimitiveTypes.boolean
+						-jj_3R_221(): JavaPrimitiveTypes.boolean
+						-jj_3R_222(): JavaPrimitiveTypes.boolean
+						-jj_3R_223(): JavaPrimitiveTypes.boolean
+						-jj_3R_224(): JavaPrimitiveTypes.boolean
+						-jj_3R_225(): JavaPrimitiveTypes.boolean
+						-jj_3R_226(): JavaPrimitiveTypes.boolean
+						-jj_3R_227(): JavaPrimitiveTypes.boolean
+						-jj_3R_228(): JavaPrimitiveTypes.boolean
+						-jj_3R_229(): JavaPrimitiveTypes.boolean
+						-jj_3R_230(): JavaPrimitiveTypes.boolean
+						-jj_3R_231(): JavaPrimitiveTypes.boolean
+						-jj_3R_232(): JavaPrimitiveTypes.boolean
+						-jj_3R_233(): JavaPrimitiveTypes.boolean
+						-jj_3R_234(): JavaPrimitiveTypes.boolean
+						-jj_3R_235(): JavaPrimitiveTypes.boolean
+						-jj_3R_236(): JavaPrimitiveTypes.boolean
+						-jj_3R_237(): JavaPrimitiveTypes.boolean
+						-jj_3R_238(): JavaPrimitiveTypes.boolean
+						-jj_3R_239(): JavaPrimitiveTypes.boolean
+						-jj_3R_240(): JavaPrimitiveTypes.boolean
+						-jj_3R_241(): JavaPrimitiveTypes.boolean
+						-jj_3R_242(): JavaPrimitiveTypes.boolean
+						-jj_3R_243(): JavaPrimitiveTypes.boolean
+						-jj_3R_244(): JavaPrimitiveTypes.boolean
+						-jj_3R_245(): JavaPrimitiveTypes.boolean
+						-jj_3R_246(): JavaPrimitiveTypes.boolean
+						-jj_3R_247(): JavaPrimitiveTypes.boolean
+						-jj_3R_248(): JavaPrimitiveTypes.boolean
+						-jj_3R_249(): JavaPrimitiveTypes.boolean
+						-jj_3R_250(): JavaPrimitiveTypes.boolean
+						-jj_3R_251(): JavaPrimitiveTypes.boolean
+						-jj_3R_252(): JavaPrimitiveTypes.boolean
+						-jj_3R_253(): JavaPrimitiveTypes.boolean
+						-jj_3R_254(): JavaPrimitiveTypes.boolean
+						-jj_3R_255(): JavaPrimitiveTypes.boolean
+						-jj_3R_256(): JavaPrimitiveTypes.boolean
+						-jj_3R_257(): JavaPrimitiveTypes.boolean
+						-jj_3R_258(): JavaPrimitiveTypes.boolean
+						-jj_3R_259(): JavaPrimitiveTypes.boolean
+						-jj_3R_260(): JavaPrimitiveTypes.boolean
+						-jj_3R_261(): JavaPrimitiveTypes.boolean
+						-jj_3R_262(): JavaPrimitiveTypes.boolean
+						-jj_3R_263(): JavaPrimitiveTypes.boolean
+						-jj_3R_264(): JavaPrimitiveTypes.boolean
+						-jj_3R_265(): JavaPrimitiveTypes.boolean
+						-jj_3R_266(): JavaPrimitiveTypes.boolean
+						-jj_3R_267(): JavaPrimitiveTypes.boolean
+						-jj_3R_268(): JavaPrimitiveTypes.boolean
+						-jj_3R_269(): JavaPrimitiveTypes.boolean
+						-jj_3R_270(): JavaPrimitiveTypes.boolean
+						-jj_3R_271(): JavaPrimitiveTypes.boolean
+						-jj_3R_272(): JavaPrimitiveTypes.boolean
+						-jj_3R_273(): JavaPrimitiveTypes.boolean
+						-jj_3R_274(): JavaPrimitiveTypes.boolean
+						-jj_3R_275(): JavaPrimitiveTypes.boolean
+						-jj_3R_276(): JavaPrimitiveTypes.boolean
+						-jj_3R_277(): JavaPrimitiveTypes.boolean
+						-jj_3R_278(): JavaPrimitiveTypes.boolean
+						-jj_3R_279(): JavaPrimitiveTypes.boolean
+						-jj_3R_280(): JavaPrimitiveTypes.boolean
+						-jj_3R_281(): JavaPrimitiveTypes.boolean
+						-jj_3R_282(): JavaPrimitiveTypes.boolean
+						-jj_3R_283(): JavaPrimitiveTypes.boolean
+						-jj_3R_284(): JavaPrimitiveTypes.boolean
+						-jj_3R_285(): JavaPrimitiveTypes.boolean
+						-jj_3R_286(): JavaPrimitiveTypes.boolean
+						-jj_3R_287(): JavaPrimitiveTypes.boolean
+						-jj_3R_288(): JavaPrimitiveTypes.boolean
+						-jj_3R_289(): JavaPrimitiveTypes.boolean
+						-jj_3R_290(): JavaPrimitiveTypes.boolean
+						-jj_3R_291(): JavaPrimitiveTypes.boolean
+						-jj_3R_292(): JavaPrimitiveTypes.boolean
+						-jj_3R_293(): JavaPrimitiveTypes.boolean
+						-jj_3R_294(): JavaPrimitiveTypes.boolean
+						-jj_3R_295(): JavaPrimitiveTypes.boolean
+						-jj_3R_296(): JavaPrimitiveTypes.boolean
+						-jj_3R_297(): JavaPrimitiveTypes.boolean
+						-jj_3R_298(): JavaPrimitiveTypes.boolean
+						-jj_3R_299(): JavaPrimitiveTypes.boolean
+						-jj_3R_300(): JavaPrimitiveTypes.boolean
+						-jj_3R_301(): JavaPrimitiveTypes.boolean
+						-jj_3R_302(): JavaPrimitiveTypes.boolean
+						-jj_3R_303(): JavaPrimitiveTypes.boolean
+						-jj_3R_304(): JavaPrimitiveTypes.boolean
+						-jj_3R_305(): JavaPrimitiveTypes.boolean
+						-jj_3R_306(): JavaPrimitiveTypes.boolean
+						-jj_3R_307(): JavaPrimitiveTypes.boolean
+						-jj_3R_308(): JavaPrimitiveTypes.boolean
+						-jj_3R_309(): JavaPrimitiveTypes.boolean
+						-jj_3R_310(): JavaPrimitiveTypes.boolean
+						-jj_3R_311(): JavaPrimitiveTypes.boolean
+						-jj_3R_312(): JavaPrimitiveTypes.boolean
+						-jj_3R_313(): JavaPrimitiveTypes.boolean
+						-jj_3R_314(): JavaPrimitiveTypes.boolean
+						-jj_3R_315(): JavaPrimitiveTypes.boolean
+						-jj_3R_316(): JavaPrimitiveTypes.boolean
+						-jj_3R_317(): JavaPrimitiveTypes.boolean
+						-jj_3R_318(): JavaPrimitiveTypes.boolean
+						-jj_3R_319(): JavaPrimitiveTypes.boolean
+						-jj_3R_320(): JavaPrimitiveTypes.boolean
+						-jj_3R_321(): JavaPrimitiveTypes.boolean
+						-jj_3R_322(): JavaPrimitiveTypes.boolean
+						-jj_3R_323(): JavaPrimitiveTypes.boolean
+						-jj_3R_324(): JavaPrimitiveTypes.boolean
+						-jj_3R_325(): JavaPrimitiveTypes.boolean
+						-jj_3R_326(): JavaPrimitiveTypes.boolean
+						-jj_3R_327(): JavaPrimitiveTypes.boolean
+						-jj_3R_328(): JavaPrimitiveTypes.boolean
+						-jj_3R_329(): JavaPrimitiveTypes.boolean
+						-jj_3R_330(): JavaPrimitiveTypes.boolean
+						-jj_3R_331(): JavaPrimitiveTypes.boolean
+						-jj_3R_332(): JavaPrimitiveTypes.boolean
+						-jj_3R_333(): JavaPrimitiveTypes.boolean
+						-jj_3R_334(): JavaPrimitiveTypes.boolean
+						-jj_3R_335(): JavaPrimitiveTypes.boolean
+						-jj_3R_336(): JavaPrimitiveTypes.boolean
+						-jj_3R_337(): JavaPrimitiveTypes.boolean
+						-jj_3R_338(): JavaPrimitiveTypes.boolean
+						-jj_3R_339(): JavaPrimitiveTypes.boolean
+						-jj_3R_340(): JavaPrimitiveTypes.boolean
+						-jj_3R_341(): JavaPrimitiveTypes.boolean
+						-jj_3R_342(): JavaPrimitiveTypes.boolean
+						-jj_3R_343(): JavaPrimitiveTypes.boolean
+						-jj_3R_344(): JavaPrimitiveTypes.boolean
+						-jj_3R_345(): JavaPrimitiveTypes.boolean
+						-jj_3R_346(): JavaPrimitiveTypes.boolean
+						-jj_3R_347(): JavaPrimitiveTypes.boolean
+						-jj_3R_348(): JavaPrimitiveTypes.boolean
+						-jj_3R_349(): JavaPrimitiveTypes.boolean
+						-jj_3R_350(): JavaPrimitiveTypes.boolean
+						-jj_3R_351(): JavaPrimitiveTypes.boolean
+						-jj_3R_352(): JavaPrimitiveTypes.boolean
+						-jj_3R_353(): JavaPrimitiveTypes.boolean
+						-jj_3R_354(): JavaPrimitiveTypes.boolean
+						-jj_3R_355(): JavaPrimitiveTypes.boolean
+						-jj_3R_356(): JavaPrimitiveTypes.boolean
+						-jj_3R_357(): JavaPrimitiveTypes.boolean
+						-jj_3R_358(): JavaPrimitiveTypes.boolean
+						-jj_3R_359(): JavaPrimitiveTypes.boolean
+						-jj_3R_360(): JavaPrimitiveTypes.boolean
+						-jj_3R_361(): JavaPrimitiveTypes.boolean
+						-jj_3R_362(): JavaPrimitiveTypes.boolean
+						-jj_3R_44(): JavaPrimitiveTypes.boolean
+						-jj_3R_45(): JavaPrimitiveTypes.boolean
+						-jj_3R_46(): JavaPrimitiveTypes.boolean
+						-jj_3R_47(): JavaPrimitiveTypes.boolean
+						-jj_3R_48(): JavaPrimitiveTypes.boolean
+						-jj_3R_49(): JavaPrimitiveTypes.boolean
+						-jj_3R_50(): JavaPrimitiveTypes.boolean
+						-jj_3R_51(): JavaPrimitiveTypes.boolean
+						-jj_3R_52(): JavaPrimitiveTypes.boolean
+						-jj_3R_53(): JavaPrimitiveTypes.boolean
+						-jj_3R_54(): JavaPrimitiveTypes.boolean
+						-jj_3R_55(): JavaPrimitiveTypes.boolean
+						-jj_3R_56(): JavaPrimitiveTypes.boolean
+						-jj_3R_57(): JavaPrimitiveTypes.boolean
+						-jj_3R_58(): JavaPrimitiveTypes.boolean
+						-jj_3R_59(): JavaPrimitiveTypes.boolean
+						-jj_3R_60(): JavaPrimitiveTypes.boolean
+						-jj_3R_61(): JavaPrimitiveTypes.boolean
+						-jj_3R_62(): JavaPrimitiveTypes.boolean
+						-jj_3R_63(): JavaPrimitiveTypes.boolean
+						-jj_3R_64(): JavaPrimitiveTypes.boolean
+						-jj_3R_65(): JavaPrimitiveTypes.boolean
+						-jj_3R_66(): JavaPrimitiveTypes.boolean
+						-jj_3R_67(): JavaPrimitiveTypes.boolean
+						-jj_3R_68(): JavaPrimitiveTypes.boolean
+						-jj_3R_69(): JavaPrimitiveTypes.boolean
+						-jj_3R_70(): JavaPrimitiveTypes.boolean
+						-jj_3R_71(): JavaPrimitiveTypes.boolean
+						-jj_3R_72(): JavaPrimitiveTypes.boolean
+						-jj_3R_73(): JavaPrimitiveTypes.boolean
+						-jj_3R_74(): JavaPrimitiveTypes.boolean
+						-jj_3R_75(): JavaPrimitiveTypes.boolean
+						-jj_3R_76(): JavaPrimitiveTypes.boolean
+						-jj_3R_77(): JavaPrimitiveTypes.boolean
+						-jj_3R_78(): JavaPrimitiveTypes.boolean
+						-jj_3R_79(): JavaPrimitiveTypes.boolean
+						-jj_3R_80(): JavaPrimitiveTypes.boolean
+						-jj_3R_81(): JavaPrimitiveTypes.boolean
+						-jj_3R_82(): JavaPrimitiveTypes.boolean
+						-jj_3R_83(): JavaPrimitiveTypes.boolean
+						-jj_3R_84(): JavaPrimitiveTypes.boolean
+						-jj_3R_85(): JavaPrimitiveTypes.boolean
+						-jj_3R_86(): JavaPrimitiveTypes.boolean
+						-jj_3R_87(): JavaPrimitiveTypes.boolean
+						-jj_3R_88(): JavaPrimitiveTypes.boolean
+						-jj_3R_89(): JavaPrimitiveTypes.boolean
+						-jj_3R_90(): JavaPrimitiveTypes.boolean
+						-jj_3R_91(): JavaPrimitiveTypes.boolean
+						-jj_3R_92(): JavaPrimitiveTypes.boolean
+						-jj_3R_93(): JavaPrimitiveTypes.boolean
+						-jj_3R_94(): JavaPrimitiveTypes.boolean
+						-jj_3R_95(): JavaPrimitiveTypes.boolean
+						-jj_3R_96(): JavaPrimitiveTypes.boolean
+						-jj_3R_97(): JavaPrimitiveTypes.boolean
+						-jj_3R_98(): JavaPrimitiveTypes.boolean
+						-jj_3R_99(): JavaPrimitiveTypes.boolean
+						-jj_3_1(): JavaPrimitiveTypes.boolean
+						-jj_3_10(): JavaPrimitiveTypes.boolean
+						-jj_3_11(): JavaPrimitiveTypes.boolean
+						-jj_3_12(): JavaPrimitiveTypes.boolean
+						-jj_3_13(): JavaPrimitiveTypes.boolean
+						-jj_3_14(): JavaPrimitiveTypes.boolean
+						-jj_3_15(): JavaPrimitiveTypes.boolean
+						-jj_3_16(): JavaPrimitiveTypes.boolean
+						-jj_3_17(): JavaPrimitiveTypes.boolean
+						-jj_3_18(): JavaPrimitiveTypes.boolean
+						-jj_3_19(): JavaPrimitiveTypes.boolean
+						-jj_3_2(): JavaPrimitiveTypes.boolean
+						-jj_3_20(): JavaPrimitiveTypes.boolean
+						-jj_3_21(): JavaPrimitiveTypes.boolean
+						-jj_3_22(): JavaPrimitiveTypes.boolean
+						-jj_3_23(): JavaPrimitiveTypes.boolean
+						-jj_3_24(): JavaPrimitiveTypes.boolean
+						-jj_3_25(): JavaPrimitiveTypes.boolean
+						-jj_3_26(): JavaPrimitiveTypes.boolean
+						-jj_3_27(): JavaPrimitiveTypes.boolean
+						-jj_3_28(): JavaPrimitiveTypes.boolean
+						-jj_3_29(): JavaPrimitiveTypes.boolean
+						-jj_3_3(): JavaPrimitiveTypes.boolean
+						-jj_3_30(): JavaPrimitiveTypes.boolean
+						-jj_3_31(): JavaPrimitiveTypes.boolean
+						-jj_3_32(): JavaPrimitiveTypes.boolean
+						-jj_3_33(): JavaPrimitiveTypes.boolean
+						-jj_3_34(): JavaPrimitiveTypes.boolean
+						-jj_3_35(): JavaPrimitiveTypes.boolean
+						-jj_3_36(): JavaPrimitiveTypes.boolean
+						-jj_3_4(): JavaPrimitiveTypes.boolean
+						-jj_3_5(): JavaPrimitiveTypes.boolean
+						-jj_3_6(): JavaPrimitiveTypes.boolean
+						-jj_3_7(): JavaPrimitiveTypes.boolean
+						-jj_3_8(): JavaPrimitiveTypes.boolean
+						-jj_3_9(): JavaPrimitiveTypes.boolean
+						-jj_add_error_token(kind : JavaPrimitiveTypes.int, pos : JavaPrimitiveTypes.int)
+						-jj_consume_token(kind : JavaPrimitiveTypes.int): Token
+						-{static} jj_la1_0()
+						-{static} jj_la1_1()
+						-{static} jj_la1_2()
+						-{static} jj_la1_3()
+						-jj_ntk(): JavaPrimitiveTypes.int
+						-jj_rescan_token()
+						-jj_save(index : JavaPrimitiveTypes.int, xla : JavaPrimitiveTypes.int)
+						-jj_scan_token(kind : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						setAssertAsIdentifier()
+						setJDK15()
+					}
+					'DP role: product
+					interface JavaParserConstants {
+						{const} ABSTRACT: JavaPrimitiveTypes.int = 12
+						{const} ANDASSIGN: JavaPrimitiveTypes.int = 113
+						{const} ASSIGN: JavaPrimitiveTypes.int = 83
+						{const} BANG: JavaPrimitiveTypes.int = 86
+						{const} BIT_AND: JavaPrimitiveTypes.int = 102
+						{const} BIT_OR: JavaPrimitiveTypes.int = 103
+						{const} BOOLEAN: JavaPrimitiveTypes.int = 13
+						{const} BREAK: JavaPrimitiveTypes.int = 14
+						{const} BYTE: JavaPrimitiveTypes.int = 15
+						{const} CASE: JavaPrimitiveTypes.int = 16
+						{const} CATCH: JavaPrimitiveTypes.int = 17
+						{const} CHAR: JavaPrimitiveTypes.int = 18
+						{const} CHARACTER_LITERAL: JavaPrimitiveTypes.int = 69
+						{const} CLASS: JavaPrimitiveTypes.int = 19
+						{const} COLON: JavaPrimitiveTypes.int = 89
+						{const} COMMA: JavaPrimitiveTypes.int = 81
+						{const} CONST: JavaPrimitiveTypes.int = 20
+						{const} CONTINUE: JavaPrimitiveTypes.int = 21
+						{const} DECIMAL_LITERAL: JavaPrimitiveTypes.int = 64
+						{const} DECR: JavaPrimitiveTypes.int = 97
+						{const} DEFAULT: JavaPrimitiveTypes.int = 0
+						{const} DIGIT: JavaPrimitiveTypes.int = 73
+						{const} DO: JavaPrimitiveTypes.int = 23
+						{const} DOT: JavaPrimitiveTypes.int = 82
+						{const} DOUBLE: JavaPrimitiveTypes.int = 24
+						{const} ELSE: JavaPrimitiveTypes.int = 25
+						{const} EOF: JavaPrimitiveTypes.int = 0
+						{const} EQ: JavaPrimitiveTypes.int = 90
+						{const} EXPONENT: JavaPrimitiveTypes.int = 68
+						{const} EXTENDS: JavaPrimitiveTypes.int = 26
+						{const} FALSE: JavaPrimitiveTypes.int = 27
+						{const} FINAL: JavaPrimitiveTypes.int = 28
+						{const} FINALLY: JavaPrimitiveTypes.int = 29
+						{const} FLOAT: JavaPrimitiveTypes.int = 30
+						{const} FLOATING_POINT_LITERAL: JavaPrimitiveTypes.int = 67
+						{const} FOR: JavaPrimitiveTypes.int = 31
+						{const} FORMAL_COMMENT: JavaPrimitiveTypes.int = 9
+						{const} GE: JavaPrimitiveTypes.int = 92
+						{const} GOTO: JavaPrimitiveTypes.int = 32
+						{const} GT: JavaPrimitiveTypes.int = 84
+						{const} HEX_LITERAL: JavaPrimitiveTypes.int = 65
+						{const} HOOK: JavaPrimitiveTypes.int = 88
+						{const} IDENTIFIER: JavaPrimitiveTypes.int = 71
+						{const} IF: JavaPrimitiveTypes.int = 33
+						{const} IMPLEMENTS: JavaPrimitiveTypes.int = 34
+						{const} IMPORT: JavaPrimitiveTypes.int = 35
+						{const} INCR: JavaPrimitiveTypes.int = 96
+						{const} INSTANCEOF: JavaPrimitiveTypes.int = 36
+						{const} INT: JavaPrimitiveTypes.int = 37
+						{const} INTEGER_LITERAL: JavaPrimitiveTypes.int = 63
+						{const} INTERFACE: JavaPrimitiveTypes.int = 38
+						{const} IN_FORMAL_COMMENT: JavaPrimitiveTypes.int = 1
+						{const} IN_MULTI_LINE_COMMENT: JavaPrimitiveTypes.int = 2
+						{const} LBRACE: JavaPrimitiveTypes.int = 76
+						{const} LBRACKET: JavaPrimitiveTypes.int = 78
+						{const} LE: JavaPrimitiveTypes.int = 91
+						{const} LETTER: JavaPrimitiveTypes.int = 72
+						{const} LONG: JavaPrimitiveTypes.int = 39
+						{const} LPAREN: JavaPrimitiveTypes.int = 74
+						{const} LSHIFT: JavaPrimitiveTypes.int = 106
+						{const} LSHIFTASSIGN: JavaPrimitiveTypes.int = 117
+						{const} LT: JavaPrimitiveTypes.int = 85
+						{const} MINUS: JavaPrimitiveTypes.int = 99
+						{const} MINUSASSIGN: JavaPrimitiveTypes.int = 110
+						{const} MULTI_LINE_COMMENT: JavaPrimitiveTypes.int = 10
+						{const} NATIVE: JavaPrimitiveTypes.int = 40
+						{const} NE: JavaPrimitiveTypes.int = 93
+						{const} NEW: JavaPrimitiveTypes.int = 41
+						{const} NULL: JavaPrimitiveTypes.int = 42
+						{const} OCTAL_LITERAL: JavaPrimitiveTypes.int = 66
+						{const} ORASSIGN: JavaPrimitiveTypes.int = 114
+						{const} PACKAGE: JavaPrimitiveTypes.int = 43
+						{const} PLUS: JavaPrimitiveTypes.int = 98
+						{const} PLUSASSIGN: JavaPrimitiveTypes.int = 109
+						{const} PRIVATE: JavaPrimitiveTypes.int = 44
+						{const} PROTECTED: JavaPrimitiveTypes.int = 45
+						{const} PUBLIC: JavaPrimitiveTypes.int = 46
+						{const} RBRACE: JavaPrimitiveTypes.int = 77
+						{const} RBRACKET: JavaPrimitiveTypes.int = 79
+						{const} REM: JavaPrimitiveTypes.int = 105
+						{const} REMASSIGN: JavaPrimitiveTypes.int = 116
+						{const} RETURN: JavaPrimitiveTypes.int = 47
+						{const} RPAREN: JavaPrimitiveTypes.int = 75
+						{const} RSIGNEDSHIFT: JavaPrimitiveTypes.int = 107
+						{const} RSIGNEDSHIFTASSIGN: JavaPrimitiveTypes.int = 118
+						{const} RUNSIGNEDSHIFT: JavaPrimitiveTypes.int = 108
+						{const} RUNSIGNEDSHIFTASSIGN: JavaPrimitiveTypes.int = 119
+						{const} SC_AND: JavaPrimitiveTypes.int = 95
+						{const} SC_OR: JavaPrimitiveTypes.int = 94
+						{const} SEMICOLON: JavaPrimitiveTypes.int = 80
+						{const} SHORT: JavaPrimitiveTypes.int = 48
+						{const} SINGLE_LINE_COMMENT: JavaPrimitiveTypes.int = 6
+						{const} SLASH: JavaPrimitiveTypes.int = 101
+						{const} SLASHASSIGN: JavaPrimitiveTypes.int = 112
+						{const} STAR: JavaPrimitiveTypes.int = 100
+						{const} STARASSIGN: JavaPrimitiveTypes.int = 111
+						{const} STATIC: JavaPrimitiveTypes.int = 49
+						{const} STRICTFP: JavaPrimitiveTypes.int = 62
+						{const} STRING_LITERAL: JavaPrimitiveTypes.int = 70
+						{const} SUPER: JavaPrimitiveTypes.int = 50
+						{const} SWITCH: JavaPrimitiveTypes.int = 51
+						{const} SYNCHRONIZED: JavaPrimitiveTypes.int = 52
+						{const} THIS: JavaPrimitiveTypes.int = 53
+						{const} THROW: JavaPrimitiveTypes.int = 54
+						{const} THROWS: JavaPrimitiveTypes.int = 55
+						{const} TILDE: JavaPrimitiveTypes.int = 87
+						{const} TRANSIENT: JavaPrimitiveTypes.int = 56
+						{const} TRUE: JavaPrimitiveTypes.int = 57
+						{const} TRY: JavaPrimitiveTypes.int = 58
+						{const} VOID: JavaPrimitiveTypes.int = 59
+						{const} VOLATILE: JavaPrimitiveTypes.int = 60
+						{const} WHILE: JavaPrimitiveTypes.int = 61
+						{const} XOR: JavaPrimitiveTypes.int = 104
+						{const} XORASSIGN: JavaPrimitiveTypes.int = 115
+						{const} _DEFAULT: JavaPrimitiveTypes.int = 22
+						{const} tokenImage: PMD_v1.8.java.lang.String [*]
+					}
+					'DP role: concreteProduct
+					class JavaParserTokenManager {
+						#curChar: JavaPrimitiveTypes.char
+						curLexState: JavaPrimitiveTypes.int
+						debugStream: PMD_v1.8.java.io.PrintStream
+						defaultLexState: JavaPrimitiveTypes.int
+						image: PMD_v1.8.java.lang.StringBuffer
+						#input_stream: CharStream
+						{const} jjbitVec0: JavaPrimitiveTypes.long [*]
+						{const} jjbitVec2: JavaPrimitiveTypes.long [*]
+						{const} jjbitVec3: JavaPrimitiveTypes.long [*]
+						{const} jjbitVec4: JavaPrimitiveTypes.long [*]
+						{const} jjbitVec5: JavaPrimitiveTypes.long [*]
+						{const} jjbitVec6: JavaPrimitiveTypes.long [*]
+						{const} jjbitVec7: JavaPrimitiveTypes.long [*]
+						{const} jjbitVec8: JavaPrimitiveTypes.long [*]
+						jjimageLen: JavaPrimitiveTypes.int
+						jjmatchedKind: JavaPrimitiveTypes.int
+						jjmatchedPos: JavaPrimitiveTypes.int
+						{const} jjnewLexState: JavaPrimitiveTypes.int [*]
+						jjnewStateCnt: JavaPrimitiveTypes.int
+						{const} jjnextStates: JavaPrimitiveTypes.int [*]
+						jjround: JavaPrimitiveTypes.int
+						-jjrounds: JavaPrimitiveTypes.int [*]
+						-jjstateSet: JavaPrimitiveTypes.int [*]
+						{const} jjstrLiteralImages: PMD_v1.8.java.lang.String [*]
+						{const} jjtoMore: JavaPrimitiveTypes.long [*]
+						{const} jjtoSkip: JavaPrimitiveTypes.long [*]
+						{const} jjtoSpecial: JavaPrimitiveTypes.long [*]
+						{const} jjtoToken: JavaPrimitiveTypes.long [*]
+						lengthOfMatch: JavaPrimitiveTypes.int
+						{const} lexStateNames: PMD_v1.8.java.lang.String [*]
+						<<Create>> JavaParserTokenManager(stream : CharStream)
+						<<Create>> JavaParserTokenManager(stream : CharStream, lexState : JavaPrimitiveTypes.int)
+						MoreLexicalActions()
+						ReInit(stream : CharStream)
+						ReInit(stream : CharStream, lexState : JavaPrimitiveTypes.int)
+						-ReInitRounds()
+						SkipLexicalActions(matchedToken : Token)
+						SwitchTo(lexState : JavaPrimitiveTypes.int)
+						getNextToken(): Token
+						-jjAddStates(start : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int)
+						-{const} jjCanMove_0(hiByte : JavaPrimitiveTypes.int, i1 : JavaPrimitiveTypes.int, i2 : JavaPrimitiveTypes.int, l1 : JavaPrimitiveTypes.long, l2 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.boolean
+						-{const} jjCanMove_1(hiByte : JavaPrimitiveTypes.int, i1 : JavaPrimitiveTypes.int, i2 : JavaPrimitiveTypes.int, l1 : JavaPrimitiveTypes.long, l2 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.boolean
+						-jjCheckNAdd(state : JavaPrimitiveTypes.int)
+						-jjCheckNAddStates(start : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int)
+						-jjCheckNAddStates(start : JavaPrimitiveTypes.int)
+						-jjCheckNAddTwoStates(state1 : JavaPrimitiveTypes.int, state2 : JavaPrimitiveTypes.int)
+						#jjFillToken(): Token
+						-jjMoveNfa_0(startState : JavaPrimitiveTypes.int, curPos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa0_0(): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa0_1(): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa0_2(): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa10_0(old0 : JavaPrimitiveTypes.long, active0 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa11_0(old0 : JavaPrimitiveTypes.long, active0 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa1_0(active0 : JavaPrimitiveTypes.long, active1 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa1_1(active0 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa1_2(active0 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa2_0(old0 : JavaPrimitiveTypes.long, active0 : JavaPrimitiveTypes.long, old1 : JavaPrimitiveTypes.long, active1 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa3_0(old0 : JavaPrimitiveTypes.long, active0 : JavaPrimitiveTypes.long, old1 : JavaPrimitiveTypes.long, active1 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa4_0(old0 : JavaPrimitiveTypes.long, active0 : JavaPrimitiveTypes.long, old1 : JavaPrimitiveTypes.long, active1 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa5_0(old0 : JavaPrimitiveTypes.long, active0 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa6_0(old0 : JavaPrimitiveTypes.long, active0 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa7_0(old0 : JavaPrimitiveTypes.long, active0 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa8_0(old0 : JavaPrimitiveTypes.long, active0 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjMoveStringLiteralDfa9_0(old0 : JavaPrimitiveTypes.long, active0 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjStartNfaWithStates_0(pos : JavaPrimitiveTypes.int, kind : JavaPrimitiveTypes.int, state : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+						-jjStartNfa_0(pos : JavaPrimitiveTypes.int, active0 : JavaPrimitiveTypes.long, active1 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						-jjStopAtPos(pos : JavaPrimitiveTypes.int, kind : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+						-jjStopStringLiteralDfa_0(pos : JavaPrimitiveTypes.int, active0 : JavaPrimitiveTypes.long, active1 : JavaPrimitiveTypes.long): JavaPrimitiveTypes.int
+						setDebugStream(ds : PMD_v1.8.java.io.PrintStream)
+					}
+					JavaParserTreeConstants <|.. JavaParser
+					JavaParserConstants <|.. JavaParser
+					Node <|.. SimpleNode
+					SimpleNode <|-- ASTVariableDeclaratorId
+					SimpleNode <|-- ASTType
+					SimpleNode <|-- AccessNode
+					AccessFlags <|.. AccessNode
+					SimpleNode <|-- ASTMethodDeclarator
+					SimpleNode <|-- ASTCompilationUnit
+					SimpleNode <|-- ASTPackageDeclaration
+					SimpleNode <|-- ASTImportDeclaration
+					SimpleNode <|-- ASTName
+					SimpleNode <|-- ASTTypeDeclaration
+					AccessNode <|-- ASTClassDeclaration
+					SimpleNode <|-- ASTUnmodifiedClassDeclaration
+					SimpleNode <|-- ASTClassBody
+					AccessNode <|-- ASTNestedClassDeclaration
+					SimpleNode <|-- ASTClassBodyDeclaration
+					AccessNode <|-- ASTEnumDeclaration
+					SimpleNode <|-- ASTEnumElement
+					SimpleNode <|-- ASTMethodDeclarationLookahead
+					AccessNode <|-- ASTInterfaceDeclaration
+					SimpleNode <|-- ASTUnmodifiedInterfaceDeclaration
+					AccessNode <|-- ASTNestedInterfaceDeclaration
+					SimpleNode <|-- ASTInterfaceMemberDeclaration
+					AccessNode <|-- ASTFieldDeclaration
+					SimpleNode <|-- ASTVariableDeclarator
+					SimpleNode <|-- ASTVariableInitializer
+					SimpleNode <|-- ASTArrayInitializer
+					AccessNode <|-- ASTMethodDeclaration
+					SimpleNode <|-- ASTFormalParameters
+					AccessNode <|-- ASTFormalParameter
+					AccessNode <|-- ASTConstructorDeclaration
+					SimpleNode <|-- ASTExplicitConstructorInvocation
+					SimpleNode <|-- ASTInitializer
+					SimpleNode <|-- ASTPrimitiveType
+					SimpleNode <|-- ASTResultType
+					SimpleNode <|-- ASTNameList
+					SimpleNode <|-- ASTExpression
+					SimpleNode <|-- ASTAssignmentOperator
+					SimpleNode <|-- ASTConditionalExpression
+					SimpleNode <|-- ASTConditionalOrExpression
+					SimpleNode <|-- ASTConditionalAndExpression
+					SimpleNode <|-- ASTInclusiveOrExpression
+					SimpleNode <|-- ASTExclusiveOrExpression
+					SimpleNode <|-- ASTAndExpression
+					SimpleNode <|-- ASTEqualityExpression
+					SimpleNode <|-- ASTInstanceOfExpression
+					SimpleNode <|-- ASTRelationalExpression
+					SimpleNode <|-- ASTShiftExpression
+					SimpleNode <|-- ASTAdditiveExpression
+					SimpleNode <|-- ASTMultiplicativeExpression
+					SimpleNode <|-- ASTUnaryExpression
+					SimpleNode <|-- ASTPreIncrementExpression
+					SimpleNode <|-- ASTPreDecrementExpression
+					SimpleNode <|-- ASTUnaryExpressionNotPlusMinus
+					SimpleNode <|-- ASTCastLookahead
+					SimpleNode <|-- ASTPostfixExpression
+					SimpleNode <|-- ASTCastExpression
+					SimpleNode <|-- ASTPrimaryExpression
+					SimpleNode <|-- ASTPrimaryPrefix
+					SimpleNode <|-- ASTPrimarySuffix
+					SimpleNode <|-- ASTLiteral
+					SimpleNode <|-- ASTBooleanLiteral
+					SimpleNode <|-- ASTNullLiteral
+					SimpleNode <|-- ASTArguments
+					SimpleNode <|-- ASTArgumentList
+					SimpleNode <|-- ASTAllocationExpression
+					SimpleNode <|-- ASTArrayDimsAndInits
+					SimpleNode <|-- ASTStatement
+					SimpleNode <|-- ASTLabeledStatement
+					SimpleNode <|-- ASTBlock
+					SimpleNode <|-- ASTBlockStatement
+					AccessNode <|-- ASTLocalVariableDeclaration
+					SimpleNode <|-- ASTEmptyStatement
+					SimpleNode <|-- ASTStatementExpression
+					SimpleNode <|-- ASTSwitchStatement
+					SimpleNode <|-- ASTSwitchLabel
+					SimpleNode <|-- ASTIfStatement
+					SimpleNode <|-- ASTWhileStatement
+					SimpleNode <|-- ASTDoStatement
+					SimpleNode <|-- ASTForStatement
+					SimpleNode <|-- ASTForInit
+					SimpleNode <|-- ASTStatementExpressionList
+					SimpleNode <|-- ASTForUpdate
+					SimpleNode <|-- ASTBreakStatement
+					SimpleNode <|-- ASTContinueStatement
+					SimpleNode <|-- ASTReturnStatement
+					SimpleNode <|-- ASTThrowStatement
+					SimpleNode <|-- ASTSynchronizedStatement
+					SimpleNode <|-- ASTTryStatement
+					SimpleNode <|-- ASTAssertStatement
+					JavaParserConstants <|.. JavaParserTokenManager
+					PMD_v1.8.java.lang.RuntimeException <|-- ParseException
+					JavaPrimitiveTypes.int "JJTADDITIVEEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTALLOCATIONEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTANDEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTARGUMENTLIST" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTARGUMENTS" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTARRAYDIMSANDINITS" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTARRAYINITIALIZER" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTASSERTSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTASSIGNMENTOPERATOR" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTBLOCK" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTBLOCKSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTBOOLEANLITERAL" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTBREAKSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCASTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCASTLOOKAHEAD" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCLASSBODY" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCLASSBODYDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCLASSDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCOMPILATIONUNIT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONDITIONALANDEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONDITIONALEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONDITIONALOREXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONSTRUCTORDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONTINUESTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTDOSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEMPTYSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTENUMDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTENUMELEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEQUALITYEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEXCLUSIVEOREXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEXPLICITCONSTRUCTORINVOCATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFIELDDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORINIT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORMALPARAMETER" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORMALPARAMETERS" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORUPDATE" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTIFSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTIMPORTDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINCLUSIVEOREXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINITIALIZER" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINSTANCEOFEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINTERFACEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINTERFACEMEMBERDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTLABELEDSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTLITERAL" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTLOCALVARIABLEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTMETHODDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTMETHODDECLARATIONLOOKAHEAD" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTMETHODDECLARATOR" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTMULTIPLICATIVEEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNAME" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNAMELIST" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNESTEDCLASSDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNESTEDINTERFACEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNULLLITERAL" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPACKAGEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPOSTFIXEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPREDECREMENTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPREINCREMENTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPRIMARYEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPRIMARYPREFIX" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPRIMARYSUFFIX" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPRIMITIVETYPE" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTRELATIONALEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTRESULTTYPE" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTRETURNSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSHIFTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSTATEMENTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSTATEMENTEXPRESSIONLIST" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSWITCHLABEL" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSWITCHSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSYNCHRONIZEDSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTTHROWSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTTRYSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTTYPE" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTTYPEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTUNARYEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTUNARYEXPRESSIONNOTPLUSMINUS" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTUNMODIFIEDCLASSDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTUNMODIFIEDINTERFACEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTVARIABLEDECLARATOR" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTVARIABLEDECLARATORID" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTVARIABLEINITIALIZER" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTWHILESTATEMENT" <-- JavaParserTreeConstants
+					PMD_v1.8.java.lang.String "jjtNodeName 0..*" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "ABSTRACT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "ANDASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "ASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BANG" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BIT_AND" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BIT_OR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BOOLEAN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BREAK" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BYTE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CASE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CATCH" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CHAR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CHARACTER_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CLASS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "COLON" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "COMMA" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CONST" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CONTINUE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DECIMAL_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DECR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DEFAULT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DIGIT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DO" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DOT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DOUBLE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "ELSE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "EOF" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "EQ" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "EXPONENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "EXTENDS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FALSE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FINAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FINALLY" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FLOAT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FLOATING_POINT_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FOR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FORMAL_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "GE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "GOTO" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "GT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "HEX_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "HOOK" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IDENTIFIER" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IF" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IMPLEMENTS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IMPORT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INCR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INSTANCEOF" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INTEGER_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INTERFACE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IN_FORMAL_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IN_MULTI_LINE_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LBRACE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LBRACKET" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LETTER" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LONG" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LPAREN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LSHIFT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LSHIFTASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "MINUS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "MINUSASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "MULTI_LINE_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "NATIVE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "NE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "NEW" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "NULL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "OCTAL_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "ORASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PACKAGE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PLUS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PLUSASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PRIVATE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PROTECTED" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PUBLIC" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RBRACE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RBRACKET" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "REM" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "REMASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RETURN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RPAREN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RSIGNEDSHIFT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RSIGNEDSHIFTASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RUNSIGNEDSHIFT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RUNSIGNEDSHIFTASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SC_AND" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SC_OR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SEMICOLON" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SHORT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SINGLE_LINE_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SLASH" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SLASHASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STAR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STARASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STATIC" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STRICTFP" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STRING_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SUPER" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SWITCH" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SYNCHRONIZED" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "THIS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "THROW" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "THROWS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "TILDE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "TRANSIENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "TRUE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "TRY" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "VOID" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "VOLATILE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "WHILE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "XOR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "XORASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "_DEFAULT" <-- JavaParserConstants
+					PMD_v1.8.java.lang.String "tokenImage 0..*" <-- JavaParserConstants
+					JavaPrimitiveTypes.boolean "isJDK15" <-- JavaParser
+					JavaPrimitiveTypes.int "arg" <-- JJCalls
+					JavaPrimitiveTypes.int "beginColumn" <-- Token
+					JavaPrimitiveTypes.int "beginLine" <-- Token
+					JavaPrimitiveTypes.int "endColumn" <-- Token
+					JavaPrimitiveTypes.int "endLine" <-- Token
+					PMD_v1.8.java.lang.String "image" <-- Token
+					JavaPrimitiveTypes.int "kind" <-- Token
+					Token "first" <-- JJCalls
+					JavaPrimitiveTypes.int "gen" <-- JJCalls
+					JJCalls "jj_2_rtns 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_endpos" <-- JavaParser
+					PMD_v1.8.java.util.Vector "jj_expentries" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_expentry 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_gc" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_gen" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_kind" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1_0 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1_1 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1_2 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1_3 0..*" <-- JavaParser
+					Token "jj_lastpos" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_lasttokens 0..*" <-- JavaParser
+					LookaheadSuccess "jj_ls" <-- JavaParser
+					Token "jj_nt" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_ntk" <-- JavaParser
+					JavaPrimitiveTypes.boolean "jj_rescan" <-- JavaParser
+					Token "jj_scanpos" <-- JavaParser
+					JavaPrimitiveTypes.boolean "jj_semLA" <-- JavaParser
+					PMD_v1.8.java.util.Stack "marks" <-- JJTJavaParserState
+					JavaPrimitiveTypes.int "mk" <-- JJTJavaParserState
+					JavaPrimitiveTypes.boolean "node_created" <-- JJTJavaParserState
+					PMD_v1.8.java.util.Stack "nodes" <-- JJTJavaParserState
+					JavaPrimitiveTypes.int "sp" <-- JJTJavaParserState
+					JavaPrimitiveTypes.int "beginColumn" <-- SimpleNode
+					JavaPrimitiveTypes.int "beginLine" <-- SimpleNode
+					Node "children 0..*" <-- SimpleNode
+					JavaPrimitiveTypes.boolean "discardable" <-- SimpleNode
+					JavaPrimitiveTypes.int "endColumn" <-- SimpleNode
+					JavaPrimitiveTypes.int "endLine" <-- SimpleNode
+					JavaPrimitiveTypes.int "id" <-- SimpleNode
+					PMD_v1.8.java.lang.String "image" <-- SimpleNode
+					Node "parent" <-- SimpleNode
+					JavaParser "parser" <-- SimpleNode
+					JavaPrimitiveTypes.int "dimensions" <-- ASTType
+					JavaPrimitiveTypes.boolean "isArray" <-- ASTType
+					JavaPrimitiveTypes.short "ACC_ABSTRACT" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_FINAL" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_INTERFACE" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_NATIVE" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_PRIVATE" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_PROTECTED" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_PUBLIC" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_STATIC" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_STRICT" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_SUPER" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_SYNCHRONIZED" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_TRANSIENT" <-- AccessFlags
+					JavaPrimitiveTypes.short "ACC_VOLATILE" <-- AccessFlags
+					JavaPrimitiveTypes.short "accessFlags" <-- AccessNode
+					PMD_v1.8.net.sourceforge.pmd.symboltable.Scope "scope" <-- SimpleNode
+					JavaPrimitiveTypes.boolean "isImportOnDemand" <-- ASTImportDeclaration
+					JavaPrimitiveTypes.boolean "hasExplicitExtends" <-- ASTUnmodifiedClassDeclaration
+					JavaPrimitiveTypes.boolean "hasExplicitImplements" <-- ASTUnmodifiedClassDeclaration
+					PMD_v1.8.java.lang.String "thisOrSuper" <-- ASTExplicitConstructorInvocation
+					JavaPrimitiveTypes.boolean "isStatic" <-- ASTInitializer
+					JavaPrimitiveTypes.boolean "usesSuperModifier" <-- ASTPrimaryPrefix
+					JavaPrimitiveTypes.boolean "usesThisModifier" <-- ASTPrimaryPrefix
+					JavaPrimitiveTypes.boolean "isArguments" <-- ASTPrimarySuffix
+					JavaPrimitiveTypes.boolean "isTrue" <-- ASTBooleanLiteral
+					JavaPrimitiveTypes.boolean "hasElse" <-- ASTIfStatement
+					JavaPrimitiveTypes.boolean "hasCatch" <-- ASTTryStatement
+					JavaPrimitiveTypes.boolean "hasFinally" <-- ASTTryStatement
+					JJTJavaParserState "jjtree" <-- JavaParser
+					JavaPrimitiveTypes.boolean "lookingAhead" <-- JavaParser
+					Token "token" <-- JavaParser
+					JavaPrimitiveTypes.char "curChar" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "curLexState" <-- JavaParserTokenManager
+					PMD_v1.8.java.io.PrintStream "debugStream" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "defaultLexState" <-- JavaParserTokenManager
+					PMD_v1.8.java.lang.StringBuffer "image" <-- JavaParserTokenManager
+					CharStream "input_stream" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec0 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec2 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec3 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec4 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec5 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec6 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec7 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec8 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjimageLen" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjmatchedKind" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjmatchedPos" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjnewLexState 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjnewStateCnt" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjnextStates 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjround" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjrounds 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjstateSet 0..*" <-- JavaParserTokenManager
+					PMD_v1.8.java.lang.String "jjstrLiteralImages 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjtoMore 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjtoSkip 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjtoSpecial 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjtoToken 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "lengthOfMatch" <-- JavaParserTokenManager
+					PMD_v1.8.java.lang.String "lexStateNames 0..*" <-- JavaParserTokenManager
+					JavaParserTokenManager "token_source" <-- JavaParser
+					JavaPrimitiveTypes.boolean "usingAssertAsIdentifier" <-- JavaParser
+					Token "currentToken" <-- ParseException
+					PMD_v1.8.java.lang.String "eol" <-- ParseException
+					JavaPrimitiveTypes.int "expectedTokenSequences 0..*" <-- ParseException
+					JavaPrimitiveTypes.boolean "specialConstructor" <-- ParseException
+					PMD_v1.8.java.lang.String "tokenImage 0..*" <-- ParseException
+				}
+				'DP role: creator
+				interface TargetJDKVersion {
+					createParser(in : PMD_v1.8.java.io.InputStream): PMD_v1.8.net.sourceforge.pmd.ast.JavaParser
+					createParser(in : PMD_v1.8.java.io.Reader): PMD_v1.8.net.sourceforge.pmd.ast.JavaParser
+				}
+				'DP role: concreteCreator
+				class TargetJDK1_4 {
+					<<Create>> TargetJDK1_4()
+					createJavaParserTokenManager(in : PMD_v1.8.java.io.Reader): PMD_v1.8.net.sourceforge.pmd.ast.JavaParserTokenManager
+					createParser(in : PMD_v1.8.java.io.InputStream): PMD_v1.8.net.sourceforge.pmd.ast.JavaParser
+					createParser(in : PMD_v1.8.java.io.Reader): PMD_v1.8.net.sourceforge.pmd.ast.JavaParser
+				}
+				TargetJDKVersion <|.. TargetJDK1_4
+			}
+		}
+	}
+}
+@enduml

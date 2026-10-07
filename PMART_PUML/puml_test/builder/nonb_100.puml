@@ -1,0 +1,34 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'A triangle with same dimensions as its enclosing rectangle, and apex at any of 8 places
+			class TriangleFigure {
+				#fRotation: JavaPrimitiveTypes.int
+				{static} rotations: JavaPrimitiveTypes.double [*]
+				<<Create>> TriangleFigure()
+				<<Create>> TriangleFigure(origin : java.awt.Point, corner : java.awt.Point)
+				center(): java.awt.Point
+				chop(p : java.awt.Point): java.awt.Point
+				clone(): java.lang.Object
+				connectionInsets(): java.awt.Insets
+				containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				draw(g : java.awt.Graphics)
+				handles(): java.util.Vector
+				'Return the polygon describing the triangle
+				polygon(): java.awt.Polygon
+				read(dr : StorableInput)
+				rotate(angle : JavaPrimitiveTypes.double)
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	Builder.nonbuilder.RectangleFigure <|-- Builder.nonbuilder.TriangleFigure
+	Builder.nonbuilder.AttributeFigure <|-- Builder.nonbuilder.RectangleFigure
+	java.awt.Rectangle "fDisplayBox" <-- Builder.nonbuilder.RectangleFigure
+	JavaPrimitiveTypes.int "rectangleFigureSerializedDataVersion" <-- Builder.nonbuilder.RectangleFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Builder.nonbuilder.RectangleFigure
+	JavaPrimitiveTypes.int "fRotation" <-- Builder.nonbuilder.TriangleFigure
+	JavaPrimitiveTypes.double "rotations 0..*" <-- Builder.nonbuilder.TriangleFigure
+}
+@enduml

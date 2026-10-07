@@ -1,0 +1,254 @@
+@startuml
+'Design pattern Observer
+package "Lexi v0.1.1 alpha" as Lexi_v0.1.1_alpha {
+	package com {
+		package jmonkey {
+			package office {
+				package lexi {
+					package support {
+						package editors {
+							'/** 
+							' */
+							'DP role: concreteSubject
+							class HTMLEditor {
+								{const} CONTENT_TYPE: Lexi_v0.1.1_alpha.java.lang.String
+								{const} FILE_EXTENSIONS: Lexi_v0.1.1_alpha.java.lang.String [*]
+								-_CHANGED: JavaPrimitiveTypes.boolean
+								-_CURRENT_PARAGRAPH: Lexi_v0.1.1_alpha.javax.swing.text.Element
+								-_CURRENT_RUN: Lexi_v0.1.1_alpha.javax.swing.text.Element
+								-_EDITOR: Lexi_v0.1.1_alpha.javax.swing.JTextPane
+								-_EVENT_LISTENER: E
+								-_FILE: Lexi_v0.1.1_alpha.java.io.File
+								'/** 
+								' * Default Document Constructor.
+								' */
+								<<Create>> HTMLEditor()
+								append(file : Lexi_v0.1.1_alpha.java.io.File)
+								'/** 
+								' * @param start int
+								' * @param length int
+								' * @param wordsOnly boolean expand or contract length to match the nearest  whole word.
+								' */
+								documentSetSelection(start : JavaPrimitiveTypes.int, length : JavaPrimitiveTypes.int, wordsOnly : JavaPrimitiveTypes.boolean)
+								'/** 
+								' * Returns the content type as a MIME string.
+								' * @return java.lang.String
+								' */
+								getContentType(): Lexi_v0.1.1_alpha.java.lang.String
+								getCurrentParagraph(): Lexi_v0.1.1_alpha.javax.swing.text.Element
+								getCurrentRun(): Lexi_v0.1.1_alpha.javax.swing.text.Element
+								'/** 
+								' * Returns the content type as a MIME string.
+								' * @return java.lang.String
+								' */
+								-getEventListener(): E
+								'/** 
+								' * Returns the content type as a MIME string.
+								' * @return java.lang.String
+								' */
+								getFileExtensions(): Lexi_v0.1.1_alpha.java.lang.String
+								getInputAttributes(): Lexi_v0.1.1_alpha.javax.swing.text.MutableAttributeSet
+								getTextComponent(): Lexi_v0.1.1_alpha.javax.swing.JEditorPane
+								hasBeenActivated(editor : Lexi_v0.1.1_alpha.com.jmonkey.office.lexi.support.Editor)
+								hasBeenDeactivated(editor : Lexi_v0.1.1_alpha.com.jmonkey.office.lexi.support.Editor)
+								init()
+								insert(file : Lexi_v0.1.1_alpha.java.io.File, position : JavaPrimitiveTypes.int)
+								'/** 
+								' * Has the document changed since we loaded/created it?
+								' * @return boolean
+								' */
+								isChanged(): JavaPrimitiveTypes.boolean
+								'/** 
+								' * Does the document contain any data?
+								' * @return boolean
+								' */
+								isEmpty(): JavaPrimitiveTypes.boolean
+								'/** 
+								' * Does the document contain formatting, or can we write it as plain text without  loosing anything.
+								' * @return boolean
+								' */
+								isFormatted(): JavaPrimitiveTypes.boolean
+								'/** 
+								' * Does the document represent a new file?
+								' * @return boolean
+								' */
+								isNew(): JavaPrimitiveTypes.boolean
+								keyPressed(kp : Lexi_v0.1.1_alpha.java.awt.event.KeyEvent)
+								keyReleased(kr : Lexi_v0.1.1_alpha.java.awt.event.KeyEvent)
+								keyTyped(kt : Lexi_v0.1.1_alpha.java.awt.event.KeyEvent)
+								mouseClicked(e : Lexi_v0.1.1_alpha.java.awt.event.MouseEvent)
+								mouseEntered(e : Lexi_v0.1.1_alpha.java.awt.event.MouseEvent)
+								mouseExited(e : Lexi_v0.1.1_alpha.java.awt.event.MouseEvent)
+								mousePressed(e : Lexi_v0.1.1_alpha.java.awt.event.MouseEvent)
+								mouseReleased(e : Lexi_v0.1.1_alpha.java.awt.event.MouseEvent)
+								read(file : Lexi_v0.1.1_alpha.java.io.File)
+								requestFocus()
+								'/** 
+								' * Sets the blink rate of the Caret.
+								' * @param colour java.awt.Color
+								' */
+								setCaretBlinkRate(rate : JavaPrimitiveTypes.int)
+								'/** 
+								' * Sets the colour of the Caret.
+								' * @param colour java.awt.Color
+								' */
+								setCaretColor(colour : Lexi_v0.1.1_alpha.java.awt.Color)
+								'/** 
+								' * Set the document changed flag.
+								' * @param changed boolean
+								' */
+								setChanged(changed : JavaPrimitiveTypes.boolean)
+								setCurrentParagraph(paragraph : Lexi_v0.1.1_alpha.javax.swing.text.Element)
+								setCurrentRun(run : Lexi_v0.1.1_alpha.javax.swing.text.Element)
+								'/** 
+								' * Sets the selection colour.
+								' * @param colour java.awt.Color
+								' */
+								setSelectionColor(colour : Lexi_v0.1.1_alpha.java.awt.Color)
+								write(file : Lexi_v0.1.1_alpha.java.io.File)
+							}
+							Lexi_v0.1.1_alpha.com.jmonkey.office.lexi.support.Editor <|-- HTMLEditor
+							Lexi_v0.1.1_alpha.java.awt.event.MouseListener <|.. HTMLEditor
+							Lexi_v0.1.1_alpha.java.awt.event.KeyListener <|.. HTMLEditor
+							Lexi_v0.1.1_alpha.java.lang.String "CONTENT_TYPE" <-- HTMLEditor
+							Lexi_v0.1.1_alpha.java.lang.String "FILE_EXTENSIONS 0..*" <-- HTMLEditor
+							JavaPrimitiveTypes.boolean "_CHANGED" <-- HTMLEditor
+							Lexi_v0.1.1_alpha.javax.swing.text.Element "_CURRENT_PARAGRAPH" <-- HTMLEditor
+							Lexi_v0.1.1_alpha.javax.swing.text.Element "_CURRENT_RUN" <-- HTMLEditor
+							Lexi_v0.1.1_alpha.javax.swing.JTextPane "_EDITOR" <-- HTMLEditor
+							HTMLEditor "_PARENT" <-- E
+							E "_EVENT_LISTENER" <-- HTMLEditor
+							Lexi_v0.1.1_alpha.java.io.File "_FILE" <-- HTMLEditor
+						}
+						'/** 
+						' * Base Editor class for all editors.
+						' * @version 1.0 Revision 0
+						' * @author Brill Pappin
+						' */
+						'DP role: subject
+						abstract class Editor {
+							{const} VALID_CONTENT_TYPES: Lexi_v0.1.1_alpha.java.lang.String [*]
+							-_FILE: Lexi_v0.1.1_alpha.java.io.File
+							-_OPTION_REGISTRY: Lexi_v0.1.1_alpha.com.jmonkey.export.Registry
+							#_POPUP_LISTENER: Lexi_v0.1.1_alpha.java.awt.event.ActionListener
+							-_UNDO_MANAGER: Lexi_v0.1.1_alpha.javax.swing.undo.UndoManager
+							<<Create>> Editor()
+							activate()
+							append(file : Lexi_v0.1.1_alpha.java.io.File)
+							deactivate()
+							'/** 
+							' * @param start int
+							' * @param length int
+							' * @param wordsOnly boolean expand or contract length to match the nearest  whole word.
+							' */
+							documentSetSelection(start : JavaPrimitiveTypes.int, length : JavaPrimitiveTypes.int, wordsOnly : JavaPrimitiveTypes.boolean)
+							'/** 
+							' * Returns the content type as a MIME string.
+							' * @return java.lang.String
+							' */
+							getContentType(): Lexi_v0.1.1_alpha.java.lang.String
+							getCurrentParagraph(): Lexi_v0.1.1_alpha.javax.swing.text.Element
+							getCurrentRun(): Lexi_v0.1.1_alpha.javax.swing.text.Element
+							{const} getEditorForContentType(contentType : Lexi_v0.1.1_alpha.java.lang.String): Editor
+							{const} getEditorForExtension(extension : Lexi_v0.1.1_alpha.java.lang.String): Editor
+							getFile(): Lexi_v0.1.1_alpha.java.io.File
+							'/** 
+							' * Returns the content type as a MIME string.
+							' * @return java.lang.String
+							' */
+							getFileExtensions(): Lexi_v0.1.1_alpha.java.lang.String
+							getInputAttributes(): Lexi_v0.1.1_alpha.javax.swing.text.MutableAttributeSet
+							'/** 
+							' * Creates the PopUp Menu for our editors
+							' */
+							getPopup(): Lexi_v0.1.1_alpha.javax.swing.JPopupMenu
+							'/** 
+							' * Gets our option registry
+							' */
+							#getRegistry(): Lexi_v0.1.1_alpha.com.jmonkey.export.Registry
+							getSimpleAttributeSet(): Lexi_v0.1.1_alpha.javax.swing.text.MutableAttributeSet
+							getTextComponent(): Lexi_v0.1.1_alpha.javax.swing.JEditorPane
+							getUndoManager(): Lexi_v0.1.1_alpha.javax.swing.undo.UndoManager
+							hasBeenActivated(editor : Editor)
+							hasBeenDeactivated(editor : Editor)
+							hasFile(): JavaPrimitiveTypes.boolean
+							insert(file : Lexi_v0.1.1_alpha.java.io.File, position : JavaPrimitiveTypes.int)
+							'/** 
+							' * Has the document changed since we loaded/created it?
+							' * @return boolean
+							' */
+							isChanged(): JavaPrimitiveTypes.boolean
+							'/** 
+							' * Does the document contain any data?
+							' * @return boolean
+							' */
+							isEmpty(): JavaPrimitiveTypes.boolean
+							'/** 
+							' * Does the document contain formatting, or can we write it as plain text without  loosing anything.
+							' * @return boolean
+							' */
+							isFormatted(): JavaPrimitiveTypes.boolean
+							'/** 
+							' * Does the document represent a new file?
+							' * @return boolean
+							' */
+							isNew(): JavaPrimitiveTypes.boolean
+							read(file : Lexi_v0.1.1_alpha.java.io.File)
+							'/** 
+							' * Set the document changed flag.
+							' * @param changed boolean
+							' */
+							setChanged(changed : JavaPrimitiveTypes.boolean)
+							setCurrentParagraph(paragraph : Lexi_v0.1.1_alpha.javax.swing.text.Element)
+							setCurrentRun(run : Lexi_v0.1.1_alpha.javax.swing.text.Element)
+							setFile(file : Lexi_v0.1.1_alpha.java.io.File)
+							write(file : Lexi_v0.1.1_alpha.java.io.File)
+						}
+						Lexi_v0.1.1_alpha.javax.swing.JPanel <|-- Editor
+						Lexi_v0.1.1_alpha.java.lang.String "VALID_CONTENT_TYPES 0..*" <-- Editor
+						Lexi_v0.1.1_alpha.java.io.File "_FILE" <-- Editor
+						Lexi_v0.1.1_alpha.com.jmonkey.export.Registry "_OPTION_REGISTRY" <-- Editor
+						Lexi_v0.1.1_alpha.java.awt.event.ActionListener "_POPUP_LISTENER" <-- Editor
+						Lexi_v0.1.1_alpha.javax.swing.undo.UndoManager "_UNDO_MANAGER" <-- Editor
+						Lexi_v0.1.1_alpha.java.io.File "file" <-- FRThread
+						JavaPrimitiveTypes.int "position" <-- FRThread
+						Lexi_v0.1.1_alpha.java.io.File "file" <-- FWThread
+					}
+				}
+			}
+		}
+	}
+	package javax {
+		package swing {
+			package event {
+				'DP role: observer
+				interface DocumentListener {
+				}
+				'DP role: observer
+				interface UndoableEditListener {
+				}
+				'DP role: observer
+				interface HyperlinkListener {
+				}
+				'DP role: observer
+				interface ChangeListener {
+				}
+			}
+		}
+	}
+	package java {
+		package awt {
+			package event {
+				'DP role: observer
+				interface FocusListener {
+				}
+			}
+		}
+		package beans {
+			'DP role: observer
+			interface VetoableChangeListener {
+			}
+		}
+	}
+}
+@enduml

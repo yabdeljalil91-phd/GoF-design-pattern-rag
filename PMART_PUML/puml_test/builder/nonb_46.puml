@@ -1,0 +1,66 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'this class should diea ASAP.
+			'@author :
+			class Mime {
+				-{static} _REGISTRY: Registry
+				'Don't allow instances to be created.
+				-<<Create>> Mime()
+				'Add an association of extension to mimetype.
+				'@param contentType java.lang.String
+				'@param fileExtension java.lang.String
+				{const} addTypeForExtension(contentType : java.lang.String, fileExtension : java.lang.String)
+				-{const} ensureProperties()
+				'This method forcable tries do find out  the content type of a particular file. If unable to do so, it return content/unknown. <P> The first step is to check the extension. Other possible ways are to read the content header, and try to  determin it that way, however that is not implemented at this time.
+				{const} findContentType(file : java.io.File): java.lang.String
+				'This method forcable tries do find out  the content type of a particular extension string. If unable to do so, it return content/unknown. <P> The first step is to check the extension. Other possible ways are to read the content header, and try to  determin it that way, however that is not implemented at this time.
+				{const} findContentType(extension : java.lang.String): java.lang.String
+				'Gets our option registry
+				#{const} getRegistry(): Registry
+			}
+		}
+	}
+	java.io.File "REGISTRY_DIRECTORY" <-- Builder.nonbuilder.Registry
+	java.io.File "RESOURCE_DIRECTORY" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_BOOLEAN_SINGLE" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_BYTE_ARRAY" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_BYTE_SINGLE" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_CHAR_ARRAY" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_CHAR_SINGLE" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_CORRUPT" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_DOUBLE_SINGLE" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_FLOAT_SINGLE" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_INT_ARRAY" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_INT_SINGLE" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_LONG_SINGLE" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_NULL" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_OBJECT_ARRAY" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_OBJECT_SINGLE" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_SHORT_SINGLE" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_STRING_ARRAY" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "TYPE_STRING_SINGLE" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.int "VERSION 0..*" <-- Builder.nonbuilder.Registry
+	JavaPrimitiveTypes.boolean "_ALTERED" <-- Builder.nonbuilder.Registry.Impl
+	java.io.File "_DATA_FILE" <-- Builder.nonbuilder.Registry.Impl
+	java.util.Hashtable "_GROUPS" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_BOO" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_BYA" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_BYT" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_CHA" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_CHR" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_DBL" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_FLT" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_INA" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_INT" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_LON" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_OBA" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_OBJ" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_SHO" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_STA" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_ID_STR" <-- Builder.nonbuilder.Registry.Impl
+	java.lang.String "_PROPERTY_CHAR_ENCODING" <-- Builder.nonbuilder.Registry.Impl
+	Builder.nonbuilder.Registry "_REGISTRY" <-- Builder.nonbuilder.Mime
+}
+@enduml

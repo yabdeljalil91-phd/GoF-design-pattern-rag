@@ -1,0 +1,120 @@
+@startuml
+package "DrJava v20040326" as DrJava_v20040326 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package debug {
+							abstract class DocumentDebugAction {
+								#_className: DrJava_v20040326.java.lang.String
+								#_doc: DrJava_v20040326.edu.rice.cs.drjava.model.OpenDefinitionsDocument
+								#_file: DrJava_v20040326.java.io.File
+								<<Create>> DocumentDebugAction(manager : JPDADebugger, doc : DrJava_v20040326.edu.rice.cs.drjava.model.OpenDefinitionsDocument, offset : JavaPrimitiveTypes.int)
+								#_createRequests(refTypes : DrJava_v20040326.java.util.Vector)
+								#_initializeRequests(refTypes : DrJava_v20040326.java.util.Vector)
+								#_prepareRequest(request : T)
+								createRequests(refTypes : DrJava_v20040326.java.util.Vector): JavaPrimitiveTypes.boolean
+								getClassName(): DrJava_v20040326.java.lang.String
+								getDocument(): DrJava_v20040326.edu.rice.cs.drjava.model.OpenDefinitionsDocument
+								getFile(): DrJava_v20040326.java.io.File
+							}
+							DebugAction <|-- DocumentDebugAction
+							Debugger <|.. JPDADebugger
+							DebugModelCallback <|.. JPDADebugger
+							DocumentDebugAction <|-- Breakpoint
+							DrJava_v20040326.edu.rice.cs.drjava.model.EventNotifier <|-- DebugEventNotifier
+							DebugListener <|.. DebugEventNotifier
+							JavaPrimitiveTypes.int "ANY_LINE" <-- DebugAction
+							JavaPrimitiveTypes.int "_countFilter" <-- DebugAction
+							JavaPrimitiveTypes.boolean "_enabled" <-- DebugAction
+							JavaPrimitiveTypes.int "_lineNumber" <-- DebugAction
+							JavaPrimitiveTypes.int "STEP_INTO" <-- Debugger
+							JavaPrimitiveTypes.int "STEP_OUT" <-- Debugger
+							JavaPrimitiveTypes.int "STEP_OVER" <-- Debugger
+							DrJava_v20040326.javax.swing.text.Position "_endPos" <-- Breakpoint
+							DrJava_v20040326.javax.swing.text.Position "_startPos" <-- Breakpoint
+							DrJava_v20040326.java.lang.String "_name" <-- DebugThreadData
+							DrJava_v20040326.java.lang.String "_status" <-- DebugThreadData
+							DrJava_v20040326.com.sun.jdi.ThreadReference "_thread" <-- DebugThreadData
+							JavaPrimitiveTypes.long "_uniqueID" <-- DebugThreadData
+							JavaPrimitiveTypes.int "_line" <-- DebugStackData
+							DrJava_v20040326.java.lang.String "_method" <-- DebugStackData
+							DrJava_v20040326.java.lang.String "NOT_LOADED" <-- DebugWatchData
+							DrJava_v20040326.java.lang.String "NO_TYPE" <-- DebugWatchData
+							DrJava_v20040326.java.lang.String "NO_VALUE" <-- DebugWatchData
+							JavaPrimitiveTypes.boolean "_changed" <-- DebugWatchData
+							DrJava_v20040326.java.lang.String "_name" <-- DebugWatchData
+							JavaPrimitiveTypes.boolean "_showType" <-- DebugWatchData
+							JavaPrimitiveTypes.boolean "_showValue" <-- DebugWatchData
+							DrJava_v20040326.java.lang.String "_type" <-- DebugWatchData
+							DrJava_v20040326.java.lang.String "_value" <-- DebugWatchData
+							JavaPrimitiveTypes.int "OBJECT_COLLECTED_TRIES" <-- JPDADebugger
+							DrJava_v20040326.java.util.Vector "_breakpoints" <-- JPDADebugger
+							DrJava_v20040326.java.lang.Throwable "_eventHandlerError" <-- JPDADebugger
+							DrJava_v20040326.com.sun.jdi.request.EventRequestManager "_eventManager" <-- JPDADebugger
+							DrJava_v20040326.com.sun.jdi.ObjectReference "_interpreterJVM" <-- JPDADebugger
+							DrJava_v20040326.edu.rice.cs.util.Log "_log" <-- JPDADebugger
+							DrJava_v20040326.edu.rice.cs.drjava.model.DefaultGlobalModel "_model" <-- JPDADebugger
+							DebugEventNotifier "_notifier" <-- JPDADebugger
+							JPDADebugger "_manager" <-- PendingRequestManager
+							DrJava_v20040326.java.util.Hashtable "_pendingActions" <-- PendingRequestManager
+							PendingRequestManager "_pendingRequestManager" <-- JPDADebugger
+							DrJava_v20040326.com.sun.jdi.ThreadReference "_runningThread" <-- JPDADebugger
+							DrJava_v20040326.java.util.Vector "_data" <-- RandomAccessStack
+							RandomAccessStack "_suspendedThreads" <-- JPDADebugger
+							DrJava_v20040326.com.sun.jdi.VirtualMachine "_vm" <-- JPDADebugger
+							DrJava_v20040326.edu.rice.cs.drjava.model.GlobalModelListener "_watchListener" <-- JPDADebugger
+							DrJava_v20040326.java.util.Vector "_watches" <-- JPDADebugger
+							JavaPrimitiveTypes.boolean "printMessages" <-- JPDADebugger
+							JPDADebugger "_manager" <-- DebugAction
+							DrJava_v20040326.java.util.Vector "_requests" <-- DebugAction
+							JavaPrimitiveTypes.int "_suspendPolicy" <-- DebugAction
+							DrJava_v20040326.java.lang.String "_className" <-- DocumentDebugAction
+							DrJava_v20040326.edu.rice.cs.drjava.model.OpenDefinitionsDocument "_doc" <-- DocumentDebugAction
+							DrJava_v20040326.java.io.File "_file" <-- DocumentDebugAction
+						}
+						EventNotifier <|-- GlobalEventNotifier
+						GlobalModelListener <|.. GlobalEventNotifier
+						DrJava_v20040326.edu.rice.cs.drjava.model.repl.InteractionsListener <|-- GlobalModelListener
+						JavadocListener <|-- GlobalModelListener
+						DrJava_v20040326.edu.rice.cs.drjava.model.compiler.CompilerListener <|-- GlobalModelListener
+						DrJava_v20040326.edu.rice.cs.drjava.model.junit.JUnitListener <|-- GlobalModelListener
+						GlobalModel <|.. DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.config.OptionConstants <|.. DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.util.swing.DocumentIterator <|.. DefaultGlobalModel
+						IGetDocuments <|-- GlobalModel
+						ILoadDocuments <|-- GlobalModel
+						DrJava_v20040326.java.util.LinkedList "_listeners" <-- EventNotifier
+						DrJava_v20040326.edu.rice.cs.util.ReaderWriterLock "_lock" <-- EventNotifier
+						DrJava_v20040326.java.lang.String "SUGGESTED_DIR_NAME" <-- JavadocModel
+						DrJava_v20040326.java.lang.String "DOCUMENT_OUT_OF_SYNC_MSG" <-- DefaultGlobalModel
+						JavaPrimitiveTypes.int "WRITE_DELAY" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.compiler.CompilerListener "_clearInteractionsListener" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.compiler.CompilerModel "_compilerModel" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.repl.ConsoleDocument "_consoleDoc" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.util.text.SwingDocumentAdapter "_consoleDocAdapter" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.debug.Debugger "_debugger" <-- DefaultGlobalModel
+						DrJava_v20040326.javax.swing.DefaultListModel "_definitionsDocs" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsEditorKit "_editorKit" <-- DefaultGlobalModel
+						InputListener "_inputListener" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.util.text.SwingDocumentAdapter "_interactionsDocAdapter" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.repl.DefaultInteractionsModel "_interactionsModel" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.repl.newjvm.MainJVM "_interpreterControl" <-- DefaultGlobalModel
+						JavadocModel "_javadocModel" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.junit.DefaultJUnitModel "_junitModel" <-- DefaultGlobalModel
+						GlobalEventNotifier "_notifier" <-- DefaultGlobalModel
+						DrJava_v20040326.java.awt.print.PageFormat "_pageFormat" <-- DefaultGlobalModel
+						JavaPrimitiveTypes.boolean "_resetAfterCompile" <-- DefaultGlobalModel
+						DrJava_v20040326.java.lang.Object "_systemWriterLock" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.print.DrJavaBook "_book" <-- DefinitionsDocumentHandler
+						DrJava_v20040326.java.util.Vector "_breakpoints" <-- DefinitionsDocumentHandler
+						DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsDocument "_doc" <-- DefinitionsDocumentHandler
+						DrJava_v20040326.java.io.File "_file" <-- TrivialFSS
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

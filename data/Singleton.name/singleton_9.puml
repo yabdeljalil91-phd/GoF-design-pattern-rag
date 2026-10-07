@@ -1,0 +1,69 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package name {
+			'Creates a panel for the selection of packages to view.
+			'@author     Chris Seguin
+			'@created    August 10, 1999
+			class PackageSelectorPanel {
+				-buttons: ButtonPanel
+				-{static} mainPanel: PackageSelectorPanel
+				#rootDir: java.lang.String
+				-viewList: java.util.HashMap
+				'Constructor for the PackageSelectorPanel object
+				'@param root  The root directory
+				#<<Create>> PackageSelectorPanel(root : java.lang.String)
+				'Handle the button press events
+				'@param evt  the event
+				actionPerformed(evt : java.awt.event.ActionEvent)
+				'Add package to central store
+				'@param summary  the summary we are adding
+				'@param view     the associated view
+				#addPackage(summary : PackageSummary, view : UMLFrame)
+				'Creates the frame
+				-createFrame()
+				'Creates a new view
+				'@param packageSummary  The packages summary
+				-createNewView(packageSummary : PackageSummary)
+				'Get the main panel
+				'@param directory  Description of Parameter
+				'@return            The MainPanel value
+				{static} getMainPanel(directory : java.lang.String): PackageSelectorPanel
+				'Get the package from the central store
+				'@param summary  The package summary that we are looking for
+				'@return          The UML package
+				#getPackage(summary : PackageSummary): UMLFrame
+				'Hide the summary
+				'@param packageSummary  the summary to hide
+				-hideSummary(packageSummary : PackageSummary)
+				'Loads the packages into the listbox and refreshes the UML diagrams
+				loadPackages()
+				'Load the summaries
+				loadSummaries()
+				'Main program for testing purposes
+				'@param args  The command line arguments
+				{static} main(args : java.lang.String)
+				'Reloads the package information
+				reload()
+				'Saves the diagrams
+				'@exception IOException  Description of Exception
+				save()
+				'Set the root directory
+				'@param root  the new root directory
+				#setRootDirectory(root : java.lang.String)
+				'Shows the summary
+				'@param packageSummary  the summary to show
+				-showSummary(packageSummary : PackageSummary)
+			}
+		}
+	}
+	java.awt.event.ActionListener <|.. Singleton.name.PackageSelectorPanel
+	Singleton.name.PackageSelectorArea <|-- Singleton.name.PackageSelectorPanel
+	Singleton.name.Saveable <|-- Singleton.name.PackageSelectorPanel
+	Singleton.name.Reloader <|-- Singleton.name.PackageSelectorPanel
+	java.awt.event.ActionListener "listener" <-- Singleton.name.PackageSelectorPanel.ButtonPanel
+	Singleton.name.PackageSelectorPanel.ButtonPanel "buttons" <-- Singleton.name.PackageSelectorPanel
+	java.lang.String "rootDir" <-- Singleton.name.PackageSelectorPanel
+	java.util.HashMap "viewList" <-- Singleton.name.PackageSelectorPanel
+}
+@enduml

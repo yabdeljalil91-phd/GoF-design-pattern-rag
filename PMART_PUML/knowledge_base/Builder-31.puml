@@ -1,0 +1,568 @@
+@startuml
+'Design pattern Builder
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+	package org {
+		package acm {
+			package seguin {
+				package refactor {
+					package method {
+						'/** 
+						' * Refactoring class that extracts a portion of the method and creates a new method with what the user has selected.
+						' * @author    Chris Seguin
+						' */
+						'DP role: director
+						class ExtractMethodRefactoring {
+							{const} PACKAGE: JavaPrimitiveTypes.int = 1
+							{const} PRIVATE: JavaPrimitiveTypes.int = 0
+							{const} PROTECTED: JavaPrimitiveTypes.int = 2
+							{const} PUBLIC: JavaPrimitiveTypes.int = 3
+							-arguments: JRefactory_v2.6.24.java.lang.Object [*]
+							-empf: EMParameterFinder
+							-extractedMethodFileSummary: JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary
+							-fullFile: JRefactory_v2.6.24.java.lang.StringBuffer
+							-key: JRefactory_v2.6.24.org.acm.seguin.parser.Node
+							-mainFileSummary: JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary
+							-methodName: JRefactory_v2.6.24.java.lang.String
+							-prot: JavaPrimitiveTypes.int
+							-returnType: JRefactory_v2.6.24.java.lang.Object
+							-root: JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode
+							-selection: JRefactory_v2.6.24.java.lang.String
+							-signature: JRefactory_v2.6.24.java.lang.StringBuffer
+							'/** 
+							' * Constructor for the ExtractMethodRefactoring object
+							' */
+							#<<Create>> ExtractMethodRefactoring()
+							'/** 
+							' * Adds the return at the end of the method if one is necessary
+							' * @param methodDecl  The feature to be added to the Return attribute
+							' * @return             Description of the Returned Value
+							' */
+							-addReturn(methodDecl : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode): JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode
+							'/** 
+							' * Finds the parameters
+							' * @param result  the location where the section was found
+							' * @return         Description of the Returned Value
+							' */
+							-findParameters(result : JRefactory_v2.6.24.org.acm.seguin.parser.query.Found): EMParameterFinder
+							'/** 
+							' * Description of the Method
+							' * @param node  Description of Parameter
+							' * @return       Description of the Returned Value
+							' */
+							-findVariablesUsed(node : JRefactory_v2.6.24.org.acm.seguin.parser.Node): JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary
+							'/** 
+							' * Gets the Description attribute of the ExtractMethodRefactoring object
+							' * @return    The Description value
+							' */
+							getDescription(): JRefactory_v2.6.24.java.lang.String
+							'/** 
+							' * Gets the FileRoot attribute of the ExtractMethodRefactoring object
+							' * @return    The FileRoot value
+							' */
+							-getFileRoot(): JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode
+							'/** 
+							' * Gets the FullFile attribute of the ExtractMethodRefactoring object
+							' * @return    The FullFile value
+							' */
+							getFullFile(): JRefactory_v2.6.24.java.lang.String
+							'/** 
+							' * Gets the ID attribute of the ExtractMethodRefactoring object
+							' * @return    The ID value
+							' */
+							getID(): JavaPrimitiveTypes.int
+							'/** 
+							' * Gets the MethodTree attribute of the ExtractMethodRefactoring object
+							' * @return    The MethodTree value
+							' */
+							-getMethodTree(): JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode
+							'/** 
+							' * Gets the Parameters attribute of the ExtractMethodRefactoring object
+							' * @return                           The Parameters value
+							' * @exception RefactoringException  Description of Exception
+							' */
+							getParameters(): JRefactory_v2.6.24.org.acm.seguin.summary.VariableSummary
+							'/** 
+							' * Returns the protection
+							' * @return    The Protection value
+							' */
+							-getProtection(): JRefactory_v2.6.24.java.lang.String
+							'/** 
+							' * Gets the return type for the extracted method
+							' * @return    The return type
+							' */
+							getReturnType(): JRefactory_v2.6.24.java.lang.Object
+							'/** 
+							' * Returns the return type
+							' * @return    The ReturnType value
+							' */
+							-getReturnTypeString(): JRefactory_v2.6.24.java.lang.String
+							'/** 
+							' * Gets the possible return types
+							' * @return                           The return types
+							' * @exception RefactoringException  problem in loading these
+							' */
+							getReturnTypes(): JRefactory_v2.6.24.java.lang.Object
+							'/** 
+							' * Gets the Signature attribute of the ExtractMethodRefactoring object
+							' * @return    The Signature value
+							' */
+							getSignature(): JRefactory_v2.6.24.java.lang.String
+							'/** 
+							' * Inserts the method at the next class found when heading up from the first place where we replaced this value
+							' * @param currentNode  where this was found
+							' * @param methodTree   the method to be inserted
+							' */
+							-insertAtNextClass(currentNode : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode, methodTree : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode)
+							'/** 
+							' * Gets the Statement attribute of the ExtractMethodRefactoring object
+							' * @return    The Statement value
+							' */
+							isStatement(): JavaPrimitiveTypes.boolean
+							'/** 
+							' * Creates a string with the new method in it
+							' * @return    the new method
+							' */
+							-makeMethod(): JRefactory_v2.6.24.java.lang.String
+							'/** 
+							' * These items must be true before the refactoring will work
+							' * @exception RefactoringException  the problem that arose
+							' */
+							#preconditions()
+							'/** 
+							' * This allows us to scan for the parameters first
+							' * @param srch  Description of Parameter
+							' * @return       Description of the Returned Value
+							' */
+							-prescan(srch : JRefactory_v2.6.24.org.acm.seguin.parser.query.Search): EMParameterFinder
+							'/** 
+							' * Prints the file using the pretty printer option
+							' * @param root  Description of Parameter
+							' */
+							-printFile(root : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode)
+							'/** 
+							' * Replace all instances of code with a selected value
+							' * @param root  Description of Parameter
+							' */
+							-replaceAllInstances(root : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode)
+							'/** 
+							' * Replaces the extracted method
+							' * @param result   where we found the portion to replace
+							' * @param builder  build a method invocation
+							' */
+							-replaceExtractedMethod(result : JRefactory_v2.6.24.org.acm.seguin.parser.query.Found, builder : EMBuilder)
+							'/** 
+							' * Sets the FullFile attribute of the ExtractMethodRefactoring object
+							' * @param value  The new FullFile value
+							' */
+							setFullFile(value : JRefactory_v2.6.24.java.lang.String)
+							'/** 
+							' * Sets the FullFile attribute of the ExtractMethodRefactoring object
+							' * @param value  The new FullFile value
+							' */
+							setFullFile(value : JRefactory_v2.6.24.java.lang.StringBuffer)
+							'/** 
+							' * Sets the MethodName attribute of the ExtractMethodRefactoring object
+							' * @param value  The new MethodName value
+							' */
+							setMethodName(value : JRefactory_v2.6.24.java.lang.String)
+							'/** 
+							' * Sets the order of the parameters
+							' * @param data  The new ParameterOrder value
+							' */
+							setParameterOrder(data : JRefactory_v2.6.24.java.lang.Object)
+							'/** 
+							' * Sets the Protection attribute of the ExtractMethodRefactoring object
+							' * @param value  The new Protection value
+							' */
+							setProtection(value : JavaPrimitiveTypes.int)
+							'/** 
+							' * Sets the return type for the extracted method
+							' * @param obj  The new ReturnType value
+							' */
+							setReturnType(obj : JRefactory_v2.6.24.java.lang.Object)
+							'/** 
+							' * Sets the Selection attribute of the ExtractMethodRefactoring object
+							' * @param value  The new Selection value
+							' */
+							setSelection(value : JRefactory_v2.6.24.java.lang.String)
+							'/** 
+							' * Actually make the transformation
+							' */
+							#transform()
+							'/** 
+							' * Adds the static and synchronized attributes to the extracted method
+							' * @param currentNode  where the body of the extracted method was found
+							' * @param methodTree   the method we are extracting
+							' */
+							-updateModifiers(currentNode : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode, methodTree : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode)
+						}
+						'DP role: concreteBuilder
+						class EMBuilder {
+							-isStatement: JavaPrimitiveTypes.boolean
+							-localVariableNeeded: JavaPrimitiveTypes.boolean
+							-methodName: JRefactory_v2.6.24.java.lang.String
+							-parameters: JRefactory_v2.6.24.java.util.LinkedList
+							-returnSummary: JRefactory_v2.6.24.org.acm.seguin.summary.VariableSummary
+							<<Create>> EMBuilder()
+							build(): JRefactory_v2.6.24.org.acm.seguin.parser.Node
+							-buildAssignment(stateExpress : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTStatementExpression)
+							-buildMethodInvocation(stateExpress : JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode, index : JavaPrimitiveTypes.int): JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTPrimaryExpression
+							-buildWithLocal(blockStatement : JRefactory_v2.6.24.org.acm.seguin.parser.ast.ASTBlockStatement)
+							setLocalVariableNeeded(value : JavaPrimitiveTypes.boolean)
+							setMethodName(value : JRefactory_v2.6.24.java.lang.String)
+							setParameters(list : JRefactory_v2.6.24.java.util.LinkedList)
+							setReturnSummary(value : JRefactory_v2.6.24.org.acm.seguin.summary.VariableSummary)
+							setStatement(value : JavaPrimitiveTypes.boolean)
+						}
+						JRefactory_v2.6.24.org.acm.seguin.refactor.Refactoring <|-- ExtractMethodRefactoring
+						JavaPrimitiveTypes.int "PACKAGE" <-- ExtractMethodRefactoring
+						JavaPrimitiveTypes.int "PRIVATE" <-- ExtractMethodRefactoring
+						JavaPrimitiveTypes.int "PROTECTED" <-- ExtractMethodRefactoring
+						JavaPrimitiveTypes.int "PUBLIC" <-- ExtractMethodRefactoring
+						JRefactory_v2.6.24.java.lang.Object "arguments 0..*" <-- ExtractMethodRefactoring
+						JRefactory_v2.6.24.java.util.LinkedList "cantBe" <-- EMParameterFinder
+						JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary "extract" <-- EMParameterFinder
+						JRefactory_v2.6.24.org.acm.seguin.parser.Node "found" <-- EMParameterFinder
+						JRefactory_v2.6.24.java.util.LinkedList "list" <-- EMParameterFinder
+						JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary "main" <-- EMParameterFinder
+						JRefactory_v2.6.24.java.util.LinkedList "parameters" <-- EMParameterFinder
+						JRefactory_v2.6.24.java.util.LinkedList "returnTypes" <-- EMParameterFinder
+						EMParameterFinder "empf" <-- ExtractMethodRefactoring
+						JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary "extractedMethodFileSummary" <-- ExtractMethodRefactoring
+						JRefactory_v2.6.24.java.lang.StringBuffer "fullFile" <-- ExtractMethodRefactoring
+						JRefactory_v2.6.24.org.acm.seguin.parser.Node "key" <-- ExtractMethodRefactoring
+						JRefactory_v2.6.24.org.acm.seguin.summary.FileSummary "mainFileSummary" <-- ExtractMethodRefactoring
+						JRefactory_v2.6.24.java.lang.String "methodName" <-- ExtractMethodRefactoring
+						JavaPrimitiveTypes.int "prot" <-- ExtractMethodRefactoring
+						JRefactory_v2.6.24.java.lang.Object "returnType" <-- ExtractMethodRefactoring
+						JRefactory_v2.6.24.org.acm.seguin.parser.ast.SimpleNode "root" <-- ExtractMethodRefactoring
+						JRefactory_v2.6.24.java.lang.String "selection" <-- ExtractMethodRefactoring
+						JRefactory_v2.6.24.java.lang.StringBuffer "signature" <-- ExtractMethodRefactoring
+						JavaPrimitiveTypes.boolean "isStatement" <-- EMBuilder
+						JavaPrimitiveTypes.boolean "localVariableNeeded" <-- EMBuilder
+						JRefactory_v2.6.24.java.lang.String "methodName" <-- EMBuilder
+						JRefactory_v2.6.24.java.util.LinkedList "parameters" <-- EMBuilder
+						JRefactory_v2.6.24.org.acm.seguin.summary.VariableSummary "returnSummary" <-- EMBuilder
+					}
+					JavaPrimitiveTypes.int "ADD_CHILD" <-- Refactoring
+					JavaPrimitiveTypes.int "ADD_PARENT" <-- Refactoring
+					JavaPrimitiveTypes.int "EXTRACT_INTERFACE" <-- Refactoring
+					JavaPrimitiveTypes.int "EXTRACT_METHOD" <-- Refactoring
+					JavaPrimitiveTypes.int "MOVE_METHOD" <-- Refactoring
+					JavaPrimitiveTypes.int "PUSH_DOWN_FIELD" <-- Refactoring
+					JavaPrimitiveTypes.int "PUSH_DOWN_METHOD" <-- Refactoring
+					JavaPrimitiveTypes.int "PUSH_UP_ABSTRACT_METHOD" <-- Refactoring
+					JavaPrimitiveTypes.int "PUSH_UP_FIELD" <-- Refactoring
+					JavaPrimitiveTypes.int "PUSH_UP_METHOD" <-- Refactoring
+					JavaPrimitiveTypes.int "REMOVE_CLASS" <-- Refactoring
+					JavaPrimitiveTypes.int "RENAME_CLASS" <-- Refactoring
+					JavaPrimitiveTypes.int "RENAME_FIELD" <-- Refactoring
+					JavaPrimitiveTypes.int "RENAME_METHOD" <-- Refactoring
+					JavaPrimitiveTypes.int "RENAME_PARAMETER" <-- Refactoring
+					JavaPrimitiveTypes.int "REPACKAGE" <-- Refactoring
+					JRefactory_v2.6.24.java.util.ArrayList "transforms" <-- ComplexTransform
+					JRefactory_v2.6.24.org.acm.seguin.refactor.undo.UndoAction "undo" <-- ComplexTransform
+					ComplexTransform "complex" <-- Refactoring
+				}
+				package parser {
+					'DP role: product
+					interface Node {
+						jjtAccept(visitor : JavaParserVisitor, data : JRefactory_v2.6.24.java.lang.Object): JRefactory_v2.6.24.java.lang.Object
+						jjtAddChild(n : Node, i : JavaPrimitiveTypes.int)
+						jjtClose()
+						jjtDeleteChild(i : JavaPrimitiveTypes.int)
+						jjtGetChild(i : JavaPrimitiveTypes.int): Node
+						jjtGetNumChildren(): JavaPrimitiveTypes.int
+						jjtGetParent(): Node
+						jjtInsertChild(n : Node, i : JavaPrimitiveTypes.int)
+						jjtOpen()
+						jjtSetParent(n : Node)
+					}
+					JavaParserTreeConstants <|.. JavaParser
+					JavaParserConstants <|.. JavaParser
+					JavaParserConstants <|.. JavaParserTokenManager
+					JRefactory_v2.6.24.java.lang.Exception <|-- ParseException
+					JavaPrimitiveTypes.int "JJTADDITIVEEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTALLOCATIONEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTANDEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTARGUMENTLIST" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTARGUMENTS" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTARRAYDIMSANDINITS" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTARRAYINITIALIZER" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTASSIGNMENTOPERATOR" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTBLOCK" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTBLOCKSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTBOOLEANLITERAL" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTBREAKSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCASTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCASTLOOKAHEAD" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCLASSBODY" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCLASSBODYDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCLASSDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCOMPILATIONUNIT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONDITIONALANDEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONDITIONALEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONDITIONALOREXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONSTRUCTORDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTCONTINUESTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTDOSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEMPTYSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEQUALITYEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEXCLUSIVEOREXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEXPLICITCONSTRUCTORINVOCATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFIELDDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORINIT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORMALPARAMETER" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORMALPARAMETERS" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTFORUPDATE" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTIFSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTIMPORTDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINCLUSIVEOREXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINITIALIZER" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINSTANCEOFEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINTERFACEBODY" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINTERFACEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTINTERFACEMEMBERDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTLABELEDSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTLITERAL" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTLOCALVARIABLEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTMETHODDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTMETHODDECLARATIONLOOKAHEAD" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTMETHODDECLARATOR" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTMULTIPLICATIVEEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNAME" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNAMELIST" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNESTEDCLASSDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNESTEDINTERFACEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTNULLLITERAL" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPACKAGEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPOSTFIXEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPREDECREMENTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPREINCREMENTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPRIMARYEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPRIMARYPREFIX" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPRIMARYSUFFIX" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTPRIMITIVETYPE" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTRELATIONALEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTRESULTTYPE" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTRETURNSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSHIFTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSTATEMENTEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSTATEMENTEXPRESSIONLIST" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSWITCHLABEL" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSWITCHSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTSYNCHRONIZEDSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTTHROWSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTTRYSTATEMENT" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTTYPE" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTTYPEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTUNARYEXPRESSION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTUNARYEXPRESSIONNOTPLUSMINUS" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTUNMODIFIEDCLASSDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTUNMODIFIEDINTERFACEDECLARATION" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTVARIABLEDECLARATOR" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTVARIABLEDECLARATORID" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTVARIABLEINITIALIZER" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "JJTWHILESTATEMENT" <-- JavaParserTreeConstants
+					JRefactory_v2.6.24.java.lang.String "jjtNodeName 0..*" <-- JavaParserTreeConstants
+					JavaPrimitiveTypes.int "ABSTRACT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "ANDASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "ASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BANG" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BIT_AND" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BIT_OR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BOOLEAN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BREAK" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "BYTE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CASE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CATCH" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CATEGORY_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CHAR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CHARACTER_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CLASS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "COLON" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "COMMA" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CONST" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "CONTINUE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DECIMAL_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DECR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DEFAULT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DIGIT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DO" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DOT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "DOUBLE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "ELSE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "EOF" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "EQ" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "EXPONENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "EXTENDS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FALSE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FINAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FINALLY" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FLOAT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FLOATING_POINT_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FOR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "FORMAL_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "GE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "GOTO" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "GT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "HEX_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "HOOK" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IDENTIFIER" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IF" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IMPLEMENTS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IMPORT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INCR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INSTANCEOF" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INTEGER_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "INTERFACE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IN_CATEGORY_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IN_FORMAL_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IN_MULTI_LINE_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "IN_SINGLE_LINE_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LBRACE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LBRACKET" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LETTER" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LONG" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LPAREN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LSHIFT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LSHIFTASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "LT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "MINUS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "MINUSASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "MULTI_LINE_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "NATIVE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "NE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "NEW" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "NULL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "OCTAL_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "ORASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PACKAGE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PLUS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PLUSASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PRIVATE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PROTECTED" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "PUBLIC" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RBRACE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RBRACKET" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "REM" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "REMASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RETURN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RPAREN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RSIGNEDSHIFT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RSIGNEDSHIFTASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RUNSIGNEDSHIFT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "RUNSIGNEDSHIFTASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SC_AND" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SC_OR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SEMICOLON" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SHORT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SINGLE_LINE_COMMENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SLASH" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SLASHASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STAR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STARASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STATIC" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STRICTFP" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "STRING_LITERAL" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SUPER" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SWITCH" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "SYNCHRONIZED" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "THIS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "THROW" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "THROWS" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "TILDE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "TRANSIENT" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "TRUE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "TRY" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "VOID" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "VOLATILE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "WHILE" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "XOR" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "XORASSIGN" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "_DEFAULT" <-- JavaParserConstants
+					JRefactory_v2.6.24.java.lang.String "tokenImage 0..*" <-- JavaParserConstants
+					JavaPrimitiveTypes.int "arg" <-- JJCalls
+					JavaPrimitiveTypes.int "beginColumn" <-- Token
+					JavaPrimitiveTypes.int "beginLine" <-- Token
+					JavaPrimitiveTypes.int "endColumn" <-- Token
+					JavaPrimitiveTypes.int "endLine" <-- Token
+					JRefactory_v2.6.24.java.lang.String "image" <-- Token
+					JavaPrimitiveTypes.int "kind" <-- Token
+					Token "first" <-- JJCalls
+					JavaPrimitiveTypes.int "gen" <-- JJCalls
+					JJCalls "jj_2_rtns 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_endpos" <-- JavaParser
+					JRefactory_v2.6.24.java.util.Vector "jj_expentries" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_expentry 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_gc" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_gen" <-- JavaParser
+					JavaPrimitiveTypes.boolean "jj_initialized_once" <-- JavaParser
+					JRefactory_v2.6.24.org.acm.seguin.parser.io.CharStream "jj_input_stream" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_kind" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1_0 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1_1 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1_2 0..*" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_la1_3 0..*" <-- JavaParser
+					Token "jj_lastpos" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_lasttokens 0..*" <-- JavaParser
+					Token "jj_nt" <-- JavaParser
+					JavaPrimitiveTypes.int "jj_ntk" <-- JavaParser
+					JavaPrimitiveTypes.boolean "jj_rescan" <-- JavaParser
+					Token "jj_scanpos" <-- JavaParser
+					JavaPrimitiveTypes.boolean "jj_semLA" <-- JavaParser
+					JRefactory_v2.6.24.java.util.Stack "marks" <-- JJTJavaParserState
+					JavaPrimitiveTypes.int "mk" <-- JJTJavaParserState
+					JavaPrimitiveTypes.boolean "node_created" <-- JJTJavaParserState
+					JRefactory_v2.6.24.java.util.Stack "nodes" <-- JJTJavaParserState
+					JavaPrimitiveTypes.int "sp" <-- JJTJavaParserState
+					JJTJavaParserState "jjtree" <-- JavaParser
+					JavaPrimitiveTypes.boolean "lookingAhead" <-- JavaParser
+					Token "token" <-- JavaParser
+					JavaPrimitiveTypes.char "curChar" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "curLexState" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "defaultLexState" <-- JavaParserTokenManager
+					JRefactory_v2.6.24.java.lang.StringBuffer "image" <-- JavaParserTokenManager
+					JRefactory_v2.6.24.org.acm.seguin.parser.io.CharStream "input_stream" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec0 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec1 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec3 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec4 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec5 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec6 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjbitVec7 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjimageLen" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjmatchedKind" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjmatchedPos" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjnewLexState 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjnewStateCnt" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjnextStates 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjround" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjrounds 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "jjstateSet 0..*" <-- JavaParserTokenManager
+					JRefactory_v2.6.24.java.lang.String "jjstrLiteralImages 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjtoMore 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjtoSkip 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjtoSpecial 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.long "jjtoToken 0..*" <-- JavaParserTokenManager
+					JavaPrimitiveTypes.int "lengthOfMatch" <-- JavaParserTokenManager
+					JRefactory_v2.6.24.java.lang.String "lexStateNames 0..*" <-- JavaParserTokenManager
+					JavaParserTokenManager "token_source" <-- JavaParser
+					Token "currentToken" <-- ParseException
+					JRefactory_v2.6.24.java.lang.String "eol" <-- ParseException
+					JavaPrimitiveTypes.int "expectedTokenSequences 0..*" <-- ParseException
+					JavaPrimitiveTypes.boolean "specialConstructor" <-- ParseException
+					JRefactory_v2.6.24.java.lang.String "tokenImage 0..*" <-- ParseException
+				}
+			}
+		}
+	}
+}
+@enduml

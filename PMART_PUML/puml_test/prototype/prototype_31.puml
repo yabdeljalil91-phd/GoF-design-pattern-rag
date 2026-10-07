@@ -1,0 +1,40 @@
+@startuml
+package dpd_jdt {
+	package Loader {
+		package name {
+			'A handle to connect figures. The connection object to be created is specified by a Loader. <hr> <b>Design Patterns</b><P> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a href=../pattlets/sld029.htm>Loader</a></b><br> ConnectionHandle creates the connection by cloning a Loader. <hr>
+			'@see ConnectionFigure
+			'@see Object#clone
+			class ConnectionHandle {
+				-fConnection: ConnectionFigure
+				-fLoader: ConnectionFigure
+				-fTarget: Figure
+				'Constructs a handle with the given owner, locator, and connection Loader
+				<<Create>> ConnectionHandle(owner : Figure, l : Locator, Loader : ConnectionFigure)
+				'Creates the ConnectionFigure. By default the figure Loader is cloned.
+				#createConnection(): ConnectionFigure
+				'Draws the connection handle, by default the outline of a blue circle.
+				draw(g : java.awt.Graphics)
+				-findConnectableFigure(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : Drawing): Figure
+				'Finds a connection end figure.
+				#findConnectionTarget(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, drawing : Drawing): Connector
+				#findConnector(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, f : Figure): Connector
+				'Connects the figures if the mouse is released over another figure.
+				invokeEnd(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : DrawingView)
+				'Creates the connection
+				invokeStart(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, view : DrawingView)
+				'Tracks the connection.
+				invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : DrawingView)
+				-startConnector(): Connector
+			}
+		}
+	}
+	Loader.name.LocatorHandle <|-- Loader.name.ConnectionHandle
+	Loader.name.Figure <|-- Loader.name.ConnectionFigure
+	java.lang.Cloneable <|-- Loader.name.Figure
+	java.io.Serializable <|-- Loader.name.Figure
+	Loader.name.ConnectionFigure "fConnection" <-- Loader.name.ConnectionHandle
+	Loader.name.ConnectionFigure "fLoader" <-- Loader.name.ConnectionHandle
+	Loader.name.Figure "fTarget" <-- Loader.name.ConnectionHandle
+}
+@enduml

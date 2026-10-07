@@ -1,0 +1,53 @@
+@startuml
+package dpd_jdt {
+	package context {
+		package name {
+			'Builds the invocation of the method that is extracted for insertion into the place where the method was extracted
+			'@author    Chris Seguin
+			class EMcontext {
+				-isStatement: JavaPrimitiveTypes.boolean
+				-localVariableNeeded: JavaPrimitiveTypes.boolean
+				-methodName: java.lang.String
+				-parameters: java.util.LinkedList
+				-returnSummary: VariableSummary
+				'Constructor for the EMcontext object
+				<<Create>> EMcontext()
+				'Builds the statement or assignment or local variable declaration
+				'@return    The resulting value
+				build(): Node
+				'Builds the assignment
+				'@param stateExpress  Description of Parameter
+				-buildAssignment(stateExpress : ASTStatementExpression)
+				'Builds the method invocation
+				'@param stateExpress  Description of Parameter
+				'@param index         Description of Parameter
+				'@return               Description of the Returned Value
+				-buildMethodInvocation(stateExpress : SimpleNode, index : JavaPrimitiveTypes.int): ASTPrimaryExpression
+				'Builds a local variable declaration
+				'@param blockStatement  the block statement we are inserting into
+				-buildWithLocal(blockStatement : ASTBlockStatement)
+				'Sets the LocalVariableNeeded attribute of the EMcontext object
+				'@param value  The new LocalVariableNeeded value
+				setLocalVariableNeeded(value : JavaPrimitiveTypes.boolean)
+				'Sets the MethodName attribute of the EMcontext object
+				'@param value  The new MethodName value
+				setMethodName(value : java.lang.String)
+				'Sets the Parameters attribute of the EMcontext object
+				'@param list  The new Parameters value
+				setParameters(list : java.util.LinkedList)
+				'Sets the ReturnName attribute of the EMcontext object
+				'@param name  The new ReturnName value
+				setReturnSummary(value : VariableSummary)
+				'Sets the Statement attribute of the EMcontext object
+				'@param value  The new Statement value
+				setStatement(value : JavaPrimitiveTypes.boolean)
+			}
+		}
+	}
+	JavaPrimitiveTypes.boolean "isStatement" <-- context.name.EMcontext
+	JavaPrimitiveTypes.boolean "localVariableNeeded" <-- context.name.EMcontext
+	java.lang.String "methodName" <-- context.name.EMcontext
+	java.util.LinkedList "parameters" <-- context.name.EMcontext
+	context.name.VariableSummary "returnSummary" <-- context.name.EMcontext
+}
+@enduml

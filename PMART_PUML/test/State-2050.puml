@@ -1,0 +1,110 @@
+@startuml
+package "DrJava v20040326" as DrJava_v20040326 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package definitions {
+							package reducedmodel {
+								abstract class ReducedToken {
+									-_state: ReducedModelState
+									<<Create>> ReducedToken(state : ReducedModelState)
+									flip()
+									getHighlightState(): JavaPrimitiveTypes.int
+									getSize(): JavaPrimitiveTypes.int
+									getState(): ReducedModelState
+									getType(): DrJava_v20040326.java.lang.String
+									grow(delta : JavaPrimitiveTypes.int)
+									isBlockCommentEnd(): JavaPrimitiveTypes.boolean
+									isBlockCommentStart(): JavaPrimitiveTypes.boolean
+									isClosed(): JavaPrimitiveTypes.boolean
+									isClosedBrace(): JavaPrimitiveTypes.boolean
+									isCommented(): JavaPrimitiveTypes.boolean
+									isDoubleEscape(): JavaPrimitiveTypes.boolean
+									isDoubleEscapeSequence(): JavaPrimitiveTypes.boolean
+									isDoubleQuote(): JavaPrimitiveTypes.boolean
+									isEscapedDoubleQuote(): JavaPrimitiveTypes.boolean
+									isEscapedSingleQuote(): JavaPrimitiveTypes.boolean
+									isGap(): JavaPrimitiveTypes.boolean
+									isInBlockComment(): JavaPrimitiveTypes.boolean
+									isInLineComment(): JavaPrimitiveTypes.boolean
+									isLineComment(): JavaPrimitiveTypes.boolean
+									isMatch(other : ReducedToken): JavaPrimitiveTypes.boolean
+									isMultipleCharBrace(): JavaPrimitiveTypes.boolean
+									isNewline(): JavaPrimitiveTypes.boolean
+									isOpen(): JavaPrimitiveTypes.boolean
+									isOpenBrace(): JavaPrimitiveTypes.boolean
+									isQuoted(): JavaPrimitiveTypes.boolean
+									isShadowed(): JavaPrimitiveTypes.boolean
+									isSingleQuote(): JavaPrimitiveTypes.boolean
+									isSlash(): JavaPrimitiveTypes.boolean
+									isStar(): JavaPrimitiveTypes.boolean
+									setState(state : ReducedModelState)
+									setType(type : DrJava_v20040326.java.lang.String)
+									shrink(delta : JavaPrimitiveTypes.int)
+								}
+								class Free {
+									{const} ONLY: Free
+									-<<Create>> Free()
+									update(copyCursor : Iterator): ReducedModelState
+								}
+								abstract class ReducedModelState {
+									<<Create>> ReducedModelState()
+									_combineCurrentAndNextIfEscape(copyCursor : Iterator): JavaPrimitiveTypes.boolean
+									_combineCurrentAndNextIfFind(first : DrJava_v20040326.java.lang.String, second : DrJava_v20040326.java.lang.String, copyCursor : Iterator): JavaPrimitiveTypes.boolean
+									update(copyCursor : Iterator): ReducedModelState
+								}
+								class InsideBlockComment {
+									{const} ONLY: InsideBlockComment
+									-<<Create>> InsideBlockComment()
+									update(copyCursor : Iterator): ReducedModelState
+								}
+								class InsideDoubleQuote {
+									{const} ONLY: InsideDoubleQuote
+									-<<Create>> InsideDoubleQuote()
+									update(copyCursor : Iterator): ReducedModelState
+								}
+								class InsideLineComment {
+									{const} ONLY: InsideLineComment
+									-<<Create>> InsideLineComment()
+									update(copyCursor : Iterator): ReducedModelState
+								}
+								class InsideSingleQuote {
+									{const} ONLY: InsideSingleQuote
+									-<<Create>> InsideSingleQuote()
+									update(copyCursor : Iterator): ReducedModelState
+								}
+								class Stutter {
+									{const} ONLY: Stutter
+									-<<Create>> Stutter()
+									update(copyCursor : Iterator): ReducedModelState
+								}
+								ReducedModelStates <|.. ReducedToken
+								ReducedModelState <|-- Free
+								ReducedModelStates <|.. ReducedModelState
+								ReducedModelState <|-- InsideBlockComment
+								ReducedModelState <|-- InsideDoubleQuote
+								ReducedModelState <|-- InsideLineComment
+								ReducedModelState <|-- InsideSingleQuote
+								ReducedModelState <|-- Stutter
+								ReducedToken "_item" <-- Node
+								Node "_point" <-- Iterator
+								JavaPrimitiveTypes.int "_pos" <-- Iterator
+								JavaPrimitiveTypes.int "_offset" <-- Iterator
+								Free "FREE" <-- ReducedModelStates
+								InsideBlockComment "INSIDE_BLOCK_COMMENT" <-- ReducedModelStates
+								InsideDoubleQuote "INSIDE_DOUBLE_QUOTE" <-- ReducedModelStates
+								InsideLineComment "INSIDE_LINE_COMMENT" <-- ReducedModelStates
+								InsideSingleQuote "INSIDE_SINGLE_QUOTE" <-- ReducedModelStates
+								Stutter "STUTTER" <-- ReducedModelStates
+								ReducedModelState "_state" <-- ReducedToken
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

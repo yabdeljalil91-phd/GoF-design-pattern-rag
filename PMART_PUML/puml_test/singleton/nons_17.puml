@@ -1,0 +1,29 @@
+@startuml
+package dpd_jdt {
+	package Holder {
+		package nonHolder {
+			'@class BuildAction
+			'@date 08-20-2001
+			'@author Eric Crahen
+			'@version 1.0
+			class BuildAction {
+				#container: DiagramContainer
+				<<Create>> BuildAction(container : DiagramContainer)
+				actionPerformed(e : java.awt.event.ActionEvent)
+			}
+		}
+	}
+	javax.swing.AbstractAction <|-- Holder.nonHolder.BuildAction
+	javax.swing.AbstractAction <|-- Holder.nonHolder.FileAction
+	Holder.nonHolder.DiagramContainer "container" <-- Holder.nonHolder.BuildAction
+	java.io.File "lastDirectory" <-- Holder.nonHolder.FileAction.SmartChooser
+	Holder.nonHolder.FileAction.SmartChooser "chooser" <-- Holder.nonHolder.FileAction
+	java.lang.String "description" <-- Holder.nonHolder.FileAction.SimpleFilter
+	java.lang.String "extensions 0..*" <-- Holder.nonHolder.FileAction.SimpleFilter
+	Holder.nonHolder.BuildAction.BuildDialog.BrowseAction "browseAction" <-- Holder.nonHolder.BuildAction.BuildDialog
+	java.lang.String "currentLanguage" <-- Holder.nonHolder.BuildAction.BuildDialog
+	javax.swing.JTextField "currentPath" <-- Holder.nonHolder.BuildAction.BuildDialog
+	javax.swing.JTextArea "textArea" <-- Holder.nonHolder.BuildAction.BuildDialog
+	javax.swing.JCheckBox "useArrays" <-- Holder.nonHolder.BuildAction.BuildDialog
+}
+@enduml

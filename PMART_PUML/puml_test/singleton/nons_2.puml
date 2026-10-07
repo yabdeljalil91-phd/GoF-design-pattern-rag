@@ -1,0 +1,19 @@
+@startuml
+package dpd_jdt {
+	package Holder {
+		package nonHolder {
+			'Adds property pattern node to stansdard Java class node
+			'@author Petr Hrebejk
+			class PatternsExplorerFactory {
+				-writeable: JavaPrimitiveTypes.boolean
+				<<Create>> PatternsExplorerFactory(writeable : JavaPrimitiveTypes.boolean)
+				createClassNode(element : ClassElement): Node
+			}
+		}
+	}
+	Holder.nonHolder.FilterFactory <|-- Holder.nonHolder.PatternsExplorerFactory
+	Holder.nonHolder.ElementNodeFactory <|.. Holder.nonHolder.FilterFactory
+	Holder.nonHolder.ElementNodeFactory "delegate" <-- Holder.nonHolder.FilterFactory
+	JavaPrimitiveTypes.boolean "writeable" <-- Holder.nonHolder.PatternsExplorerFactory
+}
+@enduml

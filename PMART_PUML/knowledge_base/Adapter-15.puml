@@ -1,0 +1,151 @@
+@startuml
+'Design pattern Adapter
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+	package org {
+		package acm {
+			package seguin {
+				package ide {
+					package command {
+						'/** 
+						' * Creates the menubar for the command line program
+						' * @author    Chris Seguin
+						' */
+						'DP role: client
+						class CommandLineMenu {
+							<<Create>> CommandLineMenu()
+							'/** 
+							' * Creates edit menu
+							' * @return    returns the edit menu
+							' */
+							-createEditMenu(): JRefactory_v2.6.24.javax.swing.JMenu
+							'/** 
+							' * Creates the file menu
+							' * @param panel  the panel
+							' * @return        the file menu
+							' */
+							-createFileMenu(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenu
+							'/** 
+							' * Creates the zoom menu
+							' * @param panel  the panel
+							' * @return        the zoom menu
+							' */
+							-createZoomMenu(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenu
+							'/** 
+							' * Gets the MenuBar attribute of the CommandLineMenu object
+							' * @param panel  Description of Parameter
+							' * @return        The MenuBar value
+							' */
+							getMenuBar(panel : JRefactory_v2.6.24.javax.swing.JPanel): JRefactory_v2.6.24.javax.swing.JMenuBar
+						}
+						'/** 
+						' * Zooms in/out on a particular panel based on a scalar input 
+						' * @author    Chris Seguin 
+						' */
+						'DP role: adapter
+						class ZoomAdapter {
+							-panel: JRefactory_v2.6.24.org.acm.seguin.uml.line.LinedPanel
+							-scale: JavaPrimitiveTypes.double
+							'/** 
+							' * Constructor for the ZoomAction object 
+							' * @param panel  The panel 
+							' * @param scale  the scaling factor 
+							' */
+							<<Create>> ZoomAdapter(panel : JRefactory_v2.6.24.org.acm.seguin.uml.line.LinedPanel, scale : JavaPrimitiveTypes.double)
+							'/** 
+							' * The button has been pressed, do it! 
+							' * @param evt  the action event 
+							' */
+							actionPerformed(evt : JRefactory_v2.6.24.java.awt.event.ActionEvent)
+						}
+						JRefactory_v2.6.24.java.awt.event.ActionListener <|.. ZoomAdapter
+						JRefactory_v2.6.24.org.acm.seguin.uml.line.LinedPanel "panel" <-- ZoomAdapter
+						JavaPrimitiveTypes.double "scale" <-- ZoomAdapter
+					}
+				}
+				package uml {
+					package line {
+						'DP role: adaptee
+						abstract class LinedPanel {
+							-endPoints: JRefactory_v2.6.24.java.util.LinkedList
+							-lineList: JRefactory_v2.6.24.java.util.LinkedList
+							<<Create>> LinedPanel()
+							<<Create>> LinedPanel(doubleBuffered : JavaPrimitiveTypes.boolean)
+							<<Create>> LinedPanel(layout : JRefactory_v2.6.24.java.awt.LayoutManager)
+							<<Create>> LinedPanel(layout : JRefactory_v2.6.24.java.awt.LayoutManager, doubleBuffered : JavaPrimitiveTypes.boolean)
+							add(panel : EndPointPanel)
+							add(value : SegmentedLine)
+							clear()
+							deselectAll()
+							drag(point : JRefactory_v2.6.24.java.awt.Point)
+							drop()
+							#getEndPoints(): JRefactory_v2.6.24.java.util.Iterator
+							#getLines(): JRefactory_v2.6.24.java.util.Iterator
+							hit(point : JRefactory_v2.6.24.java.awt.Point)
+							scale(value : JavaPrimitiveTypes.double)
+							shift(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						}
+						JRefactory_v2.6.24.javax.swing.JPanel <|-- LinedPanel
+						ScalablePanel <|-- EndPointPanel
+						JRefactory_v2.6.24.javax.swing.JPanel <|-- ScalablePanel
+						JRefactory_v2.6.24.java.awt.event.ComponentListener <|.. SegmentedLine
+						JRefactory_v2.6.24.java.util.LinkedList "endPoints" <-- LinedPanel
+						JRefactory_v2.6.24.java.util.LinkedList "lineList" <-- LinedPanel
+						JavaPrimitiveTypes.int "absoluteHeight" <-- ScalablePanel
+						JavaPrimitiveTypes.int "absoluteWidth" <-- ScalablePanel
+						JavaPrimitiveTypes.int "absoluteX" <-- ScalablePanel
+						JavaPrimitiveTypes.int "absoluteY" <-- ScalablePanel
+						JavaPrimitiveTypes.boolean "inScaling" <-- ScalablePanel
+						JavaPrimitiveTypes.boolean "inShapeChange" <-- ScalablePanel
+						JavaPrimitiveTypes.double "scale" <-- ScalablePanel
+						JavaPrimitiveTypes.double "SHORT_BACK" <-- SegmentedLine
+						JavaPrimitiveTypes.int "Xs 0..*" <-- SegmentedLine
+						JavaPrimitiveTypes.int "Ys 0..*" <-- SegmentedLine
+						JavaPrimitiveTypes.int "activeVertex" <-- SegmentedLine
+						EndPointPanel "endPanel" <-- SegmentedLine
+						JavaPrimitiveTypes.double "scalingFactor" <-- SegmentedLine
+						EndPointPanel "startPanel" <-- SegmentedLine
+						JavaPrimitiveTypes.boolean "activated" <-- Vertex
+						JRefactory_v2.6.24.java.awt.Point "computed" <-- Vertex
+						JavaPrimitiveTypes.double "near" <-- Vertex
+						JRefactory_v2.6.24.java.awt.Point "point" <-- Vertex
+						JavaPrimitiveTypes.boolean "rescaled" <-- Vertex
+						JavaPrimitiveTypes.double "scale" <-- Vertex
+						JavaPrimitiveTypes.boolean "selected" <-- Vertex
+						JavaPrimitiveTypes.int "vertexSize" <-- Vertex
+						JavaPrimitiveTypes.int "vertexSizeHalf" <-- Vertex
+						Vertex "vertices 0..*" <-- SegmentedLine
+						JavaPrimitiveTypes.double "A0" <-- Segment
+						JavaPrimitiveTypes.double "A1" <-- Segment
+						JavaPrimitiveTypes.double "B0" <-- Segment
+						JavaPrimitiveTypes.double "B1" <-- Segment
+						JavaPrimitiveTypes.double "m" <-- Segment
+						Segment "workingSegment" <-- SegmentedLine
+					}
+				}
+			}
+		}
+	}
+	package java {
+		package awt {
+			package event {
+				'/** 
+				' * The listener interface for receiving action events. The class that is interested in processing an action event implements this interface, and the object created with that class is registered with a component, using the component's {@code addActionListener} method. When the action eventoccurs, that object's  {@code actionPerformed} method isinvoked.
+				' * @see ActionEvent
+				' * @see <a href="https://docs.oracle.com/javase/tutorial/uiswing/events/actionlistener.html">How to Write an Action Listener</a>
+				' * @author Carl Quinn
+				' * @since 1.1
+				' */
+				'DP role: target
+				interface ActionListener {
+					'/** 
+					' * Invoked when an action occurs.
+					' * @param e the event to be processed
+					' */
+					actionPerformed(e : ActionEvent)
+				}
+				JRefactory_v2.6.24.java.util.EventListener <|-- ActionListener
+			}
+		}
+	}
+}
+@enduml

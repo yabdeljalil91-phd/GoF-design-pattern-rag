@@ -1,0 +1,57 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package nonsingleton {
+			class PertFigure {
+				-{const} BORDER: JavaPrimitiveTypes.int = 3
+				-fDisplayBox: java.awt.Rectangle
+				-fPostTasks: java.util.Vector
+				-fPreTasks: java.util.Vector
+				-pertFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -7877776240236946511
+				<<Create>> PertFigure()
+				addPostTask(figure : PertFigure)
+				addPreTask(figure : PertFigure)
+				-asInt(figureIndex : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				connectionInsets(): java.awt.Insets
+				displayBox(): java.awt.Rectangle
+				draw(g : java.awt.Graphics)
+				-drawBorder(g : java.awt.Graphics)
+				duration(): JavaPrimitiveTypes.int
+				end(): JavaPrimitiveTypes.int
+				figureChanged(e : FigureChangeEvent)
+				figureRemoved(e : FigureChangeEvent)
+				handles(): java.util.Vector
+				hasCycle(start : Figure): JavaPrimitiveTypes.boolean
+				-initialize()
+				-layout()
+				-needsLayout(): JavaPrimitiveTypes.boolean
+				notifyPostTasks()
+				read(dr : StorableInput)
+				readTasks(dr : StorableInput): java.util.Vector
+				removePostTask(figure : PertFigure)
+				removePreTask(figure : PertFigure)
+				setEnd(value : JavaPrimitiveTypes.int)
+				-setInt(figureIndex : JavaPrimitiveTypes.int, value : JavaPrimitiveTypes.int)
+				start(): JavaPrimitiveTypes.int
+				-taskName(): java.lang.String
+				update(e : FigureChangeEvent)
+				updateDurations()
+				write(dw : StorableOutput)
+				writeTasks(dw : StorableOutput, v : java.util.Vector)
+			}
+		}
+	}
+	Singleton.nonsingleton.CompositeFigure <|-- Singleton.nonsingleton.PertFigure
+	java.lang.Cloneable <|-- Singleton.nonsingleton.Figure
+	java.io.Serializable <|-- Singleton.nonsingleton.Figure
+	JavaPrimitiveTypes.int "BORDER" <-- Singleton.nonsingleton.PertFigure
+	java.awt.Rectangle "fDisplayBox" <-- Singleton.nonsingleton.PertFigure
+	java.util.Vector "fPostTasks" <-- Singleton.nonsingleton.PertFigure
+	java.util.Vector "fPreTasks" <-- Singleton.nonsingleton.PertFigure
+	JavaPrimitiveTypes.int "pertFigureSerializedDataVersion" <-- Singleton.nonsingleton.PertFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Singleton.nonsingleton.PertFigure
+}
+@enduml

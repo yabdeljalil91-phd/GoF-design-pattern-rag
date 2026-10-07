@@ -1,0 +1,52 @@
+@startuml
+package dpd_jdt {
+	package Context {
+		package name {
+			'The standard implementation of the Drawing interface.
+			'@see Drawing
+			class StandardDrawing {
+				-drawingSerializedDataVersion: JavaPrimitiveTypes.int
+				-fDrawingLockHolder: java.lang.Thread
+				-fListeners: java.util.Vector
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -2602151437447962046
+				'Constructs the Drawing.
+				<<Create>> StandardDrawing()
+				'Adds a listener for this drawing.
+				addDrawingChangeListener(listener : DrawingChangeListener)
+				basicDisplayBox(p1 : java.awt.Point, p2 : java.awt.Point)
+				'Gets the display box. This is the union of all figures.
+				displayBox(): java.awt.Rectangle
+				'Adds a listener for this drawing.
+				drawingChangeListeners(): java.util.Enumeration
+				'Invalidates a rectangle and merges it with the existing damaged area.
+				'@see FigureChangeListener
+				figureInvalidated(e : FigureChangeEvent)
+				'Handles a removeFromDrawing request that is passed up the figure container hierarchy.
+				'@see FigureChangeListener
+				figureRequestRemove(e : FigureChangeEvent)
+				'Forces an update
+				figureRequestUpdate(e : FigureChangeEvent)
+				'Return's the figure's handles. This is only used when a drawing is nested inside another drawing.
+				handles(): java.util.Vector
+				'Acquires the drawing lock.
+				lock()
+				-readObject(s : java.io.ObjectInputStream)
+				'Removes the figure from the drawing and releases it.
+				remove(figure : Figure): Figure
+				'Removes a listener from this drawing.
+				removeDrawingChangeListener(listener : DrawingChangeListener)
+				'Releases the drawing lock.
+				unlock()
+			}
+		}
+	}
+	Context.name.CompositeFigure <|-- Context.name.StandardDrawing
+	Context.name.Drawing <|-- Context.name.StandardDrawing
+	java.lang.Cloneable <|-- Context.name.Figure
+	java.io.Serializable <|-- Context.name.Figure
+	JavaPrimitiveTypes.int "drawingSerializedDataVersion" <-- Context.name.StandardDrawing
+	java.lang.Thread "fDrawingLockHolder" <-- Context.name.StandardDrawing
+	java.util.Vector "fListeners" <-- Context.name.StandardDrawing
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Context.name.StandardDrawing
+}
+@enduml

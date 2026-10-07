@@ -1,0 +1,142 @@
+@startuml
+'Design pattern Builder
+package "PMD v1.8" as PMD_v1.8 {
+	package net {
+		package sourceforge {
+			package pmd {
+				package ant {
+					'DP role: director
+					class Formatter {
+						-renderer: PMD_v1.8.net.sourceforge.pmd.renderers.Renderer
+						-toFile: PMD_v1.8.java.io.File
+						<<Create>> Formatter()
+						getRenderer(): PMD_v1.8.net.sourceforge.pmd.renderers.Renderer
+						getToFileWriter(baseDir : PMD_v1.8.java.lang.String): PMD_v1.8.java.io.Writer
+						isToFileNull(): JavaPrimitiveTypes.boolean
+						setToFile(toFile : PMD_v1.8.java.io.File)
+						setType(type : PMD_v1.8.java.lang.String)
+						toString(): PMD_v1.8.java.lang.String
+					}
+					PMD_v1.8.net.sourceforge.pmd.renderers.Renderer "renderer" <-- Formatter
+					PMD_v1.8.java.io.File "toFile" <-- Formatter
+				}
+				package renderers {
+					'DP role: concreteBuilder
+					class IDEAJRenderer {
+						-args: PMD_v1.8.java.lang.String [*]
+						<<Create>> IDEAJRenderer(args : PMD_v1.8.java.lang.String)
+						-getFullyQualifiedClassName(in : PMD_v1.8.java.lang.String, sourcePath : SourcePath): PMD_v1.8.java.lang.String
+						-getSimpleFileName(in : PMD_v1.8.java.lang.String): PMD_v1.8.java.lang.String
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+						-render(report : PMD_v1.8.net.sourceforge.pmd.Report, sourcePathString : PMD_v1.8.java.lang.String): PMD_v1.8.java.lang.String
+						-render(report : PMD_v1.8.net.sourceforge.pmd.Report, classAndMethod : PMD_v1.8.java.lang.String, file : PMD_v1.8.java.lang.String): PMD_v1.8.java.lang.String
+					}
+					'DP role: concreteBuilder
+					class EmacsRenderer {
+						#EOL: PMD_v1.8.java.lang.String
+						<<Create>> EmacsRenderer()
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+					'/** 
+					' * <p>A console renderer with optional color support under *nix systems.</p> <pre> * file: ./src/gilot/Test.java src:  Test.java:12 rule: AtLeastOneConstructor msg:  Each class should declare at least one constructor code: public class Test * file: ./src/gilot/log/format/LogInterpreter.java src:  LogInterpreter.java:317 rule: AvoidDuplicateLiterals msg:  The same String literal appears 4 times in this file; the first occurrence is on line 317 code: logger.error( "missing attribute 'app_arg' in rule '" + ((Element)element.getParent()).getAttributeValue( "name" ) + "'" ); src:  LogInterpreter.java:317 rule: AvoidDuplicateLiterals msg:  The same String literal appears 5 times in this file; the first occurrence is on line 317 code: logger.error( "missing attribute 'app_arg' in rule '" + ((Element)element.getParent()).getAttributeValue( "name" ) + "'" ); * warnings: 3 </pre> <p>Colorization is turned on by supplying -D<b>pmd.color</b> - any value other than '0' or 'false', enables color - including an empty value (''). <b>Nota Bene:</b> colorization is atm only supported under *nix terminals accepting ansi escape sequences, such as xterm, rxvt et cetera.</p>
+					' */
+					'DP role: concreteBuilder
+					class PapariTextRenderer {
+						-colorReset: PMD_v1.8.java.lang.String
+						-cyan: PMD_v1.8.java.lang.String
+						-green: PMD_v1.8.java.lang.String
+						-pwd: PMD_v1.8.java.lang.String
+						-redBold: PMD_v1.8.java.lang.String
+						-whiteBold: PMD_v1.8.java.lang.String
+						-yellowBold: PMD_v1.8.java.lang.String
+						<<Create>> PapariTextRenderer()
+						'/** 
+						' * Retrieves the requested line from the specified file.
+						' * @param sourceFile the java or cpp source file
+						' * @param line line number to extract
+						' * @return a trimmed line of source code
+						' */
+						-getLine(sourceFile : PMD_v1.8.java.lang.String, line : JavaPrimitiveTypes.int): PMD_v1.8.java.lang.String
+						'/** 
+						' * Attempts to determine the relative path to the file. If relative path cannot be found, the original path is returnedi, ie - the current path for the supplied file.
+						' * @param fileName well, the file with its original path.
+						' * @return the relative path to the file
+						' */
+						-getRelativePath(fileName : PMD_v1.8.java.lang.String): PMD_v1.8.java.lang.String
+						'/** 
+						' * Enables colors on *nix systems - not windows. Color support depends on the pmd.color property, which should be set with the -D option during execution - a set value other than 'false' or '0' enables color. btw, is it possible to do this on windows (ie; console colors)?
+						' */
+						-initColors()
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+					'DP role: concreteBuilder
+					class SummaryHTMLRenderer {
+						<<Create>> SummaryHTMLRenderer()
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+						renderSummary(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+					'/** 
+					' * @version $Revision: 1.1 $ $Date: 2005/08/05 12:46:12 $
+					' * @author Vladimir
+					' */
+					'DP role: concreteBuilder
+					class VBHTMLRenderer {
+						<<Create>> VBHTMLRenderer()
+						-footer(): PMD_v1.8.java.lang.String
+						-header(): PMD_v1.8.java.lang.String
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+					'DP role: concreteBuilder
+					class HTMLRenderer {
+						<<Create>> HTMLRenderer()
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+						renderBody(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+					'DP role: concreteBuilder
+					class XMLRenderer {
+						<<Create>> XMLRenderer()
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+					'DP role: concreteBuilder
+					class TextRenderer {
+						<<Create>> TextRenderer()
+						render(report : PMD_v1.8.net.sourceforge.pmd.Report): PMD_v1.8.java.lang.String
+					}
+					Renderer <|.. IDEAJRenderer
+					Renderer <|.. EmacsRenderer
+					Renderer <|.. PapariTextRenderer
+					Renderer <|.. SummaryHTMLRenderer
+					Renderer <|.. VBHTMLRenderer
+					Renderer <|.. HTMLRenderer
+					Renderer <|.. XMLRenderer
+					Renderer <|.. TextRenderer
+					PMD_v1.8.java.lang.String "args 0..*" <-- IDEAJRenderer
+					PMD_v1.8.java.util.Set "paths" <-- SourcePath
+					PMD_v1.8.java.lang.String "EOL" <-- EmacsRenderer
+					PMD_v1.8.java.lang.String "colorReset" <-- PapariTextRenderer
+					PMD_v1.8.java.lang.String "cyan" <-- PapariTextRenderer
+					PMD_v1.8.java.lang.String "green" <-- PapariTextRenderer
+					PMD_v1.8.java.lang.String "pwd" <-- PapariTextRenderer
+					PMD_v1.8.java.lang.String "redBold" <-- PapariTextRenderer
+					PMD_v1.8.java.lang.String "whiteBold" <-- PapariTextRenderer
+					PMD_v1.8.java.lang.String "yellowBold" <-- PapariTextRenderer
+				}
+				PMD_v1.8.java.util.List "errors" <-- Report
+				PMD_v1.8.java.util.List "listeners" <-- Report
+				PMD_v1.8.java.util.Set "metrics" <-- Report
+				PMD_v1.8.java.util.Set "violations" <-- Report
+				PMD_v1.8.java.lang.String "file" <-- ProcessingError
+				PMD_v1.8.java.lang.String "msg" <-- ProcessingError
+				PMD_v1.8.java.lang.String "description" <-- RuleViolation
+				PMD_v1.8.java.lang.String "filename" <-- RuleViolation
+				JavaPrimitiveTypes.int "line" <-- RuleViolation
+				JavaPrimitiveTypes.int "LOWEST_PRIORITY" <-- Rule
+				PMD_v1.8.java.lang.String "PRIORITIES 0..*" <-- Rule
+				Report "report" <-- RuleContext
+				PMD_v1.8.java.lang.String "sourceCodeFilename" <-- RuleContext
+				Rule "rule" <-- RuleViolation
+			}
+		}
+	}
+}
+@enduml

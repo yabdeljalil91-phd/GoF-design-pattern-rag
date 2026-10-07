@@ -1,0 +1,26 @@
+@startuml
+' Simplified Singleton UML for ReloaderSingleton
+
+package "JRefactory v2.6.24" as JRefactory {
+
+    ' Reloader class (assumed external)
+    class Reloader {
+    }
+
+    ' Singleton class
+    class ReloaderSingleton {
+        {static} singleton: Reloader
+        {static} isFirstTime: boolean
+
+        ' Constructor (private)
+        -ReloaderSingleton()
+
+        ' Singleton behavior
+        {static} register(init: Reloader)
+        {static} reload()
+    }
+
+    ' Relationships
+    ReloaderSingleton --> Reloader : manages
+}
+@enduml

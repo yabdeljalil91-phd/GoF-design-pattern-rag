@@ -1,0 +1,29 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package nonsingleton {
+			class BouncingDrawing {
+				-bouncingDrawingSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -8566272817418441758
+				<<Create>> BouncingDrawing()
+				add(figure : Figure): Figure
+				animationStep()
+				remove(figure : Figure): Figure
+				replace(figure : Figure, replacement : Figure)
+			}
+		}
+	}
+	Singleton.nonsingleton.StandardDrawing <|-- Singleton.nonsingleton.BouncingDrawing
+	Singleton.nonsingleton.Animatable <|-- Singleton.nonsingleton.BouncingDrawing
+	Singleton.nonsingleton.CompositeFigure <|-- Singleton.nonsingleton.StandardDrawing
+	Singleton.nonsingleton.Drawing <|-- Singleton.nonsingleton.StandardDrawing
+	java.lang.Cloneable <|-- Singleton.nonsingleton.Figure
+	java.io.Serializable <|-- Singleton.nonsingleton.Figure
+	JavaPrimitiveTypes.int "drawingSerializedDataVersion" <-- Singleton.nonsingleton.StandardDrawing
+	java.lang.Thread "fDrawingLockHolder" <-- Singleton.nonsingleton.StandardDrawing
+	java.util.Vector "fListeners" <-- Singleton.nonsingleton.StandardDrawing
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Singleton.nonsingleton.StandardDrawing
+	JavaPrimitiveTypes.int "bouncingDrawingSerializedDataVersion" <-- Singleton.nonsingleton.BouncingDrawing
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Singleton.nonsingleton.BouncingDrawing
+}
+@enduml

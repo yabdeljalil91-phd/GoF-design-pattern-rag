@@ -1,0 +1,107 @@
+@startuml
+package dpd_jdt {
+	package Holder {
+		package nonHolder {
+			'DrawingView renders a Drawing and listens to its changes. It receives user input and delegates it to the current tool. <hr> <b>Design Patterns</b><P> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a href=../pattlets/sld026.htm>Observer</a></b><br> DrawingView observes drawing for changes via the DrawingListener interface.<br> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a href=../pattlets/sld032.htm>State</a></b><br> DrawingView plays the role of the StateContext in the State pattern. Tool is the State.<br> <img src="images/red-ball-small.gif" width=6 height=6 alt=" o "> <b><a href=../pattlets/sld034.htm>Strategy</a></b><br> DrawingView is the StrategyContext in the Strategy pattern with regard to the UpdateStrategy. <br> DrawingView is the StrategyContext for the PointConstrainer.
+			'@see Drawing
+			'@see Painter
+			'@see Tool
+			interface DrawingView {
+				'Adds a figure to the drawing.
+				'@return the added figure.
+				add(figure : Figure): Figure
+				'Adds a vector of figures to the drawing.
+				addAll(figures : java.util.Vector)
+				'Adds a figure to the current selection.
+				addToSelection(figure : Figure)
+				'Adds a vector of figures to the current selection.
+				addToSelectionAll(figures : java.util.Vector)
+				'Checks whether the drawing has some accumulated damage
+				checkDamage()
+				'Clears the current selection.
+				clearSelection()
+				'Creates an image with the given dimensions
+				createImage(width : JavaPrimitiveTypes.int, height : JavaPrimitiveTypes.int): java.awt.Image
+				'Draws the contents of the drawing view. The view has three layers: background, drawing, handles. The layers are drawn in back to front order.
+				drawAll(g : java.awt.Graphics)
+				'Draws the background. If a background pattern is set it is used to fill the background. Otherwise the background is filled in the background color.
+				drawBackground(g : java.awt.Graphics)
+				'Draws the drawing.
+				drawDrawing(g : java.awt.Graphics)
+				'Draws the currently active handles.
+				drawHandles(g : java.awt.Graphics)
+				'Gets the drawing.
+				drawing(): Drawing
+				'Gets the editor.
+				editor(): DrawingEditor
+				'Finds a handle at the given coordinates.
+				'@return the hit handle, null if no handle is found.
+				findHandle(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Handle
+				'Freezes the view by acquiring the drawing lock.
+				'@see Drawing#lock
+				freezeView()
+				'Gets the background color of the DrawingView
+				getBackground(): java.awt.Color
+				'Gets the current grid setting.
+				getConstrainer(): PointConstrainer
+				'Gets the current selection as a FigureSelection. A FigureSelection can be cut, copied, pasted.
+				getFigureSelection(): FigureSelection
+				'Gets a graphic to draw into
+				getGraphics(): java.awt.Graphics
+				'Gets the minimum dimension of the drawing.
+				getMinimumSize(): java.awt.Dimension
+				'Gets the preferred dimension of the drawing..
+				getPreferredSize(): java.awt.Dimension
+				'Gets the size of the drawing.
+				getSize(): java.awt.Dimension
+				'Gets the position of the last click inside the view.
+				lastClick(): java.awt.Point
+				'Paints the drawing view. The actual drawing is delegated to the current update strategy.
+				'@see Painter
+				paint(g : java.awt.Graphics)
+				'Removes a figure from the drawing.
+				'@return the removed figure
+				remove(figure : Figure): Figure
+				'Removes a figure from the selection.
+				removeFromSelection(figure : Figure)
+				'Repair the damaged area
+				repairDamage()
+				'Gets the currently selected figures.
+				'@return a vector with the selected figures. The vectoris a copy of the current selection.
+				selection(): java.util.Vector
+				'Gets the number of selected figures.
+				selectionCount(): JavaPrimitiveTypes.int
+				'Gets an enumeration over the currently selected figures.
+				selectionElements(): FigureEnumeration
+				'Gets the currently selected figures in Z order.
+				'@see #selection
+				'@return a vector with the selected figures. The vectoris a copy of the current selection.
+				selectionZOrdered(): java.util.Vector
+				'Gets the background color of the DrawingView
+				setBackground(c : java.awt.Color)
+				'Sets the current point constrainer.
+				setConstrainer(p : PointConstrainer)
+				'Sets the cursor of the DrawingView
+				setCursor(c : java.awt.Cursor)
+				'Sets the current display update strategy.
+				'@see UpdateStrategy
+				setDisplayUpdate(updateStrategy : Painter)
+				'Sets and installs another drawing in the view.
+				setDrawing(d : Drawing)
+				'Sets the view's editor.
+				setEditor(editor : DrawingEditor)
+				'If a figure isn't selected it is added to the selection. Otherwise it is removed from the selection.
+				toggleSelection(figure : Figure)
+				'Gets the current tool.
+				tool(): Tool
+				'Unfreezes the view by releasing the drawing lock.
+				'@see Drawing#unlock
+				unfreezeView()
+			}
+		}
+	}
+	java.awt.image.ImageObserver <|-- Holder.nonHolder.DrawingView
+	java.lang.Cloneable <|-- Holder.nonHolder.Figure
+	java.io.Serializable <|-- Holder.nonHolder.Figure
+}
+@enduml

@@ -1,0 +1,54 @@
+@startuml
+package dpd_jdt {
+	package Loader {
+		package name {
+			'The implementation of hierarchy nodes factory for the class loader.
+			'@author Petr Hamernik, Dafe Simonek
+			class ClassElementNodeFactory {
+				-FACTORY_GETTER_NODE: FactoryGetterNode
+				-{static} defaultActions: SystemAction [*]
+				-{static} instance: DefaultFactory
+				-tree: JavaPrimitiveTypes.boolean
+				'Creates new factory.
+				<<Create>> ClassElementNodeFactory()
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createClassNode(element : ClassElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createConstructorNode(element : ConstructorElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createFieldNode(element : FieldElement): Node
+				'Returns the node asociated with specified element.
+				'@return ElementNode
+				createMethodNode(element : MethodElement): Node
+				'Convenience method for obtaining default actions of nodes
+				getDefaultActions(): SystemAction
+				'Returns true if generate nodes for tree.
+				'@returns true if generate nodes for tree.
+				getGenerateForTree(): JavaPrimitiveTypes.boolean
+				'Returns instance of this element node factory
+				{static} getInstance(): DefaultFactory
+				'If true generate nodes for tree.
+				setGenerateForTree(tree : JavaPrimitiveTypes.boolean)
+			}
+		}
+	}
+	Loader.name.DefaultFactory <|-- Loader.name.ClassElementNodeFactory
+	Loader.name.ElementNodeFactory <|.. Loader.name.DefaultFactory
+	Loader.name.IconStrings <|-- Loader.name.DefaultFactory
+	Loader.name.SystemAction "CATEGORY_ACTIONS 0..*" <-- Loader.name.DefaultFactory
+	java.lang.String "CATEGORY_ICONS 0..*" <-- Loader.name.DefaultFactory
+	JavaPrimitiveTypes.int "FILTERS 0..*" <-- Loader.name.DefaultFactory
+	java.lang.String "NAMES 0..*" <-- Loader.name.DefaultFactory
+	java.lang.String "SHORTDESCRS 0..*" <-- Loader.name.DefaultFactory
+	JavaPrimitiveTypes.boolean "writeable" <-- Loader.name.DefaultFactory
+	Loader.name.ClassElement "element" <-- Loader.name.DefaultFactory.ElementCategoryNode
+	JavaPrimitiveTypes.int "newTypeIndex" <-- Loader.name.DefaultFactory.ElementCategoryNode
+	Loader.name.ClassElementNodeFactory.FactoryGetterNode "FACTORY_GETTER_NODE" <-- Loader.name.ClassElementNodeFactory
+	Loader.name.SystemAction "defaultActions 0..*" <-- Loader.name.ClassElementNodeFactory
+	Loader.name.DefaultFactory "instance" <-- Loader.name.ClassElementNodeFactory
+	JavaPrimitiveTypes.boolean "tree" <-- Loader.name.ClassElementNodeFactory
+}
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+package dpd_jdt {
+	package res {
+		package name {
+			'Stores the current reloader
+			'@author    Chris Seguin
+			class Reloaderres {
+				-{static} isFirstTime: JavaPrimitiveTypes.boolean
+				-{static} res: Reloader
+				'Don't allow an instance of this object to be instantiated.
+				-<<Create>> Reloaderres()
+				'Register a reloader for the class diagrams
+				'@param init  the reloader object
+				{static} register(init : Reloader)
+				'Reload the UML class diagrams
+				{static} reload()
+			}
+		}
+	}
+	JavaPrimitiveTypes.boolean "isFirstTime" <-- res.name.Reloaderres
+	res.name.Reloader "res" <-- res.name.Reloaderres
+}
+@enduml

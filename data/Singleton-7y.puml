@@ -1,0 +1,65 @@
+@startuml
+'Design pattern Singleton (RAG-enhanced for GoF detection)
+
+package "QuickUML 2001" as QuickUML_2001 {
+
+    package uml {
+        package ui {
+
+            'DP role: singleton (CONCRETE SINGLETON CLASS)
+            'Key intent: single shared instance managing icon/image resources
+            class IconManager {
+
+                '--- Singleton state (critical detection signals) ---
+                - {static} instance: IconManager  ' SINGLE INSTANCE HOLDER (lazy/eager indicator)
+                -imageMap: HashMap                ' internal cache (resource storage)
+                -resourceMap: WeakHashMap         ' memory-sensitive cache (GC-aware storage)
+
+                '--- Singleton constructor constraint ---
+                'PRIVATE constructor enforces controlled instantiation
+                -IconManager()
+
+                '--- Singleton access point (PRIMARY RAG FEATURE) ---
+                + {static} getInstance(): IconManager  ' GLOBAL ACCESS METHOD
+
+                '--- Service API (shared resource access) ---
+                + getIconResource(comp: Component, resourceName: String): Icon
+                + getImageResource(comp: Component, resourceName: String): Image
+
+                '--- Internal loading mechanism ---
+                # loadImageResource(resourceName: String): Image  ' protected helper (resource loader)
+
+                '--- Registration / caching API ---
+                + registerImageResource(comp: Component, resourceName: String)
+
+                '--- Internal tracking utility ---
+                - trackImage(tracker: MediaTracker, resourceName: String): Image
+            }
+
+            '========================
+            ' Structural RAG Signals
+            '========================
+
+            'Singleton containment of state maps (composition-like ownership)
+            'Strong indicator: lifecycle controlled by singleton instance
+            HashMap "imageMap (cache owned by Singleton)" <-- IconManager
+            WeakHashMap "resourceMap (GC-sensitive cache)" <-- IconManager
+
+            '========================
+            ' Singleton Detection Features (for RAG systems)
+            '========================
+            '
+            ' HIGH CONFIDENCE PATTERN INDICATORS:
+            ' 1. Static instance field: IconManager.instance
+            ' 2. Private constructor: IconManager()
+            ' 3. Global access point: getInstance()
+            '
+            ' SUPPORTING SIGNALS:
+            ' - Centralized resource management (image/icon cache)
+            ' - Controlled object lifecycle
+            ' - Global shared state across UI components
+            '
+        }
+    }
+}
+@enduml

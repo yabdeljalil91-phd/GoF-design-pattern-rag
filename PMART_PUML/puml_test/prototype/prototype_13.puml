@@ -1,0 +1,50 @@
+@startuml
+package dpd_jdt {
+	package figure {
+		package name {
+			class NodeFigure {
+				-{const} BORDER: JavaPrimitiveTypes.int = 6
+				-fConnectors: java.util.Vector
+				-fConnectorsVisible: JavaPrimitiveTypes.boolean
+				<<Create>> NodeFigure()
+				connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Connector
+				connectorVisibility(isVisible : JavaPrimitiveTypes.boolean)
+				-connectors(): java.util.Vector
+				containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				-createConnectors()
+				displayBox(): java.awt.Rectangle
+				draw(g : java.awt.Graphics)
+				-drawBorder(g : java.awt.Graphics)
+				-drawConnectors(g : java.awt.Graphics)
+				-findConnector(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Connector
+				handles(): java.util.Vector
+				-initialize()
+			}
+		}
+	}
+	figure.name.TextFigure <|-- figure.name.NodeFigure
+	figure.name.AttributeFigure <|-- figure.name.TextFigure
+	figure.name.FigureChangeListener <|-- figure.name.TextFigure
+	figure.name.TextHolder <|-- figure.name.TextFigure
+	java.lang.Cloneable <|-- figure.name.Figure
+	java.io.Serializable <|-- figure.name.Figure
+	java.awt.Font "fFont" <-- figure.name.TextFigure
+	JavaPrimitiveTypes.int "fHeight" <-- figure.name.TextFigure
+	JavaPrimitiveTypes.boolean "fIsReadOnly" <-- figure.name.TextFigure
+	figure.name.OffsetLocator "fLocator" <-- figure.name.TextFigure
+	figure.name.Figure "fObservedFigure" <-- figure.name.TextFigure
+	JavaPrimitiveTypes.int "fOriginX" <-- figure.name.TextFigure
+	JavaPrimitiveTypes.int "fOriginY" <-- figure.name.TextFigure
+	JavaPrimitiveTypes.boolean "fSizeIsDirty" <-- figure.name.TextFigure
+	java.lang.String "fText" <-- figure.name.TextFigure
+	JavaPrimitiveTypes.int "fWidth" <-- figure.name.TextFigure
+	java.lang.String "fgCurrentFontName" <-- figure.name.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontSize" <-- figure.name.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontStyle" <-- figure.name.TextFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- figure.name.TextFigure
+	JavaPrimitiveTypes.int "textFigureSerializedDataVersion" <-- figure.name.TextFigure
+	JavaPrimitiveTypes.int "BORDER" <-- figure.name.NodeFigure
+	java.util.Vector "fConnectors" <-- figure.name.NodeFigure
+	JavaPrimitiveTypes.boolean "fConnectorsVisible" <-- figure.name.NodeFigure
+}
+@enduml

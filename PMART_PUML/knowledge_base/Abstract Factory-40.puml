@@ -1,0 +1,570 @@
+@startuml
+'Design pattern Abstract Factory
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package netbeans {
+			package modules {
+				package db {
+					package explorer {
+						package infos {
+							'DP role: client
+							class ConnectionNodeInfo {
+								{const} serialVersionUID: JavaPrimitiveTypes.long = -8322295510950137669
+								<<Create>> ConnectionNodeInfo()
+								connect(dbsys : Netbeans_v1.0.x.java.lang.String)
+								connect()
+								connectReadOnly()
+								delete()
+								disconnect()
+							}
+							DatabaseNodeInfo <|-- ConnectionNodeInfo
+							ConnectionOperations <|.. ConnectionNodeInfo
+							Netbeans_v1.0.x.java.util.Hashtable <|-- DatabaseNodeInfo
+							Netbeans_v1.0.x.org.openide.nodes.Node.Cookie <|.. DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "ACTIONS" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "ADAPTOR" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "ADAPTOR_CLASSNAME" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "CHILDREN" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "CHILDREN_ORDERING" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "CLASS" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "CODE" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "CONNECTION" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DATABASE" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DBDRIVER" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DBPRODUCT" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DBVERSION" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DELETABLE" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DESCRIPTION" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DRIVER" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "DRIVER_SPECIFICATION" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "GROUPSUP" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "ICONBASE" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "INFOCLASS" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "NAME" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "NODE" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "OJOINSUP" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "PASSWORD" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "PERM" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "PREFIX" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "PROPERTIES" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "READONLY" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "READONLYDB" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "REMEMBER_PWD" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "RESULTSET" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "SPECIFICATION" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "SPECIFICATION_FACTORY" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "SUPPORTED_DBS" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "SYSTEM_ACTION" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "UNIONSUP" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "URL" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "USER" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "WRITABLE" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.beans.PropertyChangeSupport "driverpcs" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.util.Set "driverpcsKeys" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.util.Map "gtab" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.String "gtabfile" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.lang.ref.WeakReference "nodewr" <-- DatabaseNodeInfo
+							Netbeans_v1.0.x.java.beans.PropertyChangeSupport "pcs" <-- DatabaseNodeInfo
+							JavaPrimitiveTypes.long "serialVersionUID" <-- DatabaseNodeInfo
+							JavaPrimitiveTypes.long "serialVersionUID" <-- ConnectionNodeInfo
+						}
+						package nodes {
+							'/** 
+							' * Abstract class that can be used as super class of all data objects that should contain some nodes. It provides methods for adding/removing sub nodes.
+							' * @author Miloslav Metelka, Slavek Psenicka
+							' * @version 0.10, Jul 14, 1998
+							' */
+							'DP role: client
+							class RootNode {
+								-{static} option: Netbeans_v1.0.x.org.netbeans.modules.db.explorer.DatabaseOption
+								sfactory: Netbeans_v1.0.x.org.netbeans.lib.ddl.impl.SpecificationFactory
+								<<Create>> RootNode()
+								canRename(): JavaPrimitiveTypes.boolean
+								{static} getOption(): Netbeans_v1.0.x.org.netbeans.modules.db.explorer.DatabaseOption
+							}
+							Netbeans_v1.0.x.org.openide.nodes.AbstractNode <|-- DatabaseNode
+							Netbeans_v1.0.x.org.openide.nodes.Node.Cookie <|.. DatabaseNode
+							DatabaseNode <|-- RootNode
+							Netbeans_v1.0.x.java.lang.String "CATALOG" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "COLUMN" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "CONNECTION" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "DRIVER" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "DRIVER_LIST" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "EXPORTED_KEY" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "FOREIGN_KEY" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "INDEX" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "INDEXCOLUMN" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "INDEXED_COLUMN" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "PRIMARY_KEY" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "PROCEDURE" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "PROCEDURELIST" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "PROCEDURE_COLUMN" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "ROOT" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "TABLE" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "TABLELIST" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "VIEW" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "VIEWCOLUMN" <-- DatabaseNode
+							Netbeans_v1.0.x.java.lang.String "VIEWLIST" <-- DatabaseNode
+							JavaPrimitiveTypes.boolean "copyflag" <-- DatabaseNode
+							JavaPrimitiveTypes.boolean "cutflag" <-- DatabaseNode
+							JavaPrimitiveTypes.boolean "delflag" <-- DatabaseNode
+							Netbeans_v1.0.x.org.netbeans.modules.db.explorer.infos.DatabaseNodeInfo "info" <-- DatabaseNode
+							JavaPrimitiveTypes.boolean "writable" <-- DatabaseNode
+							Netbeans_v1.0.x.org.netbeans.modules.db.explorer.DatabaseOption "option" <-- RootNode
+							Netbeans_v1.0.x.org.netbeans.lib.ddl.impl.SpecificationFactory "sfactory" <-- RootNode
+						}
+						package actions {
+							'DP role: client
+							class TestDriverAction {
+								{const} serialVersionUID: JavaPrimitiveTypes.long = -7201887208073852066
+								<<Create>> TestDriverAction()
+								#enable(activatedNodes : Netbeans_v1.0.x.org.openide.nodes.Node): JavaPrimitiveTypes.boolean
+								performAction(activatedNodes : Netbeans_v1.0.x.org.openide.nodes.Node)
+								-performTest(info : Netbeans_v1.0.x.org.netbeans.modules.db.explorer.infos.DatabaseNodeInfo, dbcon : Netbeans_v1.0.x.java.sql.Connection, user : Netbeans_v1.0.x.java.lang.String, driver : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+							}
+							DatabaseAction <|-- TestDriverAction
+							Netbeans_v1.0.x.org.openide.util.actions.CookieAction <|-- DatabaseAction
+							Netbeans_v1.0.x.java.lang.String "aname" <-- DatabaseAction
+							Netbeans_v1.0.x.java.lang.String "nodename" <-- DatabaseAction
+							JavaPrimitiveTypes.long "serialVersionUID" <-- DatabaseAction
+							JavaPrimitiveTypes.long "serialVersionUID" <-- TestDriverAction
+						}
+						Netbeans_v1.0.x.java.io.Externalizable <|.. DatabaseDriver
+						Netbeans_v1.0.x.org.openide.options.SystemOption <|-- DatabaseOption
+						Netbeans_v1.0.x.java.lang.String "adaptor" <-- DatabaseDriver
+						Netbeans_v1.0.x.java.lang.String "name" <-- DatabaseDriver
+						Netbeans_v1.0.x.java.lang.String "prefix" <-- DatabaseDriver
+						JavaPrimitiveTypes.long "serialVersionUID" <-- DatabaseDriver
+						Netbeans_v1.0.x.java.lang.String "url" <-- DatabaseDriver
+						Netbeans_v1.0.x.java.lang.String "PROP_DEBUG_MODE" <-- DatabaseOption
+						Netbeans_v1.0.x.java.lang.String "PROP_FETCH_LIMIT" <-- DatabaseOption
+						Netbeans_v1.0.x.java.lang.String "PROP_FETCH_STEP" <-- DatabaseOption
+						Netbeans_v1.0.x.java.util.Vector "connections" <-- DatabaseOption
+						JavaPrimitiveTypes.boolean "debugMode" <-- DatabaseOption
+						Netbeans_v1.0.x.java.util.Vector "drivers" <-- DatabaseOption
+						JavaPrimitiveTypes.int "fetchlimit" <-- DatabaseOption
+						JavaPrimitiveTypes.int "fetchstep" <-- DatabaseOption
+						JavaPrimitiveTypes.long "serialVersionUID" <-- DatabaseOption
+					}
+				}
+			}
+			package lib {
+				package ddl {
+					package impl {
+						'DP role: abstractProduct
+						'DP role: product
+						class DriverSpecification {
+							-desc: Netbeans_v1.0.x.java.util.HashMap
+							factory: SpecificationFactory
+							rs: Netbeans_v1.0.x.java.sql.ResultSet
+							rsTemp: Netbeans_v1.0.x.java.sql.ResultSet
+							<<Create>> DriverSpecification(description : Netbeans_v1.0.x.java.util.HashMap)
+							-checkResultSet()
+							-getCatalog(): Netbeans_v1.0.x.java.lang.String
+							getColumns(catalog : Netbeans_v1.0.x.java.lang.String, dmd : Netbeans_v1.0.x.java.sql.DatabaseMetaData, tableNamePattern : Netbeans_v1.0.x.java.lang.String, columnNamePattern : Netbeans_v1.0.x.java.lang.String)
+							getDriverSpecificationFactory(): Netbeans_v1.0.x.org.netbeans.lib.ddl.DriverSpecificationFactory
+							getExportedKeys(catalog : Netbeans_v1.0.x.java.lang.String, dmd : Netbeans_v1.0.x.java.sql.DatabaseMetaData, table : Netbeans_v1.0.x.java.lang.String)
+							getIndexInfo(catalog : Netbeans_v1.0.x.java.lang.String, dmd : Netbeans_v1.0.x.java.sql.DatabaseMetaData, table : Netbeans_v1.0.x.java.lang.String, unique : JavaPrimitiveTypes.boolean, approximate : JavaPrimitiveTypes.boolean)
+							getPrimaryKeys(catalog : Netbeans_v1.0.x.java.lang.String, dmd : Netbeans_v1.0.x.java.sql.DatabaseMetaData, table : Netbeans_v1.0.x.java.lang.String)
+							getProcedureColumns(catalog : Netbeans_v1.0.x.java.lang.String, dmd : Netbeans_v1.0.x.java.sql.DatabaseMetaData, procedureNamePattern : Netbeans_v1.0.x.java.lang.String, columnNamePattern : Netbeans_v1.0.x.java.lang.String)
+							getProcedures(catalog : Netbeans_v1.0.x.java.lang.String, dmd : Netbeans_v1.0.x.java.sql.DatabaseMetaData, procedureNamePattern : Netbeans_v1.0.x.java.lang.String)
+							-getSchema(): Netbeans_v1.0.x.java.lang.String
+							getTables(catalog : Netbeans_v1.0.x.java.lang.String, dmd : Netbeans_v1.0.x.java.sql.DatabaseMetaData, tableNamePattern : Netbeans_v1.0.x.java.lang.String, types : Netbeans_v1.0.x.java.lang.String)
+							setDriverSpecificationFactory(fac : Netbeans_v1.0.x.org.netbeans.lib.ddl.DriverSpecificationFactory)
+						}
+						'DP role: concreteFactory
+						class SpecificationFactory {
+							-dbFile: Netbeans_v1.0.x.java.lang.String = org/netbeans/lib/ddl/resources/dbspec.plist
+							-dbSpecs: Netbeans_v1.0.x.java.util.HashMap
+							-debug: JavaPrimitiveTypes.boolean
+							-drvFile: Netbeans_v1.0.x.java.lang.String = org/netbeans/lib/ddl/resources/driverspec.plist
+							-drvSpecs: Netbeans_v1.0.x.java.util.HashMap
+							<<Create>> SpecificationFactory()
+							createDriverSpecification(driverName : Netbeans_v1.0.x.java.lang.String): DriverSpecification
+							createSpecification(dbcon : Netbeans_v1.0.x.org.netbeans.lib.ddl.DBConnection): Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecification
+							createSpecification(dbcon : Netbeans_v1.0.x.org.netbeans.lib.ddl.DBConnection, jdbccon : Netbeans_v1.0.x.java.sql.Connection): Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecification
+							createSpecification(connection : Netbeans_v1.0.x.org.netbeans.lib.ddl.DBConnection, databaseProductName : Netbeans_v1.0.x.java.lang.String, c : Netbeans_v1.0.x.java.sql.Connection): Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecification
+							createSpecification(databaseProductName : Netbeans_v1.0.x.java.lang.String, c : Netbeans_v1.0.x.java.sql.Connection): Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecification
+							createSpecification(c : Netbeans_v1.0.x.java.sql.Connection): Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecification
+							createSpecification(c : Netbeans_v1.0.x.java.sql.Connection, databaseProductName : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecification
+							-deepClone(map : Netbeans_v1.0.x.java.util.HashMap): Netbeans_v1.0.x.java.util.HashMap
+							-deepUnion(base : Netbeans_v1.0.x.java.util.HashMap, additional : Netbeans_v1.0.x.java.util.HashMap, deep : JavaPrimitiveTypes.boolean): Netbeans_v1.0.x.java.util.HashMap
+							isDatabaseSupported(databaseProductName : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+							isDebugMode(): JavaPrimitiveTypes.boolean
+							isDriverSupported(driverName : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+							setDebugMode(mode : JavaPrimitiveTypes.boolean)
+							supportedDatabases(): Netbeans_v1.0.x.java.util.Set
+							supportedDrivers(): Netbeans_v1.0.x.java.util.Set
+						}
+						'/** 
+						' * @author Slavek Psenicka
+						' */
+						'DP role: product
+						class Specification {
+							{const} ADD_COLUMN: Netbeans_v1.0.x.java.lang.String = AddColumnCommand
+							{const} ADD_CONSTRAINT: Netbeans_v1.0.x.java.lang.String = AddConstraintCommand
+							{const} COMMENT_TABLE: Netbeans_v1.0.x.java.lang.String = CommentTableCommand
+							{const} COMMENT_VIEW: Netbeans_v1.0.x.java.lang.String = CommentViewCommand
+							{const} CREATE_FUNCTION: Netbeans_v1.0.x.java.lang.String = CreateFunctionCommand
+							{const} CREATE_INDEX: Netbeans_v1.0.x.java.lang.String = CreateIndexCommand
+							{const} CREATE_PROCEDURE: Netbeans_v1.0.x.java.lang.String = CreateProcedureCommand
+							{const} CREATE_TABLE: Netbeans_v1.0.x.java.lang.String = CreateTableCommand
+							{const} CREATE_TRIGGER: Netbeans_v1.0.x.java.lang.String = CreateTriggerCommand
+							{const} CREATE_VIEW: Netbeans_v1.0.x.java.lang.String = CreateViewCommand
+							{const} DROP_CONSTRAINT: Netbeans_v1.0.x.java.lang.String = DropConstraintCommand
+							{const} DROP_FUNCTION: Netbeans_v1.0.x.java.lang.String = DropFunctionCommand
+							{const} DROP_INDEX: Netbeans_v1.0.x.java.lang.String = DropIndexCommand
+							{const} DROP_PROCEDURE: Netbeans_v1.0.x.java.lang.String = DropProcedureCommand
+							{const} DROP_TABLE: Netbeans_v1.0.x.java.lang.String = DropTableCommand
+							{const} DROP_TRIGGER: Netbeans_v1.0.x.java.lang.String = DropTriggerCommand
+							{const} DROP_VIEW: Netbeans_v1.0.x.java.lang.String = DropViewCommand
+							{const} MODIFY_COLUMN: Netbeans_v1.0.x.java.lang.String = ModifyColumnCommand
+							{const} REMOVE_COLUMN: Netbeans_v1.0.x.java.lang.String = RemoveColumnCommand
+							{const} RENAME_COLUMN: Netbeans_v1.0.x.java.lang.String = RenameColumnCommand
+							{const} RENAME_TABLE: Netbeans_v1.0.x.java.lang.String = RenameTableCommand
+							{const} RENAME_VIEW: Netbeans_v1.0.x.java.lang.String = RenameViewCommand
+							adaptorClass: Netbeans_v1.0.x.java.lang.String
+							-desc: Netbeans_v1.0.x.java.util.HashMap
+							dmdAdaptor: Netbeans_v1.0.x.java.sql.DatabaseMetaData
+							factory: SpecificationFactory
+							-jdbccon: Netbeans_v1.0.x.java.sql.Connection
+							'/** 
+							' * Constructor 
+							' */
+							<<Create>> Specification(description : Netbeans_v1.0.x.java.util.HashMap)
+							'/** 
+							' * Constructor 
+							' */
+							<<Create>> Specification(description : Netbeans_v1.0.x.java.util.HashMap, c : Netbeans_v1.0.x.java.sql.Connection)
+							closeJDBCConnection()
+							'/** 
+							' * Creates command identified by commandName. Command names will include create/rename/drop table/view/index/column and comment table/column. It  returns null if command specified by commandName was not found. Used  system allows developers to extend db-specification files and simply  address new commands (everybody can implement createXXXCommand()).
+							' */
+							createCommand(commandName : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.org.netbeans.lib.ddl.DDLCommand
+							'/** 
+							' * Creates command identified by commandName on table tableName. Returns null if command specified by commandName was not found. It does not check tableName existency; it simply waits for relevant execute() command which fires SQLException.
+							' */
+							createCommand(commandName : Netbeans_v1.0.x.java.lang.String, tableName : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.org.netbeans.lib.ddl.DDLCommand
+							'/** 
+							' * Add column 
+							' */
+							createCommandAddColumn(tableName : Netbeans_v1.0.x.java.lang.String): AddColumn
+							'/** 
+							' * Comment table command
+							' * @param tableName Name of the table
+							' * @param comment New comment
+							' */
+							createCommandCommentTable(tableName : Netbeans_v1.0.x.java.lang.String, comment : Netbeans_v1.0.x.java.lang.String): CommentTable
+							'/** 
+							' * Comment view command
+							' * @param tableName Name of the view
+							' * @param comment New comment
+							' */
+							createCommandCommentView(viewName : Netbeans_v1.0.x.java.lang.String, comment : Netbeans_v1.0.x.java.lang.String): CommentView
+							'/** 
+							' * Create function
+							' * @param viewname Name of function
+							' */
+							createCommandCreateFunction(name : Netbeans_v1.0.x.java.lang.String): CreateFunction
+							'/** 
+							' * Create index
+							' * @param indexName Name of index
+							' * @param tableName Name of the table
+							' */
+							createCommandCreateIndex(tableName : Netbeans_v1.0.x.java.lang.String): CreateIndex
+							'/** 
+							' * Create procedure
+							' * @param viewname Name of procedure
+							' */
+							createCommandCreateProcedure(name : Netbeans_v1.0.x.java.lang.String): CreateProcedure
+							'/** 
+							' * Create table command
+							' * @param tableName Name of the table
+							' */
+							createCommandCreateTable(tableName : Netbeans_v1.0.x.java.lang.String): CreateTable
+							'/** 
+							' * Create trigger
+							' * @param viewname Name of trigger
+							' */
+							createCommandCreateTrigger(name : Netbeans_v1.0.x.java.lang.String, tablename : Netbeans_v1.0.x.java.lang.String, timing : JavaPrimitiveTypes.int): CreateTrigger
+							'/** 
+							' * Create view
+							' * @param viewname Name of index
+							' */
+							createCommandCreateView(viewname : Netbeans_v1.0.x.java.lang.String): CreateView
+							'/** 
+							' * Drop function
+							' * @param viewname Name of function
+							' */
+							createCommandDropFunction(name : Netbeans_v1.0.x.java.lang.String): AbstractCommand
+							'/** 
+							' * Drop index
+							' * @param indexName Name of index
+							' */
+							createCommandDropIndex(indexName : Netbeans_v1.0.x.java.lang.String): AbstractCommand
+							'/** 
+							' * Drop procedure
+							' * @param viewname Name of procedure
+							' */
+							createCommandDropProcedure(name : Netbeans_v1.0.x.java.lang.String): AbstractCommand
+							'/** 
+							' * Drop table command
+							' * @param tableName Name of the table
+							' */
+							createCommandDropTable(tableName : Netbeans_v1.0.x.java.lang.String): AbstractCommand
+							'/** 
+							' * Drop trigger
+							' * @param viewname Name of trigger
+							' */
+							createCommandDropTrigger(name : Netbeans_v1.0.x.java.lang.String): AbstractCommand
+							'/** 
+							' * Drop view
+							' * @param viewname Name of index
+							' */
+							createCommandDropView(viewname : Netbeans_v1.0.x.java.lang.String): AbstractCommand
+							'/** 
+							' * Modify column 
+							' */
+							createCommandModifyColumn(tableName : Netbeans_v1.0.x.java.lang.String): ModifyColumn
+							'/** 
+							' * Remove column
+							' * @param tableName Name of the table
+							' */
+							createCommandRemoveColumn(tableName : Netbeans_v1.0.x.java.lang.String): RemoveColumn
+							'/** 
+							' * Rename column 
+							' */
+							createCommandRenameColumn(tableName : Netbeans_v1.0.x.java.lang.String): RenameColumn
+							'/** 
+							' * Drop table command
+							' * @param tableName Name of the table
+							' */
+							createCommandRenameTable(tableName : Netbeans_v1.0.x.java.lang.String, newName : Netbeans_v1.0.x.java.lang.String): RenameTable
+							'/** 
+							' * Drop table command
+							' * @param tableName Name of the table
+							' */
+							createCommandRenameView(tableName : Netbeans_v1.0.x.java.lang.String, newName : Netbeans_v1.0.x.java.lang.String): RenameView
+							'/** 
+							' * Returns command description 
+							' */
+							getCommandProperties(command : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.util.Map
+							'/** 
+							' * Returns used connection 
+							' */
+							getConnection(): Netbeans_v1.0.x.org.netbeans.lib.ddl.DBConnection
+							'/** 
+							' * Returns JDBC connection. Commands must test if the connection is not open yet; if you simply call openJDBCConnection without test (and the connection will be open by user), a DDLException throws. This is a self-checking mechanism; you must always close used connection.
+							' */
+							getJDBCConnection(): Netbeans_v1.0.x.java.sql.Connection
+							'/** 
+							' * Returns database metadata 
+							' */
+							getMetaData(): Netbeans_v1.0.x.java.sql.DatabaseMetaData
+							getMetaDataAdaptorClassName(): Netbeans_v1.0.x.java.lang.String
+							'/** 
+							' * Returns all database properties 
+							' */
+							getProperties(): Netbeans_v1.0.x.java.util.Map
+							getSpecificationFactory(): Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecificationFactory
+							'/** 
+							' * Returns DBType where maps specified java type 
+							' */
+							getType(type : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.lang.String
+							'/** 
+							' * Returns DBType where maps specified java type 
+							' */
+							{static} getType(type : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.int
+							'/** 
+							' * Returns type map 
+							' */
+							getTypeMap(): Netbeans_v1.0.x.java.util.Map
+							'/** 
+							' * Opens JDBC Connection. This method usually calls command when it need to process something.  But you can call it explicitly and leave connection open until last command gets executed. Don't forget to close it.
+							' */
+							openJDBCConnection(): Netbeans_v1.0.x.java.sql.Connection
+							setMetaDataAdaptorClassName(name : Netbeans_v1.0.x.java.lang.String)
+							setSpecificationFactory(fac : Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecificationFactory)
+						}
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecificationFactory <|.. SpecificationFactory
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.DriverSpecificationFactory <|.. SpecificationFactory
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecification <|.. Specification
+						ColumnListCommand <|-- AddColumn
+						AbstractCommand <|-- ColumnListCommand
+						Netbeans_v1.0.x.java.io.Serializable <|.. AbstractCommand
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.DDLCommand <|.. AbstractCommand
+						AbstractTableColumn <|-- TableColumn
+						Netbeans_v1.0.x.java.io.Serializable <|.. TableColumn
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.TableColumnDescriptor <|.. TableColumn
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.CheckConstraintDescriptor <|.. TableColumn
+						Netbeans_v1.0.x.java.io.Serializable <|.. AbstractTableColumn
+						AbstractCommand <|-- CommentTable
+						AbstractCommand <|-- CommentView
+						CreateProcedure <|-- CreateFunction
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.FunctionDescriptor <|.. CreateFunction
+						AbstractCommand <|-- CreateProcedure
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.ProcedureDescriptor <|.. CreateProcedure
+						ColumnListCommand <|-- CreateIndex
+						ColumnListCommand <|-- CreateTable
+						AbstractCommand <|-- CreateTrigger
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.CreateTriggerCommand <|.. CreateTrigger
+						AbstractCommand <|-- CreateView
+						ColumnCommand <|-- ModifyColumn
+						AbstractCommand <|-- ColumnCommand
+						ColumnCommand <|-- RemoveColumn
+						ColumnCommand <|-- RenameColumn
+						AbstractCommand <|-- RenameTable
+						AbstractCommand <|-- RenameView
+						Netbeans_v1.0.x.java.util.HashMap "desc" <-- DriverSpecification
+						Netbeans_v1.0.x.java.lang.String "dbFile" <-- SpecificationFactory
+						Netbeans_v1.0.x.java.util.HashMap "dbSpecs" <-- SpecificationFactory
+						JavaPrimitiveTypes.boolean "debug" <-- SpecificationFactory
+						Netbeans_v1.0.x.java.lang.String "drvFile" <-- SpecificationFactory
+						Netbeans_v1.0.x.java.util.HashMap "drvSpecs" <-- SpecificationFactory
+						SpecificationFactory "factory" <-- DriverSpecification
+						Netbeans_v1.0.x.java.sql.ResultSet "rs" <-- DriverSpecification
+						Netbeans_v1.0.x.java.sql.ResultSet "rsTemp" <-- DriverSpecification
+						Netbeans_v1.0.x.java.lang.String "ADD_COLUMN" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "ADD_CONSTRAINT" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "COMMENT_TABLE" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "COMMENT_VIEW" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "CREATE_FUNCTION" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "CREATE_INDEX" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "CREATE_PROCEDURE" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "CREATE_TABLE" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "CREATE_TRIGGER" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "CREATE_VIEW" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_CONSTRAINT" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_FUNCTION" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_INDEX" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_PROCEDURE" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_TABLE" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_TRIGGER" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "DROP_VIEW" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "MODIFY_COLUMN" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "REMOVE_COLUMN" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "RENAME_COLUMN" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "RENAME_TABLE" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "RENAME_VIEW" <-- Specification
+						Netbeans_v1.0.x.java.lang.String "adaptorClass" <-- Specification
+						Netbeans_v1.0.x.java.util.HashMap "desc" <-- Specification
+						Netbeans_v1.0.x.java.sql.DatabaseMetaData "dmdAdaptor" <-- Specification
+						SpecificationFactory "factory" <-- Specification
+						Netbeans_v1.0.x.java.sql.Connection "jdbccon" <-- Specification
+						Netbeans_v1.0.x.java.util.Map "addprops" <-- AbstractCommand
+						Netbeans_v1.0.x.java.lang.String "format" <-- AbstractCommand
+						Netbeans_v1.0.x.java.lang.String "name" <-- AbstractCommand
+						Netbeans_v1.0.x.java.lang.String "owner" <-- AbstractCommand
+						JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractCommand
+						Netbeans_v1.0.x.org.netbeans.lib.ddl.DatabaseSpecification "spec" <-- AbstractCommand
+						Netbeans_v1.0.x.java.util.Vector "columns" <-- ColumnListCommand
+						JavaPrimitiveTypes.long "serialVersionUID" <-- ColumnListCommand
+						Netbeans_v1.0.x.java.util.Map "addprops" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "cname" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "format" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "name" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "otype" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "refcol" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "reftab" <-- AbstractTableColumn
+						JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractTableColumn
+						Netbeans_v1.0.x.java.lang.String "CHECK" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "CHECK_CONSTRAINT" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "COLUMN" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "FOREIGN_KEY" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "FOREIGN_KEY_CONSTRAINT" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "PRIMARY_KEY" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "PRIMARY_KEY_CONSTRAINT" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "UNIQUE" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "UNIQUE_CONSTRAINT" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "checke" <-- TableColumn
+						JavaPrimitiveTypes.int "decsize" <-- TableColumn
+						Netbeans_v1.0.x.java.lang.String "defval" <-- TableColumn
+						JavaPrimitiveTypes.boolean "nullable" <-- TableColumn
+						JavaPrimitiveTypes.long "serialVersionUID" <-- TableColumn
+						JavaPrimitiveTypes.int "size" <-- TableColumn
+						JavaPrimitiveTypes.int "type" <-- TableColumn
+						JavaPrimitiveTypes.long "serialVersionUID" <-- AddColumn
+						Netbeans_v1.0.x.java.lang.String "comment" <-- CommentTable
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CommentTable
+						Netbeans_v1.0.x.java.lang.String "comment" <-- CommentView
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CommentView
+						Netbeans_v1.0.x.java.util.Vector "args" <-- CreateProcedure
+						Netbeans_v1.0.x.java.lang.String "body" <-- CreateProcedure
+						Netbeans_v1.0.x.java.lang.String "cat" <-- CreateProcedure
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CreateProcedure
+						JavaPrimitiveTypes.int "rarg" <-- CreateFunction
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CreateFunction
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CreateIndex
+						Netbeans_v1.0.x.java.lang.String "tablename" <-- CreateIndex
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CreateTable
+						JavaPrimitiveTypes.int "AFTER" <-- CreateTrigger
+						JavaPrimitiveTypes.int "BEFORE" <-- CreateTrigger
+						Netbeans_v1.0.x.java.lang.String "body" <-- CreateTrigger
+						Netbeans_v1.0.x.java.lang.String "cond" <-- CreateTrigger
+						JavaPrimitiveTypes.boolean "eachrow" <-- CreateTrigger
+						Netbeans_v1.0.x.java.util.Vector "events" <-- CreateTrigger
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CreateTrigger
+						Netbeans_v1.0.x.java.lang.String "table" <-- CreateTrigger
+						JavaPrimitiveTypes.int "timing" <-- CreateTrigger
+						JavaPrimitiveTypes.int "DELETE" <-- TriggerEvent
+						JavaPrimitiveTypes.int "INSERT" <-- TriggerEvent
+						JavaPrimitiveTypes.int "UPDATE" <-- TriggerEvent
+						Netbeans_v1.0.x.java.lang.String "col" <-- TriggerEvent
+						Netbeans_v1.0.x.java.lang.String "format" <-- TriggerEvent
+						Netbeans_v1.0.x.java.lang.String "name" <-- TriggerEvent
+						Netbeans_v1.0.x.java.lang.String "query" <-- CreateView
+						JavaPrimitiveTypes.long "serialVersionUID" <-- CreateView
+						TableColumn "column" <-- ColumnCommand
+						JavaPrimitiveTypes.long "serialVersionUID" <-- ColumnCommand
+						JavaPrimitiveTypes.long "serialVersionUID" <-- ModifyColumn
+						JavaPrimitiveTypes.long "serialVersionUID" <-- RemoveColumn
+						Netbeans_v1.0.x.java.lang.String "newname" <-- RenameColumn
+						JavaPrimitiveTypes.long "serialVersionUID" <-- RenameColumn
+						Netbeans_v1.0.x.java.lang.String "NEW_NAME" <-- RenameTable
+						Netbeans_v1.0.x.java.lang.String "newname" <-- RenameTable
+						JavaPrimitiveTypes.long "serialVersionUID" <-- RenameTable
+						Netbeans_v1.0.x.java.lang.String "newname" <-- RenameView
+						JavaPrimitiveTypes.long "serialVersionUID" <-- RenameView
+					}
+					'DP role: abstractFactory
+					interface DatabaseSpecificationFactory {
+						createSpecification(connection : DBConnection, c : Netbeans_v1.0.x.java.sql.Connection): DatabaseSpecification
+						createSpecification(connection : DBConnection, databaseProductName : Netbeans_v1.0.x.java.lang.String, c : Netbeans_v1.0.x.java.sql.Connection): DatabaseSpecification
+						createSpecification(c : Netbeans_v1.0.x.java.sql.Connection): DatabaseSpecification
+						isDatabaseSupported(databaseProductName : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+						isDebugMode(): JavaPrimitiveTypes.boolean
+						setDebugMode(mode : JavaPrimitiveTypes.boolean)
+						supportedDatabases(): Netbeans_v1.0.x.java.util.Set
+					}
+					'DP role: abstractProduct
+					interface DatabaseSpecification {
+						closeJDBCConnection()
+						createCommand(commandName : Netbeans_v1.0.x.java.lang.String): DDLCommand
+						getCommandProperties(command : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.util.Map
+						getConnection(): DBConnection
+						getJDBCConnection(): Netbeans_v1.0.x.java.sql.Connection
+						getMetaData(): Netbeans_v1.0.x.java.sql.DatabaseMetaData
+						getMetaDataAdaptorClassName(): Netbeans_v1.0.x.java.lang.String
+						getProperties(): Netbeans_v1.0.x.java.util.Map
+						getSpecificationFactory(): DatabaseSpecificationFactory
+						getType(sqltype : JavaPrimitiveTypes.int): Netbeans_v1.0.x.java.lang.String
+						openJDBCConnection(): Netbeans_v1.0.x.java.sql.Connection
+						setMetaDataAdaptorClassName(name : Netbeans_v1.0.x.java.lang.String)
+						setSpecificationFactory(fac : DatabaseSpecificationFactory)
+					}
+					'DP role: abstractFactory
+					interface DriverSpecificationFactory {
+						createDriverSpecification(driverName : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.org.netbeans.lib.ddl.impl.DriverSpecification
+						isDriverSupported(driverName : Netbeans_v1.0.x.java.lang.String): JavaPrimitiveTypes.boolean
+						supportedDrivers(): Netbeans_v1.0.x.java.util.Set
+					}
+					Netbeans_v1.0.x.java.io.Serializable <|-- DBConnection
+					TableConstraintDescriptor <|-- CheckConstraintDescriptor
+					ProcedureDescriptor <|-- FunctionDescriptor
+					DDLCommand <|-- CreateTriggerCommand
+				}
+			}
+		}
+	}
+}
+@enduml

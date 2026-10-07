@@ -1,0 +1,1336 @@
+@startuml
+'Design pattern Observer
+package "MapperXML v1.9.7" as MapperXML_v1.9.7 {
+	package com {
+		package taursys {
+			package xml {
+				package event {
+					'DP role: concreteObserver
+					interface ParameterListener {
+						parameterReceived(e : ParameterEvent)
+					}
+					'DP role: concreteObserver
+					interface RecycleListener {
+						recycle(e : RecycleEvent)
+					}
+					'DP role: concreteObserver
+					interface RenderListener {
+						render(e : RenderEvent)
+					}
+					Dispatcher <|-- RecycleDispatcher
+					MapperXML_v1.9.7.java.util.EventObject <|-- RecycleEvent
+					Dispatcher <|-- RenderDispatcher
+					MapperXML_v1.9.7.java.util.EventObject <|-- RenderEvent
+					MapperXML_v1.9.7.java.util.EventListener <|-- InputListener
+					ParameterEvent <|-- InputEvent
+					MapperXML_v1.9.7.java.util.EventObject <|-- ParameterEvent
+					MapperXML_v1.9.7.java.util.EventListener <|-- ParameterListener
+					MapperXML_v1.9.7.java.util.EventListener <|-- RecycleListener
+					MapperXML_v1.9.7.java.util.EventListener <|-- RenderListener
+					MapperXML_v1.9.7.java.util.EventListener <|-- TriggerListener
+					MapperXML_v1.9.7.java.util.EventObject <|-- TriggerEvent
+					Dispatcher <|-- InputDispatcher
+					Dispatcher <|-- ParameterDispatcher
+					Dispatcher <|-- TriggerDispatcher
+					Dispatcher <|-- CloseFormDispatcher
+					Dispatcher <|-- InitContextDispatcher
+					Dispatcher <|-- InitFormDispatcher
+					Dispatcher <|-- OpenFormDispatcher
+					MapperXML_v1.9.7.java.util.EventListener <|-- CloseFormListener
+					MapperXML_v1.9.7.java.util.EventObject <|-- CloseFormEvent
+					MapperXML_v1.9.7.java.util.EventListener <|-- InitContextListener
+					MapperXML_v1.9.7.java.util.EventObject <|-- InitContextEvent
+					MapperXML_v1.9.7.java.util.EventListener <|-- InitFormListener
+					MapperXML_v1.9.7.java.util.EventObject <|-- InitFormEvent
+					MapperXML_v1.9.7.java.util.EventListener <|-- OpenFormListener
+					MapperXML_v1.9.7.java.util.EventObject <|-- OpenFormEvent
+					MapperXML_v1.9.7.java.util.ArrayList "components" <-- Dispatcher
+					JavaPrimitiveTypes.int "index" <-- Dispatcher
+					MapperXML_v1.9.7.java.util.Map "map" <-- Dispatcher
+					RecycleEvent "recycleEvent" <-- RecycleDispatcher
+					RenderEvent "renderEvent" <-- RenderDispatcher
+					MapperXML_v1.9.7.java.util.Map "map" <-- ParameterEvent
+					MapperXML_v1.9.7.java.lang.String "name" <-- ParameterEvent
+					MapperXML_v1.9.7.java.lang.String "value" <-- ParameterEvent
+					MapperXML_v1.9.7.java.util.Map "map" <-- TriggerEvent
+					MapperXML_v1.9.7.java.lang.String "name" <-- TriggerEvent
+					MapperXML_v1.9.7.java.lang.String "value" <-- TriggerEvent
+					MapperXML_v1.9.7.com.taursys.xml.Component "source" <-- CloseFormDispatcher
+					MapperXML_v1.9.7.com.taursys.xml.Component "source" <-- InitContextDispatcher
+					MapperXML_v1.9.7.com.taursys.xml.Component "source" <-- InitFormDispatcher
+					MapperXML_v1.9.7.com.taursys.xml.Component "source" <-- OpenFormDispatcher
+					MapperXML_v1.9.7.java.util.Map "context" <-- InitContextEvent
+				}
+				'/** 
+				' * <p>This is the foundation object for MapperXML components.  All components share this base abstract class.  It provides common attributes and basic event dispatching methods with limited implementation. </p> <p>This object defines the following properties:</p> <ul> <li><code>parent</code> - the parent <code>Container</code> for this <code>Component</code>. This property is set by the <code>Container</code> methods: <code>add</code> and <code>remove</code>. </li> <li><code>visible</code> - this property is used by render subcomponents to determine whether to hide or show this component during rendering. </li> </ul> <p>This object is designed to respond to 5 types of events. The following are the events this component is designed to respond to:</p> <ul> <li><code>ParameterEvent</code> - this event is generated when parameter values are available for this component. A <code>ParameterEvent</code> differs from an <code>InputEvent</code> only by WHEN it is dispatched. <code>ParameterEvents</code> are normally dispatched before <code>InputEvents</code> </li> <li><code>InputEvent</code> - this event is generated when input values are available for this component. An <code>InputEvent</code> differs from a <code>ParameterEvent</code> only by WHEN it is dispatched. <code>InputEvents</code> are normally dispatched after <code>ParameterEvents</code> </li> <li><code>TriggerEvent</code> - this event is generated when a specific name/value pair appears (or does not appear) in the request. </li> <li><code>RenderEvent</code> - this event is generated when it is time for components to render their value to the document. </li> <li><code>RecycleEvent</code> - this event is generated after the request/response cycle as a signal that components should return to a default or initial state. Components may also modify the document as part of their response to this event. </li> </ul> <p>In order to be notified of these events, this component must register with each of the appropriate dispatchers. This is done by adding/removing the types of events you wish to be notified of to the <code>eventTypeList</code>. This is done by invoking the <code>addEventType</code> or <code>removeEventType</code> method with the fully qualified class name of the desired event. The <code>eventTypeList</code> is used by the <code>addNotify</code> and <code>removeNotify</code> methods which are invoked by the <code>Container</code> during the <code>add</code> and <code>remove</code> <code>Container</code> methods. </p> <p>This component contains a 2 general purpose methods modeled after AWT and Swing: <code>dispatchEvent</code> and <code>processEvent</code>. These 2 methods simply call the specific processXXXEvent method based on the event type. </p> <p>For each of the specific event types, there are a set of 3 related methods.</p> <ul> <li><code>processXXXEvent</code> - this method is where you would provide the necessary behavior to respond to the event. This abstract implementation simply propagates the event to registered listeners. You should override this method to provide appropriate behavior. </li> <li><code>addXXXListener</code> - registers the given listener with this component to be notified whenever this component has began/ended processing the event. </li> <li><code>removeXXXListener</code> - unregisters the given listener so it will no longer be notified. </li> </ul>
+				' */
+				'DP role: subject
+				abstract class Component {
+					-eventTypeList: MapperXML_v1.9.7.java.util.ArrayList
+					-inputListeners: MapperXML_v1.9.7.java.util.ArrayList
+					-notifySet: JavaPrimitiveTypes.boolean
+					-parameterListeners: MapperXML_v1.9.7.java.util.ArrayList
+					parent: Container
+					-recycleListeners: MapperXML_v1.9.7.java.util.ArrayList
+					-renderListeners: MapperXML_v1.9.7.java.util.ArrayList
+					-triggerListeners: MapperXML_v1.9.7.java.util.ArrayList
+					-visible: JavaPrimitiveTypes.boolean
+					'/** 
+					' * Constructs a component
+					' */
+					<<Create>> Component()
+					'/** 
+					' * Adds the given <code>eventType</code> to the event type list. The event type list is used by <code>addNotify</code> and <code>removeNotify</code> methods to register/un-register with <code>Dispatchers</code> for events. The <code>eventType</code> is the fully qualified class name of the event. This method does not re-register with <code>Dispatchers</code>. You must invoke the <code>addNotify</code> and <code>removeNotify</code> methods to register with <code>Dispatchers</code>.
+					' * @param eventType fully qualified class name of the Event
+					' */
+					#addEventType(eventType : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Adds given listener to notification list for InputEvents
+					' */
+					addInputListener(l : MapperXML_v1.9.7.com.taursys.xml.event.InputListener)
+					'/** 
+					' * Registers this component with dispatcher to be notified of ParameterEvents This method invokes the lazyAddNotify method to perform the work
+					' */
+					addNotify()
+					'/** 
+					' * Adds given listener to notification list for ParameterEvents
+					' */
+					addParameterListener(l : MapperXML_v1.9.7.com.taursys.xml.event.ParameterListener)
+					'/** 
+					' * Adds given listener to notification list for RecycleEvents
+					' */
+					addRecycleListener(l : MapperXML_v1.9.7.com.taursys.xml.event.RecycleListener)
+					'/** 
+					' * Adds given listener to notification list for RenderEvents
+					' */
+					addRenderListener(l : MapperXML_v1.9.7.com.taursys.xml.event.RenderListener)
+					'/** 
+					' * Adds given listener to notification list for TriggerEvents
+					' */
+					addTriggerListener(l : MapperXML_v1.9.7.com.taursys.xml.event.TriggerListener)
+					'/** 
+					' * Dispatches an event to this component or one of its subcomponents. This method invokes processEvent before returning.
+					' */
+					dispatchEvent(e : MapperXML_v1.9.7.java.util.EventObject)
+					'/** 
+					' * Notifies all registered listeners of a given TriggerEvent
+					' */
+					#fireActionPerformed(e : MapperXML_v1.9.7.com.taursys.xml.event.TriggerEvent)
+					'/** 
+					' * Notifies all registered listeners of a given InputEvent
+					' */
+					#fireInputReceived(e : MapperXML_v1.9.7.com.taursys.xml.event.InputEvent)
+					'/** 
+					' * Notifies all registered listeners of a given ParameterEvent
+					' */
+					#fireParameterReceived(e : MapperXML_v1.9.7.com.taursys.xml.event.ParameterEvent)
+					'/** 
+					' * Notifies all registered listeners of a given RecycleEvent
+					' */
+					#fireRecycle(e : MapperXML_v1.9.7.com.taursys.xml.event.RecycleEvent)
+					'/** 
+					' * Notifies all registered listeners of a given RenderEvent
+					' */
+					#fireRender(e : MapperXML_v1.9.7.com.taursys.xml.event.RenderEvent)
+					'/** 
+					' * Returns the parent container of this component else null.
+					' */
+					getParent(): Container
+					'/** 
+					' * Gets indicator of whether or not notification has been setup. This flag is set to true after addNotify has successfully registered, and set to false after removeNotify has successfully un-registered.
+					' * @return indicator if notification has been setup.
+					' */
+					#isNotifySet(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Get the indicator whether or not this component should be rendered visible. This indicator is only meaningful for components which are in the Document.
+					' * @return indicator whether or not this component should be rendered visible.
+					' */
+					isVisible(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Conditionally registers this component with dispatchers for the event types contained in the <code>eventTypeList</code>. In order to be notified, this component must have a parent and the notifySet flag must be false.
+					' */
+					#lazyAddNotify()
+					'/** 
+					' * Conditionally un-registers this component from dispatcher for the event types contained in the <code>eventTypeList</code>. Only un-registers if it WAS registered and parent is not null.
+					' */
+					#lazyRemoveNotify()
+					'/** 
+					' * Processes given event by invoking the appropriate processX__Event method. The appropriate event type is determined by the class of the given EventObject.
+					' */
+					#processEvent(e : MapperXML_v1.9.7.java.util.EventObject)
+					'/** 
+					' * Processes a given InputEvent.  This implementation simply propagates the InputEvent to registered listeners. Components who need to respond to InputEvents should override this method.
+					' */
+					#processInputEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.InputEvent)
+					'/** 
+					' * Processes a given ParameterEvent.  This implementation simply propagates the ParameterEvent to registered listeners. Components who need to respond to ParameterEvents should override this method.
+					' */
+					#processParameterEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.ParameterEvent)
+					'/** 
+					' * Processes a given RecycleEvent.  This implementation simply propagates the RecycleEvent to registered listeners. Components who need to respond to RecycleEvents should override this method.
+					' * @param e the RecycleEvent to process
+					' * @throws RecycleException for any problems during recycleing
+					' */
+					processRecycleEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.RecycleEvent)
+					'/** 
+					' * Processes a given RenderEvent.  This implementation simply propagates the RenderEvent to registered listeners. Components who need to respond to RenderEvents should override this method.
+					' * @param e the RenderEvent to process
+					' * @throws RenderException for any problems during rendering
+					' */
+					processRenderEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.RenderEvent)
+					'/** 
+					' * Processes a given TriggerEvent.  This implementation simply propagates the TriggerEvent to registered listeners. Components who need to respond to TriggerEvents should override this method.
+					' */
+					#processTriggerEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.TriggerEvent)
+					'/** 
+					' * Removes the given <code>eventType</code> from the event type list. The event type list is used by <code>addNotify</code> and <code>removeNotify</code> methods to register/un-register with <code>Dispatchers</code> for events. The <code>eventType</code> is the fully qualified class name of the event. This method does not re-register with <code>Dispatchers</code>. You must invoke the <code>addNotify</code> and <code>removeNotify</code> methods to register with <code>Dispatchers</code>.
+					' * @param eventType fully qualified class name of the Event
+					' */
+					#removeEventType(eventType : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Removes given listener from notification list for InputEvents
+					' */
+					removeInputListener(l : MapperXML_v1.9.7.com.taursys.xml.event.InputListener)
+					'/** 
+					' * Un-Registers this component with dispatcher. This method invokes the lazyRemoveNotify method to perform the work
+					' */
+					removeNotify()
+					'/** 
+					' * Removes given listener from notification list for ParameterEvents
+					' */
+					removeParameterListener(l : MapperXML_v1.9.7.com.taursys.xml.event.ParameterListener)
+					'/** 
+					' * Removes given listener from notification list for RecycleEvents
+					' */
+					removeRecycleListener(l : MapperXML_v1.9.7.com.taursys.xml.event.RecycleListener)
+					'/** 
+					' * Removes given listener from notification list for RenderEvents
+					' */
+					removeRenderListener(l : MapperXML_v1.9.7.com.taursys.xml.event.RenderListener)
+					'/** 
+					' * Removes given listener from notification list for TriggerEvents
+					' */
+					removeTriggerListener(l : MapperXML_v1.9.7.com.taursys.xml.event.TriggerListener)
+					'/** 
+					' * Set the indicator whether or not this component should be rendered visible. This indicator is only meaningful for components which are in the Document.
+					' * @param visible the indicator whether or not this component should be rendered visible.
+					' */
+					setVisible(visible : JavaPrimitiveTypes.boolean)
+				}
+				'/** 
+				' * <p><code>DispatchingContainer</code> is a <code>Container</code> which can function as a top or intermediate level <code>Container</code> and has its own set of event <code>Dispatchers</code> for its children. It responds to <code>ParameterEvents</code>, <code>InputEvents</code> and <code>TriggerEvents</code> by simply propagating the event to its children. </p> <p>In response to a <code>RenderEvent</code>, it simply shows or hides the Document Element and, if visible, dispatches a <code>RenderEvent</code> to the children of the <code>DocumentElement</code>. </p> <p>In response to a <code>RecycleEvent</code>, it simply makes the Document Element visible, and dispatches a <code>RecycleEvent</code> to the children of the <code>DocumentElement</code>. </p>
+				' * @author Marty Phelan
+				' * @version 1.0
+				' */
+				'DP role: concreteSubject
+				class DispatchingContainer {
+					-inputDispatcher: MapperXML_v1.9.7.com.taursys.xml.event.InputDispatcher
+					-parameterDispatcher: MapperXML_v1.9.7.com.taursys.xml.event.ParameterDispatcher
+					-parameterMap: MapperXML_v1.9.7.java.util.Map
+					-recycleDispatcher: MapperXML_v1.9.7.com.taursys.xml.event.RecycleDispatcher
+					-renderDispatcher: MapperXML_v1.9.7.com.taursys.xml.event.RenderDispatcher
+					-triggerDispatcher: MapperXML_v1.9.7.com.taursys.xml.event.TriggerDispatcher
+					'/** 
+					' * Constructs a new DispatchingContainer
+					' */
+					<<Create>> DispatchingContainer()
+					'/** 
+					' * Create the InputDispatcher for this Container.
+					' * @return the InputDispatcher for this Container.
+					' */
+					#createInputDispatcher(): MapperXML_v1.9.7.com.taursys.xml.event.InputDispatcher
+					'/** 
+					' * Create the ParameterDispatcher for this Container.
+					' * @return the ParameterDispatcher for this Container.
+					' */
+					#createParameterDispatcher(): MapperXML_v1.9.7.com.taursys.xml.event.ParameterDispatcher
+					'/** 
+					' * Create the RecycleDispatcher for this Container.
+					' * @return the RecycleDispatcher for this Container.
+					' */
+					#createRecycleDispatcher(): MapperXML_v1.9.7.com.taursys.xml.event.RecycleDispatcher
+					'/** 
+					' * Create the RenderDispatcher for this Container.
+					' * @return the RenderDispatcher for this Container.
+					' */
+					#createRenderDispatcher(): MapperXML_v1.9.7.com.taursys.xml.event.RenderDispatcher
+					'/** 
+					' * Create the TriggerDispatcher for this Container.
+					' * @return the TriggerDispatcher for this Container.
+					' */
+					#createTriggerDispatcher(): MapperXML_v1.9.7.com.taursys.xml.event.TriggerDispatcher
+					'/** 
+					' * Initiate the dispatch of the <code>TriggerEvent</code> to registered components using the current <code>parameterMap</code>.
+					' */
+					#dispatchActions()
+					'/** 
+					' * Initiate the dispatch of the <code>InputEvent</code> to registered components using the current <code>parameterMap</code>.
+					' */
+					#dispatchInput()
+					'/** 
+					' * Initiate the dispatch of the <code>ParameterEvent</code> to registered components using the current <code>parameterMap</code>.
+					' */
+					#dispatchParameters()
+					'/** 
+					' * Initiate the dispatch of the <code>RecycleEvent</code> to registered components.
+					' */
+					#dispatchRecycle()
+					'/** 
+					' * Initiate the dispatch of the <code>RenderEvent</code> to registered components.
+					' */
+					#dispatchRender()
+					'/** 
+					' * Get the Map of parameters contained in the request. The Map must contain String keys for each parameter and String[] arrays for each parameter value.
+					' * @return a Map of parameters contained in the request.
+					' */
+					getParameterMap(): MapperXML_v1.9.7.java.util.Map
+					'/** 
+					' * Dispatches given <code>InputEvent</code> to children then notifies all <code>InputListeners</code> of event.
+					' * @param e the <code>InputEvent</code>
+					' * @throws Exception from child or listener in response to event
+					' */
+					#processInputEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.InputEvent)
+					'/** 
+					' * Dispatches given <code>ParameterEvent</code> to children then notifies all <code>ParameterListeners</code> of event.
+					' * @param e the <code>ParameterEvent</code>
+					' * @throws Exception from child or listener in response to event
+					' */
+					#processParameterEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.ParameterEvent)
+					'/** 
+					' * Dispatches given <code>RecycleEvent</code> to children then notifies all <code>RecycleListeners</code> of event.
+					' * @param e the <code>RecycleEvent</code>
+					' * @throws RecycleException from child or listener in response to event
+					' */
+					processRecycleEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.RecycleEvent)
+					'/** 
+					' * Notifies all <code>RenderListeners</code> of given <code>RenderEvent</code> then dispatches event to children.
+					' * @param e the <code>RenderEvent</code>
+					' * @throws RenderException from child or listener in response to event
+					' */
+					processRenderEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.RenderEvent)
+					'/** 
+					' * Dispatches given <code>TriggerEvent</code> to children then notifies all <code>TriggerListeners</code> of event.
+					' * @param e the <code>TriggerEvent</code>
+					' * @throws Exception from child or listener in response to event
+					' */
+					#processTriggerEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.TriggerEvent)
+					'/** 
+					' * Set the Map of parameters contained in the request. The Map must contain String keys for each parameter and String[] arrays for each parameter value.
+					' * @param map a Map of parameters contained in the request.
+					' */
+					setParameterMap(map : MapperXML_v1.9.7.java.util.Map)
+				}
+				'DP role: concreteSubject
+				class Parameter {
+					-defaultValue: MapperXML_v1.9.7.java.lang.String
+					-model: MapperXML_v1.9.7.com.taursys.model.TextModel
+					-parameter: MapperXML_v1.9.7.java.lang.String
+					-valueHolder: MapperXML_v1.9.7.com.taursys.model.ValueHolder
+					<<Create>> Parameter()
+					<<Create>> Parameter(javaDataType : JavaPrimitiveTypes.int)
+					#createDefaultModel(): MapperXML_v1.9.7.com.taursys.model.TextModel
+					#createDefaultModel(javaDataType : JavaPrimitiveTypes.int): MapperXML_v1.9.7.com.taursys.model.TextModel
+					getDefaultValue(): MapperXML_v1.9.7.java.lang.String
+					getFormat(): MapperXML_v1.9.7.java.text.Format
+					getFormatPattern(): MapperXML_v1.9.7.java.lang.String
+					getModel(): MapperXML_v1.9.7.com.taursys.model.TextModel
+					getParameter(): MapperXML_v1.9.7.java.lang.String
+					getPropertyName(): MapperXML_v1.9.7.java.lang.String
+					getText(): MapperXML_v1.9.7.java.lang.String
+					getValue(): MapperXML_v1.9.7.java.lang.Object
+					getValueHolder(): MapperXML_v1.9.7.com.taursys.model.ValueHolder
+					#processParameterEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.ParameterEvent)
+					setDefaultValue(newDefaultValue : MapperXML_v1.9.7.java.lang.String)
+					setFormat(format : MapperXML_v1.9.7.java.text.Format)
+					setFormatPattern(newPattern : MapperXML_v1.9.7.java.lang.String)
+					setModel(newModel : MapperXML_v1.9.7.com.taursys.model.TextModel)
+					setParameter(newParameter : MapperXML_v1.9.7.java.lang.String)
+					setPropertyName(newPropertyName : MapperXML_v1.9.7.java.lang.String)
+					setText(text : MapperXML_v1.9.7.java.lang.String)
+					setValue(value : MapperXML_v1.9.7.java.lang.Object)
+					setValueHolder(newValueHolder : MapperXML_v1.9.7.com.taursys.model.ValueHolder)
+				}
+				'DP role: concreteSubject
+				class Trigger {
+					-defaultTrigger: JavaPrimitiveTypes.boolean
+					-model: MapperXML_v1.9.7.javax.swing.ButtonModel
+					-parameter: MapperXML_v1.9.7.java.lang.String
+					-text: MapperXML_v1.9.7.java.lang.String
+					<<Create>> Trigger()
+					#createDefaultModel(): MapperXML_v1.9.7.javax.swing.ButtonModel
+					getModel(): MapperXML_v1.9.7.javax.swing.ButtonModel
+					getParameter(): MapperXML_v1.9.7.java.lang.String
+					getText(): MapperXML_v1.9.7.java.lang.String
+					isDefaultTrigger(): JavaPrimitiveTypes.boolean
+					#processTriggerEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.TriggerEvent)
+					setDefaultTrigger(newDefaultTrigger : JavaPrimitiveTypes.boolean)
+					setModel(newModel : MapperXML_v1.9.7.javax.swing.ButtonModel)
+					setParameter(newParameter : MapperXML_v1.9.7.java.lang.String)
+					setText(newText : MapperXML_v1.9.7.java.lang.String)
+				}
+				'/** 
+				' * <p><code>DocumentElement</code> is a simple container element for an XML document. It functions as an intermediate <code>Container</code> which has its own set of <code>Dispatchers</code> for its children. It responds to <code>ParameterEvents</code>, <code>InputEvents</code> and <code>TriggerEvents</code> by simply propagating the event to its children. </p> <p>In response to a <code>RenderEvent</code>, it simply shows or hides the Document Element and, if visible, dispatches a <code>RenderEvent</code> to the children of the <code>DocumentElement</code>. </p> <p>In response to a <code>RecycleEvent</code>, it simply makes the Document Element visible, and dispatches a <code>RecycleEvent</code> to the children of the <code>DocumentElement</code>. </p>
+				' * @author Marty Phelan
+				' * @version 1.0
+				' */
+				'DP role: concreteSubject
+				class DocumentElement {
+					-id: MapperXML_v1.9.7.java.lang.String
+					-renderer: MapperXML_v1.9.7.com.taursys.xml.render.DocumentElementRenderer
+					'/** 
+					' * Constructs a new DocumentElement
+					' */
+					<<Create>> DocumentElement()
+					'/** 
+					' * Creates the default DocumentElementRenderer for this component. By Default this methos returns a new DocumentElementRenderer. Override this method to define your own DocumentElementRenderer.
+					' */
+					#createDefaultRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.DocumentElementRenderer
+					'/** 
+					' * Returns the id of the node this component is bound to.  This is the node which this component will replicate.
+					' */
+					getId(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Get the Renderer for this component.
+					' * @return the Renderer for this component.
+					' */
+					getRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.DocumentElementRenderer
+					'/** 
+					' * Processes a RecycleEvent recycling self and children, and then by propagating event to listeners.
+					' */
+					processRecycleEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.RecycleEvent)
+					'/** 
+					' * Responds to a render event for this component.  This uses the renderer subcomponent to actually render the value. It first notifies any RenderListeners of the event. It then invokes the renderer subcomponent to render the value to the document.
+					' * @param e the current render event message
+					' * @throws RenderException if problem rendering value to document
+					' */
+					processRenderEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.RenderEvent)
+					'/** 
+					' * Sets the id of the node this component is bound to.  This is the node which this component will replicate.
+					' */
+					setId(newId : MapperXML_v1.9.7.java.lang.String)
+				}
+				'/** 
+				' * Form is ...
+				' * @author Marty Phelan
+				' * @version 1.0
+				' */
+				'DP role: concreteSubject
+				class Form {
+					{const} PARAMETER_MAP: MapperXML_v1.9.7.java.lang.String = com.taursys.xml.ParameterMap
+					-closeFormDispatcher: MapperXML_v1.9.7.com.taursys.xml.event.CloseFormDispatcher
+					-closeFormListeners: MapperXML_v1.9.7.java.util.ArrayList
+					-documentAdapter: MapperXML_v1.9.7.com.taursys.dom.DocumentAdapter
+					-formContext: MapperXML_v1.9.7.java.util.Map
+					-initContextDispatcher: MapperXML_v1.9.7.com.taursys.xml.event.InitContextDispatcher
+					-initContextListeners: MapperXML_v1.9.7.java.util.ArrayList
+					-initFormDispatcher: MapperXML_v1.9.7.com.taursys.xml.event.InitFormDispatcher
+					-initFormListeners: MapperXML_v1.9.7.java.util.ArrayList
+					-initialized: JavaPrimitiveTypes.boolean
+					-openFormDispatcher: MapperXML_v1.9.7.com.taursys.xml.event.OpenFormDispatcher
+					-openFormListeners: MapperXML_v1.9.7.java.util.ArrayList
+					-sourceId: MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Constructs a new Form
+					' */
+					<<Create>> Form()
+					'/** 
+					' * Adds given listener to notification list for CloseFormEvents
+					' */
+					addCloseFormListener(l : MapperXML_v1.9.7.com.taursys.xml.event.CloseFormListener)
+					'/** 
+					' * Adds given listener to notification list for InitContextEvents
+					' */
+					addInitContextListener(l : MapperXML_v1.9.7.com.taursys.xml.event.InitContextListener)
+					'/** 
+					' * Adds given listener to notification list for InitFormEvents
+					' */
+					addInitFormListener(l : MapperXML_v1.9.7.com.taursys.xml.event.InitFormListener)
+					'/** 
+					' * Adds given listener to notification list for OpenFormEvents
+					' */
+					addOpenFormListener(l : MapperXML_v1.9.7.com.taursys.xml.event.OpenFormListener)
+					'/** 
+					' * Closes the form and any resources it may have opened. This method is invoked by the processCloseForm method which is normally invoked at the end of the processing cycle but before this Form is recycled. Override this method to provide custom behavior. This implementation has no specific behavior.
+					' */
+					#closeForm()
+					'/** 
+					' * Creates the default DocumentElementRenderer for this component. By Default this methos returns a new DocumentElementRenderer. Override this method to define your own DocumentElementRenderer.
+					' */
+					#createDefaultRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.DocumentElementRenderer
+					'/** 
+					' * Initiate the dispatch of the <code>CloseFormEvent</code> to registered nested <code>Forms</code>. This method should be invoked after all processing is complete. Normally, nested <code>Forms</code> should be allowed to close before this form closes.
+					' */
+					#dispatchCloseForm()
+					'/** 
+					' * This method is invoked by run to dispatch the formContext to nested Forms. This method depends on the parameterMap property being set. A new context is constructed which contains everything already in this <code>Form's</code> plus the parameterMap.
+					' */
+					#dispatchInitContext()
+					'/** 
+					' * Initiate the dispatch of the <code>InitFormEvent</code> to registered nested <code>Forms</code>. This method should only be invoked after the <code>InitContextEvent</code> has been dispatched.
+					' */
+					#dispatchInitForm()
+					'/** 
+					' * Initiate the dispatch of the <code>OpenFormEvent</code> to registered nested <code>Forms</code>. This method should only be invoked after the <code>InitFormEvent</code> and <code>ParameterEvent</code> have been dispatched.
+					' */
+					#dispatchOpenForm()
+					'/** 
+					' * Notifies all registered listeners of a given CloseFormEvent
+					' */
+					#fireCloseFormReceived(e : MapperXML_v1.9.7.com.taursys.xml.event.CloseFormEvent)
+					'/** 
+					' * Notifies all registered listeners of a given InitContextEvent
+					' */
+					#fireInitContextReceived(e : MapperXML_v1.9.7.com.taursys.xml.event.InitContextEvent)
+					'/** 
+					' * Notifies all registered listeners of a given InitFormEvent
+					' */
+					#fireInitFormReceived(e : MapperXML_v1.9.7.com.taursys.xml.event.InitFormEvent)
+					'/** 
+					' * Notifies all registered listeners of a given OpenFormEvent
+					' */
+					#fireOpenFormReceived(e : MapperXML_v1.9.7.com.taursys.xml.event.OpenFormEvent)
+					'/** 
+					' * Returns the document for this form.  This is the document which will be sent back as the response.  This is also the document which the components of this form will modify.
+					' */
+					getDocument(): MapperXML_v1.9.7.org.w3c.dom.Document
+					'/** 
+					' * Gets the documentAdapter for this form.  The document adapter is used by components as an adapter for the actual Document.  The adapter provides the needed methods for components to manipulate the Document regardless of the DOM version.
+					' * @return the documentAdapter for this form.
+					' */
+					getDocumentAdapter(): MapperXML_v1.9.7.com.taursys.dom.DocumentAdapter
+					'/** 
+					' * Get the <code>Map</code> of key/value pairs for this <code>Form's</code> context.
+					' * @return the <code>Map</code> of key/value pairs for this <code>Form's</code>context.
+					' */
+					getFormContext(): MapperXML_v1.9.7.java.util.Map
+					'/** 
+					' * Returns the id of the node this component is bound to.  This is the node which this component will replicate.
+					' */
+					getSourceId(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * This method is invoked by run to initialize the form.  It is the first method invoked by the doGet method before any parameters have been dispatched. This method sets the initialized flag to true. Override this method to provide custom behavior.  If you override, be sure to invoke super.initForm or setInitialized(true) if this method should only be called once.
+					' */
+					#initForm()
+					'/** 
+					' * Indicates whether the form has been initialized (via the initForm method). The run method will only invoke the initForm method if this indicator is false, and then it will set this indicator to true.  This will prevent the form from being initialized again (if it is recycled).
+					' */
+					isInitialized(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Lookup a value from this <code>Form's</code> context.
+					' * @param key the key for the value to lookup
+					' * @return the value as an Object or null if not found.
+					' */
+					lookup(key : MapperXML_v1.9.7.java.lang.Object): MapperXML_v1.9.7.java.lang.Object
+					'/** 
+					' * This method is invoked as part of the processOpenFormEvent method. It is normally invoked after processParameterEvent, but before processInputEvent.  Override this method to provide custom behavior such as opening data sources. This implementation has no specific behavior.
+					' */
+					#openForm()
+					'/** 
+					' * Processes a given CloseFormEvent by invoking the Form's closeForm method, then dispatching an <code>CloseFormEvent</code> to the <code>Form's</code> children, and finally propagating the <code>CloseFormEvent</code> to registered listeners.
+					' * @param e the CloseFormEvent to process
+					' */
+					#processCloseFormEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.CloseFormEvent)
+					'/** 
+					' * Processes given event by invoking the appropriate processX__Event method. The appropriate event type is determined by the class of the given EventObject.
+					' */
+					#processEvent(e : MapperXML_v1.9.7.java.util.EventObject)
+					'/** 
+					' * Processes a given InitContextEvent by setting the <code>formContext</code> and <code>parameterMap</code> from the given message, then dispatching an <code>InitContextEvent</code> to the <code>Form's</code> children, and finally propagating the <code>InitContextEvent</code> to registered listeners.
+					' * @param e the InitContextEvent to process
+					' */
+					#processInitContextEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.InitContextEvent)
+					'/** 
+					' * Processes a given InitFormEvent by invoking the Form's initForm method (unless initialized is true), then dispatching an <code>InitFormEvent</code> to the <code>Form's</code> children, and finally propagating the <code>InitFormEvent</code> to registered listeners.
+					' * @param e the InitFormEvent to process
+					' */
+					#processInitFormEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.InitFormEvent)
+					'/** 
+					' * Processes a given OpenFormEvent by invoking the Form's openForm method, then dispatching an <code>OpenFormEvent</code> to the <code>Form's</code> children, and finally propagating the <code>OpenFormEvent</code> to registered listeners.
+					' * @param e the OpenFormEvent to process
+					' */
+					#processOpenFormEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.OpenFormEvent)
+					'/** 
+					' * Removes given listener from notification list for CloseFormEvents
+					' */
+					removeCloseFormListener(l : MapperXML_v1.9.7.com.taursys.xml.event.CloseFormListener)
+					'/** 
+					' * Removes given listener from notification list for InitContextEvents
+					' */
+					removeInitContextListener(l : MapperXML_v1.9.7.com.taursys.xml.event.InitContextListener)
+					'/** 
+					' * Removes given listener from notification list for InitFormEvents
+					' */
+					removeInitFormListener(l : MapperXML_v1.9.7.com.taursys.xml.event.InitFormListener)
+					'/** 
+					' * Removes given listener from notification list for OpenFormEvents
+					' */
+					removeOpenFormListener(l : MapperXML_v1.9.7.com.taursys.xml.event.OpenFormListener)
+					'/** 
+					' * Sets the document and creates the documentAdapter for this form. This is the document which will be typically be modified and sent back as the response.
+					' * @param newDocument for this form.
+					' */
+					setDocument(newDocument : MapperXML_v1.9.7.org.w3c.dom.Document)
+					'/** 
+					' * Sets the documentAdapter for this form.  The document adapter is used by components as an adapter for the actual Document.  The adapter provides the needed methods for components to manipulate the Document regardless of the DOM version.
+					' * @param newDocumentAdapter for this form.
+					' */
+					setDocumentAdapter(newDocumentAdapter : MapperXML_v1.9.7.com.taursys.dom.DocumentAdapter)
+					'/** 
+					' * Set the <code>Map</code> of key/value pairs for this <code>Form's</code> context.
+					' * @param formContext the <code>Map</code> of key/value pairs for this<code>Form's</code> context.
+					' * @throws IllegalArgumentException if the given value is null
+					' */
+					setFormContext(formContext : MapperXML_v1.9.7.java.util.Map)
+					'/** 
+					' * Sets an indicator that the form has been initialized (via the initForm method). The run method will only invoke the initForm method if this indicator is false, and then it will set this indicator to true.  This will prevent the form from being initialized again (if it is recycled).
+					' */
+					setInitialized(newInitialized : JavaPrimitiveTypes.boolean)
+					'/** 
+					' * Sets the id of the node this component is bound to.  This is the node which this component will replicate.
+					' */
+					setSourceId(sourceId : MapperXML_v1.9.7.java.lang.String)
+				}
+				'/** 
+				' * <p>A <code>Template</code> is a component used to display and/or input multiple values. It acts as a <code>Container</code> for other components which provide the actual display or input. A typical application for the <code>Template</code> is to display or edit a table of data. The <code>Template</code> is bound to a single tag in the XML document. This tag in turn contains other tags that make up the "template" row. The <code>Template</code> is also bound to a CollectionValueHolder which contains the values. When rendered, the Template will replicate itself (and its child tags) in the XML document for each value in the holder. </p> <p>The following is an example illustrates a <code>Template</code> used to display a list of names (from a collection of Person objects). A portion of the HTML is listed below along with a portion of the java code. The initForm and openForm methods have been ommitted. The <code>HTMLComponentFactory</code> was not used in this example so that the actual components could be illustrated. </p> <pre> &lt;h2&gt;List presented in a table&lt;/h2&gt; &lt;table border="1"&gt; &lt;tr&gt; &lt;td &gt;First Name&lt;/td&gt; &lt;td &gt;Last Name&lt;/td&gt; &lt;/tr&gt; &lt;tr id="People__TEMPLATE_NODE"&gt; &lt;td id="People__firstName"&gt;John&lt;/td&gt; &lt;td id="People__lastName"&gt;Smith&lt;/td&gt; &lt;/tr&gt; &lt;/table&gt; ----------------------------------------------------------------------- public class TemplatePage extends ServletForm { VOCollectionValueHolder people = new VOCollectionValueHolder(); // =================================================================== // The following code can be ommitted if the component factory is used // =================================================================== TextField firstName = new TextField(); TextField lastName = new TextField(); Template report = new Template(); // =================================================================== public TemplatePage() { try { jbInit(); } catch(Exception e) { e.printStackTrace(); } } private void jbInit() throws Exception { people.setAlias("People"); people.setValueObjectClass(Person.class); // =================================================================== // The following code can be ommitted if the component factory is used // =================================================================== firstName.setPropertyName(Person.FIRST_NAME); firstName.setValueHolder(people); firstName.setId("People__firstName"); lastName.setPropertyName(Person.LAST_NAME); lastName.setValueHolder(people); lastName.setId("People__lastName"); report.setId("report"); report.setCollectionValueHolder(people); report.add(firstName); report.add(lastName); this.add(report); // =================================================================== } </pre> <p>A <code>Template</code> can also be used to input multiple values. The code is essentially the same, except that you will use input type components in the HTML and Java code. The order and count of the values in the request must correspond to the order and count in the holder. The BusinessDelegate that supplies the values should ensure this. </p> <p>The following example illustrates a form to edit inventory items. A portion of the HTML is listed below along with a portion of the java code. The openForm methods has been ommitted. This example uses the HTMLComponent factory to create the actual components at runtime. </p> <pre> &lt;h2&gt;List of Inventory Items to Edit&lt;/h2&gt; &lt;form method="post" action="InventoryEditPage.sf"&gt; &lt;table border="1" width="100%"&gt; &lt;tr bgcolor="orange"&gt; &lt;td&gt;Quantity&lt;/td&gt; &lt;td&gt;Product ID&lt;/td&gt; &lt;td&gt;Unit Price&lt;/td&gt; &lt;td&gt;Extension&lt;/td&gt; &lt;/tr&gt; &lt;tr id="Inventory__TEMPLATE_NODE"&gt; &lt;td&gt; &lt;input type="text" id="Inventory__quantity" name="quantity" value="1"/&gt; &lt;/td&gt; &lt;td id="Inventory__productID"&gt;XXXX&lt;/td&gt; &lt;td&gt; &lt;input type="text" id="Inventory__unitPrice" name="unitPrice" value="0.00"/&gt; &lt;/td&gt; &lt;td id="Inventory__extension"&gt;0.00&lt;/td&gt; &lt;/tr&gt; &lt;/table&gt; &lt;br/&gt; &lt;input type="submit" name="action" value="Save"/&gt; &lt;/form&gt; ----------------------------------------------------------------------- public class InventoryEditPage extends ServletForm { private VOListValueHolder inventoryHolder = new VOListValueHolder(); public InventoryEditPage() { try { jbInit(); } catch(Exception e) { e.printStackTrace(); } } private void jbInit() throws Exception { inventoryHolder.setAlias("Inventory"); inventoryHolder.setValueObjectClass(InvoiceItemVO.class); this.add(warehouseField); } protected void initForm() throws java.lang.Exception { super.initForm(); DOMParser parser = new DOMParser(); InputSource is = new InputSource( getClass().getResourceAsStream("InventoryEditPage.html")); parser.parse(is); this.setDocument(parser.getDocument()); // Use HTMLComponentFactory to create components HTMLComponentFactory.getInstance().createComponents(this, new ValueHolder[] {inventoryHolder}); } </pre> <p>Technical Information: </p> <p>The <code>Template</code> uses a <code>TemplateRenderer</code> to do the actual rendering.  Typically, this involves dispatching a <code>RenderEvent</code> to its children, then cloning itself for each item in its <code>collectionValueHolder</code>. </p> <p>The <code>Template</code> creates specialized dispatchers for Input and Trigger events. These dispatchers iterate over each item in the collection (in the order of the iterator), increment the parameter index and dispatch input to child components. </p>
+				' */
+				'DP role: concreteSubject
+				class Template {
+					-collectionValueHolder: MapperXML_v1.9.7.com.taursys.model.CollectionValueHolder
+					'/** 
+					' * Constructs a new template
+					' */
+					<<Create>> Template()
+					'/** 
+					' * Creates the default Renderer for this component. By Default this methos returns a new TemplateRenderer. Override this method to define your own TemplateRenderer.
+					' */
+					#createDefaultRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.DocumentElementRenderer
+					'/** 
+					' * Create the InputDispatcher for this Container.
+					' * @return the InputDispatcher for this Container.
+					' */
+					#createInputDispatcher(): MapperXML_v1.9.7.com.taursys.xml.event.InputDispatcher
+					'/** 
+					' * Create the TriggerDispatcher for this Container.
+					' * @return the TriggerDispatcher for this Container.
+					' */
+					#createTriggerDispatcher(): MapperXML_v1.9.7.com.taursys.xml.event.TriggerDispatcher
+					'/** 
+					' * Get the CollectionValueHolder that this template will iterate for rendering.
+					' * @return the CollectionValueHolder that this template will iterate forrendering.
+					' */
+					getCollectionValueHolder(): MapperXML_v1.9.7.com.taursys.model.CollectionValueHolder
+					'/** 
+					' * Set the CollectionValueHolder that this template will iterate for rendering.
+					' * @param holder the CollectionValueHolder that this template will iterate forrendering.
+					' */
+					setCollectionValueHolder(holder : MapperXML_v1.9.7.com.taursys.model.CollectionValueHolder)
+				}
+				'/** 
+				' * <p>This component is used to display and change a "selected indicator". This component uses a <code>DefaultCheckboxModel</code> to manage the state. There are only two states for this component: selected or not-selected.</p> <p>To use this component you must first set the the following properties as indicated:</p> <ul> <li><code>selectedValue</code> - the text value which indicates a "selected" state. The default value is "true".</li> <li><code>unselectedValue</code> - the text value which indicates an "un-selected" state. The default value is "" (blank) which will result in a <code>null</code> value being stored in the <code>valueHolder</code></li> </ul> <p>This component can function in three different ways, depending on the properties you set:</p> <ul> <li>input only - set the <code>parameter</code> property.</li> <li>output only - set the <code>id</code> property.</li> <li>input and output - set both the <code>parameter</code> and <code>id</code> properties.</li> </ul> <p>When used for output, the value is rendered in the XML document as a text node by default. If you want the value to be rendered to an attribute of the node instead, you must change the <code>renderer</code> to an <code>AttributeTextFieldRenderer</code> and the the <code>attribute</code> property to the name of the attribute. For rendering with an HTML input type checkbox, use the <code>HTMLCheckBox</code> component.</p> <p>When used for input, this component receives its value from the <code>InputDispatcher</code> AFTER the <code>openForm</code> method of the <code>ServletForm</code> by default.  If you want this component to receive its input earlier (at the same time as <code>Parameters</code>), set the <code>earlyInputNotify</code> property to <code>true</code>.</p> <p>By default, this component uses a <code>DefaultCheckboxModel</code>. You can change this by overriding the <code>createDefaultModel</code> method or explicitly setting the <code>model</code> property.</p> <p>This component can be used in a variety of ways. It can be used in an un-bound mode, where the current selected state is maintained internally. It can also be used in a bound mode where the current selected state is propagated to a value holder. When used in the bound mode a single property can be set in the value holder. The following sections describe the required settings to make for each of the modes.</p> <b>Un-bound Mode</b> <p>To use this component in the un-bound mode, you can set the following properties:</p> <ul> <li><code>selectedValue</code> - the text value which indicates a "selected" state. The default value is "true".</li> <li><code>unselectedValue</code> - the text value which indicates an "un-selected" state. The default value is "" (blank) which will result in a <code>null</code> value being stored in the <code>valueHolder</code></li> </ul> <b>Bound Mode</b> <p>To use this component in the bound mode, use the same properties as described in the Un-bound Mode, plus the following additional properties:</p> <ul> <li><code>valueHolder</code> - should be bound to the <code>ValueHolder</code> which contains the current selected state and is to be updated if the state is changed.</li> <li><code>propertyName</code> - set this to the property name (belonging to the object in the <code>ValueHolder</code>) which will be bound to the selected state. Example: given a <code>ValueHolder</code> with an "Address" object which has a "active" property, use <code>setPropertyName("active")</code> to store the current selected state in the "Address.active" property.</li> </ul>
+				' * @author Marty Phelan
+				' * @version 1.0
+				' */
+				'DP role: concreteSubject
+				class CheckboxField {
+					-renderer: MapperXML_v1.9.7.com.taursys.xml.render.CheckboxFieldRenderer
+					'/** 
+					' * Constructs a new CheckboxField with a default model and renderer. The default model, a DefaultCheckboxModel, is created via the createDefaultModel method in the Parameter superclass. The default renderer, a CheckboxFieldRenderer, is created via the createDefaultRenderer method.
+					' */
+					<<Create>> CheckboxField()
+					'/** 
+					' * Constructs a new CheckboxField for the given datatype with a default model and renderer. The default model, a DefaultCheckboxModel, is created via the createDefaultModel method in the Parameter superclass. The default renderer, a CheckboxFieldRenderer, is created via the createDefaultRenderer method.
+					' * @param javaDataType data type for new model
+					' * @see com.taursys.util.DataTypes for defined data type constants TYPE_XXX.
+					' */
+					<<Create>> CheckboxField(javaDataType : JavaPrimitiveTypes.int)
+					'/** 
+					' * Creates the default TextModel used by this component By default, this method returns a new DefaultCheckboxModel. Override this method to define your own TextModel.
+					' */
+					#createDefaultModel(): MapperXML_v1.9.7.com.taursys.model.TextModel
+					'/** 
+					' * Creates the default model of given data type used by this component
+					' * @param javaDataType data type for new model
+					' * @see com.taursys.util.DataTypes for defined data type constants TYPE_XXX.
+					' */
+					#createDefaultModel(javaDataType : JavaPrimitiveTypes.int): MapperXML_v1.9.7.com.taursys.model.TextModel
+					'/** 
+					' * Creates the default CheckboxFieldRenderer for this component. By default, this method returns a new CheckboxFieldRenderer. Override this method to define your own CheckboxFieldRenderer.
+					' */
+					#createDefaultRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.CheckboxFieldRenderer
+					'/** 
+					' * Returns the current model cast as a SelectModel
+					' */
+					#getCheckboxModel(): MapperXML_v1.9.7.com.taursys.model.CheckboxModel
+					'/** 
+					' * Returns the renderer subcomponent used to render the value to the Document.
+					' */
+					getRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.CheckboxFieldRenderer
+					'/** 
+					' * Get the value used to indicate a selected state.
+					' * @return the value used to indicate a selected state.
+					' */
+					getSelectedValue(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Returns the model value as a String (using Format if defined).  This method simply calls the getText method in the model.
+					' */
+					getText(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Get the value used to indicate an unselected state.
+					' * @return the value used to indicate a unselected state.
+					' */
+					getUnselectedValue(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Gets the current selected state from the Model.  This method simply invokes the model's isSelected method.
+					' * @throws UnknownStateValueException if the internal value does not match aknown state text value.
+					' * @throws ModelException if problem while setting properties of object invalueHolder.
+					' */
+					isSelected(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Responds to a render event for this component.  This uses the renderer subcomponent to actually render the value. It first notifies any RenderListeners of the event. It then invokes the renderer subcomponent to render the value to the document.
+					' * @param e the current render event message
+					' * @throws RenderException if problem rendering value to document
+					' */
+					processRenderEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.RenderEvent)
+					'/** 
+					' * Sets the Model for this component to the given CheckboxModel. Although this component allows passing a TextModel, the given model must be an instanceof CheckboxModel.
+					' * @throws IllegalArgumentException if newModel is not instance of CheckboxModel
+					' */
+					setModel(newModel : MapperXML_v1.9.7.com.taursys.model.TextModel)
+					'/** 
+					' * Sets the renderer subcomponent used to render the value to the Document.
+					' */
+					setRenderer(newRenderer : MapperXML_v1.9.7.com.taursys.xml.render.CheckboxFieldRenderer)
+					'/** 
+					' * Sets the current state as selected(true) or unselected(false) for the model.
+					' * @throws ModelException if problem while setting properties of object invalueHolder.
+					' */
+					setSelected(newSelected : JavaPrimitiveTypes.boolean)
+					'/** 
+					' * Set the value used to indicate a selected state.
+					' * @param newSelectedValue the value used to indicate a selected state.
+					' */
+					setSelectedValue(newSelectedValue : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Sets the model value from the given String (using Format if defined).  This method simply calls the setText method in the model.
+					' */
+					setText(text : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Set the value used to indicate an unselected state.
+					' * @param newUnselectedValue the value used to indicate a unselected state.
+					' */
+					setUnselectedValue(newUnselectedValue : MapperXML_v1.9.7.java.lang.String)
+				}
+				'/** 
+				' * <p>This component is used to display and change a selection. This component, (using a <code>DefaultSelectModel</code>), can display a selection from a list of objects. It can also change the selection from user input.</p> <p>This component can be used for a variety of purposes. It can provide a way to display a "description" rather than a "code" for a coded value. It can also serve to scope user input to a subset of values.</p> <p>The selection is made and displayed using the property indicated by the <code>displayPropertyName</code>. The <code>displayPropertyName</code> is effectively the "selection key". If the <code>displayPropertyName</code> is null or blank, then the <code>toString</code> method is used instead. For example, given a list of Address objects, and a <code>displayPropertyName</code> of "zipCode", the display value for "Juneau, AK 99801 USA" would be "99801". To change the selection, you would supply a different zipCode from the list.</p> <p>This component can function in three different ways, depending on the properties you set:</p> <ul> <li>input only - set the <code>parameter</code> property.</li> <li>output only - set the <code>id</code> property.</li> <li>input and output - set both the <code>parameter</code> and <code>id</code> properties.</li> </ul> <p>When used for output, the value is rendered in the XML document  as a text node by default. If you want the value to be rendered to an attribute of the node instead, you must change the <code>renderer</code> to an <code>AttributeTextFieldRenderer</code> and the the <code>attribute</code> property to the name of the attribute. For rendering with an HTML SELECT/OPTION, use the <code>HTMLSelect</code> component.</p> <p>When used for input, this component receives its value from the <code>InputDispatcher</code> AFTER the <code>openForm</code> method of the <code>ServletForm</code> by default.  If you want this component to receive its input earlier (at the same time as <code>Parameters</code>), set the <code>earlyInputNotify</code> property to <code>true</code>.</p> <p>By default, this component uses a <code>DefaultSelectModel</code>. You can change this by overriding the <code>createDefaultModel</code> method or explicitly setting the <code>model</code> property.</p> <b>Setting the List</b> <p> The <code>list</code> must be a type of <code>CollectionValueHolder</code> (example: <code>VOCollectionValueHolder</code> or <code>VOListValueHolder</code>). The holder can contain any type of object (but they must all be instances of the same class). <p> If the <code>list</code> is an <code>ObjectArrayValueHolder</code>, then the <code>toString()</code> method is used as the display value (regardless of the <code>displayPropertyName</code>). If used in the bound mode, the whole object itself is stored in the target ValueHolder's object (regardless of the property names listed in the <code>setListPropertyNames</code> method). It is important to make sure that the <code>valueHolder</code> property is the same type as the objects in the <code>ObjectArrayValueHolder</code> or a <code>ModelException</code> will occur. <p> You can also preset the <code>list</code> in the constructor by passing it an array of Objects to be used for the <code>list</code>. The resulting <code>list</code> will be an <code>ObjectArrayValueHolder</code>. <p> The following is an example of this usage:</p> <pre> SelectField color = new SelectField(new String[] { "Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet", }); ... private void jbInit() throws Exception { ... color.setParameter("color"); color.setId("color"); ... this.add(color); } </pre> <p>This component can be used in a variety of ways. It can be used in an un-bound mode, where the current selection is maintained internally. It can also be used in a bound mode where the current selection is propagated to a value holder. When used in the bound mode, either a single property, or multiple properties can be set in the value holder. The following sections describe the required settings to make for each of the modes.</p> <b>Un-bound Mode (uses internal VariantValueHolder)</b> <p> When used in this mode this component uses an internal <code>VariantValueHolder</code> to hold the current selection. By default a <code>VariantValueHolder</code> is created with a data type of <code>String</code>. To set a different data type use the constructor which takes a data type as a parameter. (example <code>new SelectField(DataTypes.TYPE_INT)</code>). <p> To use this component in the un-bound mode, you must set the following properties: <ul> <li><code>list</code> - should be set to a type of <code>CollectionHolder</code> which holds the list of options (see "Setting the List"). </li> <li><code>displayPropertyName</code> - the name of the property to display (property of objects in list). Example: given a list of "Location" objects with a property called "locationName", use <code>setDisplayPropertyName("locationName")</code> to display the zipCode. IMPORTANT - The displayed property choosen must result in a unique list of values, otherwise the intended value may not be selected/displayed. </li> <li><code>listPropertyNames</code> - set a single source property name in the <code>list</code> objects. Example: Given a list containing "Location" objects which has properties "zipCode", "cityName", "stateAbbr", and "country", to make the zipcode the internal value use <code>setListPropertyNames(new String[] {"zipCode"})</code>. <p> If the <code>list</code> is an <code>ObjectArrayValueHolder</code>, then the property name should always be a single "value" (which is the default). </li> <li><code>propertyName</code> - must be "value" (which is the default). </li> <li><code>nullDisplay</code> - String to display in list for null selection. Example: "--- Nothing Selected ---" </li> </ul> <b>Bound Mode</b> <p> To use this component in the bound mode, use the same properties as described in the Un-bound Mode, plus the following additional properties: <ul> <li><code>valueHolder</code> - should be set to the target <code>ValueHolder</code> which contains the current selection and will be updated if the selection is changed. </li> <li><code>propertyName</code> - set this to the first (or only) <code>ValueHolder</code> object property name which will be bound to the selection. Example: given a <code>ValueHolder</code> with an "Address" object which has a "zipCode" property, use <code>setPropertyName("zipCode")</code> to store the current selection in the "Address.zipCode" property. </li> <li><code>propertyNames</code> - use this when you want to set more than 1 property in the <code>ValueHolder</code> object. Example: assume you want to set not only the "zipCode" property, but also the "city", "state" and "country" properties, use <code>setPropertyNames(new String[] {"zipCode","city","state","country"})</code> </li> <li><code>listPropertyNames</code> - set the to the source property name(s) in the <code>list</code> objects. IMPORTANT - The name(s) of the <code>listPropertyNames</code> properties MUST be in the same ORDER as the <code>propertyName(s)</code>. The names in the <code>listPropertNames</code> may be different than the names in the <code>propertyNames</code> since they are associated with in objects in the <code>list</code>, not the <code>valueHolder</code>. Example: Given a <code>list</code> containing "Location" objects which has properties "zipCode", "cityName", "stateAbbr", and "country", for a single property use <code>setListPropertyNames(new String[] {"zipCode"})</code>. For multiple properties use <code>setListPropertyNames(new String[] {"zipCode", "cityName", "stateAbbr", "country"})</code> <p> If the <code>list</code> is an <code>ObjectArrayValueHolder</code>, then the property name should always be a single "value" (which is the default). </li> </ul> <b>Other Important Information</b> <p> When a selection is made, the values are copied from the properties in the <code>list</code> to the properties in the <code>valueHolder</code> object. The property names in <code>propertyNames[]</code> and <code>listPropertyNames[]</code> must appear in a corresponding order. <p> A "null" item will always be added to the <code>displayOptionList</code>. When the "null" item is selected, a null will be assigned to the <code>propertyNames[]</code> in the <code>valueHolder</code> object. The actual "null" item to to display is defined by the <code>nullDisplay</code> (default is "--none--"). <p> The <code>format</code> and <code>formatPattern</code> govern the display property in this component.  The <code>getText</code> method returns the formatted display property, while the <code>setText</code> method changes the current selection to one whose display matches the given value. If you attempt to <code>setText</code> for an item that is not in the list, a <code>NotInListException</code> will be thrown.
+				' */
+				'DP role: concreteSubject
+				class SelectField {
+					-renderer: MapperXML_v1.9.7.com.taursys.xml.render.SelectFieldRenderer
+					'/** 
+					' * Constructs a new SelectField.
+					' */
+					<<Create>> SelectField()
+					'/** 
+					' * Creates a new SelectField of the given data type.
+					' * @param javaDataType the data type for the VariantValueHolder
+					' * @see com.taursys.util.DataTypes for defined data type constants TYPE_XXXXXX.
+					' */
+					<<Create>> SelectField(javaDataType : JavaPrimitiveTypes.int)
+					'/** 
+					' * Constructs a new SelectField with the given list of options.
+					' */
+					<<Create>> SelectField(array : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Constructs a new SelectField of the given data type with the given list of options.
+					' * @param javaDataType the data type for the VariantValueHolder
+					' * @param array the array of options
+					' * @see com.taursys.util.DataTypes for defined data type constants TYPE_XXXXXX.
+					' */
+					<<Create>> SelectField(javaDataType : JavaPrimitiveTypes.int, array : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Creates the default TextModel used by this component By default, this method returns a new DefaultSelectModel. Override this method to define your own TextModel.
+					' */
+					#createDefaultModel(): MapperXML_v1.9.7.com.taursys.model.TextModel
+					'/** 
+					' * Creates the default model of given data type used by this component
+					' * @param javaDataType data type for new model
+					' * @see com.taursys.util.DataTypes for defined data type constants TYPE_XXX.
+					' */
+					#createDefaultModel(javaDataType : JavaPrimitiveTypes.int): MapperXML_v1.9.7.com.taursys.model.TextModel
+					'/** 
+					' * Creates the default SelectFieldRenderer for this component. By default, this method returns a new SelectFieldRenderer. Override this method to define your own SelectFieldRenderer.
+					' */
+					#createDefaultRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.SelectFieldRenderer
+					'/** 
+					' * Returns the property name of the list object to display in the list. Default is "value".
+					' */
+					getDisplayPropertyName(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Returns collectionValueHolder which holds the collection of possible selections.
+					' */
+					getList(): MapperXML_v1.9.7.com.taursys.model.CollectionValueHolder
+					'/** 
+					' * Returns array of property names in list object to copy to valueHolder object. Default is {"value"}.
+					' */
+					getListPropertyNames(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Returns value to display in list for a null value.
+					' */
+					getNullDisplay(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Gets the property name in valueHolder that will hold the value from the list. If you have also used the setPropertyNames method, then this will return the first name in that array.
+					' */
+					getPropertyName(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Sets array of property names in valueHolder object that correspond to properties of list object. Default is {"value"}.
+					' */
+					getPropertyNames(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Returns the renderer subcomponent used to render the value to the Document.
+					' */
+					getRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.SelectFieldRenderer
+					'/** 
+					' * Returns the current model cast as a SelectModel
+					' */
+					#getSelectModel(): MapperXML_v1.9.7.com.taursys.model.SelectModel
+					'/** 
+					' * Gets the current selection from the Model.  This method simply invokes the model's getSelectedItem method.
+					' */
+					getSelection(): MapperXML_v1.9.7.java.lang.Object
+					'/** 
+					' * Returns the model value as a String (using Format if defined).  This method simply calls the getText method in the model.
+					' */
+					getText(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Returns indicator that a null value is a valid selection. If true, the <code>nullDisplay</code> value will appear in the list of options generated by <code>getDisplayOptionList</code> and <code>setText</code> will accept null or the <code>nullDisplay</code> value. If false, the <code>setText</code> method will throw a <code>NotInListException</code> if null or the <code>nullDisplay</code> value is set, and the <code>nullDisplay</code> will not appear in the <code>displayOptionList</code>. Default is true.
+					' */
+					isNullAllowed(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Responds to a render event for this component.  This uses the renderer subcomponent to actually render the value. It first notifies any RenderListeners of the event. It then invokes the renderer subcomponent to render the value to the document.
+					' * @param e the current render event message
+					' * @throws RenderException if problem rendering value to document
+					' */
+					processRenderEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.RenderEvent)
+					'/** 
+					' * Sets the property name of the list object to display in the list. Default is "value".
+					' */
+					setDisplayPropertyName(newDisplayPropertyName : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Sets collectionValueHolder which holds the collection of possible selections.
+					' */
+					setList(newList : MapperXML_v1.9.7.com.taursys.model.CollectionValueHolder)
+					'/** 
+					' * Sets array of property names in list object to copy to valueHolder object. Default is {"value"}.
+					' */
+					setListPropertyNames(newListPropertyNames : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Sets the Model for this component to the given SelectModel. Although this component allows passing a TextModel, the given model must be an instanceof SelectModel.
+					' * @throws IllegalArgumentException if newModel is not instance of SelectModel
+					' */
+					setModel(newModel : MapperXML_v1.9.7.com.taursys.model.TextModel)
+					'/** 
+					' * Sets indicator that a null value is a valid selection. If true, the <code>nullDisplay</code> value will appear in the list of options generated by <code>getDisplayOptionList</code> and <code>setText</code> will accept null or the <code>nullDisplay</code> value. If false, the <code>setText</code> method will throw a <code>NotInListException</code> if null or the <code>nullDisplay</code> value is set, and the <code>nullDisplay</code> will not appear in the <code>displayOptionList</code>. Default is true.
+					' */
+					setNullAllowed(nullAllowed : JavaPrimitiveTypes.boolean)
+					'/** 
+					' * Sets value to display in list for a null value.
+					' */
+					setNullDisplay(newNullDisplay : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Sets the property name in valueHolder that will hold the value from the list. If you have also used the setPropertyNames method, then this will change the first name in that array.
+					' */
+					setPropertyName(newPropertyName : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Sets array of property names in valueHolder object that correspond to properties of list object. Default is {"value"}.
+					' */
+					setPropertyNames(newPropertyNames : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Sets the renderer subcomponent used to render the value to the Document.
+					' */
+					setRenderer(newRenderer : MapperXML_v1.9.7.com.taursys.xml.render.SelectFieldRenderer)
+					'/** 
+					' * Sets the current selection from the Model.  This method simply invokes the model's setSelectedItem method.
+					' */
+					setSelection(value : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Sets the model value from the given String (using Format if defined).  This method simply calls the setText method in the model.
+					' */
+					setText(text : MapperXML_v1.9.7.java.lang.String)
+				}
+				'/** 
+				' * A component which can receive input and/or render a value to an XML document. This component can function in three different ways, depending on the properties you set: <ul> <li>input only - set the <code>parameter</code> property.</li> <li>output only - set the <code>id</code> property.</li> <li>input and output - set both the <code>parameter</code> and <code>id</code> properties.</li> </ul> <p>When used for output, the value is rendered in the XML document  as a text node by default. If you want the value to be rendered to an attribute of the node instead, you must change the <code>renderer</code> to an <code>AttributeTextFieldRenderer</code> and the the <code>attribute</code> property to the name of the attribute. The below example demonstrates both cases:</p> <pre> private TextField projectStatus = new TextField(); private TextField projectStatusColor = new TextField(); private void jbInit() throws Exception { projectStatus.setId("projectStatus"); projectStatusColor.setId("projectStatus"); projectStatusColor.setRenderer( new AttributeTextFieldRenderer(projectStatusColor)); projectStatusColor.setAttribute("bgcolor"); ... this.add(projectStatus); this.add(projectStatusColor); } protected void openForm() throws Exception { ... projectStatus.setValue("on-schedule"); projectStatusColor.setValue("green"); ... } </pre> <p>After rendering the HTML document would appear as follows:</p> <pre> ... &lt;table&gt; &lt;tr&gt; &lt;td id="projectStatus" bgcolor="green"&gt;on-schedule&lt;/td&gt; ... </pre> <p>When used for input, this component receives its value from the <code>InputDispatcher</code> AFTER the <code>openForm</code> method of the <code>ServletForm</code> by default.  If you want this component to receive its input earlier (at the same time as <code>Parameters</code>), set the <code>earlyInputNotify</code> property to <code>true</code>.</p> <p>By default, this component uses an internal <code>DefaultTextModel</code> with a <code>VariantValueHolder</code> and a default data type of <code>String</code>. You can specify a different data type when you invoke the constructor of this component. Below is an example:</p> <pre> TextField salary = new TextField(DataTypes.TYPE_BIGDECIMAL); </pre> <p>This component can also be bound to an external <code>ValueHolder</code>. An external <code>ValueHolder</code> can be shared by multiple components. The <code>propertyName</code> specifies which property in the <code>ValueHolder</code> will be bound to this component. To bind this component, set the <code>valueHolder</code> and <code>propertyName</code> properties. You do not need to specify a data type when you bind to a <code>ValueHolder</code>. The following is an example of binding:</p> <pre> TextField personId = new TextField(DataTypes.TYPE_INT); TextField lastName = new TextField(); TextField city = new TextField(); VOValueHolder holder = new VOValueHolder(); private void jbInit() throws Exception { holder.setValueObjectClass(PersonVO.class); ... personId.setParameter("personId"); personId.setId("personId"); personId.setEarlyInputNotify(true); ... lastName.setId("lastName"); lastName.setValueHolder(holder); lastName.setPropertyName("lastName"); ... city.setId("city"); city.setValueHolder(holder); city.setPropertyName("address.city"); ... this.add(lastName); this.add(city); } protected void openForm() throws java.lang.Exception { holder.setValueObject( delegate.getPerson((Integer)personId.getValue()); ... } </pre> <p>Notes: In the above example, the personId field is used as a parameter and display field. By setting its <code>earlyInputNotify</code> property to true, it will have its value available when the <code>openForm</code> method is invoked. It is not bound to the holder. The lastName field functions as a display only field. It is not configured as an input field. The same is true of the city field. Note the city field's property name: "address.city". The PersonVO has an "address" property of type AddressVO. The AddressVO in turn has a "city" property. The dot notation supports multiple levels of indirection.</p>
+				' * @see com.taursys.model.ValueHolder
+				' * @see Parameter
+				' */
+				'DP role: concreteSubject
+				class TextField {
+					-renderer: MapperXML_v1.9.7.com.taursys.xml.render.TextFieldRenderer
+					'/** 
+					' * Constructs a new TextField with a default model and renderer. The default model, a VariantTextModel, is created via the createDefaultModel method in the Parameter superclass. The default renderer, a TextFieldRenderer, is created via the createDefaultRenderer method.
+					' */
+					<<Create>> TextField()
+					'/** 
+					' * Creates a new TextField with a DefaultTextModel and VariantValueHolder of the given type. The default renderer, a TextFieldRenderer, is created via the createDefaultRenderer method. See com.taursys.util.DataTypes for defined data type constants TYPE_XXXXXX.
+					' */
+					<<Create>> TextField(javaDataType : JavaPrimitiveTypes.int)
+					'/** 
+					' * Creates the default TextFieldRenderer for this component. By Default this methos returns a new TextFieldRenderer. Override this method to define your own TextFieldRenderer.
+					' */
+					#createDefaultRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.TextFieldRenderer
+					'/** 
+					' * Returns the renderer subcomponent used to render the value to the Document.
+					' */
+					getRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.TextFieldRenderer
+					'/** 
+					' * Responds to a render event for this component.  This uses the renderer subcomponent to actually render the value. It first notifies any RenderListeners of the event. It then invokes the renderer subcomponent to render the value to the document.
+					' * @param e the current render event message
+					' * @throws RenderException if problem rendering value to document
+					' */
+					processRenderEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.RenderEvent)
+					'/** 
+					' * Sets the renderer subcomponent used to render the value to the Document.
+					' */
+					setRenderer(newRenderer : MapperXML_v1.9.7.com.taursys.xml.render.TextFieldRenderer)
+				}
+				'/** 
+				' * Button is a visible Trigger
+				' * @author Marty Phelan
+				' * @version 1.0
+				' */
+				'DP role: concreteSubject
+				class Button {
+					-id: MapperXML_v1.9.7.java.lang.String
+					-renderer: MapperXML_v1.9.7.com.taursys.xml.render.VisibleRenderer
+					'/** 
+					' * Constructs a new Button
+					' */
+					<<Create>> Button()
+					'/** 
+					' * Creates the default TextFieldRenderer for this component. By Default this methos returns a new TextFieldRenderer. Override this method to define your own TextFieldRenderer.
+					' */
+					#createDefaultRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.VisibleRenderer
+					'/** 
+					' * Returns the id of the node this component is bound to.  This is the node which this component will replicate.
+					' */
+					getId(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Get the Renderer for this component.
+					' * @return the Renderer for this component.
+					' */
+					getRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.VisibleRenderer
+					'/** 
+					' * Responds to a render event for this component.  This uses the renderer subcomponent to actually render the value. It first notifies any RenderListeners of the event. It then invokes the renderer subcomponent to render the value to the document.
+					' * @param e the current render event message
+					' * @throws RenderException if problem rendering value to document
+					' */
+					processRenderEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.RenderEvent)
+					'/** 
+					' * Sets the id of the node this component is bound to.  This is the node which this component will replicate.
+					' */
+					setId(newId : MapperXML_v1.9.7.java.lang.String)
+				}
+				MapperXML_v1.9.7.com.taursys.util.MapperComponent <|.. Component
+				Component <|-- Container
+				Container <|-- DispatchingContainer
+				Component <|-- Parameter
+				Component <|-- Trigger
+				DispatchingContainer <|-- DocumentElement
+				DocumentComponent <|.. DocumentElement
+				DocumentElement <|-- Form
+				DocumentElement <|-- Template
+				Parameter <|-- AbstractField
+				DocumentComponent <|.. AbstractField
+				AbstractField <|-- CheckboxField
+				AbstractField <|-- SelectField
+				AbstractField <|-- TextField
+				Trigger <|-- Button
+				DocumentComponent <|.. Button
+				MapperXML_v1.9.7.java.util.ArrayList "eventTypeList" <-- Component
+				MapperXML_v1.9.7.java.util.ArrayList "inputListeners" <-- Component
+				JavaPrimitiveTypes.boolean "notifySet" <-- Component
+				MapperXML_v1.9.7.java.util.ArrayList "parameterListeners" <-- Component
+				MapperXML_v1.9.7.java.util.ArrayList "components" <-- Container
+				MapperXML_v1.9.7.java.util.HashMap "dispatchers" <-- Container
+				Container "parent" <-- Component
+				MapperXML_v1.9.7.java.util.ArrayList "recycleListeners" <-- Component
+				MapperXML_v1.9.7.java.util.ArrayList "renderListeners" <-- Component
+				MapperXML_v1.9.7.java.util.ArrayList "triggerListeners" <-- Component
+				JavaPrimitiveTypes.boolean "visible" <-- Component
+				MapperXML_v1.9.7.java.lang.String "defaultValue" <-- Parameter
+				MapperXML_v1.9.7.com.taursys.model.TextModel "model" <-- Parameter
+				MapperXML_v1.9.7.java.lang.String "parameter" <-- Parameter
+				MapperXML_v1.9.7.com.taursys.model.ValueHolder "valueHolder" <-- Parameter
+				MapperXML_v1.9.7.com.taursys.xml.event.InputDispatcher "inputDispatcher" <-- DispatchingContainer
+				MapperXML_v1.9.7.com.taursys.xml.event.ParameterDispatcher "parameterDispatcher" <-- DispatchingContainer
+				MapperXML_v1.9.7.java.util.Map "parameterMap" <-- DispatchingContainer
+				MapperXML_v1.9.7.com.taursys.xml.event.RecycleDispatcher "recycleDispatcher" <-- DispatchingContainer
+				MapperXML_v1.9.7.com.taursys.xml.event.RenderDispatcher "renderDispatcher" <-- DispatchingContainer
+				JavaPrimitiveTypes.boolean "defaultTrigger" <-- Trigger
+				MapperXML_v1.9.7.javax.swing.ButtonModel "model" <-- Trigger
+				MapperXML_v1.9.7.java.lang.String "parameter" <-- Trigger
+				MapperXML_v1.9.7.java.lang.String "text" <-- Trigger
+				MapperXML_v1.9.7.com.taursys.xml.event.TriggerDispatcher "triggerDispatcher" <-- DispatchingContainer
+				MapperXML_v1.9.7.java.lang.String "id" <-- DocumentElement
+				MapperXML_v1.9.7.com.taursys.xml.render.DocumentElementRenderer "renderer" <-- DocumentElement
+				MapperXML_v1.9.7.java.lang.String "PARAMETER_MAP" <-- Form
+				MapperXML_v1.9.7.com.taursys.xml.event.CloseFormDispatcher "closeFormDispatcher" <-- Form
+				MapperXML_v1.9.7.java.util.ArrayList "closeFormListeners" <-- Form
+				MapperXML_v1.9.7.com.taursys.dom.DocumentAdapter "documentAdapter" <-- Form
+				MapperXML_v1.9.7.java.util.Map "formContext" <-- Form
+				MapperXML_v1.9.7.com.taursys.xml.event.InitContextDispatcher "initContextDispatcher" <-- Form
+				MapperXML_v1.9.7.java.util.ArrayList "initContextListeners" <-- Form
+				MapperXML_v1.9.7.com.taursys.xml.event.InitFormDispatcher "initFormDispatcher" <-- Form
+				MapperXML_v1.9.7.java.util.ArrayList "initFormListeners" <-- Form
+				JavaPrimitiveTypes.boolean "initialized" <-- Form
+				MapperXML_v1.9.7.com.taursys.xml.event.OpenFormDispatcher "openFormDispatcher" <-- Form
+				MapperXML_v1.9.7.java.util.ArrayList "openFormListeners" <-- Form
+				MapperXML_v1.9.7.java.lang.String "sourceId" <-- Form
+				MapperXML_v1.9.7.com.taursys.model.CollectionValueHolder "collectionValueHolder" <-- Template
+				MapperXML_v1.9.7.java.lang.String "ID_DELIMITER" <-- ComponentFactory
+				MapperXML_v1.9.7.java.lang.String "TEMPLATE_NODE" <-- ComponentFactory
+				MapperXML_v1.9.7.java.util.Hashtable "tagTable" <-- ComponentFactory
+				MapperXML_v1.9.7.java.lang.String "attributeName" <-- AbstractField
+				JavaPrimitiveTypes.boolean "earlyInputNotify" <-- AbstractField
+				MapperXML_v1.9.7.java.lang.String "id" <-- AbstractField
+				MapperXML_v1.9.7.com.taursys.xml.render.CheckboxFieldRenderer "renderer" <-- CheckboxField
+				MapperXML_v1.9.7.com.taursys.xml.render.SelectFieldRenderer "renderer" <-- SelectField
+				MapperXML_v1.9.7.com.taursys.xml.render.TextFieldRenderer "renderer" <-- TextField
+				MapperXML_v1.9.7.java.lang.String "id" <-- Button
+				MapperXML_v1.9.7.com.taursys.xml.render.VisibleRenderer "renderer" <-- Button
+			}
+			package servlet {
+				'/** 
+				' * ServletForm is the base container invoked used by Servlet application. It contains all the components that make up the form.  The ServletForm is responsible for servicing requests which are routed to it by the ServletApp. <p> Your servlet forms will typically extend this base class.  The ServletForm provides a default processing cycle within the <code>doGet</code> method. <p> The ServletForm is composed of many subcomponents to support the processing of the request: ParameterDispatcher, InputDispatcher, RenderDispatcher, TriggerDispatcher, DocumentAdapter and Responder. <p> You must supply this ServletForm with a DOM Document.  There are a variety of ways you can achieve this: 1) use a DOM parser such as Xerces, 2) use a DOM compiler such as Enhydra's XMLC, 3) build the DOM programatically. <p> The Document is normally created and attached to this ServletForm in the <code>initForm</code> method.  This method is normally only called once when the ServletForm is first invoked.  Below is an example using the Xerces parser: <pre> protected void initForm() throws Exception { super.initForm(); DOMParser parser = new DOMParser(); InputSource is = new InputSource(getClass().getResourceAsStream("MyPage.html")); parser.parse(is); this.setDocument(parser.getDocument()); } </pre> In typical applications, you will add Components to this ServletForm and set their properties to bind to the DOM Document elements, http request parameters, and value objects.  These components are capable of modifying the DOM Document, storing and retrieving value from bound objects, and reading parameters from the http request, and parsing/converting between text values and java data types.  This ServletForm is the base container for these components and contains dispatchers which dispatch events to the components. This ServletForm generates the events within the <code>doGet</code> method in a fixed sequence (see javadoc for doGet). <p> The below example creates a HTMLInputText component which binds to an HTML form input text field.  It also binds to the lastName property of a Java value object class. <pre> public class MyPage extends ServletForm { HTMLInputText lastName = new HTMLInputText(); VOValueHolder person = new VOValueHolder(); public MyPage() { lastName.setPropertyName("lastName"); lastName.setValueHolder(person); lastName.setId("lastName"); this.add(lastName); } ... protected void openForm() throws Exception { // Retrieve or create the value object Person personVO = new Person(1629, "Pulaski", "Katherine", null); // Bind value object to person ValueHolder person.setValueObject(personVO); } </pre> There are many components you can use in a ServletForm.  These include: Parameter, Template, TextField, Trigger, Button, HTMLAnchorURL, HTMLCheckBox, HTMLInputText, HTMLSelect, HTMLTextArea, and others. <p> You can control the response of this ServletForm by changing the Responder subcomponent at runtime.  The default Responder is an HTMLResponder which sends the DOM Document as the response. <p> The ServletForm is a reusable object. The ServletApp (master servlet) will normally recycle ServletForms for an application unless their <code>recycle</code> method returns false. The recycle method dispatches a RecycleEvent to all components. <p> The ServletForm also supports multipart type requests. A multipart request is sent by the browser when form data contains 1 or more uploaded files. To support this feature, if the incoming request has a content type of "multipart/form-data", the request is wrapped in another request object which is capable of processing multipart requests. The wrapper request is created via the createRequestWrapper method. By default, createRequestWrapper returns a HttpMultiPartServletRequest object which has a maximum file size of 1 megabyte and maximum single line size of 4,096 bytes. You can change this by overriding the createRequestWrapper method: <pre> protected HttpServletRequest createRequestWrapper(HttpServletRequest rq) throws Exception { HttpMultiPartServletRequest multi = new HttpMultiPartServletRequest(rq); // set maximum sizes if defaults if needed multi.setMaxFileSize(2048); multi.setMaxLineLength(80); // parse the request multi.parseRequest(); return multi; } </pre>
+				' * @see HttpMultiPartServletRequest
+				' */
+				'DP role: concreteSubject
+				class ServletForm {
+					-enableActions: JavaPrimitiveTypes.boolean
+					-enableInput: JavaPrimitiveTypes.boolean
+					-responder: MapperXML_v1.9.7.com.taursys.servlet.respond.Responder
+					-sid: ServletInputDispatcher
+					-spd: ServletParameterDispatcher
+					-std: ServletTriggerDispatcher
+					-xmlWriter: MapperXML_v1.9.7.com.taursys.dom.AbstractWriter
+					'/** 
+					' * Creates new servlet form and default dispatchers.
+					' */
+					<<Create>> ServletForm()
+					'/** 
+					' * Creates the default Responder for this component. This implementation creates an com.taursys.servlet.respond.HTMLResponder. You can override this method to create your own default Responder.
+					' * @return new instance of the default Responder for this component.
+					' */
+					#createDefaultResponder(): MapperXML_v1.9.7.com.taursys.servlet.respond.Responder
+					'/** 
+					' * Creates the default ServletInputDispatcher used by this container
+					' * @deprecated this now uses the inherited InputDispatcher. This methodis no longer used and will be removed in a future release.
+					' */
+					#createDefaultServletInputDispatcher(): ServletInputDispatcher
+					'/** 
+					' * Creates the default ServletParameterDispatcher used by this container
+					' * @deprecated this now uses the inherited ParameterDispatcher. This methodis no longer used and will be removed in a future release.
+					' */
+					#createDefaultServletParameterDispatcher(): ServletParameterDispatcher
+					'/** 
+					' * Creates the default ServletTriggerDispatcher used by this container
+					' * @deprecated this now uses the inherited TriggerDispatcher. This methodis no longer used and will be removed in a future release.
+					' */
+					#createDefaultServletTriggerDispatcher(): ServletTriggerDispatcher
+					'/** 
+					' * Creates the default AbstractWriter for this component. This implementation creates an com.taursys.xml.XMLWriter. You can override this method to create your own default AbstractWriter.
+					' * @deprecated the AbstractWriter is now a subcomponent of the DocumentAdapter.This property is no longer used and will be removed shortly.
+					' */
+					#createDefaultWriter(): MapperXML_v1.9.7.com.taursys.dom.AbstractWriter
+					'/** 
+					' * Create a Map of parameters contained in the request. The resulting Map is not modifiable. The Map contains String keys for each parameter and String[] arrays for each parameter value. This method was included to supplement the Servlet 2.2 spec which does not provide this method in the ServletRequest interface.
+					' * @return a Map of parameters contained in the request.
+					' */
+					createParameterMap(): MapperXML_v1.9.7.java.util.Map
+					'/** 
+					' * This method is invoked by run to dispatch the formContext to nested Forms. This method depends on the request, response, and parameterMap properties being set. A new context is constructed which contains everything already in this <code>ServletForm's</code> plus the request, response and parameterMap.
+					' */
+					#dispatchInitContext()
+					'/** 
+					' * Get the Responder which will provide appropriate response. You can change the Responder during runtime to provide different kinds of responses.  A default Responder is created when this ServletForm is created by the createDefaultResponder method.
+					' * @return the Responder which will provide appropriate response.
+					' */
+					getResponder(): MapperXML_v1.9.7.com.taursys.servlet.respond.Responder
+					'/** 
+					' * Returns the ServletInputDispatcher used by this container
+					' * @deprecated this now uses the inherited InputDispatcher. This methodis no longer used and will be removed in a future release.
+					' */
+					getServletInputDispatcher(): ServletInputDispatcher
+					'/** 
+					' * Returns the ServletParameterDispatcher used by this container
+					' * @deprecated this now uses the inherited ParameterDispatcher. This methodis no longer used and will be removed in a future release.
+					' */
+					getServletParameterDispatcher(): ServletParameterDispatcher
+					'/** 
+					' * Returns the ServletTriggerDispatcher used by this container
+					' * @deprecated this now uses the inherited TriggerDispatcher. This methodis no longer used and will be removed in a future release.
+					' */
+					getServletTriggerDispatcher(): ServletTriggerDispatcher
+					'/** 
+					' * Returns the AbstractWriter used by this form to render the Document to an XML stream.
+					' * @deprecated the AbstractWriter is now a subcomponent of the DocumentAdapter.This property is no longer used and will be removed shortly.
+					' */
+					getXmlWriter(): MapperXML_v1.9.7.com.taursys.dom.AbstractWriter
+					'/** 
+					' * This method is invoked whenever an exception occurs within doGet. Override this method to provide custom exception handling behavior. Throwing an exception will delegate the exception handling to the caller of the doGet method. The default behavior of this method is to simply re-throw the exception.
+					' */
+					#handleException(ex : MapperXML_v1.9.7.java.lang.Exception)
+					'/** 
+					' * Get enableActions flag indicating whether or not to process actions. If this flag is set, the run method will invoke the dispatchActions method to process action parameters for trigger components. Disable actions if you are processing a request where no action parameters are expected.  This will avoid any actions being triggered by default values. The default value for this flag is <code>true</code>.
+					' * @return flag indicating whether or not to process actions.
+					' */
+					isEnableActions(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Get enableInput flag indicating whether or not to process input. If this flag is set, the run method will invoke the dispatchInput method to process input parameters for components. Disable input if you are processing a request where no input parameters are expected. This will avoid any input being set by default values (or behavior of HTMLCheckbox). The default value for this flag is <code>true</code>.
+					' * @return flag indicating whether or not to process input.
+					' */
+					isEnableInput(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Processes a given InitContextEvent by setting the <code>formContext</code>, <code>parameterMap</code>, <code>request</code> and <code>response</code> from the given message, then dispatching an <code>InitContextEvent</code> to the <code>Form's</code> children, and finally propagating the <code>InitContextEvent</code> to registered listeners.
+					' * @param e the InitContextEvent to process
+					' */
+					#processInitContextEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.InitContextEvent)
+					'/** 
+					' * Dispatches a RecycleEvent to all components and returns true if successful. If an exception occurs during recycling, it is logged using Debug and this method returns false. If the form cannot be reused, override this method and return false. Override this method to provide custom behavior to recycle this form for future re-use.
+					' */
+					recycle(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Send the appropriate response. It is invoked by doGet following the dispatchActions method.  This method invokes the current Responder's respond method to provide the appropriate response. Change the Responder to provide custom response.
+					' */
+					#sendResponse()
+					'/** 
+					' * Set enableActions flag indicating whether or not to process actions. If this flag is set, the run method will invoke the dispatchActions method to process action parameters for trigger components. Disable actions if you are processing a request where no action parameters are expected.  This will avoid any actions being triggered by default values. The default value for this flag is <code>true</code>.
+					' * @param newEnableActions flag indicating whether or not to process actions.
+					' */
+					setEnableActions(newEnableActions : JavaPrimitiveTypes.boolean)
+					'/** 
+					' * Set enableInput flag indicating whether or not to process input. If this flag is set, the run method will invoke the dispatchInput method to process input parameters for components. Disable input if you are processing a request where no input parameters are expected. This will avoid any input being set by default values (or behavior of HTMLCheckbox). The default value for this flag is <code>true</code>.
+					' * @param newEnableInput flag indicating whether or not to process input.
+					' */
+					setEnableInput(newEnableInput : JavaPrimitiveTypes.boolean)
+					'/** 
+					' * Set the Responder which will provide appropriate response. You can change the Responder during runtime to provide different kinds of responses.  A default Responder is created when this ServletForm is created by the createDefaultResponder method. This method also sets the Responder's servletForm property to this ServletForm.
+					' * @param newResponder the Responder which will provide appropriate response.
+					' */
+					setResponder(newResponder : MapperXML_v1.9.7.com.taursys.servlet.respond.Responder)
+					'/** 
+					' * Sets the ServletInputDispatcher used by this container
+					' * @deprecated this now uses the inherited InputDispatcher. This methodis no longer used and will be removed in a future release.
+					' */
+					setServletInputDispatcher(dispatcher : ServletInputDispatcher)
+					'/** 
+					' * Sets the ServletParameterDispatcher used by this container
+					' * @deprecated this now uses the inherited ParameterDispatcher. This methodis no longer used and will be removed in a future release.
+					' */
+					setServletParameterDispatcher(d : ServletParameterDispatcher)
+					'/** 
+					' * Sets the ServletTriggerDispatcher used by this container
+					' * @deprecated this now uses the inherited TriggerDispatcher. This methodis no longer used and will be removed in a future release.
+					' */
+					setServletTriggerDispatcher(newTriggerDispatcher : ServletTriggerDispatcher)
+					'/** 
+					' * Sets the AbstractWriter used by this form to render the Document to an XML stream.
+					' * @deprecated the AbstractWriter is now a subcomponent of the DocumentAdapter.This property is no longer used and will be removed shortly.
+					' */
+					setXmlWriter(newXmlWriter : MapperXML_v1.9.7.com.taursys.dom.AbstractWriter)
+				}
+				'/** 
+				' * Title:        Mapper XML Description:  Sub-project for Mapper XML support without using XMLC Copyright:    Copyright (c) 2001 Company:      Taurus Systems
+				' * @author Marty Phelan
+				' * @version 1.0
+				' */
+				'DP role: concreteSubject
+				class DefaultMessageForm {
+					-message: MapperXML_v1.9.7.java.lang.String
+					<<Create>> DefaultMessageForm()
+					getMessage(): MapperXML_v1.9.7.java.lang.String
+					recycle(): JavaPrimitiveTypes.boolean
+					setMessage(newMessage : MapperXML_v1.9.7.java.lang.String)
+				}
+				MapperXML_v1.9.7.com.taursys.xml.Form <|-- ServletForm
+				MapperXML_v1.9.7.com.taursys.xml.event.Dispatcher <|-- ServletInputDispatcher
+				MapperXML_v1.9.7.com.taursys.xml.event.Dispatcher <|-- ServletParameterDispatcher
+				MapperXML_v1.9.7.com.taursys.xml.event.Dispatcher <|-- ServletTriggerDispatcher
+				ServletForm <|-- DefaultMessageForm
+				JavaPrimitiveTypes.boolean "enableActions" <-- ServletForm
+				JavaPrimitiveTypes.boolean "enableInput" <-- ServletForm
+				MapperXML_v1.9.7.com.taursys.servlet.respond.Responder "responder" <-- ServletForm
+				ServletInputDispatcher "sid" <-- ServletForm
+				ServletParameterDispatcher "spd" <-- ServletForm
+				ServletTriggerDispatcher "std" <-- ServletForm
+				MapperXML_v1.9.7.com.taursys.dom.AbstractWriter "xmlWriter" <-- ServletForm
+				MapperXML_v1.9.7.java.lang.String "message" <-- DefaultMessageForm
+			}
+			package html {
+				package test {
+					'DP role: concreteSubject
+					class HTMLComponentFactoryTest {
+						-container: TestContainer
+						-factory: TestFactory
+						-holders: MapperXML_v1.9.7.com.taursys.model.ValueHolder [*]
+						-invoiceHolder: MapperXML_v1.9.7.com.taursys.model.VOCollectionValueHolder
+						-personHolder: MapperXML_v1.9.7.com.taursys.model.VOValueHolder
+						-unnamedHolder: MapperXML_v1.9.7.com.taursys.model.VOValueHolder
+						<<Create>> HTMLComponentFactoryTest(_name : MapperXML_v1.9.7.java.lang.String)
+						{static} main(argv : MapperXML_v1.9.7.java.lang.String)
+						#setUp()
+						#setupTestPage1()
+						#tearDown()
+						testCreateComponentForBad1()
+						testCreateComponentForBad2()
+						testCreateComponentForInputCheckbox()
+						testCreateComponentForInputText()
+						testCreateComponentForSpan()
+						testCreateComponentForSpan2()
+						testCreateComponentForTemplate()
+						testCreateComponentWithDateFormat()
+						testCreateComponentWithMessageFormat()
+						testCreateComponentWithMessageFormatInHrefAttribute()
+						testCreateComponentWithMessageFormatInValueAttribute()
+						testCreateComponentWithNumberFormat()
+						testCreateComponentWithoutFormat()
+						testCreateComponentsWithExistingSubContainer()
+						testCreateComponentsWithExistingTopContainer()
+						testCreateComponentsWithoutExisting()
+						testGetSuggestedComponentsForInputText()
+						testGetSuggestedComponentsForSpan()
+						testGetSuggestedComponentsForSubmitButton()
+						testGetSuggestedComponentsForTD()
+						testGetSuggestedComponentsForTemplate()
+					}
+					MapperXML_v1.9.7.com.taursys.dom.DocumentAdapter "documentAdapter" <-- TestContainer
+					TestContainer "container" <-- HTMLComponentFactoryTest
+					TestFactory "factory" <-- HTMLComponentFactoryTest
+					MapperXML_v1.9.7.com.taursys.model.ValueHolder "holders 0..*" <-- HTMLComponentFactoryTest
+					MapperXML_v1.9.7.com.taursys.model.VOCollectionValueHolder "invoiceHolder" <-- HTMLComponentFactoryTest
+					MapperXML_v1.9.7.com.taursys.model.VOValueHolder "personHolder" <-- HTMLComponentFactoryTest
+					MapperXML_v1.9.7.com.taursys.model.VOValueHolder "unnamedHolder" <-- HTMLComponentFactoryTest
+				}
+				'/** 
+				' * <p>HTMLCheckBox is a peer component to an HTML input type checkbox. This field is for a stand-alone checkbox and maintains its checked/unchecked state. </p> <p>This component uses an HTMLCheckboxFieldRenderer to render its value. If the CheckboxModel isSelected returns true, then the renderer adds the "checked" attribute to the input tag, otherwise it removed the attribute. </p> <p>The HTML checkbox has a unique behavior in that it only sends a value if it is checked.  It does not send anything back if it is un-checked.  This behavior requires the use of a defaultValue or uncheckedValue. </p> <p>The <code>unselectedValue</code> is used as the <code>defaultValue</code> for this component. If the <code>unselectedValue</code> is not null it will be used during parameter or input dispatching whenever the checkbox is NOT checked (no parameter is sent). In that case, the <code>unselectedValue</code> will be used as the value for the InputEvent. </p> <p><b>Limitation:</b> Since input processing will ALWAYS set the value to either the <code>selectedValue</code> (if input present) or <code>unselectedValue</code> (if no input is present), you will want to disable input processing when simply preseting or displaying values. With an HTML checkbox, there is no way to distinguish between an unchecked box or no input submission. To disable input processing, either set the <code>ServletForm's</code> <code>enableInput</code> property to <code>false</code>, or temporarily set the <code>HTMLCheckBox's</code> <code>parameter</code> property to null or blank. </p> <p>This component uses a <code>DefaultCheckboxModel</code> to manage the state. There are only two states for this component: selected or not-selected.</p> <p>To use this component you must first set the the following properties as indicated:</p> <ul> <li><code>selectedValue</code> - the text value which indicates a "selected" state. The default value is "true".</li> <li><code>unselectedValue</code> - the text value which indicates an "un-selected" state. The default value is "" (blank) which will result in a <code>null</code> value being stored in the <code>valueHolder</code></li> </ul> <p>This component can function in three different ways, depending on the properties you set:</p> <ul> <li>input only - set the <code>parameter</code> property.</li> <li>output only - set the <code>id</code> property.</li> <li>input and output - set both the <code>parameter</code> and <code>id</code> properties.</li> </ul> <p>When used for input, this component receives its value from the <code>InputDispatcher</code> AFTER the <code>openForm</code> method of the <code>ServletForm</code> by default.  If you want this component to receive its input earlier (at the same time as <code>Parameters</code>), set the <code>earlyInputNotify</code> property to <code>true</code>.</p> <p>By default, this component uses a <code>DefaultCheckboxModel</code>. You can change this by overriding the <code>createDefaultModel</code> method or explicitly setting the <code>model</code> property.</p> <p>This component can be used in a variety of ways. It can be used in an un-bound mode, where the current selected state is maintained internally. It can also be used in a bound mode where the current selected state is propagated to a value holder. When used in the bound mode a single property can be set in the value holder. The following sections describe the required settings to make for each of the modes.</p> <b>Un-bound Mode</b> <p>To use this component in the un-bound mode, you can set the following properties:</p> <ul> <li><code>selectedValue</code> - the text value which indicates a "selected" state. The default value is "true".</li> <li><code>unselectedValue</code> - the text value which indicates an "un-selected" state. The default value is "" (blank) which will result in a <code>null</code> value being stored in the <code>valueHolder</code></li> </ul> <b>Bound Mode</b> <p>To use this component in the bound mode, use the same properties as described in the Un-bound Mode, plus the following additional properties:</p> <ul> <li><code>valueHolder</code> - should be bound to the <code>ValueHolder</code> which contains the current selected state and is to be updated if the state is changed.</li> <li><code>propertyName</code> - set this to the property name (belonging to the object in the <code>ValueHolder</code>) which will be bound to the selected state. Example: given a <code>ValueHolder</code> with an "Address" object which has a "active" property, use <code>setPropertyName("active")</code> to store the current selected state in the "Address.active" property.</li> </ul>
+				' * @author Marty Phelan
+				' * @version 1.0
+				' */
+				'DP role: concreteSubject
+				class HTMLCheckBox {
+					'/** 
+					' * Constructs a new HTMLCheckBox
+					' */
+					<<Create>> HTMLCheckBox()
+					'/** 
+					' * Constructs a new HTMLCheckBox for the given data type
+					' * @param javaDataType data type for component value
+					' * @see com.taursys.util.DataTypes
+					' */
+					<<Create>> HTMLCheckBox(javaDataType : JavaPrimitiveTypes.int)
+					'/** 
+					' * Creates the default CheckboxFieldRenderer for this component. By default, this method returns a new HTMLCheckboxFieldRenderer. Override this method to define your own CheckboxFieldRenderer.
+					' */
+					#createDefaultRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.CheckboxFieldRenderer
+					'/** 
+					' * Get the both the defaultValue and the unselectedValue for this component. The defaultValue and unselectedValue are the same for this component. If the defaultValue is not null it will be used during parameter dispatching whenever the expected parameter is NOT present in the input. In that case, the defaultValue will be used as the value for the InputEvent. <p> The HTML input type checkbox only sends a value if the box is checked, and NO value is sent if it is unchecked.  Therfore the defaultValue is used to provide the input for the "unchecked" state.
+					' * @return default value to be used if no input is received.
+					' */
+					getDefaultValue(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Set the both the defaultValue and the unselectedValue for this component. The defaultValue and unselectedValue are the same for this component. If the defaultValue is not null it will be used during parameter dispatching whenever the expected parameter is NOT present in the input. In that case, the defaultValue will be used as the value for the InputEvent. <p> The HTML input type checkbox only sends a value if the box is checked, and NO value is sent if it is unchecked.  Therfore the defaultValue is used to provide the input for the "unchecked" state.
+					' * @param newDefaultValue to be used if no input is received.
+					' */
+					setDefaultValue(newDefaultValue : MapperXML_v1.9.7.java.lang.String)
+				}
+				'/** 
+				' * <p>This components is a peer component for the &lt;Select&gt; tag in an HTML form. This component is a specialization of the <code>SelectField</code>. Like the <code>SelectField</code>, this component (using a <code>DefaultSelectModel</code>), can display a selection from a list of objects. It can also change the selection from user input.</p> <p>The selection is made and displayed using the property indicated by the <code>displayPropertyName</code>. The <code>displayPropertyName</code> is effectively the "selection key". If the <code>displayPropertyName</code> is null or blank, then the <code>toString</code> method is used instead. For example, given a list of Address objects, and a <code>displayPropertyName</code> of "zipCode", the display value for "Juneau, AK 99801 USA" would be "99801". To change the selection, you would supply a different zipCode from the list.</p> <p>The HTMLSelect uses a specialized renderer which will create a list of html &lt;Option&gt; tags with the displayPropertyName value for each item in the list. Using the same example as above, after rendering the document would contain:</p> <pre> &lt;select name="zip" id="zip"&gt; &lt;option&gt;99801&lt;/option&gt; &lt;option&gt;99824&lt;/option&gt; &lt;option&gt;99827&lt;/option&gt; &lt;/select&gt; </pre> <p>This component can function in three different ways, depending on the properties you set:</p> <ul> <li>input only - set the <code>parameter</code> property.</li> <li>output only - set the <code>id</code> property.</li> <li>input and output - set both the <code>parameter</code> and <code>id</code> properties.</li> </ul> <p>When used for output, the value is rendered in the XML document  as a text node by default. If you want the value to be rendered to an attribute of the node instead, you must change the <code>renderer</code> to an <code>AttributeTextFieldRenderer</code> and the the <code>attribute</code> property to the name of the attribute.</p> <p>When used for input, this component receives its value from the <code>InputDispatcher</code> AFTER the <code>openForm</code> method of the <code>ServletForm</code> by default.  If you want this component to receive its input earlier (at the same time as <code>Parameters</code>), set the <code>earlyInputNotify</code> property to <code>true</code>.</p> <p>By default, this component uses a <code>DefaultSelectModel</code>. You can change this by overriding the <code>createDefaultModel</code> method or explicitly setting the <code>model</code> property.</p> <b>Setting the List</b> <p> The <code>list</code> must be a type of <code>CollectionValueHolder</code> (example: <code>VOCollectionValueHolder</code> or <code>VOListValueHolder</code>). The holder can contain any type of object (but they must all be instances of the same class). <p> If the <code>list</code> is an <code>ObjectArrayValueHolder</code>, then the <code>toString()</code> method is used as the display value (regardless of the <code>displayPropertyName</code>). If used in the bound mode, the whole object itself is stored in the target ValueHolder's object (regardless of the property names listed in the <code>setListPropertyNames</code> method). It is important to make sure that the <code>valueHolder</code> property is the same type as the objects in the <code>ObjectArrayValueHolder</code> or a <code>ModelException</code> will occur. <p> You can also preset the <code>list</code> in the constructor by passing it an array of Objects to be used for the <code>list</code>. The resulting <code>list</code> will be an <code>ObjectArrayValueHolder</code>. <p> The following is an example of this usage:</p> <pre> SelectField color = new SelectField(new String[] { "Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet", }); ... private void jbInit() throws Exception { ... color.setParameter("color"); color.setId("color"); ... this.add(color); } </pre> <p>This component can be used in a variety of ways. It can be used in an un-bound mode, where the current selection is maintained internally. It can also be used in a bound mode where the current selection is propagated to a value holder. When used in the bound mode, either a single property, or multiple properties can be set in the value holder. The following sections describe the required settings to make for each of the modes.</p> <b>Un-bound Mode (uses internal VariantValueHolder)</b> <p> When used in this mode this component uses an internal <code>VariantValueHolder</code> to hold the current selection. By default a <code>VariantValueHolder</code> is created with a data type of <code>String</code>. To set a different data type use the constructor which takes a data type as a parameter. (example <code>new SelectField(DataTypes.TYPE_INT)</code>). <p> To use this component in the un-bound mode, you must set the following properties: <ul> <li><code>list</code> - should be set to a type of <code>CollectionHolder</code> which holds the list of options (see "Setting the List"). </li> <li><code>displayPropertyName</code> - the name of the property to display (property of objects in list). Example: given a list of "Location" objects with a property called "locationName", use <code>setDisplayPropertyName("locationName")</code> to display the zipCode. IMPORTANT - The displayed property choosen must result in a unique list of values, otherwise the intended value may not be selected/displayed. </li> <li><code>listPropertyNames</code> - set a single source property name in the <code>list</code> objects. Example: Given a list containing "Location" objects which has properties "zipCode", "cityName", "stateAbbr", and "country", to make the zipcode the internal value use <code>setListPropertyNames(new String[] {"zipCode"})</code>. <p> If the <code>list</code> is an <code>ObjectArrayValueHolder</code>, then the property name should always be a single "value" (which is the default). </li> <li><code>propertyName</code> - must be "value" (which is the default). </li> <li><code>nullDisplay</code> - String to display in list for null selection. Example: "--- Nothing Selected ---" </li> </ul> <b>Bound Mode</b> <p> To use this component in the bound mode, use the same properties as described in the Un-bound Mode, plus the following additional properties: <ul> <li><code>valueHolder</code> - should be set to the target <code>ValueHolder</code> which contains the current selection and will be updated if the selection is changed. </li> <li><code>propertyName</code> - set this to the first (or only) <code>ValueHolder</code> object property name which will be bound to the selection. Example: given a <code>ValueHolder</code> with an "Address" object which has a "zipCode" property, use <code>setPropertyName("zipCode")</code> to store the current selection in the "Address.zipCode" property. </li> <li><code>propertyNames</code> - use this when you want to set more than 1 property in the <code>ValueHolder</code> object. Example: assume you want to set not only the "zipCode" property, but also the "city", "state" and "country" properties, use <code>setPropertyNames(new String[] {"zipCode","city","state","country"})</code> </li> <li><code>listPropertyNames</code> - set the to the source property name(s) in the <code>list</code> objects. IMPORTANT - The name(s) of the <code>listPropertyNames</code> properties MUST be in the same ORDER as the <code>propertyName(s)</code>. The names in the <code>listPropertNames</code> may be different than the names in the <code>propertyNames</code> since they are associated with in objects in the <code>list</code>, not the <code>valueHolder</code>. Example: Given a <code>list</code> containing "Location" objects which has properties "zipCode", "cityName", "stateAbbr", and "country", for a single property use <code>setListPropertyNames(new String[] {"zipCode"})</code>. For multiple properties use <code>setListPropertyNames(new String[] {"zipCode", "cityName", "stateAbbr", "country"})</code> <p> If the <code>list</code> is an <code>ObjectArrayValueHolder</code>, then the property name should always be a single "value" (which is the default). </li> </ul> <b>Other Important Information</b> <p> When a selection is made, the values are copied from the properties in the <code>list</code> to the properties in the <code>valueHolder</code> object. The property names in <code>propertyNames[]</code> and <code>listPropertyNames[]</code> must appear in a corresponding order. <p> A "null" item will always be added to the <code>displayOptionList</code>. When the "null" item is selected, a null will be assigned to the <code>propertyNames[]</code> in the <code>valueHolder</code> object. The actual "null" item to to display is defined by the <code>nullDisplay</code> (default is "--none--"). <p> The <code>format</code> and <code>formatPattern</code> govern the display property in this component.  The <code>getText</code> method returns the formatted display property, while the <code>setText</code> method changes the current selection to one whose display matches the given value. If you attempt to <code>setText</code> for an item that is not in the list, a <code>NotInListException</code> will be thrown.
+				' */
+				'DP role: concreteSubject
+				class HTMLSelect {
+					'/** 
+					' * Constructs a new HTMLSelect component.
+					' */
+					<<Create>> HTMLSelect()
+					'/** 
+					' * Creates a new HTMLSelect of the given data type.
+					' * @param javaDataType the data type for the VariantValueHolder
+					' * @see com.taursys.util.DataTypes for defined data type constants TYPE_XXXXXX.
+					' */
+					<<Create>> HTMLSelect(javaDataType : JavaPrimitiveTypes.int)
+					'/** 
+					' * Constructs a new HTMLSelect with the given list of options.
+					' */
+					<<Create>> HTMLSelect(array : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Constructs a new HTMLSelect of the given data type with the given list of options.
+					' * @param javaDataType the data type for the VariantValueHolder
+					' * @param array the array of options
+					' * @see com.taursys.util.DataTypes for defined data type constants TYPE_XXXXXX.
+					' */
+					<<Create>> HTMLSelect(javaDataType : JavaPrimitiveTypes.int, array : MapperXML_v1.9.7.java.lang.Object)
+				}
+				'/** 
+				' * HTMLAnchorURL is a TextField which stores its value in the "href" attribute.
+				' * @author Marty Phelan
+				' * @version 1.0
+				' */
+				'DP role: concreteSubject
+				class HTMLAnchorURL {
+					'/** 
+					' * Constructs a new HTMLAnchorURL
+					' */
+					<<Create>> HTMLAnchorURL()
+					'/** 
+					' * Creates a new HTMLAnchorURL with a DefaultTextModel and VariantValueHolder of the given TYPE_XXX.
+					' * @see com.taursys.util.DataTypes
+					' */
+					<<Create>> HTMLAnchorURL(javaDataType : JavaPrimitiveTypes.int)
+					'/** 
+					' * Creates the default TextFieldRenderer for this component. By default this method returns a new AttributeTextFieldRenderer. Override this method to define your own TextFieldRenderer.
+					' */
+					#createDefaultRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.TextFieldRenderer
+				}
+				'/** 
+				' * HTMLInputText is the peer component for an html INPUT type="text" component. It extends the TextField component but uses an AttributeTextFieldRenderer with an attribute name of "value".  It overrides the createDefaultRenderer method to return an AttributeTextFieldRenderer.
+				' * @author Marty Phelan
+				' * @version 1.0
+				' */
+				'DP role: concreteSubject
+				class HTMLInputText {
+					'/** 
+					' * Constructs a new HTMLInputText input component.
+					' */
+					<<Create>> HTMLInputText()
+					'/** 
+					' * Creates a new HTMLInputText with a DefaultTextModel and VariantValueHolder of the given TYPE_XXX.
+					' * @see com.taursys.util.DataTypes
+					' */
+					<<Create>> HTMLInputText(javaDataType : JavaPrimitiveTypes.int)
+					'/** 
+					' * Creates the default TextFieldRenderer for this component. By default this method returns a new AttributeTextFieldRenderer. Override this method to define your own TextFieldRenderer.
+					' */
+					#createDefaultRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.TextFieldRenderer
+				}
+				'/** 
+				' * HTMLTextArea is peer component for a TextArea.
+				' * @author Marty Phelan
+				' * @version 1.0
+				' */
+				'DP role: concreteSubject
+				class HTMLTextArea {
+					'/** 
+					' * Constructs a new HTMLTextArea
+					' */
+					<<Create>> HTMLTextArea()
+				}
+				MapperXML_v1.9.7.com.taursys.xml.ComponentFactory <|-- HTMLComponentFactory
+				MapperXML_v1.9.7.com.taursys.xml.CheckboxField <|-- HTMLCheckBox
+				MapperXML_v1.9.7.com.taursys.xml.SelectField <|-- HTMLSelect
+				MapperXML_v1.9.7.com.taursys.xml.TextField <|-- HTMLAnchorURL
+				MapperXML_v1.9.7.com.taursys.xml.TextField <|-- HTMLInputText
+				MapperXML_v1.9.7.com.taursys.xml.TextField <|-- HTMLTextArea
+			}
+		}
+	}
+}
+@enduml

@@ -1,0 +1,381 @@
+@startuml
+'Design pattern Strategy
+package "JHotDraw v5.1" as JHotDraw_v5.1 {
+	package CH {
+		package ifa {
+			package draw {
+				package contrib {
+					'/** 
+					' * A handle for a node on the polygon.
+					' */
+					'DP role: context
+					class PolygonHandle {
+						-fIndex: JavaPrimitiveTypes.int
+						-fLocator: JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						'/** 
+						' * Constructs a polygon handle.
+						' * @param owner the owning polygon figure.
+						' * @l the locator
+						' * @index the index of the node associated with this handle.
+						' */
+						<<Create>> PolygonHandle(owner : PolygonFigure, l : JHotDraw_v5.1.CH.ifa.draw.framework.Locator, index : JavaPrimitiveTypes.int)
+						invokeEnd(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						invokeStep(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, anchorX : JavaPrimitiveTypes.int, anchorY : JavaPrimitiveTypes.int, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						locate(): JHotDraw_v5.1.java.awt.Point
+						-myOwner(): PolygonFigure
+					}
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractHandle <|-- PolygonHandle
+					JHotDraw_v5.1.CH.ifa.draw.figures.AttributeFigure <|-- PolygonFigure
+					JavaPrimitiveTypes.int "fIndex" <-- PolygonHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Locator "fLocator" <-- PolygonHandle
+					JavaPrimitiveTypes.int "TOO_CLOSE" <-- PolygonFigure
+					JHotDraw_v5.1.java.awt.Polygon "fPoly" <-- PolygonFigure
+					JavaPrimitiveTypes.int "polygonFigureSerializedDataVersion" <-- PolygonFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- PolygonFigure
+				}
+				package standard {
+					'DP role: concreteStrategy
+					class OffsetLocator {
+						-fBase: JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						-fOffsetX: JavaPrimitiveTypes.int
+						-fOffsetY: JavaPrimitiveTypes.int
+						-offsetLocatorSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 2679950024611847621
+						<<Create>> OffsetLocator()
+						<<Create>> OffsetLocator(base : JHotDraw_v5.1.CH.ifa.draw.framework.Locator)
+						<<Create>> OffsetLocator(base : JHotDraw_v5.1.CH.ifa.draw.framework.Locator, offsetX : JavaPrimitiveTypes.int, offsetY : JavaPrimitiveTypes.int)
+						locate(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JHotDraw_v5.1.java.awt.Point
+						moveBy(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int)
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'/** 
+					' * A LocatorConnector locates connection points with the help of a Locator. It supports the definition of connection points to semantic locations.
+					' * @see Locator
+					' * @see Connector
+					' */
+					'DP role: context
+					class LocatorConnector {
+						{const} SIZE: JavaPrimitiveTypes.int = 8
+						-fLocator: JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						-locatorConnectorSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 5062833203337604181
+						<<Create>> LocatorConnector()
+						<<Create>> LocatorConnector(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, l : JHotDraw_v5.1.CH.ifa.draw.framework.Locator)
+						'/** 
+						' * Tests if a point is contained in the connector.
+						' */
+						containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Gets the display box of the connector.
+						' */
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						'/** 
+						' * Draws this connector.
+						' */
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						#locate(connection : JHotDraw_v5.1.CH.ifa.draw.framework.ConnectionFigure): JHotDraw_v5.1.java.awt.Point
+						'/** 
+						' * Reads the arrow tip from a StorableInput.
+						' */
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						'/** 
+						' * Stores the arrow tip to a StorableOutput.
+						' */
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'/** 
+					' * A LocatorHandle implements a Handle by delegating the location requests to a Locator object.
+					' * @see Locator
+					' */
+					'DP role: context
+					class LocatorHandle {
+						-fLocator: JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						'/** 
+						' * Initializes the LocatorHandle with the given Locator.
+						' */
+						<<Create>> LocatorHandle(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure, l : JHotDraw_v5.1.CH.ifa.draw.framework.Locator)
+						'/** 
+						' * Locates the handle on the figure by forwarding the request to its figure.
+						' */
+						locate(): JHotDraw_v5.1.java.awt.Point
+					}
+					'/** 
+					' * A locator that specfies a point that is relative to the bounds of a figure.
+					' * @see Locator
+					' */
+					'DP role: concreteStrategy
+					class RelativeLocator {
+						fRelativeX: JavaPrimitiveTypes.double
+						fRelativeY: JavaPrimitiveTypes.double
+						-relativeLocatorSerializedDataVersion: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 2619148876087898602
+						<<Create>> RelativeLocator()
+						<<Create>> RelativeLocator(relativeX : JavaPrimitiveTypes.double, relativeY : JavaPrimitiveTypes.double)
+						'/** 
+						' * Center.
+						' */
+						{static} center(): JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						{static} east(): JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						locate(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JHotDraw_v5.1.java.awt.Point
+						'/** 
+						' * North.
+						' */
+						{static} north(): JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						'/** 
+						' * North east.
+						' */
+						{static} northEast(): JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						'/** 
+						' * North west.
+						' */
+						{static} northWest(): JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						'/** 
+						' * South.
+						' */
+						{static} south(): JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						'/** 
+						' * South east.
+						' */
+						{static} southEast(): JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						'/** 
+						' * South west.
+						' */
+						{static} southWest(): JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						'/** 
+						' * West.
+						' */
+						{static} west(): JHotDraw_v5.1.CH.ifa.draw.framework.Locator
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					JHotDraw_v5.1.CH.ifa.draw.framework.Handle <|.. AbstractHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure <|.. AbstractFigure
+					AbstractLocator <|-- OffsetLocator
+					JHotDraw_v5.1.CH.ifa.draw.framework.Locator <|.. AbstractLocator
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|.. AbstractLocator
+					JHotDraw_v5.1.java.lang.Cloneable <|.. AbstractLocator
+					AbstractConnector <|-- LocatorConnector
+					JHotDraw_v5.1.CH.ifa.draw.framework.Connector <|.. AbstractConnector
+					AbstractHandle <|-- LocatorHandle
+					AbstractLocator <|-- RelativeLocator
+					JavaPrimitiveTypes.int "HANDLESIZE" <-- AbstractHandle
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure "fOwner" <-- AbstractHandle
+					JavaPrimitiveTypes.int "abstractFigureSerializedDataVersion" <-- AbstractFigure
+					JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeListener "fListener" <-- AbstractFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractFigure
+					JHotDraw_v5.1.CH.ifa.draw.framework.Locator "fBase" <-- OffsetLocator
+					JavaPrimitiveTypes.int "fOffsetX" <-- OffsetLocator
+					JavaPrimitiveTypes.int "fOffsetY" <-- OffsetLocator
+					JavaPrimitiveTypes.int "offsetLocatorSerializedDataVersion" <-- OffsetLocator
+					JavaPrimitiveTypes.long "serialVersionUID" <-- OffsetLocator
+					JavaPrimitiveTypes.int "abstractConnectorSerializedDataVersion" <-- AbstractConnector
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure "fOwner" <-- AbstractConnector
+					JavaPrimitiveTypes.long "serialVersionUID" <-- AbstractConnector
+					JavaPrimitiveTypes.int "SIZE" <-- LocatorConnector
+					JHotDraw_v5.1.CH.ifa.draw.framework.Locator "fLocator" <-- LocatorConnector
+					JavaPrimitiveTypes.int "locatorConnectorSerializedDataVersion" <-- LocatorConnector
+					JavaPrimitiveTypes.long "serialVersionUID" <-- LocatorConnector
+					JHotDraw_v5.1.CH.ifa.draw.framework.Locator "fLocator" <-- LocatorHandle
+					JavaPrimitiveTypes.double "fRelativeX" <-- RelativeLocator
+					JavaPrimitiveTypes.double "fRelativeY" <-- RelativeLocator
+					JavaPrimitiveTypes.int "relativeLocatorSerializedDataVersion" <-- RelativeLocator
+					JavaPrimitiveTypes.long "serialVersionUID" <-- RelativeLocator
+				}
+				package framework {
+					'DP role: strategy
+					interface Locator {
+						locate(owner : Figure): JHotDraw_v5.1.java.awt.Point
+					}
+					JHotDraw_v5.1.java.awt.image.ImageObserver <|-- DrawingView
+					DrawingChangeListener <|-- DrawingView
+					JHotDraw_v5.1.java.util.EventListener <|-- DrawingChangeListener
+					JHotDraw_v5.1.java.util.EventObject <|-- DrawingChangeEvent
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Drawing
+					FigureChangeListener <|-- Drawing
+					JHotDraw_v5.1.java.io.Serializable <|-- Drawing
+					JHotDraw_v5.1.java.util.EventListener <|-- FigureChangeListener
+					JHotDraw_v5.1.java.util.EventObject <|-- FigureChangeEvent
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Figure
+					JHotDraw_v5.1.java.lang.Cloneable <|-- Figure
+					JHotDraw_v5.1.java.io.Serializable <|-- Figure
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Locator
+					JHotDraw_v5.1.java.io.Serializable <|-- Locator
+					JHotDraw_v5.1.java.lang.Cloneable <|-- Locator
+					JHotDraw_v5.1.java.io.Serializable <|-- Connector
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Connector
+					Figure <|-- ConnectionFigure
+					FigureChangeListener <|-- ConnectionFigure
+					JHotDraw_v5.1.java.util.Enumeration <|-- FigureEnumeration
+					JHotDraw_v5.1.java.io.Serializable <|-- Painter
+					JavaPrimitiveTypes.int "HANDLESIZE" <-- Handle
+					JHotDraw_v5.1.java.awt.Rectangle "fRectangle" <-- DrawingChangeEvent
+					JHotDraw_v5.1.java.awt.Rectangle "fRectangle" <-- FigureChangeEvent
+					JHotDraw_v5.1.java.awt.Rectangle "fgEmptyRectangle" <-- FigureChangeEvent
+					JHotDraw_v5.1.java.lang.String "TYPE" <-- FigureSelection
+					JavaPrimitiveTypes.byte "fData 0..*" <-- FigureSelection
+				}
+				package figures {
+					'/** 
+					' * A text figure.
+					' * @see TextTool
+					' */
+					'DP role: context
+					class TextFigure {
+						-fFont: JHotDraw_v5.1.java.awt.Font
+						-fHeight: JavaPrimitiveTypes.int
+						-fIsReadOnly: JavaPrimitiveTypes.boolean
+						-fLocator: JHotDraw_v5.1.CH.ifa.draw.standard.OffsetLocator
+						-fObservedFigure: JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						-fOriginX: JavaPrimitiveTypes.int
+						-fOriginY: JavaPrimitiveTypes.int
+						-fSizeIsDirty: JavaPrimitiveTypes.boolean
+						-fText: JHotDraw_v5.1.java.lang.String
+						-fWidth: JavaPrimitiveTypes.int
+						-{static} fgCurrentFontName: JHotDraw_v5.1.java.lang.String
+						-{static} fgCurrentFontSize: JavaPrimitiveTypes.int
+						-{static} fgCurrentFontStyle: JavaPrimitiveTypes.int
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = 4599820785949456124
+						-textFigureSerializedDataVersion: JavaPrimitiveTypes.int
+						<<Create>> TextFigure()
+						'/** 
+						' * Tests whether the figure accepts typing.
+						' */
+						acceptsTyping(): JavaPrimitiveTypes.boolean
+						basicDisplayBox(newOrigin : JHotDraw_v5.1.java.awt.Point, newCorner : JHotDraw_v5.1.java.awt.Point)
+						#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						'/** 
+						' * Updates the location whenever the figure changes itself.
+						' */
+						changed()
+						connect(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						'/** 
+						' * Creates the current font to be used for new text figures.
+						' */
+						{static} createCurrentFont(): JHotDraw_v5.1.java.awt.Font
+						'/** 
+						' * Disconnects the text figure.
+						' */
+						disconnect()
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawFrame(g : JHotDraw_v5.1.java.awt.Graphics)
+						figureChanged(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureInvalidated(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRemoved(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRequestRemove(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						figureRequestUpdate(e : JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeEvent)
+						'/** 
+						' * A text figure understands the "FontSize", "FontStyle", and "FontName" attributes.
+						' */
+						getAttribute(name : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.lang.Object
+						'/** 
+						' * Gets the font.
+						' */
+						getFont(): JHotDraw_v5.1.java.awt.Font
+						'/** 
+						' * Gets the text shown by the text figure.
+						' */
+						getText(): JHotDraw_v5.1.java.lang.String
+						handles(): JHotDraw_v5.1.java.util.Vector
+						-markDirty()
+						moveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						'/** 
+						' * Gets the number of columns to be overlaid when the figure is edited.
+						' */
+						overlayColumns(): JavaPrimitiveTypes.int
+						read(dr : JHotDraw_v5.1.CH.ifa.draw.util.StorableInput)
+						-readObject(s : JHotDraw_v5.1.java.io.ObjectInputStream)
+						'/** 
+						' * Tests whether this figure is read only.
+						' */
+						readOnly(): JavaPrimitiveTypes.boolean
+						release()
+						'/** 
+						' * A text figure understands the "FontSize", "FontStyle", and "FontName" attributes.
+						' */
+						setAttribute(name : JHotDraw_v5.1.java.lang.String, value : JHotDraw_v5.1.java.lang.Object)
+						'/** 
+						' * Sets the current font name
+						' */
+						{static} setCurrentFontName(name : JHotDraw_v5.1.java.lang.String)
+						'/** 
+						' * Sets the current font size.
+						' */
+						{static} setCurrentFontSize(size : JavaPrimitiveTypes.int)
+						'/** 
+						' * Sets the current font style.
+						' */
+						{static} setCurrentFontStyle(style : JavaPrimitiveTypes.int)
+						'/** 
+						' * Sets the font.
+						' */
+						setFont(newFont : JHotDraw_v5.1.java.awt.Font)
+						'/** 
+						' * Sets the read only status of the text figure.
+						' */
+						setReadOnly(isReadOnly : JavaPrimitiveTypes.boolean)
+						'/** 
+						' * Sets the text shown by the text figure.
+						' */
+						setText(newText : JHotDraw_v5.1.java.lang.String)
+						textDisplayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						-textExtent(): JHotDraw_v5.1.java.awt.Dimension
+						'/** 
+						' * Updates the location relative to the connected figure. The TextFigure is centered around the located point.
+						' */
+						#updateLocation()
+						write(dw : JHotDraw_v5.1.CH.ifa.draw.util.StorableOutput)
+					}
+					'DP role: concreteStrategy
+					class ElbowTextLocator {
+						<<Create>> ElbowTextLocator()
+						locate(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JHotDraw_v5.1.java.awt.Point
+					}
+					'/** 
+					' * A poly line figure consists of a list of points. It has an optional line decoration at the start and end.
+					' * @see LineDecoration
+					' */
+					'DP role: concreteStrategy
+					class PolyLineLocator {
+						fIndex: JavaPrimitiveTypes.int
+						<<Create>> PolyLineLocator(index : JavaPrimitiveTypes.int)
+						locate(owner : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JHotDraw_v5.1.java.awt.Point
+					}
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractFigure <|-- AttributeFigure
+					JHotDraw_v5.1.java.lang.Cloneable <|.. FigureAttributes
+					JHotDraw_v5.1.java.io.Serializable <|.. FigureAttributes
+					AttributeFigure <|-- TextFigure
+					JHotDraw_v5.1.CH.ifa.draw.framework.FigureChangeListener <|.. TextFigure
+					JHotDraw_v5.1.CH.ifa.draw.standard.TextHolder <|.. TextFigure
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractLocator <|-- ElbowTextLocator
+					JHotDraw_v5.1.CH.ifa.draw.standard.AbstractLocator <|-- PolyLineLocator
+					JavaPrimitiveTypes.int "attributeFigureSerializedDataVersion" <-- AttributeFigure
+					JHotDraw_v5.1.java.util.Hashtable "fMap" <-- FigureAttributes
+					JavaPrimitiveTypes.int "figureAttributesSerializedDataVersion" <-- FigureAttributes
+					JavaPrimitiveTypes.long "serialVersionUID" <-- FigureAttributes
+					FigureAttributes "fAttributes" <-- AttributeFigure
+					FigureAttributes "fgDefaultAttributes" <-- AttributeFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- AttributeFigure
+					JHotDraw_v5.1.java.awt.Font "fFont" <-- TextFigure
+					JavaPrimitiveTypes.int "fHeight" <-- TextFigure
+					JavaPrimitiveTypes.boolean "fIsReadOnly" <-- TextFigure
+					JHotDraw_v5.1.CH.ifa.draw.standard.OffsetLocator "fLocator" <-- TextFigure
+					JHotDraw_v5.1.CH.ifa.draw.framework.Figure "fObservedFigure" <-- TextFigure
+					JavaPrimitiveTypes.int "fOriginX" <-- TextFigure
+					JavaPrimitiveTypes.int "fOriginY" <-- TextFigure
+					JavaPrimitiveTypes.boolean "fSizeIsDirty" <-- TextFigure
+					JHotDraw_v5.1.java.lang.String "fText" <-- TextFigure
+					JavaPrimitiveTypes.int "fWidth" <-- TextFigure
+					JHotDraw_v5.1.java.lang.String "fgCurrentFontName" <-- TextFigure
+					JavaPrimitiveTypes.int "fgCurrentFontSize" <-- TextFigure
+					JavaPrimitiveTypes.int "fgCurrentFontStyle" <-- TextFigure
+					JavaPrimitiveTypes.long "serialVersionUID" <-- TextFigure
+					JavaPrimitiveTypes.int "textFigureSerializedDataVersion" <-- TextFigure
+					JavaPrimitiveTypes.int "fIndex" <-- PolyLineLocator
+				}
+			}
+		}
+	}
+}
+@enduml

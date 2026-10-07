@@ -1,0 +1,24 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'@interface DiagramSelectionListener
+			'@date 08-20-2001
+			'@author Eric Crahen
+			'@version 1.0
+			interface DiagramSelectionListener {
+				'Invoked after a Figure is added to a SelectionModel.
+				'@param SelectionModel - model figure was added to
+				'@param Figure - figure added
+				figureAdded(model : SelectionModel, figure : Figure)
+				'Invoked after a Figure is removed from a SelectionModel.
+				'@param SelectionModel - model figure was removed from
+				'@param Figure - figure removed
+				figureRemoved(model : SelectionModel, figure : Figure)
+			}
+		}
+	}
+	java.lang.Cloneable <|-- Builder.nonbuilder.Figure
+	java.io.Serializable <|-- Builder.nonbuilder.Figure
+}
+@enduml

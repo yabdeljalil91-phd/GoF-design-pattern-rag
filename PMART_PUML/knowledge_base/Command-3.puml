@@ -1,0 +1,116 @@
+@startuml
+'Design pattern Command
+package "QuickUML 2001" as QuickUML_2001 {
+	package uml {
+		package ui {
+			'/** 
+			' * @class DiagramContainer
+			' * @date 08-20-2001
+			' * @author Eric Crahen
+			' * @version 1.0
+			' */
+			'DP role: client
+			class DiagramContainer {
+				#closeAction: QuickUML_2001.javax.swing.Action
+				-{const} colorProperties: QuickUML_2001.java.lang.String [*]
+				#copyAction: QuickUML_2001.javax.swing.Action
+				#cutAction: QuickUML_2001.javax.swing.Action
+				#defaultSize: QuickUML_2001.java.awt.Dimension
+				#exportAction: QuickUML_2001.javax.swing.Action
+				-{const} fontProperties: QuickUML_2001.java.lang.String [*]
+				#pasteAction: QuickUML_2001.javax.swing.Action
+				#printAction: QuickUML_2001.javax.swing.Action
+				#resizeAction: QuickUML_2001.javax.swing.Action
+				#saveAction: QuickUML_2001.javax.swing.Action
+				#scaledPrintAction: QuickUML_2001.javax.swing.Action
+				'/** 
+				' * Create a new Container for a diagram
+				' */
+				<<Create>> DiagramContainer()
+				'/** 
+				' * Create a new diagram
+				' */
+				createDiagram(): QuickUML_2001.diagram.Diagram
+				'/** 
+				' * Popup an error message
+				' */
+				#displayError(t : QuickUML_2001.java.lang.Throwable)
+				'/** 
+				' * Popup an error message
+				' */
+				#displayError(title : QuickUML_2001.java.lang.String, msg : QuickUML_2001.java.lang.String)
+				'/** 
+				' * Find the Frame for this event
+				' */
+				#getFrame(e : QuickUML_2001.java.awt.event.ActionEvent): QuickUML_2001.java.awt.Component
+				#getFrame(frame : QuickUML_2001.java.awt.Component): QuickUML_2001.java.awt.Frame
+				getFrame(): QuickUML_2001.java.awt.Frame
+				'/** 
+				' * Load an Icon with the IconManager
+				' */
+				#getIcon(name : QuickUML_2001.java.lang.String): QuickUML_2001.javax.swing.Icon
+				'/** 
+				' * Get the diagram for this view.
+				' * @return Diagram
+				' */
+				getView(): QuickUML_2001.diagram.Diagram
+				'/** 
+				' * Resize & update the diagram
+				' */
+				#resizeDiagram(diagram : QuickUML_2001.diagram.Diagram, d : QuickUML_2001.java.awt.Dimension)
+				'/** 
+				' * Set the diagram for this view.
+				' * @param Diagram
+				' */
+				setView(diagram : QuickUML_2001.diagram.Diagram)
+				'/** 
+				' * Update the menu bar. Add toggle option, etc.
+				' * @param FlatMenuBar
+				' */
+				updateMenus(menuBar : FlatMenuBar)
+			}
+			'DP role: concreteCommand
+			abstract class ExportAction {
+				<<Create>> ExportAction(name : QuickUML_2001.java.lang.String, icon : QuickUML_2001.javax.swing.Icon)
+				#getComponent(): QuickUML_2001.java.awt.Component
+				#writeGIF(file : QuickUML_2001.java.io.File)
+			}
+			QuickUML_2001.javax.swing.JScrollPane <|-- DiagramContainer
+			QuickUML_2001.javax.swing.JMenuBar <|-- FlatMenuBar
+			FileAction <|-- ExportAction
+			QuickUML_2001.javax.swing.AbstractAction <|-- FileAction
+			QuickUML_2001.javax.swing.AbstractAction <|-- PrintableAction
+			QuickUML_2001.java.awt.print.Printable <|.. PrintableAction
+			PrintableAction <|-- ScaledPrintableAction
+			QuickUML_2001.javax.swing.Action "closeAction" <-- DiagramContainer
+			QuickUML_2001.java.lang.String "colorProperties 0..*" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "copyAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "cutAction" <-- DiagramContainer
+			QuickUML_2001.java.awt.Dimension "defaultSize" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "exportAction" <-- DiagramContainer
+			QuickUML_2001.java.lang.String "fontProperties 0..*" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "pasteAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "printAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "resizeAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "saveAction" <-- DiagramContainer
+			QuickUML_2001.javax.swing.Action "scaledPrintAction" <-- DiagramContainer
+			JavaPrimitiveTypes.int "nextInsert" <-- FlatMenuBar
+			QuickUML_2001.java.awt.Insets "noInsets" <-- FlatMenuBar
+			QuickUML_2001.java.io.File "lastDirectory" <-- SmartChooser
+			SmartChooser "chooser" <-- FileAction
+			QuickUML_2001.java.lang.String "description" <-- SimpleFilter
+			QuickUML_2001.java.lang.String "extensions 0..*" <-- SimpleFilter
+			SimpleFilter "filter" <-- ExportGIFAction
+			SimpleFilter "filter" <-- OpenAction
+			SimpleFilter "filter" <-- SaveAction
+		}
+	}
+	package javax {
+		package swing {
+			'DP role: invoker
+			class JMenuItem {
+			}
+		}
+	}
+}
+@enduml

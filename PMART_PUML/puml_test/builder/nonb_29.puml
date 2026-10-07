@@ -1,0 +1,24 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'@interface DiagramModelListener
+			'@date 08-20-2001
+			'@author Eric Crahen
+			'@version 1.0
+			interface DiagramModelListener {
+				'Notify of a new figure being added to a DiagramModel
+				'@param DiagramModel
+				'@param Figure
+				figureAdded(model : DiagramModel, figure : Figure)
+				'Notify of a figure being removed from a DiagramModel
+				'@param DiagramModel
+				'@param Figure
+				figureRemoved(model : DiagramModel, figure : Figure)
+			}
+		}
+	}
+	java.lang.Cloneable <|-- Builder.nonbuilder.Figure
+	java.io.Serializable <|-- Builder.nonbuilder.Figure
+}
+@enduml

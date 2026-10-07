@@ -1,0 +1,359 @@
+@startuml
+'Design pattern Adapter
+package "MapperXML v1.9.7" as MapperXML_v1.9.7 {
+	package com {
+		package taursys {
+			package xml {
+				'/** 
+				' * Form is ...
+				' * @author Marty Phelan
+				' * @version 1.0
+				' */
+				'DP role: client
+				class Form {
+					{const} PARAMETER_MAP: MapperXML_v1.9.7.java.lang.String = com.taursys.xml.ParameterMap
+					-closeFormDispatcher: MapperXML_v1.9.7.com.taursys.xml.event.CloseFormDispatcher
+					-closeFormListeners: MapperXML_v1.9.7.java.util.ArrayList
+					-documentAdapter: MapperXML_v1.9.7.com.taursys.dom.DocumentAdapter
+					-formContext: MapperXML_v1.9.7.java.util.Map
+					-initContextDispatcher: MapperXML_v1.9.7.com.taursys.xml.event.InitContextDispatcher
+					-initContextListeners: MapperXML_v1.9.7.java.util.ArrayList
+					-initFormDispatcher: MapperXML_v1.9.7.com.taursys.xml.event.InitFormDispatcher
+					-initFormListeners: MapperXML_v1.9.7.java.util.ArrayList
+					-initialized: JavaPrimitiveTypes.boolean
+					-openFormDispatcher: MapperXML_v1.9.7.com.taursys.xml.event.OpenFormDispatcher
+					-openFormListeners: MapperXML_v1.9.7.java.util.ArrayList
+					-sourceId: MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Constructs a new Form
+					' */
+					<<Create>> Form()
+					'/** 
+					' * Adds given listener to notification list for CloseFormEvents
+					' */
+					addCloseFormListener(l : MapperXML_v1.9.7.com.taursys.xml.event.CloseFormListener)
+					'/** 
+					' * Adds given listener to notification list for InitContextEvents
+					' */
+					addInitContextListener(l : MapperXML_v1.9.7.com.taursys.xml.event.InitContextListener)
+					'/** 
+					' * Adds given listener to notification list for InitFormEvents
+					' */
+					addInitFormListener(l : MapperXML_v1.9.7.com.taursys.xml.event.InitFormListener)
+					'/** 
+					' * Adds given listener to notification list for OpenFormEvents
+					' */
+					addOpenFormListener(l : MapperXML_v1.9.7.com.taursys.xml.event.OpenFormListener)
+					'/** 
+					' * Closes the form and any resources it may have opened. This method is invoked by the processCloseForm method which is normally invoked at the end of the processing cycle but before this Form is recycled. Override this method to provide custom behavior. This implementation has no specific behavior.
+					' */
+					#closeForm()
+					'/** 
+					' * Creates the default DocumentElementRenderer for this component. By Default this methos returns a new DocumentElementRenderer. Override this method to define your own DocumentElementRenderer.
+					' */
+					#createDefaultRenderer(): MapperXML_v1.9.7.com.taursys.xml.render.DocumentElementRenderer
+					'/** 
+					' * Initiate the dispatch of the <code>CloseFormEvent</code> to registered nested <code>Forms</code>. This method should be invoked after all processing is complete. Normally, nested <code>Forms</code> should be allowed to close before this form closes.
+					' */
+					#dispatchCloseForm()
+					'/** 
+					' * This method is invoked by run to dispatch the formContext to nested Forms. This method depends on the parameterMap property being set. A new context is constructed which contains everything already in this <code>Form's</code> plus the parameterMap.
+					' */
+					#dispatchInitContext()
+					'/** 
+					' * Initiate the dispatch of the <code>InitFormEvent</code> to registered nested <code>Forms</code>. This method should only be invoked after the <code>InitContextEvent</code> has been dispatched.
+					' */
+					#dispatchInitForm()
+					'/** 
+					' * Initiate the dispatch of the <code>OpenFormEvent</code> to registered nested <code>Forms</code>. This method should only be invoked after the <code>InitFormEvent</code> and <code>ParameterEvent</code> have been dispatched.
+					' */
+					#dispatchOpenForm()
+					'/** 
+					' * Notifies all registered listeners of a given CloseFormEvent
+					' */
+					#fireCloseFormReceived(e : MapperXML_v1.9.7.com.taursys.xml.event.CloseFormEvent)
+					'/** 
+					' * Notifies all registered listeners of a given InitContextEvent
+					' */
+					#fireInitContextReceived(e : MapperXML_v1.9.7.com.taursys.xml.event.InitContextEvent)
+					'/** 
+					' * Notifies all registered listeners of a given InitFormEvent
+					' */
+					#fireInitFormReceived(e : MapperXML_v1.9.7.com.taursys.xml.event.InitFormEvent)
+					'/** 
+					' * Notifies all registered listeners of a given OpenFormEvent
+					' */
+					#fireOpenFormReceived(e : MapperXML_v1.9.7.com.taursys.xml.event.OpenFormEvent)
+					'/** 
+					' * Returns the document for this form.  This is the document which will be sent back as the response.  This is also the document which the components of this form will modify.
+					' */
+					getDocument(): MapperXML_v1.9.7.org.w3c.dom.Document
+					'/** 
+					' * Gets the documentAdapter for this form.  The document adapter is used by components as an adapter for the actual Document.  The adapter provides the needed methods for components to manipulate the Document regardless of the DOM version.
+					' * @return the documentAdapter for this form.
+					' */
+					getDocumentAdapter(): MapperXML_v1.9.7.com.taursys.dom.DocumentAdapter
+					'/** 
+					' * Get the <code>Map</code> of key/value pairs for this <code>Form's</code> context.
+					' * @return the <code>Map</code> of key/value pairs for this <code>Form's</code>context.
+					' */
+					getFormContext(): MapperXML_v1.9.7.java.util.Map
+					'/** 
+					' * Returns the id of the node this component is bound to.  This is the node which this component will replicate.
+					' */
+					getSourceId(): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * This method is invoked by run to initialize the form.  It is the first method invoked by the doGet method before any parameters have been dispatched. This method sets the initialized flag to true. Override this method to provide custom behavior.  If you override, be sure to invoke super.initForm or setInitialized(true) if this method should only be called once.
+					' */
+					#initForm()
+					'/** 
+					' * Indicates whether the form has been initialized (via the initForm method). The run method will only invoke the initForm method if this indicator is false, and then it will set this indicator to true.  This will prevent the form from being initialized again (if it is recycled).
+					' */
+					isInitialized(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Lookup a value from this <code>Form's</code> context.
+					' * @param key the key for the value to lookup
+					' * @return the value as an Object or null if not found.
+					' */
+					lookup(key : MapperXML_v1.9.7.java.lang.Object): MapperXML_v1.9.7.java.lang.Object
+					'/** 
+					' * This method is invoked as part of the processOpenFormEvent method. It is normally invoked after processParameterEvent, but before processInputEvent.  Override this method to provide custom behavior such as opening data sources. This implementation has no specific behavior.
+					' */
+					#openForm()
+					'/** 
+					' * Processes a given CloseFormEvent by invoking the Form's closeForm method, then dispatching an <code>CloseFormEvent</code> to the <code>Form's</code> children, and finally propagating the <code>CloseFormEvent</code> to registered listeners.
+					' * @param e the CloseFormEvent to process
+					' */
+					#processCloseFormEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.CloseFormEvent)
+					'/** 
+					' * Processes given event by invoking the appropriate processX__Event method. The appropriate event type is determined by the class of the given EventObject.
+					' */
+					#processEvent(e : MapperXML_v1.9.7.java.util.EventObject)
+					'/** 
+					' * Processes a given InitContextEvent by setting the <code>formContext</code> and <code>parameterMap</code> from the given message, then dispatching an <code>InitContextEvent</code> to the <code>Form's</code> children, and finally propagating the <code>InitContextEvent</code> to registered listeners.
+					' * @param e the InitContextEvent to process
+					' */
+					#processInitContextEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.InitContextEvent)
+					'/** 
+					' * Processes a given InitFormEvent by invoking the Form's initForm method (unless initialized is true), then dispatching an <code>InitFormEvent</code> to the <code>Form's</code> children, and finally propagating the <code>InitFormEvent</code> to registered listeners.
+					' * @param e the InitFormEvent to process
+					' */
+					#processInitFormEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.InitFormEvent)
+					'/** 
+					' * Processes a given OpenFormEvent by invoking the Form's openForm method, then dispatching an <code>OpenFormEvent</code> to the <code>Form's</code> children, and finally propagating the <code>OpenFormEvent</code> to registered listeners.
+					' * @param e the OpenFormEvent to process
+					' */
+					#processOpenFormEvent(e : MapperXML_v1.9.7.com.taursys.xml.event.OpenFormEvent)
+					'/** 
+					' * Removes given listener from notification list for CloseFormEvents
+					' */
+					removeCloseFormListener(l : MapperXML_v1.9.7.com.taursys.xml.event.CloseFormListener)
+					'/** 
+					' * Removes given listener from notification list for InitContextEvents
+					' */
+					removeInitContextListener(l : MapperXML_v1.9.7.com.taursys.xml.event.InitContextListener)
+					'/** 
+					' * Removes given listener from notification list for InitFormEvents
+					' */
+					removeInitFormListener(l : MapperXML_v1.9.7.com.taursys.xml.event.InitFormListener)
+					'/** 
+					' * Removes given listener from notification list for OpenFormEvents
+					' */
+					removeOpenFormListener(l : MapperXML_v1.9.7.com.taursys.xml.event.OpenFormListener)
+					'/** 
+					' * Sets the document and creates the documentAdapter for this form. This is the document which will be typically be modified and sent back as the response.
+					' * @param newDocument for this form.
+					' */
+					setDocument(newDocument : MapperXML_v1.9.7.org.w3c.dom.Document)
+					'/** 
+					' * Sets the documentAdapter for this form.  The document adapter is used by components as an adapter for the actual Document.  The adapter provides the needed methods for components to manipulate the Document regardless of the DOM version.
+					' * @param newDocumentAdapter for this form.
+					' */
+					setDocumentAdapter(newDocumentAdapter : MapperXML_v1.9.7.com.taursys.dom.DocumentAdapter)
+					'/** 
+					' * Set the <code>Map</code> of key/value pairs for this <code>Form's</code> context.
+					' * @param formContext the <code>Map</code> of key/value pairs for this<code>Form's</code> context.
+					' * @throws IllegalArgumentException if the given value is null
+					' */
+					setFormContext(formContext : MapperXML_v1.9.7.java.util.Map)
+					'/** 
+					' * Sets an indicator that the form has been initialized (via the initForm method). The run method will only invoke the initForm method if this indicator is false, and then it will set this indicator to true.  This will prevent the form from being initialized again (if it is recycled).
+					' */
+					setInitialized(newInitialized : JavaPrimitiveTypes.boolean)
+					'/** 
+					' * Sets the id of the node this component is bound to.  This is the node which this component will replicate.
+					' */
+					setSourceId(sourceId : MapperXML_v1.9.7.java.lang.String)
+				}
+				Component <|-- Container
+				MapperXML_v1.9.7.com.taursys.util.MapperComponent <|.. Component
+				Parameter <|-- AbstractField
+				DocumentComponent <|.. AbstractField
+				Component <|-- Parameter
+				DocumentElement <|-- Form
+				DispatchingContainer <|-- DocumentElement
+				DocumentComponent <|.. DocumentElement
+				Container <|-- DispatchingContainer
+				Component <|-- Trigger
+				MapperXML_v1.9.7.java.util.ArrayList "eventTypeList" <-- Component
+				MapperXML_v1.9.7.java.util.ArrayList "inputListeners" <-- Component
+				JavaPrimitiveTypes.boolean "notifySet" <-- Component
+				MapperXML_v1.9.7.java.util.ArrayList "parameterListeners" <-- Component
+				Container "parent" <-- Component
+				MapperXML_v1.9.7.java.util.ArrayList "recycleListeners" <-- Component
+				MapperXML_v1.9.7.java.util.ArrayList "renderListeners" <-- Component
+				MapperXML_v1.9.7.java.util.ArrayList "triggerListeners" <-- Component
+				JavaPrimitiveTypes.boolean "visible" <-- Component
+				MapperXML_v1.9.7.java.util.ArrayList "components" <-- Container
+				MapperXML_v1.9.7.java.util.HashMap "dispatchers" <-- Container
+				MapperXML_v1.9.7.java.lang.String "ID_DELIMITER" <-- ComponentFactory
+				MapperXML_v1.9.7.java.lang.String "TEMPLATE_NODE" <-- ComponentFactory
+				MapperXML_v1.9.7.java.util.Hashtable "tagTable" <-- ComponentFactory
+				MapperXML_v1.9.7.java.lang.String "defaultValue" <-- Parameter
+				MapperXML_v1.9.7.com.taursys.model.TextModel "model" <-- Parameter
+				MapperXML_v1.9.7.java.lang.String "parameter" <-- Parameter
+				MapperXML_v1.9.7.com.taursys.model.ValueHolder "valueHolder" <-- Parameter
+				MapperXML_v1.9.7.java.lang.String "attributeName" <-- AbstractField
+				JavaPrimitiveTypes.boolean "earlyInputNotify" <-- AbstractField
+				MapperXML_v1.9.7.java.lang.String "id" <-- AbstractField
+				MapperXML_v1.9.7.com.taursys.xml.event.InputDispatcher "inputDispatcher" <-- DispatchingContainer
+				MapperXML_v1.9.7.com.taursys.xml.event.ParameterDispatcher "parameterDispatcher" <-- DispatchingContainer
+				MapperXML_v1.9.7.java.util.Map "parameterMap" <-- DispatchingContainer
+				MapperXML_v1.9.7.com.taursys.xml.event.RecycleDispatcher "recycleDispatcher" <-- DispatchingContainer
+				MapperXML_v1.9.7.com.taursys.xml.event.RenderDispatcher "renderDispatcher" <-- DispatchingContainer
+				JavaPrimitiveTypes.boolean "defaultTrigger" <-- Trigger
+				MapperXML_v1.9.7.javax.swing.ButtonModel "model" <-- Trigger
+				MapperXML_v1.9.7.java.lang.String "parameter" <-- Trigger
+				MapperXML_v1.9.7.java.lang.String "text" <-- Trigger
+				MapperXML_v1.9.7.com.taursys.xml.event.TriggerDispatcher "triggerDispatcher" <-- DispatchingContainer
+				MapperXML_v1.9.7.java.lang.String "id" <-- DocumentElement
+				MapperXML_v1.9.7.com.taursys.xml.render.DocumentElementRenderer "renderer" <-- DocumentElement
+				MapperXML_v1.9.7.java.lang.String "PARAMETER_MAP" <-- Form
+				MapperXML_v1.9.7.com.taursys.xml.event.CloseFormDispatcher "closeFormDispatcher" <-- Form
+				MapperXML_v1.9.7.java.util.ArrayList "closeFormListeners" <-- Form
+				MapperXML_v1.9.7.com.taursys.dom.DocumentAdapter "documentAdapter" <-- Form
+				MapperXML_v1.9.7.java.util.Map "formContext" <-- Form
+				MapperXML_v1.9.7.com.taursys.xml.event.InitContextDispatcher "initContextDispatcher" <-- Form
+				MapperXML_v1.9.7.java.util.ArrayList "initContextListeners" <-- Form
+				MapperXML_v1.9.7.com.taursys.xml.event.InitFormDispatcher "initFormDispatcher" <-- Form
+				MapperXML_v1.9.7.java.util.ArrayList "initFormListeners" <-- Form
+				JavaPrimitiveTypes.boolean "initialized" <-- Form
+				MapperXML_v1.9.7.com.taursys.xml.event.OpenFormDispatcher "openFormDispatcher" <-- Form
+				MapperXML_v1.9.7.java.util.ArrayList "openFormListeners" <-- Form
+				MapperXML_v1.9.7.java.lang.String "sourceId" <-- Form
+			}
+			package dom {
+				'DP role: target
+				interface DocumentAdapter {
+					getDocument(): MapperXML_v1.9.7.org.w3c.dom.Document
+					getElementById(elementId : MapperXML_v1.9.7.java.lang.String): MapperXML_v1.9.7.org.w3c.dom.Element
+					setAttributeText(elementId : MapperXML_v1.9.7.java.lang.String, attribute : MapperXML_v1.9.7.java.lang.String, value : MapperXML_v1.9.7.java.lang.String)
+					setElementText(elementId : MapperXML_v1.9.7.java.lang.String, value : MapperXML_v1.9.7.java.lang.String)
+					write(stream : MapperXML_v1.9.7.java.io.OutputStream)
+					write(writer : MapperXML_v1.9.7.java.io.Writer)
+				}
+				'/** 
+				' * DocumentAdapter for DOM version 1 09/29/2000
+				' */
+				'DP role: adapter
+				class DOM_1_20000929_DocumentAdapter {
+					-defaultIdentifier: MapperXML_v1.9.7.java.lang.String
+					-doc: MapperXML_v1.9.7.org.w3c.dom.Document
+					-identifierMap: MapperXML_v1.9.7.java.util.Hashtable
+					-xmlWriter: AbstractWriter
+					'/** 
+					' * Constructs a new DOM_1_20000929_DocumentAdapter for given document. Also maps all the identifiers for this document
+					' */
+					<<Create>> DOM_1_20000929_DocumentAdapter(newDoc : MapperXML_v1.9.7.org.w3c.dom.Document)
+					'/** 
+					' * Creates the default AbstractWriter for this subcomponent. This implementation creates a com.taursys.dom HTMLWriter if the current Document is an HTML document, otherwise it creates a com.taursys.dom.XMLWriter. You can override this method to create your own default AbstractWriter.
+					' */
+					#createDefaultWriter(): AbstractWriter
+					'/** 
+					' * Returns first TEXT_NODE under given element else returns null
+					' */
+					{static} findFirstTextNode(ele : MapperXML_v1.9.7.org.w3c.dom.Element): MapperXML_v1.9.7.org.w3c.dom.Text
+					'/** 
+					' * Extracts the named attribute value from the node.  Returns value or null.
+					' */
+					{static} getAttribute(attributeName : MapperXML_v1.9.7.java.lang.String, node : MapperXML_v1.9.7.org.w3c.dom.Node): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Returns the Document/adaptee of this DocumentAdapter
+					' */
+					getDocument(): MapperXML_v1.9.7.org.w3c.dom.Document
+					'/** 
+					' * Returns the Element for the given mapped identifier else null if not found.
+					' */
+					getElementById(elementId : MapperXML_v1.9.7.java.lang.String): MapperXML_v1.9.7.org.w3c.dom.Element
+					'/** 
+					' * Get the text from the given Element's text node.
+					' * @param element the element to get the text from
+					' * @return the text from the given Element's text node or null.
+					' */
+					{static} getElementText(element : MapperXML_v1.9.7.org.w3c.dom.Element): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Get the AbstractWriter used to render this document to a stream or writer. The default is XMLWriter.
+					' * @return the AbstractWriter used to render this document
+					' */
+					getXMLWriter(): AbstractWriter
+					'/** 
+					' * Indicates whether or not the given Element has child Elements.
+					' * @param the element to examine for the presence of child elements
+					' * @return true if has children else false
+					' */
+					{static} hasChildElements(parent : MapperXML_v1.9.7.org.w3c.dom.Element): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Recursively maps all the identifiers for the given document starting at the given node
+					' */
+					#mapIdentifiers(parent : MapperXML_v1.9.7.org.w3c.dom.Node)
+					'/** 
+					' * Stores given value as a text attribute of the element identified by the given id Does nothing if the id is not found.  If the given value is null, it renders the attribute as blank ("").
+					' */
+					setAttributeText(elementId : MapperXML_v1.9.7.java.lang.String, attribute : MapperXML_v1.9.7.java.lang.String, value : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Sets the Document/adaptee for this DocumentAdapter. Also maps the identifiers for this document.
+					' */
+					setDocument(newDoc : MapperXML_v1.9.7.org.w3c.dom.Document)
+					'/** 
+					' * Sets the Text of the Element indicated by the given id to the given value. Does nothing if the id is not found.  If the given value is null, it renders the attribute as blank ("").
+					' */
+					setElementText(elementId : MapperXML_v1.9.7.java.lang.String, value : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Stores the given value as a text node of the given element. If the element already has a text node, the value is stored in that node, otherwise a new text node is created with the given value and attached to the element.
+					' */
+					{static} setElementText(element : MapperXML_v1.9.7.org.w3c.dom.Element, value : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Set the AbstractWriter used to render this document to a stream or writer. The default is XMLWriter.
+					' * @param newXMLWriter the AbstractWriter used to render this document
+					' */
+					setXMLWriter(newXMLWriter : AbstractWriter)
+					'/** 
+					' * Write the document to the given OutputStream.
+					' * @param stream to render the document to
+					' */
+					write(stream : MapperXML_v1.9.7.java.io.OutputStream)
+					'/** 
+					' * Write the document to the given Writer.
+					' * @param writer to render the document to
+					' */
+					write(writer : MapperXML_v1.9.7.java.io.Writer)
+				}
+				DocumentAdapter <|.. DOM_1_20000929_DocumentAdapter
+				MapperXML_v1.9.7.java.lang.String "defaultIdentifier" <-- DOM_1_20000929_DocumentAdapter
+				MapperXML_v1.9.7.org.w3c.dom.Document "doc" <-- DOM_1_20000929_DocumentAdapter
+				MapperXML_v1.9.7.java.util.Hashtable "identifierMap" <-- DOM_1_20000929_DocumentAdapter
+				AbstractWriter "xmlWriter" <-- DOM_1_20000929_DocumentAdapter
+			}
+		}
+	}
+	package org {
+		package w3c {
+			package dom {
+				'DP role: adaptee
+				interface Document {
+				}
+			}
+		}
+	}
+}
+@enduml

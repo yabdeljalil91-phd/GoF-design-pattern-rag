@@ -1,0 +1,27 @@
+@startuml
+' Singleton class UML for HTMLComponentFactory (MapperXML v1.9.7)
+
+package "MapperXML v1.9.7" as MapperXML {
+
+    class HTMLComponentFactory {
+        - {static} factory: HTMLComponentFactory
+
+        ' Private constructor to enforce singleton
+        - <<Create>> HTMLComponentFactory()
+
+        ' Singleton accessor
+        {static} getInstance(): HTMLComponentFactory
+
+        ' Component creation methods
+        # createComponentForElement(id: String, element: org.w3c.dom.Element, holders: ValueHolder): Component
+        getSuggestedComponents(element: org.w3c.dom.Element): java.util.Vector
+
+        ' Initialization helpers
+        # initTagTable()
+        - setupFormat(field: AbstractField, element: org.w3c.dom.Element)
+    }
+
+    ' Generalization
+    ComponentFactory <|-- HTMLComponentFactory
+}
+@enduml

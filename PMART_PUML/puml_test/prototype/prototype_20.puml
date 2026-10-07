@@ -1,0 +1,28 @@
+@startuml
+package dpd_jdt {
+	package Daemon {
+		package name {
+			'A rectangle figure.
+			class RectangleFigure {
+				-fDisplayBox: java.awt.Rectangle
+				-rectangleFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 184722075881789163
+				<<Create>> RectangleFigure()
+				<<Create>> RectangleFigure(origin : java.awt.Point, corner : java.awt.Point)
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				displayBox(): java.awt.Rectangle
+				drawBackground(g : java.awt.Graphics)
+				drawFrame(g : java.awt.Graphics)
+				handles(): java.util.Vector
+				read(dr : StorableInput)
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	Daemon.name.AttributeFigure <|-- Daemon.name.RectangleFigure
+	java.awt.Rectangle "fDisplayBox" <-- Daemon.name.RectangleFigure
+	JavaPrimitiveTypes.int "rectangleFigureSerializedDataVersion" <-- Daemon.name.RectangleFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Daemon.name.RectangleFigure
+}
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			'A Figure that shows an Image. Images shown by an image figure are shared by using the Iconkit.
+			'@see Iconkit
+			class ImageFigure {
+				-fDisplayBox: java.awt.Rectangle
+				-fFileName: java.lang.String
+				-fImage: java.awt.Image
+				-imageFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 148012030121282439
+				<<Create>> ImageFigure()
+				<<Create>> ImageFigure(image : java.awt.Image, fileName : java.lang.String, origin : java.awt.Point)
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				#basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				displayBox(): java.awt.Rectangle
+				draw(g : java.awt.Graphics)
+				-drawGhost(g : java.awt.Graphics)
+				handles(): java.util.Vector
+				'Handles asynchroneous image updates.
+				imageUpdate(img : java.awt.Image, flags : JavaPrimitiveTypes.int, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, w : JavaPrimitiveTypes.int, h : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				'Reads the ImageFigure from a StorableInput. It registers the referenced figure to be loaded from the Iconkit.
+				'@see Iconkit#registerImage
+				read(dr : StorableInput)
+				-readObject(s : java.io.ObjectInputStream)
+				'Writes the ImageFigure to a StorableOutput. Only a reference to the image, that is its pathname is saved.
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	java.awt.image.ImageObserver <|.. Abstractfactory.non_abstract_factory.ImageFigure
+	Abstractfactory.non_abstract_factory.AttributeFigure <|-- Abstractfactory.non_abstract_factory.ImageFigure
+	java.awt.Rectangle "fDisplayBox" <-- Abstractfactory.non_abstract_factory.ImageFigure
+	java.lang.String "fFileName" <-- Abstractfactory.non_abstract_factory.ImageFigure
+	java.awt.Image "fImage" <-- Abstractfactory.non_abstract_factory.ImageFigure
+	JavaPrimitiveTypes.int "imageFigureSerializedDataVersion" <-- Abstractfactory.non_abstract_factory.ImageFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Abstractfactory.non_abstract_factory.ImageFigure
+}
+@enduml

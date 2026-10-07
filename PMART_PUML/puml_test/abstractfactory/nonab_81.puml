@@ -1,0 +1,13 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			'This class defines the current version of JUnit
+			class Version {
+				-<<Create>> Version()
+				{static} id(): java.lang.String
+			}
+		}
+	}
+}
+@enduml

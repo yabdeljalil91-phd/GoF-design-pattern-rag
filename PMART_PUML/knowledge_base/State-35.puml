@@ -1,0 +1,291 @@
+@startuml
+'Design pattern State
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+	package org {
+		package acm {
+			package seguin {
+				package print {
+					package xml {
+						'/** 
+						' * Prints a single line
+						' * @author    Chris Seguin
+						' */
+						'DP role: context
+						class XMLLinePrinter {
+							-fontSize: JavaPrimitiveTypes.int
+							-lineNo: JRefactory_v2.6.24.java.awt.Font
+							-list: JRefactory_v2.6.24.java.util.ArrayList
+							'/** 
+							' * Constructor for the JavaLinePrinter object
+							' */
+							<<Create>> XMLLinePrinter()
+							'/** 
+							' * Gets the LineHeight attribute of the LinePrinter object
+							' * @param g  Description of Parameter
+							' * @return    The LineHeight value
+							' */
+							getLineHeight(g : JRefactory_v2.6.24.java.awt.Graphics): JavaPrimitiveTypes.int
+							'/** 
+							' * Prints the line
+							' * @param g      The graphics device
+							' * @param line   The string to print
+							' * @param x      The x location on the graphics device
+							' * @param y      The y location on the graphics device
+							' * @param set    The set of lines
+							' * @param index  The line we are printing
+							' */
+							print(g : JRefactory_v2.6.24.java.awt.Graphics, line : JRefactory_v2.6.24.java.lang.String, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, set : JRefactory_v2.6.24.org.acm.seguin.print.text.LineSet, index : JavaPrimitiveTypes.int)
+							'/** 
+							' * Sets the FontSize attribute of the LinePrinter object
+							' * @param value  The new FontSize value
+							' */
+							setFontSize(value : JavaPrimitiveTypes.int)
+						}
+						'/** 
+						' * State pattern that is used to print the XML file
+						' * @author    Chris Seguin
+						' */
+						'DP role: state
+						abstract class State {
+							#color: JRefactory_v2.6.24.java.awt.Color
+							#font: JRefactory_v2.6.24.java.awt.Font
+							-fontSize: JavaPrimitiveTypes.int
+							-g: JRefactory_v2.6.24.java.awt.Graphics
+							-x: JavaPrimitiveTypes.int
+							-y: JavaPrimitiveTypes.int
+							'/** 
+							' * Constructor for the State object
+							' */
+							<<Create>> State()
+							'/** 
+							' * Gets the Font attribute of the State object
+							' * @return    The Font value
+							' */
+							getFont(): JRefactory_v2.6.24.java.awt.Font
+							'/** 
+							' * Gets the FontSize attribute of the State object
+							' * @return    The FontSize value
+							' */
+							getFontSize(): JavaPrimitiveTypes.int
+							'/** 
+							' * Gets the Graphics attribute of the State object
+							' * @return    The Graphics value
+							' */
+							getGraphics(): JRefactory_v2.6.24.java.awt.Graphics
+							'/** 
+							' * Gets the X attribute of the State object
+							' * @return    The X value
+							' */
+							getX(): JavaPrimitiveTypes.int
+							'/** 
+							' * Gets the Y attribute of the State object
+							' * @return    The Y value
+							' */
+							getY(): JavaPrimitiveTypes.int
+							'/** 
+							' * Set the state for the next state
+							' * @param next  the next state
+							' */
+							#initState(next : State)
+							'/** 
+							' * Prints the buffer
+							' * @param buf  the buffer
+							' */
+							#print(buf : JRefactory_v2.6.24.java.lang.StringBuffer)
+							'/** 
+							' * Processes a single line and returns the state that is in effect at the end of the line.
+							' * @param line  the line
+							' * @return       the state
+							' */
+							processLine(line : JRefactory_v2.6.24.java.lang.String): State
+							'/** 
+							' * The actual worker method that processes the line. This is what is defined by the various states
+							' * @param line   the line
+							' * @param index  the index of the character
+							' * @param buf    the buffer
+							' * @return        the state at the end of the line
+							' */
+							#processLine(line : JRefactory_v2.6.24.java.lang.String, index : JavaPrimitiveTypes.int, buf : JRefactory_v2.6.24.java.lang.StringBuffer): State
+							'/** 
+							' * Sets the FontSize attribute of the State object
+							' * @param value  The new FontSize value
+							' */
+							setFontSize(value : JavaPrimitiveTypes.int)
+							'/** 
+							' * Sets the Graphics attribute of the State object
+							' * @param value  The new Graphics value
+							' */
+							setGraphics(value : JRefactory_v2.6.24.java.awt.Graphics)
+							'/** 
+							' * Sets the X attribute of the State object
+							' * @param value  The new X value
+							' */
+							setX(value : JavaPrimitiveTypes.int)
+							'/** 
+							' * Sets the Y attribute of the State object
+							' * @param value  The new Y value
+							' */
+							setY(value : JavaPrimitiveTypes.int)
+						}
+						'/** 
+						' * State pattern that is used to print the XML file
+						' * @author    Chris Seguin
+						' */
+						'DP role: concreteState
+						class AttributeState {
+							-{static} state: State
+							<<Create>> AttributeState()
+							'/** 
+							' * Gets the Font attribute of the State object
+							' * @return    The Font value
+							' */
+							getFont(): JRefactory_v2.6.24.java.awt.Font
+							'/** 
+							' * Gets the State attribute of the TextState class
+							' * @return    The State value
+							' */
+							{static} getState(): State
+							'/** 
+							' * The actual worker method that processes the line. This is what is defined by the various states
+							' * @param line   the line
+							' * @param index  the index of the character
+							' * @param buf    the buffer
+							' * @return        the state at the end of the line
+							' */
+							#processLine(line : JRefactory_v2.6.24.java.lang.String, index : JavaPrimitiveTypes.int, buf : JRefactory_v2.6.24.java.lang.StringBuffer): State
+						}
+						'/** 
+						' * State pattern that is used to print the XML file
+						' * @author    Chris Seguin
+						' */
+						'DP role: concreteState
+						class AttributeValueState {
+							-{static} state: State
+							<<Create>> AttributeValueState()
+							'/** 
+							' * Gets the Font attribute of the State object
+							' * @return    The Font value
+							' */
+							getFont(): JRefactory_v2.6.24.java.awt.Font
+							'/** 
+							' * Gets the State attribute of the TextState class
+							' * @return    The State value
+							' */
+							{static} getState(): State
+							'/** 
+							' * The actual worker method that processes the line. This is what is defined by the various states
+							' * @param line   the line
+							' * @param index  the index of the character
+							' * @param buf    the buffer
+							' * @return        the state at the end of the line
+							' */
+							#processLine(line : JRefactory_v2.6.24.java.lang.String, index : JavaPrimitiveTypes.int, buf : JRefactory_v2.6.24.java.lang.StringBuffer): State
+						}
+						'/** 
+						' * State pattern that is used to print the XML file
+						' * @author    Chris Seguin
+						' */
+						'DP role: concreteState
+						class QuoteAttributeValueState {
+							-{static} state: State
+							<<Create>> QuoteAttributeValueState()
+							'/** 
+							' * Gets the Font attribute of the State object
+							' * @return    The Font value
+							' */
+							getFont(): JRefactory_v2.6.24.java.awt.Font
+							'/** 
+							' * Gets the State attribute of the TextState class
+							' * @return    The State value
+							' */
+							{static} getState(): State
+							'/** 
+							' * The actual worker method that processes the line. This is what is defined by the various states
+							' * @param line   the line
+							' * @param index  the index of the character
+							' * @param buf    the buffer
+							' * @return        the state at the end of the line
+							' */
+							#processLine(line : JRefactory_v2.6.24.java.lang.String, index : JavaPrimitiveTypes.int, buf : JRefactory_v2.6.24.java.lang.StringBuffer): State
+						}
+						'/** 
+						' * State pattern that is used to print the XML file
+						' * @author    Chris Seguin
+						' */
+						'DP role: concreteState
+						class TagState {
+							-{static} state: State
+							<<Create>> TagState()
+							'/** 
+							' * Gets the Font attribute of the State object
+							' * @return    The Font value
+							' */
+							getFont(): JRefactory_v2.6.24.java.awt.Font
+							'/** 
+							' * Gets the State attribute of the TagState class
+							' * @return    The State value
+							' */
+							{static} getState(): State
+							'/** 
+							' * The actual worker method that processes the line. This is what is defined by the various states
+							' * @param line   the line
+							' * @param index  the index of the character
+							' * @param buf    the buffer
+							' * @return        the state at the end of the line
+							' */
+							#processLine(line : JRefactory_v2.6.24.java.lang.String, index : JavaPrimitiveTypes.int, buf : JRefactory_v2.6.24.java.lang.StringBuffer): State
+						}
+						'/** 
+						' * State pattern that is used to print the XML file
+						' * @author    Chris Seguin
+						' */
+						'DP role: concreteState
+						class TextState {
+							-{static} state: State
+							<<Create>> TextState()
+							'/** 
+							' * Gets the Font attribute of the State object
+							' * @return    The Font value
+							' */
+							getFont(): JRefactory_v2.6.24.java.awt.Font
+							'/** 
+							' * Gets the State attribute of the TextState class
+							' * @return    The State value
+							' */
+							{static} getState(): State
+							'/** 
+							' * The actual worker method that processes the line. This is what is defined by the various states
+							' * @param line   the line
+							' * @param index  the index of the character
+							' * @param buf    the buffer
+							' * @return        the state at the end of the line
+							' */
+							#processLine(line : JRefactory_v2.6.24.java.lang.String, index : JavaPrimitiveTypes.int, buf : JRefactory_v2.6.24.java.lang.StringBuffer): State
+						}
+						JRefactory_v2.6.24.org.acm.seguin.print.text.LinePrinter <|-- XMLLinePrinter
+						State <|-- AttributeState
+						State <|-- AttributeValueState
+						State <|-- QuoteAttributeValueState
+						State <|-- TagState
+						State <|-- TextState
+						JavaPrimitiveTypes.int "fontSize" <-- XMLLinePrinter
+						JRefactory_v2.6.24.java.awt.Font "lineNo" <-- XMLLinePrinter
+						JRefactory_v2.6.24.java.util.ArrayList "list" <-- XMLLinePrinter
+						JRefactory_v2.6.24.java.awt.Color "color" <-- State
+						JRefactory_v2.6.24.java.awt.Font "font" <-- State
+						JavaPrimitiveTypes.int "fontSize" <-- State
+						JRefactory_v2.6.24.java.awt.Graphics "g" <-- State
+						JavaPrimitiveTypes.int "x" <-- State
+						JavaPrimitiveTypes.int "y" <-- State
+						State "state" <-- AttributeState
+						State "state" <-- AttributeValueState
+						State "state" <-- QuoteAttributeValueState
+						State "state" <-- TagState
+						State "state" <-- TextState
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

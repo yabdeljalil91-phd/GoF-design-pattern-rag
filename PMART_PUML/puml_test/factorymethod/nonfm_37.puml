@@ -1,0 +1,21 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'Adds properties & events to the ClassElementNode
+			'@author Jan Jancura
+			class PatternsBrowserFactory {
+				-{const} CLASS_ACTIONS: SystemAction [*]
+				-writeable: JavaPrimitiveTypes.boolean
+				<<Create>> PatternsBrowserFactory(writeable : JavaPrimitiveTypes.boolean)
+				createClassNode(element : ClassElement): Node
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.FilterFactory <|-- Factory_method.nonfactorymethod.PatternsBrowserFactory
+	Factory_method.nonfactorymethod.ElementNodeFactory <|.. Factory_method.nonfactorymethod.FilterFactory
+	Factory_method.nonfactorymethod.ElementNodeFactory "delegate" <-- Factory_method.nonfactorymethod.FilterFactory
+	Factory_method.nonfactorymethod.SystemAction "CLASS_ACTIONS 0..*" <-- Factory_method.nonfactorymethod.PatternsBrowserFactory
+	JavaPrimitiveTypes.boolean "writeable" <-- Factory_method.nonfactorymethod.PatternsBrowserFactory
+}
+@enduml

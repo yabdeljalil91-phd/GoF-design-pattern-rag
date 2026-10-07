@@ -1,0 +1,629 @@
+@startuml
+'Design pattern Adapter
+package "MapperXML v1.9.7" as MapperXML_v1.9.7 {
+	package com {
+		package taursys {
+			package debug {
+				'/** 
+				' * Debug is a singleton with static methods to log information.  Debug is proxy to the actual logging class.  You use Debug with any logging system by implementing a LoggerAdapter for the target system.  You can then assign that loggin system to this Debug by using the setLoggerAdapter method.  By default Debug will create its own SimpleLogger which outputs to the err device.
+				' * @author Marty Phelan
+				' * @version 1.0
+				' * @see SimpleLogger
+				' */
+				'DP role: client
+				class Debug {
+					{const} DEBUG: JavaPrimitiveTypes.int = 4
+					{const} ERROR: JavaPrimitiveTypes.int = 1
+					{const} FATAL: JavaPrimitiveTypes.int = 0
+					{const} INFO: JavaPrimitiveTypes.int = 3
+					{const} LEVEL_NAMES: MapperXML_v1.9.7.java.lang.String [*]
+					{const} WARN: JavaPrimitiveTypes.int = 2
+					-loggerAdapter: LoggerAdapter
+					-{static} singleton: Debug
+					'/** 
+					' * Private constructor to prevent direct instantiation
+					' */
+					-<<Create>> Debug()
+					'/** 
+					' * Writes the given DEBUG message to the log if the DEBUG logging level is enabled
+					' * @param message is an object which contains the message to log
+					' */
+					{static} debug(message : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Writes the given DEBUG message and stack trace to the log if the DEBUG logging level is enabled
+					' * @param message is an object which contains the message to log
+					' * @param t throwable to be rendered using printStackTrace
+					' */
+					{static} debug(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					'/** 
+					' * Writes the given ERROR message to the log if the ERROR logging level is enabled
+					' * @param message is an object which contains the message to log
+					' */
+					{static} error(message : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Writes the given ERROR message and stack trace to the log if the ERROR logging level is enabled
+					' * @param message is an object which contains the message to log
+					' * @param t throwable to be rendered using printStackTrace
+					' */
+					{static} error(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					'/** 
+					' * Writes the given FATAL message to the log if the FATAL logging level is enabled
+					' * @param message is an object which contains the message to log
+					' */
+					{static} fatal(message : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Writes the given FATAL message and stack trace to the log if the FATAL logging level is enabled
+					' * @param message is an object which contains the message to log
+					' * @param t throwable to be rendered using printStackTrace
+					' */
+					{static} fatal(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					'/** 
+					' * Returns the singleton Debug instance.
+					' * @return singleton Debug instance.
+					' */
+					{static} getInstance(): Debug
+					'/** 
+					' * Gets the LoggerAdapter used by the singleton Debug.
+					' * @return loggerAdapter to by used by the singleton Debug.
+					' */
+					{static} getLoggerAdapter(): LoggerAdapter
+					'/** 
+					' * Writes the given INFO message to the log if the INFO logging level is enabled
+					' * @param message is an object which contains the message to log
+					' */
+					{static} info(message : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Writes the given INFO message and stack trace to the log if the INFO logging level is enabled
+					' * @param message is an object which contains the message to log
+					' * @param t throwable to be rendered using printStackTrace
+					' */
+					{static} info(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					'/** 
+					' * Indicates whether or not the DEBUG level is enabled for logging.
+					' * @return true if DEBUG level is enabled
+					' */
+					{static} isDebugEnabled(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Indicates whether or not the given level is enabled for logging.
+					' * @param level to check if enabled
+					' * @return true if given level is enabled
+					' */
+					isEnabledFor(level : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Indicates whether or not the INFO level is enabled for logging.
+					' * @return true if INFO level is enabled
+					' */
+					{static} isInfoEnabled(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Writes the given level message to the log if the given logging level is enabled
+					' * @param level of log message
+					' * @param message is an object which contains the message to log
+					' */
+					{static} log(level : JavaPrimitiveTypes.int, message : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Writes the given level message and stack trace to the log if the given logging level is enabled
+					' * @param level of log message
+					' * @param message is an object which contains the message to log
+					' * @param t throwable to be rendered using printStackTrace
+					' */
+					{static} log(level : JavaPrimitiveTypes.int, message : MapperXML_v1.9.7.java.lang.String, t : MapperXML_v1.9.7.java.lang.Throwable)
+					'/** 
+					' * Sets the LoggerAdapter used by the singleton Debug.
+					' * @param loggerAdapter to by used by the singleton Debug.
+					' */
+					{static} setLoggerAdapter(loggerAdapter : LoggerAdapter)
+					'/** 
+					' * Writes the given WARN message to the log if the WARN logging level is enabled
+					' * @param message is an object which contains the message to log
+					' */
+					{static} warn(message : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Writes the given WARN message and stack trace to the log if the WARN logging level is enabled
+					' * @param message is an object which contains the message to log
+					' * @param t throwable to be rendered using printStackTrace
+					' */
+					{static} warn(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+				}
+				'DP role: target
+				interface LoggerAdapter {
+					debug(message : MapperXML_v1.9.7.java.lang.Object)
+					debug(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					error(message : MapperXML_v1.9.7.java.lang.Object)
+					error(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					fatal(message : MapperXML_v1.9.7.java.lang.Object)
+					fatal(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					info(message : MapperXML_v1.9.7.java.lang.Object)
+					info(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					isDebugEnabled(): JavaPrimitiveTypes.boolean
+					isEnabledFor(level : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					isInfoEnabled(): JavaPrimitiveTypes.boolean
+					log(level : JavaPrimitiveTypes.int, message : MapperXML_v1.9.7.java.lang.Object)
+					log(level : JavaPrimitiveTypes.int, message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					warn(message : MapperXML_v1.9.7.java.lang.Object)
+					warn(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+				}
+				'/** 
+				' * SimpleLogger is an implementation of a LoggerAdapter that outputs log into to System.err. Its default level is WARN.  This is a very simple implementation.  The message passed to the various logging methods is rendered using its toString method.
+				' * @author Marty Phelan
+				' * @version 1.0
+				' */
+				'DP role: adapter
+				class SimpleLogger {
+					-level: JavaPrimitiveTypes.int
+					'/** 
+					' * Constructs a new SimpleLogger
+					' */
+					<<Create>> SimpleLogger()
+					'/** 
+					' * Constructs a new SimpleLogger with a given level
+					' */
+					<<Create>> SimpleLogger(level : JavaPrimitiveTypes.int)
+					'/** 
+					' * Writes the given DEBUG message to the log if the DEBUG logging level is enabled
+					' * @param message is an object which contains the message to log
+					' */
+					debug(message : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Writes the given DEBUG message and stack trace to the log if the DEBUG logging level is enabled
+					' * @param message is an object which contains the message to log
+					' * @param t throwable to be rendered using printStackTrace
+					' */
+					debug(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					'/** 
+					' * Writes the given ERROR message to the log if the ERROR logging level is enabled
+					' * @param message is an object which contains the message to log
+					' */
+					error(message : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Writes the given ERROR message and stack trace to the log if the ERROR logging level is enabled
+					' * @param message is an object which contains the message to log
+					' * @param t throwable to be rendered using printStackTrace
+					' */
+					error(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					'/** 
+					' * Writes the given FATAL message to the log if the FATAL logging level is enabled
+					' * @param message is an object which contains the message to log
+					' */
+					fatal(message : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Writes the given FATAL message and stack trace to the log if the FATAL logging level is enabled
+					' * @param message is an object which contains the message to log
+					' * @param t throwable to be rendered using printStackTrace
+					' */
+					fatal(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					'/** 
+					' * Gets the logging level of this SimpleLogger
+					' * @return level of logging for this SimppleLogger
+					' */
+					getLevel(): JavaPrimitiveTypes.int
+					'/** 
+					' * Writes the given INFO message to the log if the INFO logging level is enabled
+					' * @param message is an object which contains the message to log
+					' */
+					info(message : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Writes the given INFO message and stack trace to the log if the INFO logging level is enabled
+					' * @param message is an object which contains the message to log
+					' * @param t throwable to be rendered using printStackTrace
+					' */
+					info(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					'/** 
+					' * Indicates whether or not the DEBUG level is enabled for logging.
+					' * @return true if DEBUG level is enabled
+					' */
+					isDebugEnabled(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Indicates whether or not the given level is enabled for logging.
+					' * @param level to check if enabled
+					' * @return true if given level is enabled
+					' */
+					isEnabledFor(level : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Indicates whether or not the INFO level is enabled for logging.
+					' * @return true if INFO level is enabled
+					' */
+					isInfoEnabled(): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Writes the given level message to the log if the given logging level is enabled
+					' * @param level of log message
+					' * @param message is an object which contains the message to log
+					' */
+					log(level : JavaPrimitiveTypes.int, message : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Writes the given level message and stack trace to the log if the given logging level is enabled
+					' * @param level of log message
+					' * @param message is an object which contains the message to log
+					' * @param t throwable to be rendered using printStackTrace
+					' */
+					log(level : JavaPrimitiveTypes.int, message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+					'/** 
+					' * Prints the given message to the System.err device if given level is enabled. Prefixes a level name and timestamp to the message.
+					' */
+					-printMessage(level : JavaPrimitiveTypes.int, message : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Sets the logging level of this SimpleLogger
+					' * @param level of logging for this SimppleLogger
+					' */
+					setLevel(level : JavaPrimitiveTypes.int)
+					'/** 
+					' * Writes the given WARN message to the log if the WARN logging level is enabled
+					' * @param message is an object which contains the message to log
+					' */
+					warn(message : MapperXML_v1.9.7.java.lang.Object)
+					'/** 
+					' * Writes the given WARN message and stack trace to the log if the WARN logging level is enabled
+					' * @param message is an object which contains the message to log
+					' * @param t throwable to be rendered using printStackTrace
+					' */
+					warn(message : MapperXML_v1.9.7.java.lang.Object, t : MapperXML_v1.9.7.java.lang.Throwable)
+				}
+				LoggerAdapter <|.. SimpleLogger
+				JavaPrimitiveTypes.int "DEBUG" <-- Debug
+				JavaPrimitiveTypes.int "ERROR" <-- Debug
+				JavaPrimitiveTypes.int "FATAL" <-- Debug
+				JavaPrimitiveTypes.int "INFO" <-- Debug
+				MapperXML_v1.9.7.java.lang.String "LEVEL_NAMES 0..*" <-- Debug
+				JavaPrimitiveTypes.int "WARN" <-- Debug
+				LoggerAdapter "loggerAdapter" <-- Debug
+				JavaPrimitiveTypes.int "level" <-- SimpleLogger
+			}
+		}
+	}
+	package java {
+		package lang {
+			'/** 
+			' * The  {@code System} class contains several useful class fieldsand methods. It cannot be instantiated. Among the facilities provided by the  {@code System} classare standard input, standard output, and error output streams; access to externally defined properties and environment variables; a means of loading files and libraries; and a utility method for quickly copying a portion of an array.
+			' * @since   1.0
+			' */
+			'DP role: adaptee
+			class System {
+				-{const} MAYBE: JavaPrimitiveTypes.int = 2
+				-{const} NEVER: JavaPrimitiveTypes.int = 1
+				-{static} allowSecurityManager: JavaPrimitiveTypes.int
+				{static} bootLayer: ModuleLayer
+				-{static} cons: MapperXML_v1.9.7.java.io.Console
+				{const} err: MapperXML_v1.9.7.java.io.PrintStream
+				{const} in: MapperXML_v1.9.7.java.io.InputStream
+				-{static} initialErrStream: MapperXML_v1.9.7.java.io.PrintStream
+				-{static} initialIn: MapperXML_v1.9.7.java.io.InputStream
+				-{static} lineSeparator: String
+				-{static} notSupportedJnuEncoding: String
+				{const} out: MapperXML_v1.9.7.java.io.PrintStream
+				-{static} props: MapperXML_v1.9.7.java.util.Properties
+				-{static} security: SecurityManager
+				'/** 
+				' * Don't let anyone instantiate this class 
+				' */
+				-<<Create>> System()
+				-{static} allowSecurityManager(): JavaPrimitiveTypes.boolean
+				'/** 
+				' * Copies an array from the specified source array, beginning at the specified position, to the specified position of the destination array. A subsequence of array components are copied from the source array referenced by  {@code src} to the destination arrayreferenced by  {@code dest}. The number of components copied is equal to the  {@code length} argument. The components atpositions  {@code srcPos} through{@code srcPos+length-1} in the source array are copied intopositions  {@code destPos} through{@code destPos+length-1}, respectively, of the destination array. <p> If the  {@code src} and {@code dest} arguments refer to thesame array object, then the copying is performed as if the components at positions  {@code srcPos} through{@code srcPos+length-1} were first copied to a temporaryarray with  {@code length} components and then the contents ofthe temporary array were copied into positions {@code destPos} through {@code destPos+length-1} of thedestination array. <p> If  {@code dest} is {@code null}, then a {@code NullPointerException} is thrown.<p> If  {@code src} is {@code null}, then a {@code NullPointerException} is thrown and the destinationarray is not modified. <p> Otherwise, if any of the following is true, an {@code ArrayStoreException} is thrown and the destination isnot modified: <ul> <li>The  {@code src} argument refers to an object that is not anarray. <li>The  {@code dest} argument refers to an object that is not anarray. <li>The  {@code src} argument and {@code dest} argument referto arrays whose component types are different primitive types. <li>The  {@code src} argument refers to an array with a primitivecomponent type and the  {@code dest} argument refers to an arraywith a reference component type. <li>The  {@code src} argument refers to an array with a referencecomponent type and the  {@code dest} argument refers to an arraywith a primitive component type. </ul> <p> Otherwise, if any of the following is true, an {@code IndexOutOfBoundsException} isthrown and the destination is not modified: <ul> <li>The  {@code srcPos} argument is negative.<li>The  {@code destPos} argument is negative.<li>The  {@code length} argument is negative.<li> {@code srcPos+length} is greater than{@code src.length}, the length of the source array. <li> {@code destPos+length} is greater than{@code dest.length}, the length of the destination array. </ul> <p> Otherwise, if any actual component of the source array from position  {@code srcPos} through{@code srcPos+length-1} cannot be converted to the componenttype of the destination array by assignment conversion, an {@code ArrayStoreException} is thrown. In this case, let<b><i>k</i></b> be the smallest nonnegative integer less than length such that  {@code src[srcPos+}<i>k</i> {@code ]}cannot be converted to the component type of the destination array; when the exception is thrown, source array components from positions  {@code srcPos} through{@code srcPos+}<i>k</i> {@code -1}will already have been copied to destination array positions {@code destPos} through{@code destPos+}<i>k</I> {@code -1} and no otherpositions of the destination array will have been modified. (Because of the restrictions already itemized, this paragraph effectively applies only to the situation where both arrays have component types that are reference types.)
+				' * @param src      the source array.
+				' * @param srcPos   starting position in the source array.
+				' * @param dest     the destination array.
+				' * @param destPos  starting position in the destination data.
+				' * @param length   the number of array elements to be copied.
+				' * @throws IndexOutOfBoundsException  if copying would causeaccess of data outside array bounds.
+				' * @throws ArrayStoreException  if an element in the {@code src}array could not be stored into the  {@code dest} arraybecause of a type mismatch.
+				' * @throws NullPointerException if either {@code src} or{@code dest} is {@code null}.
+				' */
+				{static} arraycopy(src : Object, srcPos : JavaPrimitiveTypes.int, dest : Object, destPos : JavaPrimitiveTypes.int, length : JavaPrimitiveTypes.int)
+				-{static} checkIO()
+				-{static} checkKey(key : String)
+				'/** 
+				' * Removes the system property indicated by the specified key. First, if a security manager exists, its {@code SecurityManager.checkPermission} methodis called with a  {@code PropertyPermission(key, "write")}permission. This may result in a SecurityException being thrown. If no exception is thrown, the specified property is removed.
+				' * @apiNote <strong>Changing a standard system property may have unpredictable results unless otherwise specified</strong>. See  {@linkplain #getProperties getProperties} method for details.
+				' * @param key   the name of the system property to be removed.
+				' * @return     the previous string value of the system property,or  {@code null} if there was no property with that key.
+				' * @throws SecurityException  if a security manager exists and its{@code checkPropertyAccess} method doesn't allowaccess to the specified system property.
+				' * @throws NullPointerException if {@code key} is {@code null}.
+				' * @throws IllegalArgumentException if {@code key} is empty.
+				' * @see #getProperty
+				' * @see #setProperty
+				' * @see java.util.Properties
+				' * @see java.lang.SecurityException
+				' * @see java.lang.SecurityManager#checkPropertiesAccess()
+				' * @since 1.5
+				' */
+				{static} clearProperty(key : String): String
+				-{static} codeSource(clazz : Class): MapperXML_v1.9.7.java.net.URL
+				'/** 
+				' * Returns the unique  {@link java.io.Console Console} object associatedwith the current Java virtual machine, if any.
+				' * @return  The system console, if any, otherwise {@code null}.
+				' * @since   1.6
+				' */
+				{static} console(): MapperXML_v1.9.7.java.io.Console
+				'/** 
+				' * Create the Properties object from a map - masking out system properties that are not intended for public access.
+				' */
+				-{static} createProperties(initialProps : MapperXML_v1.9.7.java.util.Map): MapperXML_v1.9.7.java.util.Properties
+				'/** 
+				' * Returns the current time in milliseconds.  Note that while the unit of time of the return value is a millisecond, the granularity of the value depends on the underlying operating system and may be larger.  For example, many operating systems measure time in units of tens of milliseconds. <p> See the description of the class  {@code Date} fora discussion of slight discrepancies that may arise between "computer time" and coordinated universal time (UTC).
+				' * @return  the difference, measured in milliseconds, betweenthe current time and midnight, January 1, 1970 UTC.
+				' * @see java.util.Date
+				' */
+				{static} currentTimeMillis(): JavaPrimitiveTypes.long
+				'/** 
+				' * Initiates the  {@linkplain Runtime##shutdown shutdown sequence} of the Java Virtual Machine.Unless the security manager denies exiting, this method initiates the shutdown sequence (if it is not already initiated) and then blocks indefinitely. This method neither returns nor throws an exception; that is, it does not complete either normally or abruptly. <p> The argument serves as a status code. By convention, a nonzero status code indicates abnormal termination. <p> The call  {@code System.exit(n)} is effectively equivalent to the call:{@snippet     Runtime.getRuntime().exit(n)
+				'
+				' *  }
+				' * @implNote The initiation of the shutdown sequence is logged by  {@link Runtime#exit(int)}.
+				' * @param status exit status.
+				' * @throws SecurityException if a security manager exists and its  {@code checkExit} methoddoesn't allow exit with the specified status.
+				' * @see java.lang.Runtime#exit(int)
+				' */
+				{static} exit(status : JavaPrimitiveTypes.int)
+				'/** 
+				' * Runs the garbage collector in the Java Virtual Machine. <p> Calling the  {@code gc} method suggests that the Java Virtual Machineexpend effort toward recycling unused objects in order to make the memory they currently occupy available for reuse by the Java Virtual Machine. When control returns from the method call, the Java Virtual Machine has made a best effort to reclaim space from all unused objects. There is no guarantee that this effort will recycle any particular number of unused objects, reclaim any particular amount of space, or complete at any particular time, if at all, before the method returns or ever. There is also no guarantee that this effort will determine the change of reachability in any particular number of objects, or that any particular number of  {@link java.lang.ref.Reference Reference}objects will be cleared and enqueued. <p> The call  {@code System.gc()} is effectively equivalent to thecall: <blockquote><pre> Runtime.getRuntime().gc() </pre></blockquote>
+				' * @see java.lang.Runtime#gc()
+				' */
+				{static} gc()
+				'/** 
+				' * Returns an instance of  {@link Logger Logger} for the caller'suse.
+				' * @implSpec Instances returned by this method route messages to loggers obtained by calling  {@link LoggerFinder#getLogger(java.lang.String,java.lang.Module) LoggerFinder.getLogger(name, module)}, where {@code module} is the caller's module.In cases where  {@code System.getLogger} is called from a context wherethere is no caller frame on the stack (e.g when called directly from a JNI attached thread),  {@code IllegalCallerException} is thrown.To obtain a logger in such a context, use an auxiliary class that will implicitly be identified as the caller, or use the system  {@link LoggerFinder#getLoggerFinder() LoggerFinder} to obtain a logger instead.Note that doing the latter may eagerly initialize the underlying logging system.
+				' * @apiNote This method may defer calling the  {@link LoggerFinder#getLogger(java.lang.String,java.lang.Module) LoggerFinder.getLogger} method to create an actual logger supplied bythe logging backend, for instance, to allow loggers to be obtained during the system initialization time.
+				' * @param name the name of the logger.
+				' * @return an instance of {@link Logger} that can be used by the callingclass.
+				' * @throws NullPointerException if {@code name} is {@code null}.
+				' * @throws IllegalCallerException if there is no Java caller frame on thestack.
+				' * @since 9
+				' */
+				{static} getLogger(name : String): Logger
+				'/** 
+				' * Returns a localizable instance of  {@link Logger Logger} for the caller's use.The returned logger will use the provided resource bundle for message localization.
+				' * @implSpec The returned logger will perform message localization as specified by  {@link LoggerFinder#getLocalizedLogger(java.lang.String,java.util.ResourceBundle,java.lang.Module) LoggerFinder.getLocalizedLogger(name, bundle, module)}, where {@code module} is the caller's module.In cases where  {@code System.getLogger} is called from a context wherethere is no caller frame on the stack (e.g when called directly from a JNI attached thread),  {@code IllegalCallerException} is thrown.To obtain a logger in such a context, use an auxiliary class that will implicitly be identified as the caller, or use the system  {@link LoggerFinder#getLoggerFinder() LoggerFinder} to obtain a logger instead.Note that doing the latter may eagerly initialize the underlying logging system.
+				' * @apiNote This method is intended to be used after the system is fully initialized. This method may trigger the immediate loading and initialization of the  {@link LoggerFinder} service, which may cause issues if theJava Runtime is not ready to initialize the concrete service implementation yet. System classes which may be loaded early in the boot sequence and need to log localized messages should create a logger using {@link #getLogger(java.lang.String)} and then use the log methods thattake a resource bundle as parameter.
+				' * @param name    the name of the logger.
+				' * @param bundle  a resource bundle.
+				' * @return an instance of {@link Logger} which will use the providedresource bundle for message localization.
+				' * @throws NullPointerException if {@code name} is {@code null} or{@code bundle} is {@code null}.
+				' * @throws IllegalCallerException if there is no Java caller frame on thestack.
+				' * @since 9
+				' */
+				{static} getLogger(name : String, bundle : MapperXML_v1.9.7.java.util.ResourceBundle): Logger
+				'/** 
+				' * Determines the current system properties. First, if there is a security manager, its {@code checkPropertiesAccess} method is called with noarguments. This may result in a security exception. <p> The current set of system properties for use by the {@link #getProperty(String)} method is returned as a{@code Properties} object. If there is no current set ofsystem properties, a set of system properties is first created and initialized. This set of system properties includes a value for each of the following keys unless the description of the associated value indicates that the value is optional. <table class="striped" style="text-align:left"> <caption style="display:none">Shows property keys and associated values</caption> <thead> <tr><th scope="col">Key</th> <th scope="col">Description of Associated Value</th></tr> </thead> <tbody> <tr><th scope="row"> {@systemProperty java.version}</th> <td>Java Runtime Environment version, which may be interpreted as a  {@link Runtime.Version}</td></tr> <tr><th scope="row"> {@systemProperty java.version.date}</th> <td>Java Runtime Environment version date, in ISO-8601 YYYY-MM-DD format, which may be interpreted as a  {@link java.time.LocalDate}</td></tr> <tr><th scope="row"> {@systemProperty java.vendor}</th> <td>Java Runtime Environment vendor</td></tr> <tr><th scope="row"> {@systemProperty java.vendor.url}</th> <td>Java vendor URL</td></tr> <tr><th scope="row"> {@systemProperty java.vendor.version}</th> <td>Java vendor version <em>(optional)</em> </td></tr> <tr><th scope="row"> {@systemProperty java.home}</th> <td>Java installation directory</td></tr> <tr><th scope="row"> {@systemProperty java.vm.specification.version}</th> <td>Java Virtual Machine specification version, whose value is the {@linkplain Runtime.Version#feature feature} element of the{@linkplain Runtime#version() runtime version}</td></tr> <tr><th scope="row"> {@systemProperty java.vm.specification.vendor}</th> <td>Java Virtual Machine specification vendor</td></tr> <tr><th scope="row"> {@systemProperty java.vm.specification.name}</th> <td>Java Virtual Machine specification name</td></tr> <tr><th scope="row"> {@systemProperty java.vm.version}</th> <td>Java Virtual Machine implementation version which may be interpreted as a  {@link Runtime.Version}</td></tr> <tr><th scope="row"> {@systemProperty java.vm.vendor}</th> <td>Java Virtual Machine implementation vendor</td></tr> <tr><th scope="row"> {@systemProperty java.vm.name}</th> <td>Java Virtual Machine implementation name</td></tr> <tr><th scope="row"> {@systemProperty java.specification.version}</th> <td>Java Runtime Environment specification version, whose value is the  {@linkplain Runtime.Version#feature feature} element of the{@linkplain Runtime#version() runtime version}</td></tr> <tr><th scope="row"> {@systemProperty java.specification.maintenance.version}</th> <td>Java Runtime Environment specification maintenance version, may be interpreted as a positive integer <em>(optional, see below)</em></td></tr> <tr><th scope="row"> {@systemProperty java.specification.vendor}</th> <td>Java Runtime Environment specification  vendor</td></tr> <tr><th scope="row"> {@systemProperty java.specification.name}</th> <td>Java Runtime Environment specification  name</td></tr> <tr><th scope="row"> {@systemProperty java.class.version}</th> <td> {@linkplain java.lang.reflect.ClassFileFormatVersion#latest() Latest}Java class file format version recognized by the Java runtime as  {@code "MAJOR.MINOR"}where  {@link java.lang.reflect.ClassFileFormatVersion#major() MAJOR} and {@code MINOR}are both formatted as decimal integers</td></tr> <tr><th scope="row"> {@systemProperty java.class.path}</th> <td>Java class path  (refer to {@link ClassLoader#getSystemClassLoader()} for details)</td></tr><tr><th scope="row"> {@systemProperty java.library.path}</th> <td>List of paths to search when loading libraries</td></tr> <tr><th scope="row"> {@systemProperty java.io.tmpdir}</th> <td>Default temp file path</td></tr> <tr><th scope="row"> {@systemProperty os.name}</th> <td>Operating system name</td></tr> <tr><th scope="row"> {@systemProperty os.arch}</th> <td>Operating system architecture</td></tr> <tr><th scope="row"> {@systemProperty os.version}</th> <td>Operating system version</td></tr> <tr><th scope="row"> {@systemProperty file.separator}</th> <td>File separator ("/" on UNIX)</td></tr> <tr><th scope="row"> {@systemProperty path.separator}</th> <td>Path separator (":" on UNIX)</td></tr> <tr><th scope="row"> {@systemProperty line.separator}</th> <td>Line separator ("\n" on UNIX)</td></tr> <tr><th scope="row"> {@systemProperty user.name}</th> <td>User's account name</td></tr> <tr><th scope="row"> {@systemProperty user.home}</th> <td>User's home directory</td></tr> <tr><th scope="row"> {@systemProperty user.dir}</th> <td>User's current working directory</td></tr> <tr><th scope="row"> {@systemProperty native.encoding}</th> <td>Character encoding name derived from the host environment and/or the user's settings. Setting this system property has no effect.</td></tr> <tr><th scope="row"> {@systemProperty stdout.encoding}</th> <td>Character encoding name for  {@link System#out System.out}. The Java runtime can be started with the system property set to  {@code UTF-8}, starting it with the property set to another value leads to undefined behavior. <tr><th scope="row"> {@systemProperty stderr.encoding}</th> <td>Character encoding name for  {@link System#err System.err}. The Java runtime can be started with the system property set to  {@code UTF-8}, starting it with the property set to another value leads to undefined behavior. </tbody> </table> <p> The  {@code java.specification.maintenance.version} property isdefined if the specification implemented by this runtime at the time of its construction had undergone a <a href="https://jcp.org/en/procedures/jcp2#3.6.4">maintenance release</a>. When defined, its value identifies that maintenance release. To indicate the first maintenance release this property will have the value  {@code "1"}, to indicate the second maintenance release this property will have the value {@code "2"}, and so on. <p> Multiple paths in a system property value are separated by the path separator character of the platform. <p> Note that even if the security manager does not permit the {@code getProperties} operation, it may choose to permit the{@link #getProperty(String)} operation.
+				' * @apiNote <strong>Changing a standard system property may have unpredictable results unless otherwise specified.</strong> Property values may be cached during initialization or on first use. Setting a standard property after initialization using  {@link #getProperties()}, {@link #setProperties(Properties)},  {@link #setProperty(String,String)}, or {@link #clearProperty(String)} may not have the desired effect.
+				' * @implNote In addition to the standard system properties, the system properties may include the following keys: <table class="striped"> <caption style="display:none">Shows property keys and associated values</caption> <thead> <tr><th scope="col">Key</th> <th scope="col">Description of Associated Value</th></tr> </thead> <tbody> <tr><th scope="row"> {@systemProperty jdk.module.path}</th> <td>The application module path</td></tr> <tr><th scope="row"> {@systemProperty jdk.module.upgrade.path}</th> <td>The upgrade module path</td></tr> <tr><th scope="row"> {@systemProperty jdk.module.main}</th> <td>The module name of the initial/main module</td></tr> <tr><th scope="row"> {@systemProperty jdk.module.main.class}</th> <td>The main class name of the initial module</td></tr> <tr><th scope="row"> {@systemProperty file.encoding}</th> <td>The name of the default charset, defaults to  {@code UTF-8}. The property may be set on the command line to the value {@code UTF-8} or {@code COMPAT}. If set on the command line to the value  {@code COMPAT} then the value is replaced with thevalue of the  {@code native.encoding} property during startup.Setting the property to a value other than  {@code UTF-8} or{@code COMPAT} leads to unspecified behavior.</td></tr> </tbody> </table>
+				' * @return     the system properties
+				' * @throws SecurityException  if a security manager exists and its{@code checkPropertiesAccess} method doesn't allow accessto the system properties.
+				' * @see #setProperties
+				' * @see java.lang.SecurityException
+				' * @see java.lang.SecurityManager#checkPropertiesAccess()
+				' * @see java.util.Properties
+				' */
+				{static} getProperties(): MapperXML_v1.9.7.java.util.Properties
+				'/** 
+				' * Gets the system property indicated by the specified key. First, if there is a security manager, its {@code checkPropertyAccess} method is called with the key asits argument. This may result in a SecurityException. <p> If there is no current set of system properties, a set of system properties is first created and initialized in the same manner as for the  {@code getProperties} method.
+				' * @apiNote <strong>Changing a standard system property may have unpredictable results unless otherwise specified</strong>. See  {@linkplain #getProperties getProperties} for details.
+				' * @param key   the name of the system property.
+				' * @return     the string value of the system property,or  {@code null} if there is no property with that key.
+				' * @throws SecurityException  if a security manager exists and its{@code checkPropertyAccess} method doesn't allowaccess to the specified system property.
+				' * @throws NullPointerException if {@code key} is {@code null}.
+				' * @throws IllegalArgumentException if {@code key} is empty.
+				' * @see #setProperty
+				' * @see java.lang.SecurityException
+				' * @see java.lang.SecurityManager#checkPropertyAccess(java.lang.String)
+				' * @see java.lang.System#getProperties()
+				' */
+				{static} getProperty(key : String): String
+				'/** 
+				' * Gets the system property indicated by the specified key. First, if there is a security manager, its {@code checkPropertyAccess} method is called with the{@code key} as its argument.<p> If there is no current set of system properties, a set of system properties is first created and initialized in the same manner as for the  {@code getProperties} method.
+				' * @param key   the name of the system property.
+				' * @param def   a default value.
+				' * @return     the string value of the system property,or the default value if there is no property with that key.
+				' * @throws SecurityException  if a security manager exists and its{@code checkPropertyAccess} method doesn't allowaccess to the specified system property.
+				' * @throws NullPointerException if {@code key} is {@code null}.
+				' * @throws IllegalArgumentException if {@code key} is empty.
+				' * @see #setProperty
+				' * @see java.lang.SecurityManager#checkPropertyAccess(java.lang.String)
+				' * @see java.lang.System#getProperties()
+				' */
+				{static} getProperty(key : String, def : String): String
+				'/** 
+				' * Gets the system-wide security manager.
+				' * @return  if a security manager has already been established for thecurrent application, then that security manager is returned; otherwise,  {@code null} is returned.
+				' * @see #setSecurityManager
+				' * @deprecated This method is only useful in conjunction with{@linkplain SecurityManager the Security Manager}, which is deprecated and subject to removal in a future release. Consequently, this method is also deprecated and subject to removal. There is no replacement for the Security Manager or this method.
+				' */
+				{static} getSecurityManager(): SecurityManager
+				'/** 
+				' * Gets the value of the specified environment variable. An environment variable is a system-dependent external named value. <p>If a security manager exists, its {@link SecurityManager#checkPermission checkPermission}method is called with a {@link RuntimePermission RuntimePermission("getenv."+name)}permission.  This may result in a  {@link SecurityException}being thrown.  If no exception is thrown the value of the variable  {@code name} is returned.<p><a id="EnvironmentVSSystemProperties"><i>System properties</i> and <i>environment variables</i></a> are both conceptually mappings between names and values.  Both mechanisms can be used to pass user-defined information to a Java process.  Environment variables have a more global effect, because they are visible to all descendants of the process which defines them, not just the immediate Java subprocess. They can have subtly different semantics, such as case insensitivity, on different operating systems.  For these reasons, environment variables are more likely to have unintended side effects.  It is best to use system properties where possible.  Environment variables should be used when a global effect is desired, or when an external system interface requires an environment variable (such as  {@code PATH}). <p>On UNIX systems the alphabetic case of  {@code name} istypically significant, while on Microsoft Windows systems it is typically not.  For example, the expression {@code System.getenv("FOO").equals(System.getenv("foo"))}is likely to be true on Microsoft Windows.
+				' * @param name the name of the environment variable
+				' * @return the string value of the variable, or {@code null}if the variable is not defined in the system environment
+				' * @throws NullPointerException if {@code name} is {@code null}
+				' * @throws SecurityException if a security manager exists and its {@link SecurityManager#checkPermission checkPermission}method doesn't allow access to the environment variable {@code name}
+				' * @see #getenv()
+				' * @see ProcessBuilder#environment()
+				' */
+				{static} getenv(name : String): String
+				'/** 
+				' * Returns an unmodifiable string map view of the current system environment. The environment is a system-dependent mapping from names to values which is passed from parent to child processes. <p>If the system does not support environment variables, an empty map is returned. <p>The returned map will never contain null keys or values. Attempting to query the presence of a null key or value will throw a  {@link NullPointerException}.  Attempting to query the presence of a key or value which is not of type {@link String} will throw a {@link ClassCastException}. <p>The returned map and its collection views may not obey the general contract of the  {@link Object#equals} and{@link Object#hashCode} methods.<p>The returned map is typically case-sensitive on all platforms. <p>If a security manager exists, its {@link SecurityManager#checkPermission checkPermission}method is called with a {@link RuntimePermission RuntimePermission("getenv.*")} permission.This may result in a  {@link SecurityException} being thrown.<p>When passing information to a Java subprocess, <a href=#EnvironmentVSSystemProperties>system properties</a> are generally preferred over environment variables.
+				' * @return the environment as a map of variable names to values
+				' * @throws SecurityException if a security manager exists and its {@link SecurityManager#checkPermission checkPermission}method doesn't allow access to the process environment
+				' * @see #getenv(String)
+				' * @see ProcessBuilder#environment()
+				' * @since  1.5
+				' */
+				{static} getenv(): MapperXML_v1.9.7.java.util.Map
+				'/** 
+				' * Returns the same hash code for the given object as would be returned by the default method hashCode(), whether or not the given object's class overrides hashCode(). The hash code for the null reference is zero.
+				' * @param x object for which the hashCode is to be calculated
+				' * @return  the hashCode
+				' * @since   1.1
+				' * @see Object#hashCode
+				' * @see java.util.Objects#hashCode(Object)
+				' */
+				{static} identityHashCode(x : Object): JavaPrimitiveTypes.int
+				-{static} implSetSecurityManager(sm : SecurityManager)
+				'/** 
+				' * Returns the channel inherited from the entity that created this Java virtual machine. This method returns the channel obtained by invoking the {@link java.nio.channels.spi.SelectorProvider#inheritedChannel inheritedChannel} method of the system-wide default{@link java.nio.channels.spi.SelectorProvider} object.<p> In addition to the network-oriented channels described in {@link java.nio.channels.spi.SelectorProvider#inheritedChannel inheritedChannel}, this method may return other kinds of channels in the future.
+				' * @return  The inherited channel, if any, otherwise {@code null}.
+				' * @throws IOException If an I/O error occurs
+				' * @throws SecurityException If a security manager is present and it does not permit access to the channel.
+				' * @since 1.5
+				' */
+				{static} inheritedChannel(): MapperXML_v1.9.7.java.nio.channels.Channel
+				'/** 
+				' * Initialize the system class.  Called after thread initialization.
+				' */
+				-{static} initPhase1()
+				-{static} initPhase2(printToStderr : JavaPrimitiveTypes.boolean, printStackTrace : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.int
+				-{static} initPhase3()
+				'/** 
+				' * Returns the system-dependent line separator string.  It always returns the same value - the initial value of the  {@linkplain #getProperty(String) system property} {@code line.separator}. <p>On UNIX systems, it returns  {@code "\n"}; on Microsoft Windows systems it returns  {@code "\r\n"}.
+				' * @return the system-dependent line separator string
+				' * @since 1.7
+				' */
+				{static} lineSeparator(): String
+				'/** 
+				' * Loads the native library specified by the filename argument.  The filename argument must be an absolute path name. If the filename argument, when stripped of any platform-specific library prefix, path, and file extension, indicates a library whose name is, for example, L, and a native library called L is statically linked with the VM, then the JNI_OnLoad_L function exported by the library is invoked rather than attempting to load a dynamic library. A filename matching the argument does not have to exist in the file system. See the <a href=" {@docRoot}/../specs/jni/index.html"> JNI Specification</a> for more details. Otherwise, the filename argument is mapped to a native library image in an implementation-dependent manner. <p> The call  {@code System.load(name)} is effectively equivalentto the call: <blockquote><pre> Runtime.getRuntime().load(name) </pre></blockquote>
+				' * @param filename   the file to load.
+				' * @throws SecurityException  if a security manager exists and its{@code checkLink} method doesn't allowloading of the specified dynamic library
+				' * @throws UnsatisfiedLinkError  if either the filename is not anabsolute path name, the native library is not statically linked with the VM, or the library cannot be mapped to a native library image by the host system.
+				' * @throws NullPointerException if {@code filename} is {@code null}
+				' * @spec jni/index.html Java Native Interface Specification
+				' * @see java.lang.Runtime#load(java.lang.String)
+				' * @see java.lang.SecurityManager#checkLink(java.lang.String)
+				' */
+				{static} load(filename : String)
+				'/** 
+				' * Loads the native library specified by the  {@code libname}argument.  The  {@code libname} argument must not contain any platformspecific prefix, file extension or path. If a native library called  {@code libname} is statically linked with the VM, then theJNI_OnLoad_ {@code libname} function exported by the library is invoked.See the <a href=" {@docRoot}/../specs/jni/index.html"> JNI Specification</a> for more details. Otherwise, the libname argument is loaded from a system library location and mapped to a native library image in an implementation-dependent manner. <p> The call  {@code System.loadLibrary(name)} is effectivelyequivalent to the call <blockquote><pre> Runtime.getRuntime().loadLibrary(name) </pre></blockquote>
+				' * @param libname   the name of the library.
+				' * @throws SecurityException  if a security manager exists and its{@code checkLink} method doesn't allowloading of the specified dynamic library
+				' * @throws UnsatisfiedLinkError if either the libname argumentcontains a file path, the native library is not statically linked with the VM,  or the library cannot be mapped to a native library image by the host system.
+				' * @throws NullPointerException if {@code libname} is {@code null}
+				' * @spec jni/index.html Java Native Interface Specification
+				' * @see java.lang.Runtime#loadLibrary(java.lang.String)
+				' * @see java.lang.SecurityManager#checkLink(java.lang.String)
+				' */
+				{static} loadLibrary(libname : String)
+				'/** 
+				' * Logs an exception/error at initialization time to stdout or stderr.
+				' * @param printToStderr to print to stderr rather than stdout
+				' * @param printStackTrace to print the stack trace
+				' * @param msg the message to print before the exception, can be {@code null}
+				' * @param e the exception or error
+				' */
+				-{static} logInitException(printToStderr : JavaPrimitiveTypes.boolean, printStackTrace : JavaPrimitiveTypes.boolean, msg : String, e : Throwable)
+				'/** 
+				' * Maps a library name into a platform-specific string representing a native library.
+				' * @param libname the name of the library.
+				' * @return     a platform-dependent native library name.
+				' * @throws NullPointerException if {@code libname} is {@code null}
+				' * @see java.lang.System#loadLibrary(java.lang.String)
+				' * @see java.lang.ClassLoader#findLibrary(java.lang.String)
+				' * @since      1.2
+				' */
+				{static} mapLibraryName(libname : String): String
+				'/** 
+				' * Returns the current value of the running Java Virtual Machine's high-resolution time source, in nanoseconds. This method can only be used to measure elapsed time and is not related to any other notion of system or wall-clock time. The value returned represents nanoseconds since some fixed but arbitrary <i>origin</i> time (perhaps in the future, so values may be negative).  The same origin is used by all invocations of this method in an instance of a Java virtual machine; other virtual machine instances are likely to use a different origin. <p>This method provides nanosecond precision, but not necessarily nanosecond resolution (that is, how frequently the value changes) - no guarantees are made except that the resolution is at least as good as that of  {@link #currentTimeMillis()}. <p>Differences in successive calls that span greater than approximately 292 years (2<sup>63</sup> nanoseconds) will not correctly compute elapsed time due to numerical overflow. <p>The values returned by this method become meaningful only when the difference between two such values, obtained within the same instance of a Java virtual machine, is computed. <p>For example, to measure how long some code takes to execute: <pre>  {@code long startTime = System.nanoTime(); // ... the code being measured ... long elapsedNanos = System.nanoTime() - startTime;}</pre> <p>To compare elapsed time against a timeout, use <pre>  {@code if (System.nanoTime() - startTime >= timeoutNanos) ...}</pre> instead of <pre>  {@code if (System.nanoTime() >= startTime + timeoutNanos) ...}</pre> because of the possibility of numerical overflow.
+				' * @return the current value of the running Java Virtual Machine'shigh-resolution time source, in nanoseconds
+				' * @since 1.5
+				' */
+				{static} nanoTime(): JavaPrimitiveTypes.long
+				'/** 
+				' * Create PrintStream for stdout/err based on encoding.
+				' */
+				-{static} newPrintStream(out : MapperXML_v1.9.7.java.io.OutputStream, enc : String): MapperXML_v1.9.7.java.io.PrintStream
+				-{static} registerNatives()
+				'/** 
+				' * Runs the finalization methods of any objects pending finalization. Calling this method suggests that the Java Virtual Machine expend effort toward running the  {@code finalize} methods of objectsthat have been found to be discarded but whose  {@code finalize}methods have not yet been run. When control returns from the method call, the Java Virtual Machine has made a best effort to complete all outstanding finalizations. <p> The call  {@code System.runFinalization()} is effectivelyequivalent to the call: <blockquote><pre> Runtime.getRuntime().runFinalization() </pre></blockquote>
+				' * @deprecated Finalization has been deprecated for removal.  See{@link java.lang.Object#finalize} for background information and detailsabout migration options. <p> When running in a JVM in which finalization has been disabled or removed, no objects will be pending finalization, so this method does nothing.
+				' * @see java.lang.Runtime#runFinalization()
+				' * @jls 12.6 Finalization of Class Instances
+				' */
+				{static} runFinalization()
+				'/** 
+				' * Reassigns the "standard" error output stream. First, if there is a security manager, its  {@code checkPermission}method is called with a  {@code RuntimePermission("setIO")} permissionto see if it's ok to reassign the "standard" error output stream.
+				' * @param err the new standard error output stream.
+				' * @throws SecurityException if a security manager exists and its {@code checkPermission} method doesn't allowreassigning of the standard error output stream.
+				' * @see SecurityManager#checkPermission
+				' * @see java.lang.RuntimePermission
+				' * @since   1.1
+				' */
+				{static} setErr(err : MapperXML_v1.9.7.java.io.PrintStream)
+				-{static} setErr0(err : MapperXML_v1.9.7.java.io.PrintStream)
+				'/** 
+				' * Reassigns the "standard" input stream. First, if there is a security manager, its  {@code checkPermission}method is called with a  {@code RuntimePermission("setIO")} permissionto see if it's ok to reassign the "standard" input stream.
+				' * @param in the new standard input stream.
+				' * @throws SecurityException if a security manager exists and its {@code checkPermission} method doesn't allowreassigning of the standard input stream.
+				' * @see SecurityManager#checkPermission
+				' * @see java.lang.RuntimePermission
+				' * @since   1.1
+				' */
+				{static} setIn(in : MapperXML_v1.9.7.java.io.InputStream)
+				-{static} setIn0(in : MapperXML_v1.9.7.java.io.InputStream)
+				-{static} setJavaLangAccess()
+				'/** 
+				' * Reassigns the "standard" output stream. First, if there is a security manager, its  {@code checkPermission}method is called with a  {@code RuntimePermission("setIO")} permissionto see if it's ok to reassign the "standard" output stream.
+				' * @param out the new standard output stream
+				' * @throws SecurityException if a security manager exists and its {@code checkPermission} method doesn't allowreassigning of the standard output stream.
+				' * @see SecurityManager#checkPermission
+				' * @see java.lang.RuntimePermission
+				' * @since   1.1
+				' */
+				{static} setOut(out : MapperXML_v1.9.7.java.io.PrintStream)
+				-{static} setOut0(out : MapperXML_v1.9.7.java.io.PrintStream)
+				'/** 
+				' * Sets the system properties to the  {@code Properties} argument.First, if there is a security manager, its {@code checkPropertiesAccess} method is called with noarguments. This may result in a security exception. <p> The argument becomes the current set of system properties for use by the  {@link #getProperty(String)} method. If the argument is{@code null}, then the current set of system properties is forgotten.
+				' * @apiNote <strong>Changing a standard system property may have unpredictable results unless otherwise specified</strong>. See  {@linkplain #getProperties getProperties} for details.
+				' * @param props   the new system properties.
+				' * @throws SecurityException  if a security manager exists and its{@code checkPropertiesAccess} method doesn't allow accessto the system properties.
+				' * @see #getProperties
+				' * @see java.util.Properties
+				' * @see java.lang.SecurityException
+				' * @see java.lang.SecurityManager#checkPropertiesAccess()
+				' */
+				{static} setProperties(props : MapperXML_v1.9.7.java.util.Properties)
+				'/** 
+				' * Sets the system property indicated by the specified key. First, if a security manager exists, its {@code SecurityManager.checkPermission} methodis called with a  {@code PropertyPermission(key, "write")}permission. This may result in a SecurityException being thrown. If no exception is thrown, the specified property is set to the given value.
+				' * @apiNote <strong>Changing a standard system property may have unpredictable results unless otherwise specified</strong>. See  {@linkplain #getProperties getProperties} for details.
+				' * @param key   the name of the system property.
+				' * @param value the value of the system property.
+				' * @return     the previous value of the system property,or  {@code null} if it did not have one.
+				' * @throws SecurityException  if a security manager exists and its{@code checkPermission} method doesn't allowsetting of the specified property.
+				' * @throws NullPointerException if {@code key} or{@code value} is {@code null}.
+				' * @throws IllegalArgumentException if {@code key} is empty.
+				' * @see #getProperty
+				' * @see java.lang.System#getProperty(java.lang.String)
+				' * @see java.lang.System#getProperty(java.lang.String,java.lang.String)
+				' * @see java.util.PropertyPermission
+				' * @see SecurityManager#checkPermission
+				' * @since      1.2
+				' */
+				{static} setProperty(key : String, value : String): String
+				'/** 
+				' * Sets the system-wide security manager. If there is a security manager already installed, this method first calls the security manager's  {@code checkPermission} methodwith a  {@code RuntimePermission("setSecurityManager")}permission to ensure it's ok to replace the existing security manager. This may result in throwing a  {@code SecurityException}. <p> Otherwise, the argument is established as the current security manager. If the argument is  {@code null} and nosecurity manager has been established, then no action is taken and the method simply returns.
+				' * @implNote In the JDK implementation, if the Java virtual machine isstarted with the system property  {@code java.security.manager} not set or set tothe special token " {@code disallow}" then the  {@code setSecurityManager}method cannot be used to set a security manager. See the following <a href="SecurityManager.html#set-security-manager">section of the {@code SecurityManager} class specification</a> for more details.
+				' * @param sm the security manager or {@code null}
+				' * @throws SecurityException if the security manager has already been set and its  {@code checkPermission} method doesn't allow it to be replaced
+				' * @throws UnsupportedOperationException if  {@code sm} is non-null and a security manager is not allowedto be set dynamically
+				' * @see #getSecurityManager
+				' * @see SecurityManager#checkPermission
+				' * @see java.lang.RuntimePermission
+				' * @deprecated This method is only useful in conjunction with{@linkplain SecurityManager the Security Manager}, which is deprecated and subject to removal in a future release. Consequently, this method is also deprecated and subject to removal. There is no replacement for the Security Manager or this method.
+				' */
+				{static} setSecurityManager(sm : SecurityManager)
+				-{static} setSecurityManager0(s : SecurityManager)
+			}
+			JavaPrimitiveTypes.int "MAYBE" <-- System
+			JavaPrimitiveTypes.int "NEVER" <-- System
+			JavaPrimitiveTypes.int "allowSecurityManager" <-- System
+			ModuleLayer "bootLayer" <-- System
+			MapperXML_v1.9.7.java.io.Console "cons" <-- System
+			MapperXML_v1.9.7.java.io.PrintStream "err" <-- System
+			MapperXML_v1.9.7.java.io.InputStream "in" <-- System
+			MapperXML_v1.9.7.java.io.PrintStream "initialErrStream" <-- System
+			MapperXML_v1.9.7.java.io.InputStream "initialIn" <-- System
+			String "lineSeparator" <-- System
+			String "notSupportedJnuEncoding" <-- System
+			MapperXML_v1.9.7.java.io.PrintStream "out" <-- System
+			MapperXML_v1.9.7.java.util.Properties "props" <-- System
+			SecurityManager "security" <-- System
+			MapperXML_v1.9.7.java.util.Map "callers" <-- CallersHolder
+			RuntimePermission "LOGGERFINDER_PERMISSION" <-- LoggerFinder
+		}
+	}
+}
+@enduml

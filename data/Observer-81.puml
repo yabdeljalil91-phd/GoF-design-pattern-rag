@@ -1,0 +1,138 @@
+@startuml
+'Enhanced for RAG-based GoF pattern detection (Observer + hints of Composite & Decorator)
+
+package "JHotDraw v5.1" as JHotDraw_v5.1 {
+
+package CH {
+package ifa {
+package draw {
+package framework {
+
+'==================== SUBJECT ====================
+'DP role: Subject (Observer Pattern)
+'Responsibility: maintains state and notifies listeners (observers)
+interface Figure {
+    addFigureChangeListener(l : FigureChangeListener)  ' register observer
+    removeFigureChangeListener(l : FigureChangeListener)  ' unregister observer
+    changed()   ' notify observers (core signal)
+    willChange() ' pre-change notification
+    invalidate() ' notify invalidation event
+}
+
+'==================== OBSERVER ====================
+'DP role: Observer (Observer Pattern)
+'Responsibility: reacts to Figure state changes
+interface FigureChangeListener {
+    figureChanged(e : FigureChangeEvent)
+    figureInvalidated(e : FigureChangeEvent)
+    figureRemoved(e : FigureChangeEvent)
+    figureRequestRemove(e : FigureChangeEvent)
+    figureRequestUpdate(e : FigureChangeEvent)
+}
+
+'==================== EVENT OBJECT ====================
+'DP role: Event (Observer support class)
+'Responsibility: encapsulates change information
+JHotDraw_v5.1.java.util.EventObject <|-- FigureChangeEvent
+
+'==================== CORE RELATION ====================
+'Association: Subject → Observer (notification)
+Figure --> FigureChangeListener : notifies >
+
+'==================== BASE IMPLEMENTATION ====================
+'DP role: ConcreteSubject (partial)
+'Responsibility: manages listener lifecycle
+class AbstractFigure {
+    -fListener : FigureChangeListener  ' aggregation of observers
+}
+
+Figure <|.. AbstractFigure
+
+'Aggregation: Subject holds observers
+AbstractFigure o--> FigureChangeListener : maintains >
+
+}
+
+'========================================================
+package figures {
+
+'==================== CONCRETE SUBJECTS ====================
+'All figures act as ConcreteSubjects (Observer pattern)
+
+class EllipseFigure
+class RectangleFigure
+class RoundRectangleFigure
+class ImageFigure
+class PolyLineFigure
+class LineFigure
+
+'Inheritance: specialization of Subject
+AbstractFigure <|-- EllipseFigure
+AbstractFigure <|-- RectangleFigure
+AbstractFigure <|-- RoundRectangleFigure
+AbstractFigure <|-- ImageFigure
+AbstractFigure <|-- PolyLineFigure
+AbstractFigure <|-- LineFigure
+
+'==================== DUAL ROLE (Subject + Observer) ====================
+'DP role: ConcreteSubject + ConcreteObserver
+'Responsibility: observes other figures AND propagates updates
+class TextFigure {
+    -fObservedFigure : Figure  ' delegation / observation target
+}
+
+TextFigure ..|> FigureChangeListener : observes >
+AbstractFigure <|-- TextFigure
+
+'Association: observes another subject
+TextFigure --> Figure : observes >
+
+'==================== COMPOSITE PATTERN SIGNAL ====================
+'DP role: Composite (also Subject + Observer)
+'Responsibility: groups figures and propagates events
+class GroupFigure
+
+AbstractFigure <|-- GroupFigure
+GroupFigure ..|> FigureChangeListener
+
+'Aggregation: composite contains children
+GroupFigure o--> Figure : contains >
+
+'==================== DECORATOR PATTERN SIGNAL ====================
+'DP role: Decorator (also Observer)
+'Responsibility: wraps a Figure and reacts to its changes
+class BorderDecorator
+
+BorderDecorator ..|> FigureChangeListener
+BorderDecorator --> Figure : wraps >
+
+}
+
+'========================================================
+package standard {
+
+'==================== DRAWING ====================
+'DP role: ConcreteSubject + ConcreteObserver
+'Responsibility: manages figures and propagates events upward
+class StandardDrawing {
+    -fListeners : JHotDraw_v5.1.java.util.Vector  ' aggregation of observers
+}
+
+StandardDrawing ..|> FigureChangeListener
+StandardDrawing o--> FigureChangeListener : maintains >
+StandardDrawing o--> Figure : aggregates >
+
+'==================== OBSERVER MULTICASTER ====================
+'DP role: Helper (Observer pattern optimization)
+'Responsibility: dispatch events to multiple listeners
+class FigureChangeEventMulticaster
+
+FigureChangeEventMulticaster ..|> FigureChangeListener
+
+}
+
+}
+}
+}
+}
+@enduml

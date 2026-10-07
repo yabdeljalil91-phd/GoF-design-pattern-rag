@@ -1,0 +1,164 @@
+@startuml
+' Design pattern: Adapter (explicitly reinforced)
+
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+
+	package org {
+		package acm {
+			package seguin {
+
+				package ide {
+					package common {
+
+						'========================
+						' CLIENT
+						'========================
+						class ClassListPanel {
+							' DP role: Client
+							' Responsibility: Displays class list and triggers navigation actions via adapters
+							-summary: JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary
+							-umlPackage: JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage
+
+							<<Create>> ClassListPanel(init : JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary, initPackage : JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage)
+
+							-addTypeToPanel(nextType : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, gbc : JRefactory_v2.6.24.java.awt.GridBagConstraints, count : JavaPrimitiveTypes.int)
+							-init()
+							-listTypes(): JRefactory_v2.6.24.java.util.Iterator
+
+							' Triggers navigation behavior (via Adapter)
+							load(init : JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary)
+
+							{static} main(args : JRefactory_v2.6.24.java.lang.String)
+						}
+
+						'========================
+						' ADAPTER
+						'========================
+						class JumpToTypeAdapter {
+							' DP role: Adapter
+							' Responsibility: Translates mouse events into navigation calls on UMLPackage (Adaptee)
+							-typeSummary: JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+							-umlPackage: JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage
+
+							<<Create>> JumpToTypeAdapter(initPanel : JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage, initType : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary)
+
+							' Key adaptation: mouse event -> umlPackage.jumpTo(type)
+							mouseClicked(e : JRefactory_v2.6.24.java.awt.event.MouseEvent)
+						}
+
+						'========================
+						' TARGET RELATION
+						'========================
+						JRefactory_v2.6.24.java.awt.event.MouseAdapter <|-- JumpToTypeAdapter : inherits Target adapter class (event handling)
+
+						'========================
+						' ASSOCIATIONS / DELEGATION
+						'========================
+						JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary "summary" <-- ClassListPanel
+						JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage "umlPackage" <-- ClassListPanel : client uses Adaptee
+
+						JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary "typeSummary" <-- JumpToTypeAdapter
+						JRefactory_v2.6.24.org.acm.seguin.uml.UMLPackage "umlPackage" <-- JumpToTypeAdapter : delegates to Adaptee
+
+						JRefactory_v2.6.24.javax.swing.JPanel <|-- ClassListPanel : UI specialization
+
+					}
+				}
+
+				package uml {
+
+					'========================
+					' ADAPTEE
+					'========================
+					class UMLPackage {
+						' DP role: Adaptee
+						' Responsibility: Provides navigation and manipulation of UML elements
+						-classListPanel: JRefactory_v2.6.24.org.acm.seguin.ide.common.ClassListPanel
+						-currentLine: JRefactory_v2.6.24.org.acm.seguin.uml.line.SegmentedLine
+						-first: JavaPrimitiveTypes.boolean
+						-hasChanged: JavaPrimitiveTypes.boolean
+						-loading: JavaPrimitiveTypes.boolean
+						-packageName: JRefactory_v2.6.24.java.lang.String
+						-scrollPane: JRefactory_v2.6.24.javax.swing.JScrollPane
+						-summary: JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary
+
+						<<Create>> UMLPackage(packageSummary : JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary)
+						<<Create>> UMLPackage(filename : JRefactory_v2.6.24.java.lang.String)
+						<<Create>> UMLPackage(input : JRefactory_v2.6.24.java.io.InputStream)
+
+						-addMouseAdapter()
+						clear()
+						-defaultValues()
+						drag(actual : JRefactory_v2.6.24.java.awt.Point)
+						drop()
+
+						#find(id : JRefactory_v2.6.24.java.lang.String): UMLType
+						#find(panel1 : JRefactory_v2.6.24.java.lang.String, panel2 : JRefactory_v2.6.24.java.lang.String): JRefactory_v2.6.24.org.acm.seguin.uml.line.SegmentedLine
+						#findType(searching : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary): UMLType
+
+						getFile(): JRefactory_v2.6.24.java.io.File
+						getMinimumSize(): JRefactory_v2.6.24.java.awt.Dimension
+						getPackageName(): JRefactory_v2.6.24.java.lang.String
+						getPreferredSize(): JRefactory_v2.6.24.java.awt.Dimension
+						getSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary
+						getTitle(): JRefactory_v2.6.24.java.lang.String
+						getTypes(): UMLType
+
+						hit(actual : JRefactory_v2.6.24.java.awt.Point)
+
+						isDirty(): JavaPrimitiveTypes.boolean
+
+						' Core behavior used by Adapter
+						jumpTo(type : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary)
+
+						paint(g : JRefactory_v2.6.24.java.awt.Graphics)
+						print(g : JRefactory_v2.6.24.java.awt.Graphics, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+
+						reload()
+						removeAssociation(field : UMLField)
+						-reset()
+						save()
+
+						setClassListPanel(value : JRefactory_v2.6.24.org.acm.seguin.ide.common.ClassListPanel)
+						setDirty()
+						setLoading(value : JavaPrimitiveTypes.boolean)
+						setScrollPane(value : JRefactory_v2.6.24.javax.swing.JScrollPane)
+						setSummary(value : JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary)
+
+						updateClassListPanel()
+					}
+
+					'========================
+					' INHERITANCE / INTERFACES
+					'========================
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.LinedPanel <|-- UMLPackage : adaptee specialization
+					JRefactory_v2.6.24.org.acm.seguin.io.Saveable <|.. UMLPackage : interface implementation
+
+					'========================
+					' KEY ASSOCIATION
+					'========================
+					JRefactory_v2.6.24.org.acm.seguin.ide.common.ClassListPanel "classListPanel" <-- UMLPackage
+
+					' (Other structural details preserved as-is)
+				}
+			}
+		}
+	}
+
+	package java {
+		package awt {
+			package event {
+
+				'========================
+				' TARGET (ABSTRACT ADAPTER CLASS)
+				'========================
+				class MouseAdapter {
+					' DP role: Target (event adapter base class)
+					' Responsibility: Provides default event handling methods
+				}
+
+			}
+		}
+	}
+}
+@enduml

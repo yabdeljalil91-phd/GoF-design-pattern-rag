@@ -1,0 +1,170 @@
+@startuml
+'Design pattern Strategy
+package "MapperXML v1.9.7" as MapperXML_v1.9.7 {
+	package com {
+		package taursys {
+			package dom {
+				'/** 
+				' * DocumentAdapter for DOM version 1 09/29/2000
+				' */
+				'DP role: context
+				class DOM_1_20000929_DocumentAdapter {
+					-defaultIdentifier: MapperXML_v1.9.7.java.lang.String
+					-doc: MapperXML_v1.9.7.org.w3c.dom.Document
+					-identifierMap: MapperXML_v1.9.7.java.util.Hashtable
+					-xmlWriter: AbstractWriter
+					'/** 
+					' * Constructs a new DOM_1_20000929_DocumentAdapter for given document. Also maps all the identifiers for this document
+					' */
+					<<Create>> DOM_1_20000929_DocumentAdapter(newDoc : MapperXML_v1.9.7.org.w3c.dom.Document)
+					'/** 
+					' * Creates the default AbstractWriter for this subcomponent. This implementation creates a com.taursys.dom HTMLWriter if the current Document is an HTML document, otherwise it creates a com.taursys.dom.XMLWriter. You can override this method to create your own default AbstractWriter.
+					' */
+					#createDefaultWriter(): AbstractWriter
+					'/** 
+					' * Returns first TEXT_NODE under given element else returns null
+					' */
+					{static} findFirstTextNode(ele : MapperXML_v1.9.7.org.w3c.dom.Element): MapperXML_v1.9.7.org.w3c.dom.Text
+					'/** 
+					' * Extracts the named attribute value from the node.  Returns value or null.
+					' */
+					{static} getAttribute(attributeName : MapperXML_v1.9.7.java.lang.String, node : MapperXML_v1.9.7.org.w3c.dom.Node): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Returns the Document/adaptee of this DocumentAdapter
+					' */
+					getDocument(): MapperXML_v1.9.7.org.w3c.dom.Document
+					'/** 
+					' * Returns the Element for the given mapped identifier else null if not found.
+					' */
+					getElementById(elementId : MapperXML_v1.9.7.java.lang.String): MapperXML_v1.9.7.org.w3c.dom.Element
+					'/** 
+					' * Get the text from the given Element's text node.
+					' * @param element the element to get the text from
+					' * @return the text from the given Element's text node or null.
+					' */
+					{static} getElementText(element : MapperXML_v1.9.7.org.w3c.dom.Element): MapperXML_v1.9.7.java.lang.String
+					'/** 
+					' * Get the AbstractWriter used to render this document to a stream or writer. The default is XMLWriter.
+					' * @return the AbstractWriter used to render this document
+					' */
+					getXMLWriter(): AbstractWriter
+					'/** 
+					' * Indicates whether or not the given Element has child Elements.
+					' * @param the element to examine for the presence of child elements
+					' * @return true if has children else false
+					' */
+					{static} hasChildElements(parent : MapperXML_v1.9.7.org.w3c.dom.Element): JavaPrimitiveTypes.boolean
+					'/** 
+					' * Recursively maps all the identifiers for the given document starting at the given node
+					' */
+					#mapIdentifiers(parent : MapperXML_v1.9.7.org.w3c.dom.Node)
+					'/** 
+					' * Stores given value as a text attribute of the element identified by the given id Does nothing if the id is not found.  If the given value is null, it renders the attribute as blank ("").
+					' */
+					setAttributeText(elementId : MapperXML_v1.9.7.java.lang.String, attribute : MapperXML_v1.9.7.java.lang.String, value : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Sets the Document/adaptee for this DocumentAdapter. Also maps the identifiers for this document.
+					' */
+					setDocument(newDoc : MapperXML_v1.9.7.org.w3c.dom.Document)
+					'/** 
+					' * Sets the Text of the Element indicated by the given id to the given value. Does nothing if the id is not found.  If the given value is null, it renders the attribute as blank ("").
+					' */
+					setElementText(elementId : MapperXML_v1.9.7.java.lang.String, value : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Stores the given value as a text node of the given element. If the element already has a text node, the value is stored in that node, otherwise a new text node is created with the given value and attached to the element.
+					' */
+					{static} setElementText(element : MapperXML_v1.9.7.org.w3c.dom.Element, value : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Set the AbstractWriter used to render this document to a stream or writer. The default is XMLWriter.
+					' * @param newXMLWriter the AbstractWriter used to render this document
+					' */
+					setXMLWriter(newXMLWriter : AbstractWriter)
+					'/** 
+					' * Write the document to the given OutputStream.
+					' * @param stream to render the document to
+					' */
+					write(stream : MapperXML_v1.9.7.java.io.OutputStream)
+					'/** 
+					' * Write the document to the given Writer.
+					' * @param writer to render the document to
+					' */
+					write(writer : MapperXML_v1.9.7.java.io.Writer)
+				}
+				'DP role: strategy
+				abstract class AbstractWriter {
+					<<Create>> AbstractWriter()
+					write(doc : MapperXML_v1.9.7.org.w3c.dom.Document, stream : MapperXML_v1.9.7.java.io.OutputStream)
+					write(doc : MapperXML_v1.9.7.org.w3c.dom.Document, writer : MapperXML_v1.9.7.java.io.Writer)
+				}
+				'/** 
+				' * This class is used to write a given Document to an OutputStream or Writer.
+				' */
+				'DP role: concreteStrategy
+				class XMLWriter {
+					#printWriter: MapperXML_v1.9.7.java.io.PrintWriter
+					'/** 
+					' * Default constructor.
+					' */
+					<<Create>> XMLWriter()
+					'/** 
+					' * Normalizes and prints the given string. This method normalizes each character. It replaces any special characters with the &ampXX; notation.
+					' * @param s the <code>String</code> to normalize and print
+					' */
+					#normalizeAndPrint(s : MapperXML_v1.9.7.java.lang.String)
+					'/** 
+					' * Normalizes and print the given character. It replaces any special characters with the &ampXX; notation.
+					' * @param c the <code>char</code> to normalize and print
+					' */
+					#normalizeAndPrint(c : JavaPrimitiveTypes.char)
+					'/** 
+					' * Returns a sorted list of attributes for the given map.
+					' * @param attrs the attribute map to sort
+					' * @return an <code>Attr[]</code> of sorted attributes
+					' */
+					#sortAttributes(attrs : MapperXML_v1.9.7.org.w3c.dom.NamedNodeMap): MapperXML_v1.9.7.org.w3c.dom.Attr
+					'/** 
+					' * Writes the specified Document to the OutputStream.
+					' * @param doc the <code>Document</code> to write
+					' * @param stream the <code>OutputStream</code> to write to
+					' */
+					write(doc : MapperXML_v1.9.7.org.w3c.dom.Document, stream : MapperXML_v1.9.7.java.io.OutputStream)
+					'/** 
+					' * Writes the specified Document to the Writer.
+					' * @param doc the <code>Document</code> to write
+					' * @param writer the <code>Writer</code> to write to
+					' */
+					write(doc : MapperXML_v1.9.7.org.w3c.dom.Document, writer : MapperXML_v1.9.7.java.io.Writer)
+					'/** 
+					' * Write the specified node, recursively. This implementation will write the following type <code>Nodes</code>: <ul> <li>DOCUMENT_NODE - If the <code>Document</code> <code>version</code> or <code>encoding</code> properties are set, then it will produce an initial XML processing instructions node. If the <code>docType</code> property is not null, it will produce a DOCTYPE node.</li> <li>ELEMENT_NODE - invokes the <code>writeElementNode</code> to write the given element node.</li> <li>COMMENT_NODE - writes comment node.</li> <li>ENTITY_REFERENCE_NODE - writes entity node.</li> <li>CDATA_SECTION_NODE - writes CDATA node.</li> <li>TEXT_NODE - invokes <code>normalizeAndPrint</code> to write the contents of a text node.</li> <li>PROCESSING_INSTRUCTION_NODE - writes processing node.</li> </ul>
+					' * @param node the starting node to write and recurse.
+					' */
+					#write(node : MapperXML_v1.9.7.org.w3c.dom.Node)
+					'/** 
+					' * Writes the attributes for the given node in alphabetic order. All attributes are written as attributeName="value". The value is normalized before it is written.
+					' * @param node the node with the attributes to write.
+					' * @see #normalizeAndPrint
+					' */
+					#writeAttributes(node : MapperXML_v1.9.7.org.w3c.dom.Node)
+					'/** 
+					' * Write the given element node recursively. This method first checks to see if the given element node has any children. If it does NOT have any children, it invokes the <code>writeEmptyElementNode</code> method. Otherwise, it writes the element node itself. It begins by invoking the <code>writeAttributes</code> method to generate the attributes for the element node. It then invokes the <code>write</code> method for each child. Finally it writes the end tag for the node.
+					' * @param node the element node to recursively write.
+					' */
+					#writeElementNode(node : MapperXML_v1.9.7.org.w3c.dom.Node)
+					'/** 
+					' * Writes the given empty element node. This implementation simply writes the opening tag with attributes and then the closing tag. It does not use the empty tag shorthand method. It uses the <code>writeAttributes</code> method to generate the attributes for the node.
+					' * @param node the element node to write
+					' */
+					#writeEmptyElementNode(node : MapperXML_v1.9.7.org.w3c.dom.Node)
+				}
+				DocumentAdapter <|.. DOM_1_20000929_DocumentAdapter
+				AbstractWriter <|-- XMLWriter
+				MapperXML_v1.9.7.java.lang.String "defaultIdentifier" <-- DOM_1_20000929_DocumentAdapter
+				MapperXML_v1.9.7.org.w3c.dom.Document "doc" <-- DOM_1_20000929_DocumentAdapter
+				MapperXML_v1.9.7.java.util.Hashtable "identifierMap" <-- DOM_1_20000929_DocumentAdapter
+				AbstractWriter "xmlWriter" <-- DOM_1_20000929_DocumentAdapter
+				MapperXML_v1.9.7.java.io.PrintWriter "printWriter" <-- XMLWriter
+			}
+		}
+	}
+}
+@enduml

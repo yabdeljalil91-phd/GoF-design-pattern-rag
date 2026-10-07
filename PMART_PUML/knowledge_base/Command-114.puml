@@ -1,0 +1,282 @@
+@startuml
+'Design pattern Command
+package "10 - Nutch v0.4" as 10_-_Nutch_v0.4 {
+	package net {
+		package nutch {
+			package db {
+				'/** 
+				' * This is a wrapper class that allows us to reorder write operations to the linkdb and pagedb.  It is useful only for objects like UpdateDatabaseTool, which just does writes. The WebDBWriter is a traditional single-pass database writer. It does not cache any instructions to disk (but it does in memory, with possible resorting).  It certainly does nothing in a distributed fashion. There are other implementors of IWebDBWriter that do all that fancy stuff.
+				' * @author Mike Cafarella
+				' */
+				'DP role: client
+				'DP role: invoker
+				class WebDBWriter {
+					{const} ADD_LINK: JavaPrimitiveTypes.int = 0
+					{const} ADD_PAGE: JavaPrimitiveTypes.byte = 0
+					{const} ADD_PAGE_IFN_PRESENT: JavaPrimitiveTypes.byte = 2
+					{const} ADD_PAGE_WITH_SCORE: JavaPrimitiveTypes.byte = 1
+					{const} CUR_VERSION: JavaPrimitiveTypes.byte = 0
+					{const} DEL_LINK: JavaPrimitiveTypes.int = 1
+					{const} DEL_PAGE: JavaPrimitiveTypes.byte = 3
+					{const} DEL_SINGLE_LINK: JavaPrimitiveTypes.int = 2
+					{const} HAS_OUTLINKS: JavaPrimitiveTypes.int = 1
+					{const} LINKS_BY_MD5: 10_-_Nutch_v0.4.java.lang.String = linksByMD5
+					{const} LINKS_BY_URL: 10_-_Nutch_v0.4.java.lang.String = linksByURL
+					{const} LINK_INVALID: JavaPrimitiveTypes.int = 2
+					{const} LOG: 10_-_Nutch_v0.4.java.util.logging.Logger
+					{const} NO_OUTLINKS: JavaPrimitiveTypes.int = 0
+					{const} PAGES_BY_MD5: 10_-_Nutch_v0.4.java.lang.String = pagesByMD5
+					{const} PAGES_BY_URL: 10_-_Nutch_v0.4.java.lang.String = pagesByURL
+					{const} STATS_FILE: 10_-_Nutch_v0.4.java.lang.String = stats
+					dbFile: 10_-_Nutch_v0.4.java.io.File
+					dbReadLockData: 10_-_Nutch_v0.4.java.io.FileOutputStream
+					dbWriteLock: 10_-_Nutch_v0.4.java.nio.channels.FileLock
+					dbWriteLockData: 10_-_Nutch_v0.4.java.io.FileOutputStream
+					haveEdits: JavaPrimitiveTypes.boolean
+					inBuf: 10_-_Nutch_v0.4.net.nutch.io.DataInputBuffer
+					linksByMD5: 10_-_Nutch_v0.4.net.nutch.io.MapFile.Reader
+					linksByMD5Edits: JavaPrimitiveTypes.long
+					linksByMD5Writer: 10_-_Nutch_v0.4.net.nutch.io.SequenceFile.Writer
+					linksByURL: 10_-_Nutch_v0.4.net.nutch.io.MapFile.Reader
+					linksByURLEdits: JavaPrimitiveTypes.long
+					linksByURLWriter: 10_-_Nutch_v0.4.net.nutch.io.SequenceFile.Writer
+					liwriter: LinkInstructionWriter
+					newDbFile: 10_-_Nutch_v0.4.java.io.File
+					oldDbFile: 10_-_Nutch_v0.4.java.io.File
+					outBuf: 10_-_Nutch_v0.4.net.nutch.io.DataOutputBuffer
+					pagesByMD5: 10_-_Nutch_v0.4.net.nutch.io.MapFile.Reader
+					pagesByMD5Edits: JavaPrimitiveTypes.long
+					pagesByMD5Writer: 10_-_Nutch_v0.4.net.nutch.io.SequenceFile.Writer
+					pagesByURL: 10_-_Nutch_v0.4.net.nutch.io.MapFile.Reader
+					pagesByURLEdits: JavaPrimitiveTypes.long
+					pagesByURLWriter: 10_-_Nutch_v0.4.net.nutch.io.SequenceFile.Writer
+					piwriter: PageInstructionWriter
+					targetOutlinkEdits: JavaPrimitiveTypes.long
+					tmp: 10_-_Nutch_v0.4.java.io.File
+					'/** 
+					' * Create a WebDBWriter.
+					' */
+					<<Create>> WebDBWriter(dir : 10_-_Nutch_v0.4.java.io.File)
+					'/** 
+					' * Private constructor, so we can either open or create the db files.
+					' */
+					-<<Create>> WebDBWriter(dir : 10_-_Nutch_v0.4.java.io.File, create : JavaPrimitiveTypes.boolean)
+					'/** 
+					' * Add a link to the link database
+					' */
+					addLink(lr : Link)
+					'/** 
+					' * Add a page to the page database
+					' */
+					addPage(page : Page)
+					'/** 
+					' * Don't replace the one in the database, if there is one.
+					' */
+					addPageIfNotPresent(page : Page)
+					'/** 
+					' * Don't replace the one in the database, if there is one. If we do insert the new Page, then we should also insert the given Link object.
+					' */
+					addPageIfNotPresent(page : Page, link : Link)
+					'/** 
+					' * Add a page to the page database, with a brand-new score
+					' */
+					addPageWithScore(page : Page)
+					'/** 
+					' * Shutdown
+					' */
+					close()
+					'/** 
+					' * Create the WebDB for the first time.
+					' */
+					{static} createWebDB(dir : 10_-_Nutch_v0.4.java.io.File)
+					'/** 
+					' * Remove links with the given MD5 from the db.
+					' */
+					deleteLink(md5 : 10_-_Nutch_v0.4.net.nutch.io.MD5Hash)
+					'/** 
+					' * Remove a page from the page database.
+					' */
+					deletePage(url : 10_-_Nutch_v0.4.java.lang.String)
+					'/** 
+					' * The WebDBWriter.main() provides some handy methods for testing the WebDB.
+					' */
+					{static} main(argv : 10_-_Nutch_v0.4.java.lang.String)
+				}
+				'DP role: receiver
+				class Link {
+					-{const} CUR_VERSION: JavaPrimitiveTypes.byte = 5
+					{const} MAX_ANCHOR_LENGTH: JavaPrimitiveTypes.int
+					-{const} VERSION_1: JavaPrimitiveTypes.byte = 1
+					-{const} VERSION_2: JavaPrimitiveTypes.byte = 2
+					-anchor: 10_-_Nutch_v0.4.net.nutch.io.UTF8
+					-domainID: JavaPrimitiveTypes.long
+					-fromID: 10_-_Nutch_v0.4.net.nutch.io.MD5Hash
+					-targetHasOutlink: JavaPrimitiveTypes.boolean
+					-url: 10_-_Nutch_v0.4.net.nutch.io.UTF8
+					<<Create>> Link()
+					<<Create>> Link(fromID : 10_-_Nutch_v0.4.net.nutch.io.MD5Hash, domainID : JavaPrimitiveTypes.long, urlString : 10_-_Nutch_v0.4.java.lang.String, anchorText : 10_-_Nutch_v0.4.java.lang.String)
+					compareTo(o : 10_-_Nutch_v0.4.java.lang.Object): JavaPrimitiveTypes.int
+					getAnchorText(): 10_-_Nutch_v0.4.net.nutch.io.UTF8
+					getDomainID(): JavaPrimitiveTypes.long
+					getFromID(): 10_-_Nutch_v0.4.net.nutch.io.MD5Hash
+					getURL(): 10_-_Nutch_v0.4.net.nutch.io.UTF8
+					md5Compare(o : 10_-_Nutch_v0.4.java.lang.Object): JavaPrimitiveTypes.int
+					{static} read(in : 10_-_Nutch_v0.4.java.io.DataInput): Link
+					readFields(in : 10_-_Nutch_v0.4.java.io.DataInput)
+					set(that : Link)
+					setTargetHasOutlink(targetHasOutlink : JavaPrimitiveTypes.boolean)
+					targetHasOutlink(): JavaPrimitiveTypes.boolean
+					toString(): 10_-_Nutch_v0.4.java.lang.String
+					toTabbedString(): 10_-_Nutch_v0.4.java.lang.String
+					urlCompare(o : 10_-_Nutch_v0.4.java.lang.Object): JavaPrimitiveTypes.int
+					write(out : 10_-_Nutch_v0.4.java.io.DataOutput)
+				}
+				'DP role: receiver
+				class Page {
+					-{const} CUR_VERSION: JavaPrimitiveTypes.byte = 4
+					-{const} DEFAULT_INTERVAL: JavaPrimitiveTypes.byte
+					-fetchInterval: JavaPrimitiveTypes.byte
+					-md5: 10_-_Nutch_v0.4.net.nutch.io.MD5Hash
+					-nextFetch: JavaPrimitiveTypes.long
+					-nextScore: JavaPrimitiveTypes.float
+					-numOutlinks: JavaPrimitiveTypes.int
+					-retries: JavaPrimitiveTypes.byte
+					-score: JavaPrimitiveTypes.float
+					-url: 10_-_Nutch_v0.4.net.nutch.io.UTF8
+					<<Create>> Page()
+					<<Create>> Page(urlString : 10_-_Nutch_v0.4.java.lang.String, md5 : 10_-_Nutch_v0.4.net.nutch.io.MD5Hash)
+					<<Create>> Page(urlString : 10_-_Nutch_v0.4.java.lang.String, score : JavaPrimitiveTypes.float, nextScore : JavaPrimitiveTypes.float, nextFetch : JavaPrimitiveTypes.long)
+					<<Create>> Page(urlString : 10_-_Nutch_v0.4.java.lang.String, score : JavaPrimitiveTypes.float, nextScore : JavaPrimitiveTypes.float)
+					clone(): 10_-_Nutch_v0.4.java.lang.Object
+					compareTo(o : 10_-_Nutch_v0.4.java.lang.Object): JavaPrimitiveTypes.int
+					computeDomainID(): JavaPrimitiveTypes.long
+					equals(o : 10_-_Nutch_v0.4.java.lang.Object): JavaPrimitiveTypes.boolean
+					getFetchInterval(): JavaPrimitiveTypes.byte
+					getMD5(): 10_-_Nutch_v0.4.net.nutch.io.MD5Hash
+					getNextFetchTime(): JavaPrimitiveTypes.long
+					getNextScore(): JavaPrimitiveTypes.float
+					getNumOutlinks(): JavaPrimitiveTypes.int
+					getRetriesSinceFetch(): JavaPrimitiveTypes.byte
+					getScore(): JavaPrimitiveTypes.float
+					getURL(): 10_-_Nutch_v0.4.net.nutch.io.UTF8
+					hashCode(): JavaPrimitiveTypes.int
+					{static} read(in : 10_-_Nutch_v0.4.java.io.DataInput): Page
+					readFields(in : 10_-_Nutch_v0.4.java.io.DataInput)
+					set(that : Page)
+					setFetchInterval(fetchInterval : JavaPrimitiveTypes.byte)
+					setMD5(md5 : 10_-_Nutch_v0.4.net.nutch.io.MD5Hash)
+					setNextFetchTime(nextFetch : JavaPrimitiveTypes.long)
+					setNumOutlinks(numOutlinks : JavaPrimitiveTypes.int)
+					setRetriesSinceFetch(retries : JavaPrimitiveTypes.int)
+					setScore(score : JavaPrimitiveTypes.float, nextScore : JavaPrimitiveTypes.float)
+					setURL(url : 10_-_Nutch_v0.4.java.lang.String)
+					toString(): 10_-_Nutch_v0.4.java.lang.String
+					toTabbedString(): 10_-_Nutch_v0.4.java.lang.String
+					write(out : 10_-_Nutch_v0.4.java.io.DataOutput)
+				}
+				IWebDBWriter <|.. WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.WritableComparable <|.. Link
+				_0___Nutch_v0.4.net.nutch.io.WritableComparable <|.. Page
+				_0___Nutch_v0.4.java.lang.Cloneable <|.. Page
+				JavaPrimitiveTypes.byte "CUR_VERSION" <-- Link
+				JavaPrimitiveTypes.int "MAX_ANCHOR_LENGTH" <-- Link
+				JavaPrimitiveTypes.byte "VERSION_1" <-- Link
+				JavaPrimitiveTypes.byte "VERSION_2" <-- Link
+				_0___Nutch_v0.4.net.nutch.io.UTF8 "anchor" <-- Link
+				JavaPrimitiveTypes.long "domainID" <-- Link
+				_0___Nutch_v0.4.net.nutch.io.MD5Hash "fromID" <-- Link
+				JavaPrimitiveTypes.boolean "targetHasOutlink" <-- Link
+				_0___Nutch_v0.4.net.nutch.io.UTF8 "url" <-- Link
+				JavaPrimitiveTypes.byte "CUR_VERSION" <-- Page
+				JavaPrimitiveTypes.byte "DEFAULT_INTERVAL" <-- Page
+				JavaPrimitiveTypes.byte "fetchInterval" <-- Page
+				_0___Nutch_v0.4.net.nutch.io.MD5Hash "md5" <-- Page
+				JavaPrimitiveTypes.long "nextFetch" <-- Page
+				JavaPrimitiveTypes.float "nextScore" <-- Page
+				JavaPrimitiveTypes.int "numOutlinks" <-- Page
+				JavaPrimitiveTypes.byte "retries" <-- Page
+				JavaPrimitiveTypes.float "score" <-- Page
+				_0___Nutch_v0.4.net.nutch.io.UTF8 "url" <-- Page
+				JavaPrimitiveTypes.int "ADD_LINK" <-- WebDBWriter
+				JavaPrimitiveTypes.byte "ADD_PAGE" <-- WebDBWriter
+				JavaPrimitiveTypes.byte "ADD_PAGE_IFN_PRESENT" <-- WebDBWriter
+				JavaPrimitiveTypes.byte "ADD_PAGE_WITH_SCORE" <-- WebDBWriter
+				JavaPrimitiveTypes.byte "CUR_VERSION" <-- WebDBWriter
+				JavaPrimitiveTypes.int "DEL_LINK" <-- WebDBWriter
+				JavaPrimitiveTypes.byte "DEL_PAGE" <-- WebDBWriter
+				JavaPrimitiveTypes.int "DEL_SINGLE_LINK" <-- WebDBWriter
+				JavaPrimitiveTypes.int "HAS_OUTLINKS" <-- WebDBWriter
+				_0___Nutch_v0.4.java.lang.String "LINKS_BY_MD5" <-- WebDBWriter
+				_0___Nutch_v0.4.java.lang.String "LINKS_BY_URL" <-- WebDBWriter
+				JavaPrimitiveTypes.int "LINK_INVALID" <-- WebDBWriter
+				_0___Nutch_v0.4.java.util.logging.Logger "LOG" <-- WebDBWriter
+				JavaPrimitiveTypes.int "NO_OUTLINKS" <-- WebDBWriter
+				_0___Nutch_v0.4.java.lang.String "PAGES_BY_MD5" <-- WebDBWriter
+				_0___Nutch_v0.4.java.lang.String "PAGES_BY_URL" <-- WebDBWriter
+				_0___Nutch_v0.4.java.lang.String "STATS_FILE" <-- WebDBWriter
+				_0___Nutch_v0.4.java.io.File "dbFile" <-- WebDBWriter
+				_0___Nutch_v0.4.java.io.FileOutputStream "dbReadLockData" <-- WebDBWriter
+				_0___Nutch_v0.4.java.nio.channels.FileLock "dbWriteLock" <-- WebDBWriter
+				_0___Nutch_v0.4.java.io.FileOutputStream "dbWriteLockData" <-- WebDBWriter
+				JavaPrimitiveTypes.boolean "haveEdits" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.DataInputBuffer "inBuf" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "linksByMD5" <-- WebDBWriter
+				JavaPrimitiveTypes.long "linksByMD5Edits" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "linksByMD5Writer" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "linksByURL" <-- WebDBWriter
+				JavaPrimitiveTypes.long "linksByURLEdits" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "linksByURLWriter" <-- WebDBWriter
+				JavaPrimitiveTypes.int "instruction" <-- LinkInstruction
+				Link "link" <-- LinkInstruction
+				MD5Comparator "MD5_COMPARATOR" <-- MD5Comparator
+				UrlComparator "URL_COMPARATOR" <-- UrlComparator
+				LinkInstruction "li" <-- LinkInstructionWriter
+				LinkInstructionWriter "liwriter" <-- WebDBWriter
+				_0___Nutch_v0.4.java.io.File "newDbFile" <-- WebDBWriter
+				_0___Nutch_v0.4.java.io.File "oldDbFile" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.DataOutputBuffer "outBuf" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "pagesByMD5" <-- WebDBWriter
+				JavaPrimitiveTypes.long "pagesByMD5Edits" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "pagesByMD5Writer" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "pagesByURL" <-- WebDBWriter
+				JavaPrimitiveTypes.long "pagesByURLEdits" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "pagesByURLWriter" <-- WebDBWriter
+				JavaPrimitiveTypes.boolean "hasLink" <-- PageInstruction
+				Link "link" <-- PageInstruction
+				JavaPrimitiveTypes.byte "opcode" <-- PageInstruction
+				Page "page" <-- PageInstruction
+				Comparator "PAGE_COMPARATOR" <-- PageComparator
+				UrlComparator "PAGE_COMPARATOR" <-- UrlComparator
+				PageInstruction "pi" <-- PageInstructionWriter
+				PageInstructionWriter "piwriter" <-- WebDBWriter
+				JavaPrimitiveTypes.long "targetOutlinkEdits" <-- WebDBWriter
+				_0___Nutch_v0.4.java.io.File "tmp" <-- WebDBWriter
+				_0___Nutch_v0.4.java.lang.String "basename" <-- CloseProcessor
+				_0___Nutch_v0.4.net.nutch.io.WritableComparator "comparator" <-- CloseProcessor
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "editWriter" <-- CloseProcessor
+				JavaPrimitiveTypes.long "itemsWritten" <-- CloseProcessor
+				_0___Nutch_v0.4.java.lang.Class "keyClass" <-- CloseProcessor
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "oldDb" <-- CloseProcessor
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Sorter "sorter" <-- CloseProcessor
+				_0___Nutch_v0.4.java.lang.Class "valueClass" <-- CloseProcessor
+				LinkInstruction "current" <-- DeduplicatingLinkSequenceReader
+				Link "currentKey" <-- DeduplicatingLinkSequenceReader
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Reader "edits" <-- DeduplicatingLinkSequenceReader
+				JavaPrimitiveTypes.boolean "haveCurrent" <-- DeduplicatingLinkSequenceReader
+				PageInstruction "current" <-- DeduplicatingPageSequenceReader
+				_0___Nutch_v0.4.net.nutch.io.UTF8 "currentUrl" <-- DeduplicatingPageSequenceReader
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Reader "edits" <-- DeduplicatingPageSequenceReader
+				JavaPrimitiveTypes.boolean "haveCurrent" <-- DeduplicatingPageSequenceReader
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "futureEdits" <-- LinksByMD5Processor
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "futureEdits" <-- LinksByURLProcessor
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "pageDb" <-- LinksByURLProcessor
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "futureEdits" <-- PagesByURLProcessor
+				JavaPrimitiveTypes.boolean "hasPage" <-- TargetTester
+				Page "page" <-- TargetTester
+				_0___Nutch_v0.4.net.nutch.io.UTF8 "pageURL" <-- TargetTester
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "pagedb" <-- TargetTester
+			}
+		}
+	}
+}
+@enduml

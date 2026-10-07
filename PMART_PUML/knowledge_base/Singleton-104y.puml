@@ -1,0 +1,24 @@
+@startuml
+' Singleton class UML for CodeGenerator (MapperXML v1.9.7)
+
+package "MapperXML v1.9.7" as MapperXML {
+
+    class CodeGenerator {
+        - {const} TEMPLATES_PATH: String
+        - initialized: boolean
+        - properties: java.util.Properties
+        - {static} singleton: CodeGenerator
+
+        ' Private constructor to enforce singleton
+        - <<Create>> CodeGenerator()
+
+        ' Singleton accessor
+        {static} getInstance(): CodeGenerator
+
+        ' Methods
+        - createFile(sourcePath: String, packageName: String, fileName: String): java.io.File
+        initialize()
+        setProperties(properties: java.util.Properties)
+    }
+}
+@enduml

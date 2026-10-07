@@ -1,0 +1,112 @@
+@startuml
+'------------------------------------------------------
+' Factory Method - PMD v1.8
+' Optimized for Design Pattern Detection by LLM
+'------------------------------------------------------
+
+package "PMD v1.8" {
+
+    '---------------------------
+    ' Symbol Table
+    '---------------------------
+    package symboltable {
+
+        '---------------------------
+        ' Factory & Products
+        '---------------------------
+        interface ScopeFactory <<creator>> {
+            +openScope(scopes:Stack, node:SimpleNode) <<FactoryMethod>>
+        }
+
+        interface Scope <<product>> {
+            +addDeclaration(decl:VariableNameDeclaration)
+            +addDeclaration(decl:MethodNameDeclaration)
+            +addVariableNameOccurrence(occ:NameOccurrence): NameDeclaration
+            +contains(occ:NameOccurrence): boolean
+            +getEnclosingClassScope(): ClassScope
+            +getParent(): Scope
+            +getVariableDeclarations(lookingForUsed:boolean): Map
+            +setParent(parent:Scope)
+        }
+
+        class AbstractScope <<abstractProduct>> {
+            -methodNames: Map
+            -variableNames: Map
+            -parent: Scope
+        }
+
+        class ClassScope <<concreteProduct>> {
+            -anonymousInnerClassCounter:int
+            -className:String
+            <<Create>> ClassScope(className:String)
+            <<Create>> ClassScope()
+            +addDeclaration(decl:MethodNameDeclaration)
+            -clipClassName(in:String): String
+            #findVariableHere(occurrence:NameOccurrence): NameDeclaration
+            +getClassName(): String
+            +getEnclosingClassScope(): ClassScope
+            +toString(): String
+        }
+
+        class GlobalScope <<concreteProduct>> {
+            <<Create>> GlobalScope()
+            +addDeclaration(decl:MethodNameDeclaration)
+            +addDeclaration(decl:VariableNameDeclaration)
+            +addVariableNameOccurrence(occ:NameOccurrence): NameDeclaration
+            +contains(occ:NameOccurrence): boolean
+            #findVariableHere(occ:NameOccurrence): NameDeclaration
+            +getEnclosingClassScope(): ClassScope
+            +getUnusedVariableDeclarations(): Map
+            +toString(): String
+        }
+
+        class LocalScope <<concreteProduct>> {
+            <<Create>> LocalScope()
+            +addDeclaration(nameDecl:VariableNameDeclaration)
+            +findVariableHere(occurrence:NameOccurrence): NameDeclaration
+            +toString(): String
+        }
+
+        class MethodScope <<concreteProduct>> {
+            <<Create>> MethodScope()
+            +findVariableHere(occurrence:NameOccurrence): NameDeclaration
+            +toString(): String
+        }
+
+        class BasicScopeFactory <<concreteCreator>> {
+            -scopeEvaluators:Set
+            <<Create>> BasicScopeFactory()
+            +openScope(scopes:Stack, node:SimpleNode) <<FactoryMethod>>
+        }
+
+        '---------------------------
+        ' Inheritance & Realizations
+        '---------------------------
+        AbstractScope <|-- ClassScope
+        AbstractScope <|-- GlobalScope
+        AbstractScope <|-- LocalScope
+        AbstractScope <|-- MethodScope
+        Scope <|.. AbstractScope
+        ScopeFactory <|.. BasicScopeFactory
+
+        AbstractNameDeclaration <|-- VariableNameDeclaration
+        NameDeclaration <|.. VariableNameDeclaration
+        AbstractNameDeclaration <|-- MethodNameDeclaration
+        NameDeclaration <|.. MethodNameDeclaration
+
+        '---------------------------
+        ' Associations / Dependencies
+        '---------------------------
+        SimpleNode "node" <-- AbstractNameDeclaration
+        String "image" <-- NameOccurrence
+        boolean "isMethodOrConstructorInvocation" <-- NameOccurrence
+        SimpleNode "location" <-- NameOccurrence
+        Map "methodNames" <-- AbstractScope
+        Scope "parent" <-- AbstractScope
+        Map "variableNames" <-- AbstractScope
+        int "anonymousInnerClassCounter" <-- ClassScope
+        String "className" <-- ClassScope
+        Set "scopeEvaluators" <-- BasicScopeFactory
+    }
+}
+@enduml

@@ -1,0 +1,4 @@
+@startuml
+package "DrJava v20030203" as DrJava_v20030203 {
+}
+@enduml

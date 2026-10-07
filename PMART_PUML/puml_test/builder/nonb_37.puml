@@ -1,0 +1,19 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Text printer for elixir 
+			'@author     Chris Seguin 
+			'@created    May 31, 1999
+			class ElixirTextPrinter {
+				<<Create>> ElixirTextPrinter()
+				'Prints the current document
+				print()
+				'Prints the current document
+				{static} printCurrent()
+			}
+		}
+	}
+	Builder.nonbuilder.TextPrinter <|-- Builder.nonbuilder.ElixirTextPrinter
+}
+@enduml

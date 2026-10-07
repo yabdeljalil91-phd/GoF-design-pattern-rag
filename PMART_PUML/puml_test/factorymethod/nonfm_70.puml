@@ -1,0 +1,40 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			class PertDependency {
+				-pertDependencySerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -7959500008698525009
+				<<Create>> PertDependency()
+				canConnect(start : Figure, end : Figure): JavaPrimitiveTypes.boolean
+				handleConnect(start : Figure, end : Figure)
+				handleDisconnect(start : Figure, end : Figure)
+				handles(): java.util.Vector
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.LineConnection <|-- Factory_method.nonfactorymethod.PertDependency
+	Factory_method.nonfactorymethod.ConnectionFigure <|.. Factory_method.nonfactorymethod.LineConnection
+	Factory_method.nonfactorymethod.PolyLineFigure <|-- Factory_method.nonfactorymethod.LineConnection
+	Factory_method.nonfactorymethod.AbstractFigure <|-- Factory_method.nonfactorymethod.PolyLineFigure
+	Factory_method.nonfactorymethod.Figure <|-- Factory_method.nonfactorymethod.ConnectionFigure
+	java.lang.Cloneable <|-- Factory_method.nonfactorymethod.Figure
+	java.io.Serializable <|-- Factory_method.nonfactorymethod.Figure
+	JavaPrimitiveTypes.int "ARROW_TIP_BOTH" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_END" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_NONE" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	JavaPrimitiveTypes.int "ARROW_TIP_START" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	Factory_method.nonfactorymethod.LineDecoration "fEndDecoration" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	java.awt.Color "fFrameColor" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	java.util.Vector "fPoints" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	Factory_method.nonfactorymethod.LineDecoration "fStartDecoration" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	JavaPrimitiveTypes.int "polyLineFigureSerializedDataVersion" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Factory_method.nonfactorymethod.PolyLineFigure
+	Factory_method.nonfactorymethod.Connector "fEnd" <-- Factory_method.nonfactorymethod.LineConnection
+	Factory_method.nonfactorymethod.Connector "fStart" <-- Factory_method.nonfactorymethod.LineConnection
+	JavaPrimitiveTypes.int "lineConnectionSerializedDataVersion" <-- Factory_method.nonfactorymethod.LineConnection
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Factory_method.nonfactorymethod.LineConnection
+	JavaPrimitiveTypes.int "pertDependencySerializedDataVersion" <-- Factory_method.nonfactorymethod.PertDependency
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Factory_method.nonfactorymethod.PertDependency
+}
+@enduml

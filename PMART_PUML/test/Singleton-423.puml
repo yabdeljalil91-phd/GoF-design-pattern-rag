@@ -1,0 +1,20 @@
+@startuml
+package "DrJava v20030203" as DrJava_v20030203 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package platform {
+						class PlatformFactory {
+							{const} ONLY: PlatformSupport
+							<<Create>> PlatformFactory()
+							-{static} getPlatformSupport(): PlatformSupport
+						}
+						PlatformSupport "ONLY" <-- PlatformFactory
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

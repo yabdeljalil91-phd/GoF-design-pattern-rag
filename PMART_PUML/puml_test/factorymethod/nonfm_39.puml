@@ -1,0 +1,34 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'A triangle with same dimensions as its enclosing rectangle, and apex at any of 8 places
+			class TriangleFigure {
+				#fRotation: JavaPrimitiveTypes.int
+				{static} rotations: JavaPrimitiveTypes.double [*]
+				<<Create>> TriangleFigure()
+				<<Create>> TriangleFigure(origin : java.awt.Point, corner : java.awt.Point)
+				center(): java.awt.Point
+				chop(p : java.awt.Point): java.awt.Point
+				clone(): java.lang.Object
+				connectionInsets(): java.awt.Insets
+				containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+				draw(g : java.awt.Graphics)
+				handles(): java.util.Vector
+				'Return the polygon describing the triangle
+				polygon(): java.awt.Polygon
+				read(dr : StorableInput)
+				rotate(angle : JavaPrimitiveTypes.double)
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.RectangleFigure <|-- Factory_method.nonfactorymethod.TriangleFigure
+	Factory_method.nonfactorymethod.AttributeFigure <|-- Factory_method.nonfactorymethod.RectangleFigure
+	java.awt.Rectangle "fDisplayBox" <-- Factory_method.nonfactorymethod.RectangleFigure
+	JavaPrimitiveTypes.int "rectangleFigureSerializedDataVersion" <-- Factory_method.nonfactorymethod.RectangleFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Factory_method.nonfactorymethod.RectangleFigure
+	JavaPrimitiveTypes.int "fRotation" <-- Factory_method.nonfactorymethod.TriangleFigure
+	JavaPrimitiveTypes.double "rotations 0..*" <-- Factory_method.nonfactorymethod.TriangleFigure
+}
+@enduml

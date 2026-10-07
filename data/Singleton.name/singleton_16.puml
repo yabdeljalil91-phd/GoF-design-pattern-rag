@@ -1,0 +1,38 @@
+@startuml
+package dpd_jdt {
+	package Singleton {
+		package name {
+			class TokenEntry {
+				{const} EOF: TokenEntry
+				-{static} TokenCount: JavaPrimitiveTypes.int
+				-{const} Tokens: java.util.Map
+				-beginLine: JavaPrimitiveTypes.int
+				-hashCode: JavaPrimitiveTypes.int
+				-identifier: JavaPrimitiveTypes.int
+				-index: JavaPrimitiveTypes.int
+				-tokenSrcID: java.lang.String
+				-<<Create>> TokenEntry()
+				<<Create>> TokenEntry(image : java.lang.String, tokenSrcID : java.lang.String, beginLine : JavaPrimitiveTypes.int)
+				{static} clearImages()
+				compareTo(o : java.lang.Object): JavaPrimitiveTypes.int
+				equals(o : java.lang.Object): JavaPrimitiveTypes.boolean
+				getBeginLine(): JavaPrimitiveTypes.int
+				{static} getEOF(): TokenEntry
+				getIdentifier(): JavaPrimitiveTypes.int
+				getIndex(): JavaPrimitiveTypes.int
+				getTokenSrcID(): java.lang.String
+				hashCode(): JavaPrimitiveTypes.int
+				setHashCode(hashCode : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	java.lang.Comparable <|.. Singleton.name.TokenEntry
+	JavaPrimitiveTypes.int "TokenCount" <-- Singleton.name.TokenEntry
+	java.util.Map "Tokens" <-- Singleton.name.TokenEntry
+	JavaPrimitiveTypes.int "beginLine" <-- Singleton.name.TokenEntry
+	JavaPrimitiveTypes.int "hashCode" <-- Singleton.name.TokenEntry
+	JavaPrimitiveTypes.int "identifier" <-- Singleton.name.TokenEntry
+	JavaPrimitiveTypes.int "index" <-- Singleton.name.TokenEntry
+	java.lang.String "tokenSrcID" <-- Singleton.name.TokenEntry
+}
+@enduml

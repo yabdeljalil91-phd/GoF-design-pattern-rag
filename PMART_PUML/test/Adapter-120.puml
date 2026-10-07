@@ -1,0 +1,254 @@
+@startuml
+package "10 - Nutch v0.4" as 10_-_Nutch_v0.4 {
+	package net {
+		package nutch {
+			package io {
+				interface Writable {
+					readFields(in : 10_-_Nutch_v0.4.java.io.DataInput)
+					write(out : 10_-_Nutch_v0.4.java.io.DataOutput)
+				}
+				interface WritableComparable {
+				}
+				Writable <|-- WritableComparable
+				_0___Nutch_v0.4.java.lang.Comparable <|-- WritableComparable
+				WritableComparable <|.. UTF8
+				_0___Nutch_v0.4.java.io.DataInputStream <|-- DataInputBuffer
+				_0___Nutch_v0.4.java.io.DataOutputStream <|-- DataOutputBuffer
+				WritableComparable <|.. MD5Hash
+				WritableComparable <|.. LongWritable
+				Buffer "buffer" <-- DataInputBuffer
+				DataInputBuffer "IBUF" <-- UTF8
+				_0___Nutch_v0.4.java.util.logging.Logger "LOG" <-- UTF8
+				Buffer "buffer" <-- DataOutputBuffer
+				DataOutputBuffer "OBUF" <-- UTF8
+				JavaPrimitiveTypes.byte "bytes 0..*" <-- UTF8
+				JavaPrimitiveTypes.int "length" <-- UTF8
+				DataInputBuffer "buffer" <-- WritableComparator
+				WritableComparable "key1" <-- WritableComparator
+				WritableComparable "key2" <-- WritableComparator
+				_0___Nutch_v0.4.java.lang.Class "keyClass" <-- WritableComparator
+				_0___Nutch_v0.4.java.security.MessageDigest "DIGESTER" <-- MD5Hash
+				JavaPrimitiveTypes.char "HEX_DIGITS 0..*" <-- MD5Hash
+				JavaPrimitiveTypes.int "MD5_LEN" <-- MD5Hash
+				JavaPrimitiveTypes.byte "digest 0..*" <-- MD5Hash
+				WritableComparator "comparator" <-- Reader
+				JavaPrimitiveTypes.int "count" <-- Reader
+				JavaPrimitiveTypes.long "end" <-- Reader
+				_0___Nutch_v0.4.java.lang.String "file" <-- Reader
+				JavaPrimitiveTypes.byte "buf 0..*" <-- BufferedRandomAccessFile
+				JavaPrimitiveTypes.int "count" <-- BufferedRandomAccessFile
+				JavaPrimitiveTypes.long "filePointer" <-- BufferedRandomAccessFile
+				JavaPrimitiveTypes.boolean "isReadOnly" <-- BufferedRandomAccessFile
+				JavaPrimitiveTypes.int "pos" <-- BufferedRandomAccessFile
+				BufferedRandomAccessFile "in" <-- Reader
+				DataInputBuffer "inBuf" <-- Reader
+				_0___Nutch_v0.4.java.lang.Class "keyClass" <-- Reader
+				JavaPrimitiveTypes.int "keyLength" <-- Reader
+				DataOutputBuffer "outBuf" <-- Reader
+				_0___Nutch_v0.4.java.lang.Class "valClass" <-- Reader
+				Reader "data" <-- Reader
+				JavaPrimitiveTypes.long "firstPosition" <-- Reader
+				WritableComparable "getKey" <-- Reader
+				Reader "index" <-- Reader
+				JavaPrimitiveTypes.boolean "indexClosed" <-- Reader
+				DataOutputBuffer "keyBuf" <-- Reader
+				WritableComparable "keys 0..*" <-- Reader
+				DataOutputBuffer "nextBuf" <-- Reader
+				JavaPrimitiveTypes.int "nextKeyLen" <-- Reader
+				JavaPrimitiveTypes.long "positions 0..*" <-- Reader
+				JavaPrimitiveTypes.int "seekIndex" <-- Reader
+				JavaPrimitiveTypes.long "seekPosition" <-- Reader
+				DataOutputBuffer "buffer" <-- Writer
+				_0___Nutch_v0.4.java.lang.Class "keyClass" <-- Writer
+				BufferedRandomAccessFile "out" <-- Writer
+				_0___Nutch_v0.4.java.lang.Class "valClass" <-- Writer
+				JavaPrimitiveTypes.int "FACTOR" <-- Sorter
+				JavaPrimitiveTypes.int "MEGABYTES" <-- Sorter
+				WritableComparator "comparator" <-- Sorter
+				JavaPrimitiveTypes.int "factor" <-- Sorter
+				_0___Nutch_v0.4.java.lang.String "inFile" <-- Sorter
+				_0___Nutch_v0.4.java.lang.String "inFiles 0..*" <-- Sorter
+				_0___Nutch_v0.4.java.lang.Class "keyClass" <-- Sorter
+				JavaPrimitiveTypes.int "memory" <-- Sorter
+				_0___Nutch_v0.4.java.lang.String "outFile" <-- Sorter
+				_0___Nutch_v0.4.java.lang.Class "valClass" <-- Sorter
+				BufferedRandomAccessFile "out" <-- MergeQueue
+				MergeQueue "queue" <-- MergeFiles
+				_0___Nutch_v0.4.java.io.RandomAccessFile "in" <-- MergePass
+				_0___Nutch_v0.4.java.lang.String "inName" <-- MergePass
+				JavaPrimitiveTypes.boolean "last" <-- MergePass
+				JavaPrimitiveTypes.int "pass" <-- MergePass
+				MergeQueue "queue" <-- MergePass
+				DataOutputBuffer "buffer" <-- MergeStream
+				Reader "in" <-- MergeStream
+				JavaPrimitiveTypes.int "keyLength" <-- MergeStream
+				DataOutputBuffer "buffer" <-- SortPass
+				Reader "in" <-- SortPass
+				JavaPrimitiveTypes.int "keyLengths 0..*" <-- SortPass
+				JavaPrimitiveTypes.int "lengths 0..*" <-- SortPass
+				JavaPrimitiveTypes.int "limit" <-- SortPass
+				BufferedRandomAccessFile "out" <-- SortPass
+				JavaPrimitiveTypes.int "pointers 0..*" <-- SortPass
+				JavaPrimitiveTypes.int "pointersCopy 0..*" <-- SortPass
+				JavaPrimitiveTypes.byte "rawBuffer 0..*" <-- SortPass
+				JavaPrimitiveTypes.int "starts 0..*" <-- SortPass
+				WritableComparator "comparator" <-- Writer
+				Writer "data" <-- Writer
+				DataInputBuffer "inBuf" <-- Writer
+				Writer "index" <-- Writer
+				JavaPrimitiveTypes.int "indexInterval" <-- Writer
+				WritableComparable "lastKey" <-- Writer
+				DataOutputBuffer "outBuf" <-- Writer
+				JavaPrimitiveTypes.long "value" <-- LongWritable
+				LongWritable "position" <-- Writer
+				JavaPrimitiveTypes.long "size" <-- Writer
+			}
+			package db {
+				class Page {
+					-{const} CUR_VERSION: JavaPrimitiveTypes.byte = 4
+					-{const} DEFAULT_INTERVAL: JavaPrimitiveTypes.byte
+					-fetchInterval: JavaPrimitiveTypes.byte
+					-md5: 10_-_Nutch_v0.4.net.nutch.io.MD5Hash
+					-nextFetch: JavaPrimitiveTypes.long
+					-nextScore: JavaPrimitiveTypes.float
+					-numOutlinks: JavaPrimitiveTypes.int
+					-retries: JavaPrimitiveTypes.byte
+					-score: JavaPrimitiveTypes.float
+					-url: 10_-_Nutch_v0.4.net.nutch.io.UTF8
+					<<Create>> Page()
+					<<Create>> Page(urlString : 10_-_Nutch_v0.4.java.lang.String, md5 : 10_-_Nutch_v0.4.net.nutch.io.MD5Hash)
+					<<Create>> Page(urlString : 10_-_Nutch_v0.4.java.lang.String, score : JavaPrimitiveTypes.float, nextScore : JavaPrimitiveTypes.float, nextFetch : JavaPrimitiveTypes.long)
+					<<Create>> Page(urlString : 10_-_Nutch_v0.4.java.lang.String, score : JavaPrimitiveTypes.float, nextScore : JavaPrimitiveTypes.float)
+					clone(): 10_-_Nutch_v0.4.java.lang.Object
+					compareTo(o : 10_-_Nutch_v0.4.java.lang.Object): JavaPrimitiveTypes.int
+					computeDomainID(): JavaPrimitiveTypes.long
+					equals(o : 10_-_Nutch_v0.4.java.lang.Object): JavaPrimitiveTypes.boolean
+					getFetchInterval(): JavaPrimitiveTypes.byte
+					getMD5(): 10_-_Nutch_v0.4.net.nutch.io.MD5Hash
+					getNextFetchTime(): JavaPrimitiveTypes.long
+					getNextScore(): JavaPrimitiveTypes.float
+					getNumOutlinks(): JavaPrimitiveTypes.int
+					getRetriesSinceFetch(): JavaPrimitiveTypes.byte
+					getScore(): JavaPrimitiveTypes.float
+					getURL(): 10_-_Nutch_v0.4.net.nutch.io.UTF8
+					hashCode(): JavaPrimitiveTypes.int
+					{static} read(in : 10_-_Nutch_v0.4.java.io.DataInput): Page
+					readFields(in : 10_-_Nutch_v0.4.java.io.DataInput)
+					set(that : Page)
+					setFetchInterval(fetchInterval : JavaPrimitiveTypes.byte)
+					setMD5(md5 : 10_-_Nutch_v0.4.net.nutch.io.MD5Hash)
+					setNextFetchTime(nextFetch : JavaPrimitiveTypes.long)
+					setNumOutlinks(numOutlinks : JavaPrimitiveTypes.int)
+					setRetriesSinceFetch(retries : JavaPrimitiveTypes.int)
+					setScore(score : JavaPrimitiveTypes.float, nextScore : JavaPrimitiveTypes.float)
+					setURL(url : 10_-_Nutch_v0.4.java.lang.String)
+					toString(): 10_-_Nutch_v0.4.java.lang.String
+					toTabbedString(): 10_-_Nutch_v0.4.java.lang.String
+					write(out : 10_-_Nutch_v0.4.java.io.DataOutput)
+				}
+				IWebDBWriter <|.. WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.WritableComparable <|.. Link
+				_0___Nutch_v0.4.net.nutch.io.WritableComparable <|.. Page
+				_0___Nutch_v0.4.java.lang.Cloneable <|.. Page
+				JavaPrimitiveTypes.byte "CUR_VERSION" <-- Link
+				JavaPrimitiveTypes.int "MAX_ANCHOR_LENGTH" <-- Link
+				JavaPrimitiveTypes.byte "VERSION_1" <-- Link
+				JavaPrimitiveTypes.byte "VERSION_2" <-- Link
+				_0___Nutch_v0.4.net.nutch.io.UTF8 "anchor" <-- Link
+				JavaPrimitiveTypes.long "domainID" <-- Link
+				_0___Nutch_v0.4.net.nutch.io.MD5Hash "fromID" <-- Link
+				JavaPrimitiveTypes.boolean "targetHasOutlink" <-- Link
+				_0___Nutch_v0.4.net.nutch.io.UTF8 "url" <-- Link
+				JavaPrimitiveTypes.byte "CUR_VERSION" <-- Page
+				JavaPrimitiveTypes.byte "DEFAULT_INTERVAL" <-- Page
+				JavaPrimitiveTypes.byte "fetchInterval" <-- Page
+				_0___Nutch_v0.4.net.nutch.io.MD5Hash "md5" <-- Page
+				JavaPrimitiveTypes.long "nextFetch" <-- Page
+				JavaPrimitiveTypes.float "nextScore" <-- Page
+				JavaPrimitiveTypes.int "numOutlinks" <-- Page
+				JavaPrimitiveTypes.byte "retries" <-- Page
+				JavaPrimitiveTypes.float "score" <-- Page
+				_0___Nutch_v0.4.net.nutch.io.UTF8 "url" <-- Page
+				JavaPrimitiveTypes.int "ADD_LINK" <-- WebDBWriter
+				JavaPrimitiveTypes.byte "ADD_PAGE" <-- WebDBWriter
+				JavaPrimitiveTypes.byte "ADD_PAGE_IFN_PRESENT" <-- WebDBWriter
+				JavaPrimitiveTypes.byte "ADD_PAGE_WITH_SCORE" <-- WebDBWriter
+				JavaPrimitiveTypes.byte "CUR_VERSION" <-- WebDBWriter
+				JavaPrimitiveTypes.int "DEL_LINK" <-- WebDBWriter
+				JavaPrimitiveTypes.byte "DEL_PAGE" <-- WebDBWriter
+				JavaPrimitiveTypes.int "DEL_SINGLE_LINK" <-- WebDBWriter
+				JavaPrimitiveTypes.int "HAS_OUTLINKS" <-- WebDBWriter
+				_0___Nutch_v0.4.java.lang.String "LINKS_BY_MD5" <-- WebDBWriter
+				_0___Nutch_v0.4.java.lang.String "LINKS_BY_URL" <-- WebDBWriter
+				JavaPrimitiveTypes.int "LINK_INVALID" <-- WebDBWriter
+				_0___Nutch_v0.4.java.util.logging.Logger "LOG" <-- WebDBWriter
+				JavaPrimitiveTypes.int "NO_OUTLINKS" <-- WebDBWriter
+				_0___Nutch_v0.4.java.lang.String "PAGES_BY_MD5" <-- WebDBWriter
+				_0___Nutch_v0.4.java.lang.String "PAGES_BY_URL" <-- WebDBWriter
+				_0___Nutch_v0.4.java.lang.String "STATS_FILE" <-- WebDBWriter
+				_0___Nutch_v0.4.java.io.File "dbFile" <-- WebDBWriter
+				_0___Nutch_v0.4.java.io.FileOutputStream "dbReadLockData" <-- WebDBWriter
+				_0___Nutch_v0.4.java.nio.channels.FileLock "dbWriteLock" <-- WebDBWriter
+				_0___Nutch_v0.4.java.io.FileOutputStream "dbWriteLockData" <-- WebDBWriter
+				JavaPrimitiveTypes.boolean "haveEdits" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.DataInputBuffer "inBuf" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "linksByMD5" <-- WebDBWriter
+				JavaPrimitiveTypes.long "linksByMD5Edits" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "linksByMD5Writer" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "linksByURL" <-- WebDBWriter
+				JavaPrimitiveTypes.long "linksByURLEdits" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "linksByURLWriter" <-- WebDBWriter
+				JavaPrimitiveTypes.int "instruction" <-- LinkInstruction
+				Link "link" <-- LinkInstruction
+				MD5Comparator "MD5_COMPARATOR" <-- MD5Comparator
+				UrlComparator "URL_COMPARATOR" <-- UrlComparator
+				LinkInstruction "li" <-- LinkInstructionWriter
+				LinkInstructionWriter "liwriter" <-- WebDBWriter
+				_0___Nutch_v0.4.java.io.File "newDbFile" <-- WebDBWriter
+				_0___Nutch_v0.4.java.io.File "oldDbFile" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.DataOutputBuffer "outBuf" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "pagesByMD5" <-- WebDBWriter
+				JavaPrimitiveTypes.long "pagesByMD5Edits" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "pagesByMD5Writer" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "pagesByURL" <-- WebDBWriter
+				JavaPrimitiveTypes.long "pagesByURLEdits" <-- WebDBWriter
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "pagesByURLWriter" <-- WebDBWriter
+				JavaPrimitiveTypes.boolean "hasLink" <-- PageInstruction
+				Link "link" <-- PageInstruction
+				JavaPrimitiveTypes.byte "opcode" <-- PageInstruction
+				Page "page" <-- PageInstruction
+				Comparator "PAGE_COMPARATOR" <-- PageComparator
+				UrlComparator "PAGE_COMPARATOR" <-- UrlComparator
+				PageInstruction "pi" <-- PageInstructionWriter
+				PageInstructionWriter "piwriter" <-- WebDBWriter
+				JavaPrimitiveTypes.long "targetOutlinkEdits" <-- WebDBWriter
+				_0___Nutch_v0.4.java.io.File "tmp" <-- WebDBWriter
+				_0___Nutch_v0.4.java.lang.String "basename" <-- CloseProcessor
+				_0___Nutch_v0.4.net.nutch.io.WritableComparator "comparator" <-- CloseProcessor
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "editWriter" <-- CloseProcessor
+				JavaPrimitiveTypes.long "itemsWritten" <-- CloseProcessor
+				_0___Nutch_v0.4.java.lang.Class "keyClass" <-- CloseProcessor
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "oldDb" <-- CloseProcessor
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Sorter "sorter" <-- CloseProcessor
+				_0___Nutch_v0.4.java.lang.Class "valueClass" <-- CloseProcessor
+				LinkInstruction "current" <-- DeduplicatingLinkSequenceReader
+				Link "currentKey" <-- DeduplicatingLinkSequenceReader
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Reader "edits" <-- DeduplicatingLinkSequenceReader
+				JavaPrimitiveTypes.boolean "haveCurrent" <-- DeduplicatingLinkSequenceReader
+				PageInstruction "current" <-- DeduplicatingPageSequenceReader
+				_0___Nutch_v0.4.net.nutch.io.UTF8 "currentUrl" <-- DeduplicatingPageSequenceReader
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Reader "edits" <-- DeduplicatingPageSequenceReader
+				JavaPrimitiveTypes.boolean "haveCurrent" <-- DeduplicatingPageSequenceReader
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "futureEdits" <-- LinksByMD5Processor
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "futureEdits" <-- LinksByURLProcessor
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "pageDb" <-- LinksByURLProcessor
+				_0___Nutch_v0.4.net.nutch.io.SequenceFile.Writer "futureEdits" <-- PagesByURLProcessor
+				JavaPrimitiveTypes.boolean "hasPage" <-- TargetTester
+				Page "page" <-- TargetTester
+				_0___Nutch_v0.4.net.nutch.io.UTF8 "pageURL" <-- TargetTester
+				_0___Nutch_v0.4.net.nutch.io.MapFile.Reader "pagedb" <-- TargetTester
+			}
+		}
+	}
+}
+@enduml

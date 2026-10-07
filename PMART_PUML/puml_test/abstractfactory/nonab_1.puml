@@ -1,0 +1,29 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			'@class BuildAction
+			'@date 08-20-2001
+			'@author Eric Crahen
+			'@version 1.0
+			class BuildAction {
+				#container: DiagramContainer
+				<<Create>> BuildAction(container : DiagramContainer)
+				actionPerformed(e : java.awt.event.ActionEvent)
+			}
+		}
+	}
+	javax.swing.AbstractAction <|-- Abstractfactory.non_abstract_factory.BuildAction
+	javax.swing.AbstractAction <|-- Abstractfactory.non_abstract_factory.FileAction
+	Abstractfactory.non_abstract_factory.DiagramContainer "container" <-- Abstractfactory.non_abstract_factory.BuildAction
+	java.io.File "lastDirectory" <-- Abstractfactory.non_abstract_factory.FileAction.SmartChooser
+	Abstractfactory.non_abstract_factory.FileAction.SmartChooser "chooser" <-- Abstractfactory.non_abstract_factory.FileAction
+	java.lang.String "description" <-- Abstractfactory.non_abstract_factory.FileAction.SimpleFilter
+	java.lang.String "extensions 0..*" <-- Abstractfactory.non_abstract_factory.FileAction.SimpleFilter
+	Abstractfactory.non_abstract_factory.BuildAction.BuildDialog.BrowseAction "browseAction" <-- Abstractfactory.non_abstract_factory.BuildAction.BuildDialog
+	java.lang.String "currentLanguage" <-- Abstractfactory.non_abstract_factory.BuildAction.BuildDialog
+	javax.swing.JTextField "currentPath" <-- Abstractfactory.non_abstract_factory.BuildAction.BuildDialog
+	javax.swing.JTextArea "textArea" <-- Abstractfactory.non_abstract_factory.BuildAction.BuildDialog
+	javax.swing.JCheckBox "useArrays" <-- Abstractfactory.non_abstract_factory.BuildAction.BuildDialog
+}
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Base class for source browsing. This is the generic base class.
+			'@author    Chris Seguin
+			class JBuilderBrowser {
+				<<Create>> JBuilderBrowser()
+				'Determines if the system is in a state where it can browse the source code
+				'@return    true if the source code browsing is enabled
+				canBrowseSource(): JavaPrimitiveTypes.boolean
+				'Get the FileNode that matches a File (in this project).
+				'@param file  File to look for in this project.
+				'@return       FileNode The FileNode. *duh
+				#findSourceFileNode(file : java.io.File): FileNode
+				'Go to a specific line in a source file.
+				'@param lineNumber  Line number to go to.
+				'@param sourceNode  Source file node.
+				#gotoLine(lineNumber : JavaPrimitiveTypes.int, sourceNode : FileNode)
+				'Actually browses to the file
+				'@param file  the file
+				'@param line  the line in the file
+				gotoSource(file : java.io.File, line : JavaPrimitiveTypes.int)
+				'Show a source file.
+				'@param node  Source file node to show.
+				#showNode(node : FileNode)
+			}
+		}
+	}
+	Builder.nonbuilder.SourceBrowser <|-- Builder.nonbuilder.JBuilderBrowser
+}
+@enduml

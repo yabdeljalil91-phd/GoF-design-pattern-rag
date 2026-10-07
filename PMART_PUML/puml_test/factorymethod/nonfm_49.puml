@@ -1,0 +1,45 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			'A factory used to create instances of hierarchy node implementations. Loaders that use the element hierarchy should implement this factory so as to provide their own implementations of hierarchy element nodes.
+			'@see ClassChildren
+			'@see SourceChildren
+			'@author Petr Hrebejk
+			class FilterFactory {
+				-delegate: ElementNodeFactory
+				<<Create>> FilterFactory()
+				attachTo(factory : ElementNodeFactory)
+				'Make a node representing a class.
+				'@param element the class
+				'@return a class node instance
+				createClassNode(element : ClassElement): Node
+				'Make a node representing a constructor.
+				'@param element the constructor
+				'@return a constructor node instance
+				createConstructorNode(element : ConstructorElement): Node
+				'Make a node indicating that there was an error creating the element children.
+				'@return the error node
+				createErrorNode(): Node
+				'Make a node representing a field.
+				'@param element the field
+				'@return a field node instance
+				createFieldNode(element : FieldElement): Node
+				'Make a node representing an initializer.
+				'@param element the initializer
+				'@return an initializer node instance
+				createInitializerNode(element : InitializerElement): Node
+				'Make a node representing a method.
+				'@param element the method
+				'@return a method node instance
+				createMethodNode(element : MethodElement): Node
+				'Make a node indicating that the creation of children is still under way. It should be used when the process is slow.
+				'@return a wait node
+				createWaitNode(): Node
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.ElementNodeFactory <|.. Factory_method.nonfactorymethod.FilterFactory
+	Factory_method.nonfactorymethod.ElementNodeFactory "delegate" <-- Factory_method.nonfactorymethod.FilterFactory
+}
+@enduml

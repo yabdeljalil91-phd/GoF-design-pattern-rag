@@ -1,0 +1,17 @@
+@startuml
+package dpd_jdt {
+	package Abstractfactory {
+		package non_abstract_factory {
+			'Simple adapter that exits the application when the frame is closed
+			'@author    Chris Seguin
+			class ExitOnCloseAdapter {
+				<<Create>> ExitOnCloseAdapter()
+				'The window is closing
+				'@param evt  Description of Parameter
+				windowClosing(evt : java.awt.event.WindowEvent)
+			}
+		}
+	}
+	java.awt.event.WindowAdapter <|-- Abstractfactory.non_abstract_factory.ExitOnCloseAdapter
+}
+@enduml

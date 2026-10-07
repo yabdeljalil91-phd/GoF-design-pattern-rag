@@ -1,0 +1,30 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Performs the extract method refactoring for visual cafe
+			'@author    Chris Seguin
+			class CafeExtractMethod {
+				-sourceFile: SourceFile
+				'Constructor for the CafeExtractMethod object
+				<<Create>> CafeExtractMethod()
+				'What to do when someone selects the extract method refactoring
+				'@param e  the button event
+				actionPerformed(e : java.awt.event.ActionEvent)
+				'Gets the SelectionFromIDE attribute of the CafeExtractMethod object
+				'@return    The SelectionFromIDE value
+				#getSelectionFromIDE(): java.lang.String
+				'Gets the StringFromIDE attribute of the CafeExtractMethod object
+				'@return    The StringFromIDE value
+				#getStringFromIDE(): java.lang.String
+				'Sets the StringInIDE attribute of the CafeExtractMethod object
+				'@param value  The new StringInIDE value
+				#setStringInIDE(value : java.lang.String)
+			}
+		}
+	}
+	java.awt.event.ActionListener <|.. Builder.nonbuilder.CafeExtractMethod
+	Builder.nonbuilder.ExtractMethodDialog <|-- Builder.nonbuilder.CafeExtractMethod
+	Builder.nonbuilder.SourceFile "sourceFile" <-- Builder.nonbuilder.CafeExtractMethod
+}
+@enduml

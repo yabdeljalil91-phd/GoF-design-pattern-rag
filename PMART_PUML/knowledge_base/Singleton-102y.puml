@@ -1,0 +1,44 @@
+@startuml
+' Singleton class UML for Debug (MapperXML v1.9.7)
+
+package "MapperXML v1.9.7" as MapperXML {
+
+    class Debug {
+        - {const} DEBUG: int = 4
+        - {const} ERROR: int = 1
+        - {const} FATAL: int = 0
+        - {const} INFO: int = 3
+        - {const} LEVEL_NAMES: String [*]
+        - {const} WARN: int = 2
+        - loggerAdapter: LoggerAdapter
+        - {static} singleton: Debug
+
+        ' Private constructor to prevent instantiation
+        - <<Create>> Debug()
+
+        ' Logging methods
+        {static} debug(message: Object)
+        {static} debug(message: Object, t: Throwable)
+        {static} error(message: Object)
+        {static} error(message: Object, t: Throwable)
+        {static} fatal(message: Object)
+        {static} fatal(message: Object, t: Throwable)
+        {static} info(message: Object)
+        {static} info(message: Object, t: Throwable)
+        {static} warn(message: Object)
+        {static} warn(message: Object, t: Throwable)
+        {static} log(level: int, message: String)
+        {static} log(level: int, message: String, t: Throwable)
+
+        ' Accessors for the singleton and logger
+        {static} getInstance(): Debug
+        {static} getLoggerAdapter(): LoggerAdapter
+        {static} setLoggerAdapter(loggerAdapter: LoggerAdapter)
+
+        ' Level checks
+        {static} isDebugEnabled(): boolean
+        {static} isInfoEnabled(): boolean
+        isEnabledFor(level: int): boolean
+    }
+}
+@enduml

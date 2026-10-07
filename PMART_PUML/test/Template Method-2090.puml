@@ -1,0 +1,55 @@
+@startuml
+package "DrJava v20040326" as DrJava_v20040326 {
+	package edu {
+		package rice {
+			package cs {
+				package util {
+					package newjvm {
+						abstract class AbstractMasterJVM {
+							-{const} RUNNER: DrJava_v20040326.java.lang.String
+							#_exportMasterThreadName: DrJava_v20040326.java.lang.String
+							-_quitOnStartup: JavaPrimitiveTypes.boolean
+							-_slave: SlaveRemote
+							-_slaveClassName: DrJava_v20040326.java.lang.String
+							-_startupInProgress: JavaPrimitiveTypes.boolean
+							-_stub: DrJava_v20040326.java.rmi.Remote
+							-_stubFile: DrJava_v20040326.java.io.File
+							#_waitForQuitThreadName: DrJava_v20040326.java.lang.String
+							#<<Create>> AbstractMasterJVM(slaveClassName : DrJava_v20040326.java.lang.String)
+							checkStillAlive()
+							errorStartingSlave(cause : DrJava_v20040326.java.lang.Throwable)
+							#getSlave(): SlaveRemote
+							#handleSlaveConnected()
+							#handleSlaveQuit(status : JavaPrimitiveTypes.int)
+							#invokeSlave()
+							#invokeSlave(jvmArgs : DrJava_v20040326.java.lang.String)
+							#invokeSlave(jvmArgs : DrJava_v20040326.java.lang.String, cp : DrJava_v20040326.java.lang.String)
+							#isStartupInProgress(): JavaPrimitiveTypes.boolean
+							#quitSlave()
+							registerSlave(slave : SlaveRemote)
+							#slaveQuitDuringStartup(status : JavaPrimitiveTypes.int)
+						}
+						interface MasterRemote {
+							checkStillAlive()
+							errorStartingSlave(cause : DrJava_v20040326.java.lang.Throwable)
+							registerSlave(slave : SlaveRemote)
+						}
+						MasterRemote <|.. AbstractMasterJVM
+						DrJava_v20040326.java.rmi.Remote <|-- MasterRemote
+						DrJava_v20040326.java.rmi.Remote <|-- SlaveRemote
+						DrJava_v20040326.java.lang.String "RUNNER" <-- AbstractMasterJVM
+						DrJava_v20040326.java.lang.String "_exportMasterThreadName" <-- AbstractMasterJVM
+						JavaPrimitiveTypes.boolean "_quitOnStartup" <-- AbstractMasterJVM
+						SlaveRemote "_slave" <-- AbstractMasterJVM
+						DrJava_v20040326.java.lang.String "_slaveClassName" <-- AbstractMasterJVM
+						JavaPrimitiveTypes.boolean "_startupInProgress" <-- AbstractMasterJVM
+						DrJava_v20040326.java.rmi.Remote "_stub" <-- AbstractMasterJVM
+						DrJava_v20040326.java.io.File "_stubFile" <-- AbstractMasterJVM
+						DrJava_v20040326.java.lang.String "_waitForQuitThreadName" <-- AbstractMasterJVM
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

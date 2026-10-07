@@ -1,0 +1,1018 @@
+@startuml
+'Design pattern Command
+package "JHotDraw v5.1" as JHotDraw_v5.1 {
+	package CH {
+		package ifa {
+			package draw {
+				package application {
+					'/** 
+					' * DrawApplication defines a standard presentation for standalone drawing editors. The presentation is customized in subclasses. The application is started as follows: <pre> public static void main(String[] args) { MayDrawApp window = new MyDrawApp(); window.open(); } </pre>
+					' */
+					'DP role: client
+					class DrawApplication {
+						{const} ALIGNMENT_MENU: JavaPrimitiveTypes.int = 2
+						{const} ATTRIBUTES_MENU: JavaPrimitiveTypes.int = 3
+						{const} EDIT_MENU: JavaPrimitiveTypes.int = 1
+						{const} FILE_MENU: JavaPrimitiveTypes.int = 0
+						{const} IMAGES: JHotDraw_v5.1.java.lang.String = /CH/ifa/draw/images/
+						-fDefaultToolButton: JHotDraw_v5.1.CH.ifa.draw.standard.ToolButton
+						-fDrawing: JHotDraw_v5.1.CH.ifa.draw.framework.Drawing
+						-fDrawingFilename: JHotDraw_v5.1.java.lang.String
+						-fIconkit: JHotDraw_v5.1.CH.ifa.draw.util.Iconkit
+						-fSelectedToolButton: JHotDraw_v5.1.CH.ifa.draw.standard.ToolButton
+						-fStatusLine: JHotDraw_v5.1.java.awt.TextField
+						-fTool: JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+						-fView: JHotDraw_v5.1.CH.ifa.draw.standard.StandardDrawingView
+						-{const} fgDrawPath: JHotDraw_v5.1.java.lang.String = /CH/ifa/draw/
+						{static} fgUntitled: JHotDraw_v5.1.java.lang.String
+						'/** 
+						' * Constructs a drawing window with a default title.
+						' */
+						<<Create>> DrawApplication()
+						'/** 
+						' * Constructs a drawing window with the given title.
+						' */
+						<<Create>> DrawApplication(title : JHotDraw_v5.1.java.lang.String)
+						'/** 
+						' * Registers the listeners for this window
+						' */
+						#addListeners()
+						'/** 
+						' * Creates the alignment menu. Clients override this method to add additional menu items.
+						' */
+						#createAlignmentMenu(): JHotDraw_v5.1.java.awt.Menu
+						'/** 
+						' * Creates the arrows menu.
+						' */
+						#createArrowMenu(): JHotDraw_v5.1.java.awt.Menu
+						'/** 
+						' * Creates the attributes menu and its submenus. Clients override this method to add additional menu items.
+						' */
+						#createAttributesMenu(): JHotDraw_v5.1.java.awt.Menu
+						'/** 
+						' * Creates the color menu.
+						' */
+						#createColorMenu(title : JHotDraw_v5.1.java.lang.String, attribute : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.awt.Menu
+						'/** 
+						' * Creates the contents component of the application frame. By default the DrawingView is returned in a ScrollPane.
+						' */
+						#createContents(view : JHotDraw_v5.1.CH.ifa.draw.standard.StandardDrawingView): JHotDraw_v5.1.java.awt.Component
+						'/** 
+						' * Creates the debug menu. Clients override this method to add additional menu items.
+						' */
+						#createDebugMenu(): JHotDraw_v5.1.java.awt.Menu
+						'/** 
+						' * Creates the drawing used in this application. You need to override this method to use a Drawing subclass in your application. By default a standard Drawing is returned.
+						' */
+						#createDrawing(): JHotDraw_v5.1.CH.ifa.draw.framework.Drawing
+						'/** 
+						' * Creates the drawing view used in this application. You need to override this method to use a DrawingView subclass in your application. By default a standard DrawingView is returned.
+						' */
+						#createDrawingView(): JHotDraw_v5.1.CH.ifa.draw.standard.StandardDrawingView
+						'/** 
+						' * Creates the edit menu. Clients override this method to add additional menu items.
+						' */
+						#createEditMenu(): JHotDraw_v5.1.java.awt.Menu
+						'/** 
+						' * Creates the file menu. Clients override this method to add additional menu items.
+						' */
+						#createFileMenu(): JHotDraw_v5.1.java.awt.Menu
+						'/** 
+						' * Creates the fonts menus. It installs all available fonts supported by the toolkit implementation.
+						' */
+						#createFontMenu(): JHotDraw_v5.1.java.awt.Menu
+						'/** 
+						' * Creates the font size menu.
+						' */
+						#createFontSizeMenu(): JHotDraw_v5.1.java.awt.Menu
+						'/** 
+						' * Creates the font style menu with entries (Plain, Italic, Bold).
+						' */
+						#createFontStyleMenu(): JHotDraw_v5.1.java.awt.Menu
+						'/** 
+						' * Creates the standard menus. Clients override this method to add additional menus.
+						' */
+						#createMenus(mb : JHotDraw_v5.1.java.awt.MenuBar)
+						'/** 
+						' * Creates the selection tool used in this editor. Override to use a custom selection tool.
+						' */
+						#createSelectionTool(): JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+						'/** 
+						' * Creates the status line.
+						' */
+						#createStatusLine(): JHotDraw_v5.1.java.awt.TextField
+						'/** 
+						' * Creates a tool button with the given image, tool, and text
+						' */
+						#createToolButton(iconName : JHotDraw_v5.1.java.lang.String, toolName : JHotDraw_v5.1.java.lang.String, tool : JHotDraw_v5.1.CH.ifa.draw.framework.Tool): JHotDraw_v5.1.CH.ifa.draw.standard.ToolButton
+						'/** 
+						' * Creates the tool palette.
+						' */
+						#createToolPalette(): JHotDraw_v5.1.java.awt.Panel
+						'/** 
+						' * Creates the tools. By default only the selection tool is added. Override this method to add additional tools. Call the inherited method to include the selection tool.
+						' * @param palette the palette where the tools are added.
+						' */
+						#createTools(palette : JHotDraw_v5.1.java.awt.Panel)
+						'/** 
+						' * Gets the default size of the window.
+						' */
+						#defaultSize(): JHotDraw_v5.1.java.awt.Dimension
+						'/** 
+						' * Handles additional clean up operations. Override to destroy or release drawing editor resources.
+						' */
+						#destroy()
+						'/** 
+						' * Gets the current drawing.
+						' * @see DrawingEditor
+						' */
+						drawing(): JHotDraw_v5.1.CH.ifa.draw.framework.Drawing
+						'/** 
+						' * Exits the application. You should never override this method
+						' */
+						exit()
+						'/** 
+						' * Override to define the dimensions of the drawing view.
+						' */
+						#getDrawingViewSize(): JHotDraw_v5.1.java.awt.Dimension
+						-getSavePath(title : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.lang.String
+						-guessType(file : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.lang.String
+						-initDrawing()
+						-loadDrawing(file : JHotDraw_v5.1.java.lang.String)
+						'/** 
+						' * Opens the window and initializes its contents. Clients usually only call but don't override it.
+						' */
+						open()
+						'/** 
+						' * Handles when the mouse enters or leaves a palette button.
+						' * @see PaletteListener
+						' */
+						paletteUserOver(button : JHotDraw_v5.1.CH.ifa.draw.util.PaletteButton, inside : JavaPrimitiveTypes.boolean)
+						'/** 
+						' * Handles a user selection in the palette.
+						' * @see PaletteListener
+						' */
+						paletteUserSelected(button : JHotDraw_v5.1.CH.ifa.draw.util.PaletteButton)
+						'/** 
+						' * Prints the drawing.
+						' */
+						print()
+						'/** 
+						' * Resets the drawing to a new empty drawing.
+						' */
+						promptNew()
+						'/** 
+						' * Shows a file dialog and opens a drawing.
+						' */
+						promptOpen()
+						'/** 
+						' * Shows a file dialog and saves drawing.
+						' */
+						promptSaveAs()
+						'/** 
+						' * Shows a file dialog and saves drawing.
+						' */
+						promptSaveAsSerialized()
+						-readFromObjectInput(file : JHotDraw_v5.1.java.lang.String)
+						-readFromStorableInput(file : JHotDraw_v5.1.java.lang.String)
+						-saveAsObjectOutput(file : JHotDraw_v5.1.java.lang.String)
+						-saveAsStorableOutput(file : JHotDraw_v5.1.java.lang.String)
+						'/** 
+						' * Handles a change of the current selection. Updates all menu items that are selection sensitive.
+						' * @see DrawingEditor
+						' */
+						selectionChanged(view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						'/** 
+						' * Sets the drawing to be edited.
+						' */
+						setDrawing(drawing : JHotDraw_v5.1.CH.ifa.draw.framework.Drawing)
+						-setSelected(button : JHotDraw_v5.1.CH.ifa.draw.standard.ToolButton)
+						-setTool(t : JHotDraw_v5.1.CH.ifa.draw.framework.Tool, name : JHotDraw_v5.1.java.lang.String)
+						'/** 
+						' * Shows a status message.
+						' * @see DrawingEditor
+						' */
+						showStatus(string : JHotDraw_v5.1.java.lang.String)
+						-stripTrailingAsterisks(filename : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.lang.String
+						'/** 
+						' * Gets the current tool.
+						' * @see DrawingEditor
+						' */
+						tool(): JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+						'/** 
+						' * Sets the default tool of the editor.
+						' * @see DrawingEditor
+						' */
+						toolDone()
+						'/** 
+						' * Gets the current drawing view.
+						' * @see DrawingEditor
+						' */
+						view(): JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView
+					}
+					JHotDraw_v5.1.java.awt.Frame <|-- DrawApplication
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor <|.. DrawApplication
+					JHotDraw_v5.1.CH.ifa.draw.util.PaletteListener <|.. DrawApplication
+					JavaPrimitiveTypes.int "ALIGNMENT_MENU" <-- DrawApplication
+					JavaPrimitiveTypes.int "ATTRIBUTES_MENU" <-- DrawApplication
+					JavaPrimitiveTypes.int "EDIT_MENU" <-- DrawApplication
+					JavaPrimitiveTypes.int "FILE_MENU" <-- DrawApplication
+					JHotDraw_v5.1.java.lang.String "IMAGES" <-- DrawApplication
+					JHotDraw_v5.1.CH.ifa.draw.standard.ToolButton "fDefaultToolButton" <-- DrawApplication
+					JHotDraw_v5.1.CH.ifa.draw.framework.Drawing "fDrawing" <-- DrawApplication
+					JHotDraw_v5.1.java.lang.String "fDrawingFilename" <-- DrawApplication
+					JHotDraw_v5.1.CH.ifa.draw.util.Iconkit "fIconkit" <-- DrawApplication
+					JHotDraw_v5.1.CH.ifa.draw.standard.ToolButton "fSelectedToolButton" <-- DrawApplication
+					JHotDraw_v5.1.java.awt.TextField "fStatusLine" <-- DrawApplication
+					JHotDraw_v5.1.CH.ifa.draw.framework.Tool "fTool" <-- DrawApplication
+					JHotDraw_v5.1.CH.ifa.draw.standard.StandardDrawingView "fView" <-- DrawApplication
+					JHotDraw_v5.1.java.lang.String "fgDrawPath" <-- DrawApplication
+					JHotDraw_v5.1.java.lang.String "fgUntitled" <-- DrawApplication
+				}
+				package framework {
+					'DP role: receiver
+					interface Drawing {
+						add(figure : Figure): Figure
+						addAll(newFigures : JHotDraw_v5.1.java.util.Vector)
+						addDrawingChangeListener(listener : DrawingChangeListener)
+						bringToFront(figure : Figure)
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawingChangeListeners(): JHotDraw_v5.1.java.util.Enumeration
+						figureInvalidated(e : FigureChangeEvent)
+						figureRequestRemove(e : FigureChangeEvent)
+						figureRequestUpdate(e : FigureChangeEvent)
+						figures(): FigureEnumeration
+						figuresReverse(): FigureEnumeration
+						findFigure(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Figure
+						findFigure(r : JHotDraw_v5.1.java.awt.Rectangle): Figure
+						findFigure(r : JHotDraw_v5.1.java.awt.Rectangle, without : Figure): Figure
+						findFigureInside(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Figure
+						findFigureInsideWithout(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, without : Figure): Figure
+						findFigureWithout(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int, without : Figure): Figure
+						lock()
+						orphan(figure : Figure): Figure
+						orphanAll(newFigures : JHotDraw_v5.1.java.util.Vector)
+						release()
+						remove(figure : Figure): Figure
+						removeAll(figures : JHotDraw_v5.1.java.util.Vector)
+						removeDrawingChangeListener(listener : DrawingChangeListener)
+						replace(figure : Figure, replacement : Figure)
+						sendToBack(figure : Figure)
+						unlock()
+					}
+					'DP role: receiver
+					interface Figure {
+						addFigureChangeListener(l : FigureChangeListener)
+						addToContainer(c : FigureChangeListener)
+						basicDisplayBox(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						canConnect(): JavaPrimitiveTypes.boolean
+						center(): JHotDraw_v5.1.java.awt.Point
+						changed()
+						clone(): JHotDraw_v5.1.java.lang.Object
+						connectedTextLocator(text : Figure): Locator
+						connectionInsets(): JHotDraw_v5.1.java.awt.Insets
+						connectorAt(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Connector
+						connectorVisibility(isVisible : JavaPrimitiveTypes.boolean)
+						containsPoint(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+						decompose(): FigureEnumeration
+						displayBox(origin : JHotDraw_v5.1.java.awt.Point, corner : JHotDraw_v5.1.java.awt.Point)
+						displayBox(): JHotDraw_v5.1.java.awt.Rectangle
+						displayBox(r : JHotDraw_v5.1.java.awt.Rectangle)
+						draw(g : JHotDraw_v5.1.java.awt.Graphics)
+						figures(): FigureEnumeration
+						findFigureInside(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Figure
+						getAttribute(name : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.lang.Object
+						handles(): JHotDraw_v5.1.java.util.Vector
+						includes(figure : Figure): JavaPrimitiveTypes.boolean
+						invalidate()
+						isEmpty(): JavaPrimitiveTypes.boolean
+						listener(): FigureChangeListener
+						moveBy(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int)
+						release()
+						removeFigureChangeListener(l : FigureChangeListener)
+						removeFromContainer(c : FigureChangeListener)
+						setAttribute(name : JHotDraw_v5.1.java.lang.String, value : JHotDraw_v5.1.java.lang.Object)
+						size(): JHotDraw_v5.1.java.awt.Dimension
+						willChange()
+					}
+					'DP role: receiver
+					interface DrawingView {
+						add(figure : Figure): Figure
+						addAll(figures : JHotDraw_v5.1.java.util.Vector)
+						addToSelection(figure : Figure)
+						addToSelectionAll(figures : JHotDraw_v5.1.java.util.Vector)
+						checkDamage()
+						clearSelection()
+						createImage(width : JavaPrimitiveTypes.int, height : JavaPrimitiveTypes.int): JHotDraw_v5.1.java.awt.Image
+						drawAll(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawDrawing(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawHandles(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawing(): Drawing
+						editor(): DrawingEditor
+						findHandle(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): Handle
+						freezeView()
+						getBackground(): JHotDraw_v5.1.java.awt.Color
+						getConstrainer(): PointConstrainer
+						getFigureSelection(): FigureSelection
+						getGraphics(): JHotDraw_v5.1.java.awt.Graphics
+						getMinimumSize(): JHotDraw_v5.1.java.awt.Dimension
+						getPreferredSize(): JHotDraw_v5.1.java.awt.Dimension
+						getSize(): JHotDraw_v5.1.java.awt.Dimension
+						lastClick(): JHotDraw_v5.1.java.awt.Point
+						paint(g : JHotDraw_v5.1.java.awt.Graphics)
+						remove(figure : Figure): Figure
+						removeFromSelection(figure : Figure)
+						repairDamage()
+						selection(): JHotDraw_v5.1.java.util.Vector
+						selectionCount(): JavaPrimitiveTypes.int
+						selectionElements(): FigureEnumeration
+						selectionZOrdered(): JHotDraw_v5.1.java.util.Vector
+						setBackground(c : JHotDraw_v5.1.java.awt.Color)
+						setConstrainer(p : PointConstrainer)
+						setCursor(c : JHotDraw_v5.1.java.awt.Cursor)
+						setDisplayUpdate(updateStrategy : Painter)
+						setDrawing(d : Drawing)
+						setEditor(editor : DrawingEditor)
+						toggleSelection(figure : Figure)
+						tool(): Tool
+						unfreezeView()
+					}
+					'DP role: receiver
+					class FigureSelection {
+						{const} TYPE: JHotDraw_v5.1.java.lang.String = CH.ifa.draw.Figures
+						-fData: JavaPrimitiveTypes.byte [*]
+						<<Create>> FigureSelection(figures : JHotDraw_v5.1.java.util.Vector)
+						getData(type : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.lang.Object
+						getType(): JHotDraw_v5.1.java.lang.String
+					}
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Drawing
+					FigureChangeListener <|-- Drawing
+					JHotDraw_v5.1.java.io.Serializable <|-- Drawing
+					JHotDraw_v5.1.java.util.EventListener <|-- FigureChangeListener
+					JHotDraw_v5.1.java.util.EventObject <|-- FigureChangeEvent
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Figure
+					JHotDraw_v5.1.java.lang.Cloneable <|-- Figure
+					JHotDraw_v5.1.java.io.Serializable <|-- Figure
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Locator
+					JHotDraw_v5.1.java.io.Serializable <|-- Locator
+					JHotDraw_v5.1.java.lang.Cloneable <|-- Locator
+					JHotDraw_v5.1.java.io.Serializable <|-- Connector
+					JHotDraw_v5.1.CH.ifa.draw.util.Storable <|-- Connector
+					Figure <|-- ConnectionFigure
+					FigureChangeListener <|-- ConnectionFigure
+					JHotDraw_v5.1.java.util.Enumeration <|-- FigureEnumeration
+					JHotDraw_v5.1.java.util.EventListener <|-- DrawingChangeListener
+					JHotDraw_v5.1.java.util.EventObject <|-- DrawingChangeEvent
+					JHotDraw_v5.1.java.awt.image.ImageObserver <|-- DrawingView
+					DrawingChangeListener <|-- DrawingView
+					JHotDraw_v5.1.java.io.Serializable <|-- Painter
+					JHotDraw_v5.1.java.awt.Rectangle "fRectangle" <-- FigureChangeEvent
+					JHotDraw_v5.1.java.awt.Rectangle "fgEmptyRectangle" <-- FigureChangeEvent
+					JHotDraw_v5.1.java.awt.Rectangle "fRectangle" <-- DrawingChangeEvent
+					JavaPrimitiveTypes.int "HANDLESIZE" <-- Handle
+					JHotDraw_v5.1.java.lang.String "TYPE" <-- FigureSelection
+					JavaPrimitiveTypes.byte "fData 0..*" <-- FigureSelection
+				}
+				package util {
+					'/** 
+					' * A Command enabled button. Clicking the button executes the command.
+					' * @see Command
+					' */
+					'DP role: invoker
+					class CommandButton {
+						-fCommand: Command
+						'/** 
+						' * Initializes the button with the given command. The command's name is used as the label.
+						' */
+						<<Create>> CommandButton(command : Command)
+						'/** 
+						' * Executes the command. If the command's name was changed as a result of the command the button's label is updated accordingly.
+						' */
+						actionPerformed(e : JHotDraw_v5.1.java.awt.event.ActionEvent)
+					}
+					'DP role: command
+					abstract class Command {
+						-fName: JHotDraw_v5.1.java.lang.String
+						<<Create>> Command(name : JHotDraw_v5.1.java.lang.String)
+						execute()
+						isExecutable(): JavaPrimitiveTypes.boolean
+						name(): JHotDraw_v5.1.java.lang.String
+					}
+					'/** 
+					' * A Command enabled choice. Selecting a choice executes the corresponding command.
+					' * @see Command
+					' */
+					'DP role: invoker
+					class CommandChoice {
+						-fCommands: JHotDraw_v5.1.java.util.Vector
+						<<Create>> CommandChoice()
+						'/** 
+						' * Adds a command to the menu.
+						' */
+						addItem(command : Command)
+						'/** 
+						' * Executes the command.
+						' */
+						itemStateChanged(e : JHotDraw_v5.1.java.awt.event.ItemEvent)
+					}
+					'DP role: invoker
+					class CommandMenu {
+						-fCommands: JHotDraw_v5.1.java.util.Vector
+						<<Create>> CommandMenu(name : JHotDraw_v5.1.java.lang.String)
+						'/** 
+						' * Executes the command.
+						' */
+						actionPerformed(e : JHotDraw_v5.1.java.awt.event.ActionEvent)
+						'/** 
+						' * Adds a command to the menu. The item's label is the command's name.
+						' */
+						add(command : Command)
+						'/** 
+						' * Adds a command with the given short cut to the menu. The item's label is the command's name.
+						' */
+						add(command : Command, shortcut : JHotDraw_v5.1.java.awt.MenuShortcut)
+						checkEnabled()
+						'/** 
+						' * Changes the enabling/disabling state of a named menu item.
+						' */
+						enable(name : JHotDraw_v5.1.java.lang.String, state : JavaPrimitiveTypes.boolean)
+						remove(command : Command)
+						remove(item : JHotDraw_v5.1.java.awt.MenuItem)
+					}
+					JHotDraw_v5.1.java.awt.Canvas <|-- PaletteButton
+					JHotDraw_v5.1.java.awt.event.MouseListener <|.. PaletteButton
+					JHotDraw_v5.1.java.awt.event.MouseMotionListener <|.. PaletteButton
+					JHotDraw_v5.1.java.awt.Button <|-- CommandButton
+					JHotDraw_v5.1.java.awt.event.ActionListener <|.. CommandButton
+					JHotDraw_v5.1.java.awt.Choice <|-- CommandChoice
+					JHotDraw_v5.1.java.awt.event.ItemListener <|.. CommandChoice
+					JHotDraw_v5.1.java.awt.Menu <|-- CommandMenu
+					JHotDraw_v5.1.java.awt.event.ActionListener <|.. CommandMenu
+					JHotDraw_v5.1.java.util.Vector "fMap" <-- StorableInput
+					JHotDraw_v5.1.java.io.StreamTokenizer "fTokenizer" <-- StorableInput
+					JavaPrimitiveTypes.int "fIndent" <-- StorableOutput
+					JHotDraw_v5.1.java.util.Vector "fMap" <-- StorableOutput
+					JHotDraw_v5.1.java.io.PrintWriter "fStream" <-- StorableOutput
+					JavaPrimitiveTypes.int "NORMAL" <-- PaletteButton
+					JavaPrimitiveTypes.int "PRESSED" <-- PaletteButton
+					JavaPrimitiveTypes.int "SELECTED" <-- PaletteButton
+					PaletteListener "fListener" <-- PaletteButton
+					JavaPrimitiveTypes.int "fOldState" <-- PaletteButton
+					JavaPrimitiveTypes.int "fState" <-- PaletteButton
+					JHotDraw_v5.1.java.awt.Image "fNormal" <-- PaletteIcon
+					JHotDraw_v5.1.java.awt.Image "fPressed" <-- PaletteIcon
+					JHotDraw_v5.1.java.awt.Image "fSelected" <-- PaletteIcon
+					JHotDraw_v5.1.java.awt.Dimension "fSize" <-- PaletteIcon
+					JavaPrimitiveTypes.int "ID" <-- Iconkit
+					JHotDraw_v5.1.java.awt.Component "fComponent" <-- Iconkit
+					JHotDraw_v5.1.java.util.Hashtable "fMap" <-- Iconkit
+					JHotDraw_v5.1.java.util.Vector "fRegisteredImages" <-- Iconkit
+					JavaPrimitiveTypes.boolean "fgDebug" <-- Iconkit
+					JHotDraw_v5.1.java.lang.String "fName" <-- Command
+					Command "fCommand" <-- CommandButton
+					JHotDraw_v5.1.java.util.Vector "fCommands" <-- CommandChoice
+					JHotDraw_v5.1.java.util.Vector "fCommands" <-- CommandMenu
+				}
+				package standard {
+					'DP role: client
+					'DP role: invoker
+					class StandardDrawingView {
+						-drawingViewSerializedDataVersion: JavaPrimitiveTypes.int
+						-fBackgrounds: JHotDraw_v5.1.java.util.Vector
+						-fConstrainer: JHotDraw_v5.1.CH.ifa.draw.framework.PointConstrainer
+						-fDamage: JHotDraw_v5.1.java.awt.Rectangle
+						-fDrawing: JHotDraw_v5.1.CH.ifa.draw.framework.Drawing
+						-fEditor: JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor
+						-fForegrounds: JHotDraw_v5.1.java.util.Vector
+						-fLastClick: JHotDraw_v5.1.java.awt.Point
+						-fSelection: JHotDraw_v5.1.java.util.Vector
+						-fSelectionHandles: JHotDraw_v5.1.java.util.Vector
+						-fUpdateStrategy: JHotDraw_v5.1.CH.ifa.draw.framework.Painter
+						-fViewSize: JHotDraw_v5.1.java.awt.Dimension
+						-{const} serialVersionUID: JavaPrimitiveTypes.long = -3878153366174603336
+						<<Create>> StandardDrawingView(editor : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor, width : JavaPrimitiveTypes.int, height : JavaPrimitiveTypes.int)
+						add(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						addAll(figures : JHotDraw_v5.1.java.util.Vector)
+						addBackground(painter : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						addForeground(painter : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						addToSelection(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						addToSelectionAll(figures : JHotDraw_v5.1.java.util.Vector)
+						checkDamage()
+						-checkMinimumSize()
+						clearSelection()
+						#constrainPoint(p : JHotDraw_v5.1.java.awt.Point): JHotDraw_v5.1.java.awt.Point
+						drawAll(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawBackground(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawDrawing(g : JHotDraw_v5.1.java.awt.Graphics)
+						drawHandles(g : JHotDraw_v5.1.java.awt.Graphics)
+						-drawPainters(g : JHotDraw_v5.1.java.awt.Graphics, v : JHotDraw_v5.1.java.util.Vector)
+						drawing(): JHotDraw_v5.1.CH.ifa.draw.framework.Drawing
+						drawingInvalidated(e : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingChangeEvent)
+						drawingRequestUpdate(e : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingChangeEvent)
+						editor(): JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor
+						findHandle(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int): JHotDraw_v5.1.CH.ifa.draw.framework.Handle
+						freezeView()
+						getConstrainer(): JHotDraw_v5.1.CH.ifa.draw.framework.PointConstrainer
+						getFigureSelection(): JHotDraw_v5.1.CH.ifa.draw.framework.FigureSelection
+						getMinimumSize(): JHotDraw_v5.1.java.awt.Dimension
+						getPreferredSize(): JHotDraw_v5.1.java.awt.Dimension
+						#handleCursorKey(key : JavaPrimitiveTypes.int)
+						isFocusTraversable(): JavaPrimitiveTypes.boolean
+						keyPressed(e : JHotDraw_v5.1.java.awt.event.KeyEvent)
+						keyReleased(e : JHotDraw_v5.1.java.awt.event.KeyEvent)
+						keyTyped(e : JHotDraw_v5.1.java.awt.event.KeyEvent)
+						lastClick(): JHotDraw_v5.1.java.awt.Point
+						mouseClicked(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						mouseDragged(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						mouseEntered(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						mouseExited(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						mouseMoved(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						mousePressed(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						mouseReleased(e : JHotDraw_v5.1.java.awt.event.MouseEvent)
+						-moveSelection(dx : JavaPrimitiveTypes.int, dy : JavaPrimitiveTypes.int)
+						paint(g : JHotDraw_v5.1.java.awt.Graphics)
+						-readObject(s : JHotDraw_v5.1.java.io.ObjectInputStream)
+						remove(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure): JHotDraw_v5.1.CH.ifa.draw.framework.Figure
+						removeBackground(painter : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						removeForeground(painter : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						removeFromSelection(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						repairDamage()
+						selection(): JHotDraw_v5.1.java.util.Vector
+						#selectionChanged()
+						selectionCount(): JavaPrimitiveTypes.int
+						selectionElements(): JHotDraw_v5.1.CH.ifa.draw.framework.FigureEnumeration
+						-selectionHandles(): JHotDraw_v5.1.java.util.Enumeration
+						selectionZOrdered(): JHotDraw_v5.1.java.util.Vector
+						setConstrainer(c : JHotDraw_v5.1.CH.ifa.draw.framework.PointConstrainer)
+						setDisplayUpdate(updateStrategy : JHotDraw_v5.1.CH.ifa.draw.framework.Painter)
+						setDrawing(d : JHotDraw_v5.1.CH.ifa.draw.framework.Drawing)
+						setEditor(editor : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor)
+						toggleSelection(figure : JHotDraw_v5.1.CH.ifa.draw.framework.Figure)
+						tool(): JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+						unfreezeView()
+						update(g : JHotDraw_v5.1.java.awt.Graphics)
+					}
+					'/** 
+					' * Align a selection of figures relative to each other.
+					' */
+					'DP role: concreteCommand
+					class AlignCommand {
+						{const} BOTTOMS: JavaPrimitiveTypes.int = 5
+						{const} CENTERS: JavaPrimitiveTypes.int = 1
+						{const} LEFTS: JavaPrimitiveTypes.int = 0
+						{const} MIDDLES: JavaPrimitiveTypes.int = 4
+						{const} RIGHTS: JavaPrimitiveTypes.int = 2
+						{const} TOPS: JavaPrimitiveTypes.int = 3
+						-fOp: JavaPrimitiveTypes.int
+						-fView: JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView
+						'/** 
+						' * Constructs an alignment command.
+						' * @param name the command name
+						' * @param view the target view
+						' * @param op the alignment operation (LEFTS, CENTERS, RIGHTS, etc.)
+						' */
+						<<Create>> AlignCommand(name : JHotDraw_v5.1.java.lang.String, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView, op : JavaPrimitiveTypes.int)
+						execute()
+						isExecutable(): JavaPrimitiveTypes.boolean
+					}
+					'/** 
+					' * BringToFrontCommand brings the selected figures in the front of the other figures.
+					' * @see SendToBackCommand
+					' */
+					'DP role: concreteCommand
+					class BringToFrontCommand {
+						-fView: JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView
+						'/** 
+						' * Constructs a bring to front command.
+						' * @param name the command name
+						' * @param view the target view
+						' */
+						<<Create>> BringToFrontCommand(name : JHotDraw_v5.1.java.lang.String, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						execute()
+						isExecutable(): JavaPrimitiveTypes.boolean
+					}
+					'/** 
+					' * Command to change a named figure attribute.
+					' */
+					'DP role: concreteCommand
+					class ChangeAttributeCommand {
+						-fAttribute: JHotDraw_v5.1.java.lang.String
+						-fValue: JHotDraw_v5.1.java.lang.Object
+						-fView: JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView
+						'/** 
+						' * Constructs a change attribute command.
+						' * @param name the command name
+						' * @param attributeName the name of the attribute to be changed
+						' * @param value the new attribute value
+						' * @param view the target view
+						' */
+						<<Create>> ChangeAttributeCommand(name : JHotDraw_v5.1.java.lang.String, attributeName : JHotDraw_v5.1.java.lang.String, value : JHotDraw_v5.1.java.lang.Object, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						execute()
+						isExecutable(): JavaPrimitiveTypes.boolean
+					}
+					'/** 
+					' * Copy the selection to the clipboard.
+					' * @see Clipboard
+					' */
+					'DP role: concreteCommand
+					class CopyCommand {
+						'/** 
+						' * Constructs a copy command.
+						' * @param name the command name
+						' * @param view the target view
+						' */
+						<<Create>> CopyCommand(name : JHotDraw_v5.1.java.lang.String, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						execute()
+						isExecutable(): JavaPrimitiveTypes.boolean
+					}
+					'/** 
+					' * Delete the selection and move the selected figures to the clipboard.
+					' * @see Clipboard
+					' */
+					'DP role: concreteCommand
+					class CutCommand {
+						'/** 
+						' * Constructs a cut command.
+						' * @param name the command name
+						' * @param view the target view
+						' */
+						<<Create>> CutCommand(name : JHotDraw_v5.1.java.lang.String, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						execute()
+						isExecutable(): JavaPrimitiveTypes.boolean
+					}
+					'/** 
+					' * Command to delete the selection.
+					' */
+					'DP role: concreteCommand
+					class DeleteCommand {
+						'/** 
+						' * Constructs a delete command.
+						' * @param name the command name
+						' * @param view the target view
+						' */
+						<<Create>> DeleteCommand(name : JHotDraw_v5.1.java.lang.String, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						execute()
+						isExecutable(): JavaPrimitiveTypes.boolean
+					}
+					'/** 
+					' * Duplicate the selection and select the duplicates.
+					' */
+					'DP role: concreteCommand
+					class DuplicateCommand {
+						'/** 
+						' * Constructs a duplicate command.
+						' * @param name the command name
+						' * @param view the target view
+						' */
+						<<Create>> DuplicateCommand(name : JHotDraw_v5.1.java.lang.String, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						execute()
+						isExecutable(): JavaPrimitiveTypes.boolean
+					}
+					'/** 
+					' * Command to insert the clipboard into the drawing.
+					' * @see Clipboard
+					' */
+					'DP role: concreteCommand
+					class PasteCommand {
+						'/** 
+						' * Constructs a paste command.
+						' * @param name the command name
+						' * @param image the pathname of the image
+						' * @param view the target view
+						' */
+						<<Create>> PasteCommand(name : JHotDraw_v5.1.java.lang.String, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						bounds(k : JHotDraw_v5.1.java.util.Enumeration): JHotDraw_v5.1.java.awt.Rectangle
+						execute()
+					}
+					'/** 
+					' * A command to send the selection to the back of the drawing.
+					' */
+					'DP role: concreteCommand
+					class SendToBackCommand {
+						-fView: JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView
+						'/** 
+						' * Constructs a send to back command.
+						' * @param name the command name
+						' * @param view the target view
+						' */
+						<<Create>> SendToBackCommand(name : JHotDraw_v5.1.java.lang.String, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						execute()
+						isExecutable(): JavaPrimitiveTypes.boolean
+					}
+					'/** 
+					' * A command to toggle the snap to grid behavior.
+					' */
+					'DP role: concreteCommand
+					class ToggleGridCommand {
+						-fGrid: JHotDraw_v5.1.java.awt.Point
+						-fView: JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView
+						'/** 
+						' * Constructs a toggle grid command.
+						' * @param name the command name
+						' * @param image the pathname of the image
+						' * @param grid the grid size. A grid size of 1,1 turns grid snapping off.
+						' */
+						<<Create>> ToggleGridCommand(name : JHotDraw_v5.1.java.lang.String, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView, grid : JHotDraw_v5.1.java.awt.Point)
+						execute()
+					}
+					JHotDraw_v5.1.CH.ifa.draw.util.PaletteButton <|-- ToolButton
+					JHotDraw_v5.1.java.awt.Panel <|-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView <|.. StandardDrawingView
+					JHotDraw_v5.1.java.awt.event.MouseListener <|.. StandardDrawingView
+					JHotDraw_v5.1.java.awt.event.MouseMotionListener <|.. StandardDrawingView
+					JHotDraw_v5.1.java.awt.event.KeyListener <|.. StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.util.Command <|-- AlignCommand
+					JHotDraw_v5.1.CH.ifa.draw.util.Command <|-- BringToFrontCommand
+					JHotDraw_v5.1.CH.ifa.draw.util.Command <|-- ChangeAttributeCommand
+					FigureTransferCommand <|-- CopyCommand
+					JHotDraw_v5.1.CH.ifa.draw.util.Command <|-- FigureTransferCommand
+					FigureTransferCommand <|-- CutCommand
+					FigureTransferCommand <|-- DeleteCommand
+					FigureTransferCommand <|-- DuplicateCommand
+					FigureTransferCommand <|-- PasteCommand
+					JHotDraw_v5.1.CH.ifa.draw.util.Command <|-- SendToBackCommand
+					JHotDraw_v5.1.CH.ifa.draw.util.Command <|-- ToggleGridCommand
+					JHotDraw_v5.1.CH.ifa.draw.util.PaletteIcon "fIcon" <-- ToolButton
+					JHotDraw_v5.1.java.lang.String "fName" <-- ToolButton
+					JHotDraw_v5.1.CH.ifa.draw.framework.Tool "fTool" <-- ToolButton
+					JavaPrimitiveTypes.int "drawingViewSerializedDataVersion" <-- StandardDrawingView
+					JHotDraw_v5.1.java.util.Vector "fBackgrounds" <-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.PointConstrainer "fConstrainer" <-- StandardDrawingView
+					JHotDraw_v5.1.java.awt.Rectangle "fDamage" <-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.Drawing "fDrawing" <-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor "fEditor" <-- StandardDrawingView
+					JHotDraw_v5.1.java.util.Vector "fForegrounds" <-- StandardDrawingView
+					JHotDraw_v5.1.java.awt.Point "fLastClick" <-- StandardDrawingView
+					JHotDraw_v5.1.java.util.Vector "fSelection" <-- StandardDrawingView
+					JHotDraw_v5.1.java.util.Vector "fSelectionHandles" <-- StandardDrawingView
+					JHotDraw_v5.1.CH.ifa.draw.framework.Painter "fUpdateStrategy" <-- StandardDrawingView
+					JHotDraw_v5.1.java.awt.Dimension "fViewSize" <-- StandardDrawingView
+					JavaPrimitiveTypes.long "serialVersionUID" <-- StandardDrawingView
+					JavaPrimitiveTypes.int "BOTTOMS" <-- AlignCommand
+					JavaPrimitiveTypes.int "CENTERS" <-- AlignCommand
+					JavaPrimitiveTypes.int "LEFTS" <-- AlignCommand
+					JavaPrimitiveTypes.int "MIDDLES" <-- AlignCommand
+					JavaPrimitiveTypes.int "RIGHTS" <-- AlignCommand
+					JavaPrimitiveTypes.int "TOPS" <-- AlignCommand
+					JavaPrimitiveTypes.int "fOp" <-- AlignCommand
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView "fView" <-- AlignCommand
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView "fView" <-- BringToFrontCommand
+					JHotDraw_v5.1.java.lang.String "fAttribute" <-- ChangeAttributeCommand
+					JHotDraw_v5.1.java.lang.Object "fValue" <-- ChangeAttributeCommand
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView "fView" <-- ChangeAttributeCommand
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView "fView" <-- FigureTransferCommand
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView "fView" <-- SendToBackCommand
+					JHotDraw_v5.1.java.awt.Point "fGrid" <-- ToggleGridCommand
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView "fView" <-- ToggleGridCommand
+				}
+				package applet {
+					'/** 
+					' * DrawApplication defines a standard presentation for a drawing editor that is run as an applet. The presentation is customized in subclasses.<p> Supported applet parameters: <br> <i>DRAWINGS</i>: a blank separated list of drawing names that is shown in the drawings choice.
+					' */
+					'DP role: client
+					class DrawApplet {
+						{const} IMAGES: JHotDraw_v5.1.java.lang.String = /CH/ifa/draw/images/
+						-fArrowChoice: JHotDraw_v5.1.java.awt.Choice
+						-fDefaultToolButton: JHotDraw_v5.1.CH.ifa.draw.standard.ToolButton
+						-fDrawing: JHotDraw_v5.1.CH.ifa.draw.framework.Drawing
+						-fFillColor: JHotDraw_v5.1.java.awt.Choice
+						-fFontChoice: JHotDraw_v5.1.java.awt.Choice
+						-fFrameColor: JHotDraw_v5.1.java.awt.Choice
+						-fIconkit: JHotDraw_v5.1.CH.ifa.draw.util.Iconkit
+						-fSelectedToolButton: JHotDraw_v5.1.CH.ifa.draw.standard.ToolButton
+						-fSimpleUpdate: JavaPrimitiveTypes.boolean
+						-fSleeper: JHotDraw_v5.1.java.lang.Thread
+						-fTool: JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+						-fUpdateButton: JHotDraw_v5.1.java.awt.Button
+						-fView: JHotDraw_v5.1.CH.ifa.draw.standard.StandardDrawingView
+						-{const} fgDrawPath: JHotDraw_v5.1.java.lang.String = /CH/ifa/draw/
+						{static} fgUntitled: JHotDraw_v5.1.java.lang.String
+						<<Create>> DrawApplet()
+						'/** 
+						' * Creates the attribute choices. Override to add additional choices.
+						' */
+						#createAttributeChoices(panel : JHotDraw_v5.1.java.awt.Panel)
+						'/** 
+						' * Creates the attributes panel.
+						' */
+						#createAttributesPanel(): JHotDraw_v5.1.java.awt.Panel
+						'/** 
+						' * Creates the buttons panel.
+						' */
+						#createButtonPanel(): JHotDraw_v5.1.java.awt.Panel
+						'/** 
+						' * Creates the buttons shown in the buttons panel. Override to add additional buttons.
+						' * @param panel the buttons panel.
+						' */
+						#createButtons(panel : JHotDraw_v5.1.java.awt.Panel)
+						'/** 
+						' * Creates the color choice for the given attribute.
+						' */
+						#createColorChoice(attribute : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.awt.Choice
+						'/** 
+						' * Creates the drawing used in this application. You need to override this method to use a Drawing subclass in your application. By default a standard Drawing is returned.
+						' */
+						#createDrawing(): JHotDraw_v5.1.CH.ifa.draw.framework.Drawing
+						'/** 
+						' * Creates the drawing view used in this application. You need to override this method to use a DrawingView subclass in your application. By default a standard DrawingView is returned.
+						' */
+						#createDrawingView(): JHotDraw_v5.1.CH.ifa.draw.standard.StandardDrawingView
+						'/** 
+						' * Creates the font choice. The choice is filled with all the fonts supported by the toolkit.
+						' */
+						#createFontChoice(): JHotDraw_v5.1.java.awt.Choice
+						'/** 
+						' * Creates the selection tool used in this editor. Override to use a custom selection tool.
+						' */
+						#createSelectionTool(): JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+						'/** 
+						' * Creates a tool button with the given image, tool, and text
+						' */
+						#createToolButton(iconName : JHotDraw_v5.1.java.lang.String, toolName : JHotDraw_v5.1.java.lang.String, tool : JHotDraw_v5.1.CH.ifa.draw.framework.Tool): JHotDraw_v5.1.CH.ifa.draw.standard.ToolButton
+						'/** 
+						' * Creates the tools palette.
+						' */
+						#createToolPalette(): JHotDraw_v5.1.java.awt.Panel
+						'/** 
+						' * Creates the tools. By default only the selection tool is added. Override this method to add additional tools. Call the inherited method to include the selection tool.
+						' * @param palette the palette where the tools are added.
+						' */
+						#createTools(palette : JHotDraw_v5.1.java.awt.Panel)
+						'/** 
+						' * Gets the current drawing.
+						' * @see DrawingEditor
+						' */
+						drawing(): JHotDraw_v5.1.CH.ifa.draw.framework.Drawing
+						-guessType(file : JHotDraw_v5.1.java.lang.String): JHotDraw_v5.1.java.lang.String
+						'/** 
+						' * Initializes the applet and creates its contents.
+						' */
+						init()
+						-initDrawing()
+						#loadDrawing(param : JHotDraw_v5.1.java.lang.String)
+						'/** 
+						' * Handles when the mouse enters or leaves a palette button.
+						' * @see PaletteListener
+						' */
+						paletteUserOver(button : JHotDraw_v5.1.CH.ifa.draw.util.PaletteButton, inside : JavaPrimitiveTypes.boolean)
+						'/** 
+						' * Handles a user selection in the palette.
+						' * @see PaletteListener
+						' */
+						paletteUserSelected(button : JHotDraw_v5.1.CH.ifa.draw.util.PaletteButton)
+						-readDrawing(filename : JHotDraw_v5.1.java.lang.String)
+						-readFromObjectInput(filename : JHotDraw_v5.1.java.lang.String)
+						-readFromStorableInput(filename : JHotDraw_v5.1.java.lang.String)
+						'/** 
+						' * Handles a change of the current selection. Updates all menu items that are selection sensitive.
+						' * @see DrawingEditor
+						' */
+						selectionChanged(view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						#setBufferedDisplayUpdate()
+						-setSelected(button : JHotDraw_v5.1.CH.ifa.draw.standard.ToolButton)
+						#setSimpleDisplayUpdate()
+						-setTool(t : JHotDraw_v5.1.CH.ifa.draw.framework.Tool, name : JHotDraw_v5.1.java.lang.String)
+						-setupAttributes()
+						'/** 
+						' * Shows a help page for the applet. The URL of the help page is derived as follows: codeBase+appletClassname+Help.html"
+						' */
+						#showHelp()
+						'/** 
+						' * *** netscape browser work around 
+						' */
+						-startSleeper()
+						-stopSleeper()
+						'/** 
+						' * Gets the current tool.
+						' * @see DrawingEditor
+						' */
+						tool(): JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+						'/** 
+						' * Sets the default tool of the editor.
+						' * @see DrawingEditor
+						' */
+						toolDone()
+						'/** 
+						' * Gets the current drawing view.
+						' * @see DrawingEditor
+						' */
+						view(): JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView
+					}
+					JHotDraw_v5.1.java.applet.Applet <|-- DrawApplet
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingEditor <|.. DrawApplet
+					JHotDraw_v5.1.CH.ifa.draw.util.PaletteListener <|.. DrawApplet
+					JHotDraw_v5.1.java.lang.String "IMAGES" <-- DrawApplet
+					JHotDraw_v5.1.java.awt.Choice "fArrowChoice" <-- DrawApplet
+					JHotDraw_v5.1.CH.ifa.draw.standard.ToolButton "fDefaultToolButton" <-- DrawApplet
+					JHotDraw_v5.1.CH.ifa.draw.framework.Drawing "fDrawing" <-- DrawApplet
+					JHotDraw_v5.1.java.awt.Choice "fFillColor" <-- DrawApplet
+					JHotDraw_v5.1.java.awt.Choice "fFontChoice" <-- DrawApplet
+					JHotDraw_v5.1.java.awt.Choice "fFrameColor" <-- DrawApplet
+					JHotDraw_v5.1.CH.ifa.draw.util.Iconkit "fIconkit" <-- DrawApplet
+					JHotDraw_v5.1.CH.ifa.draw.standard.ToolButton "fSelectedToolButton" <-- DrawApplet
+					JavaPrimitiveTypes.boolean "fSimpleUpdate" <-- DrawApplet
+					JHotDraw_v5.1.java.lang.Thread "fSleeper" <-- DrawApplet
+					JHotDraw_v5.1.CH.ifa.draw.framework.Tool "fTool" <-- DrawApplet
+					JHotDraw_v5.1.java.awt.Button "fUpdateButton" <-- DrawApplet
+					JHotDraw_v5.1.CH.ifa.draw.standard.StandardDrawingView "fView" <-- DrawApplet
+					JHotDraw_v5.1.java.lang.String "fgDrawPath" <-- DrawApplet
+					JHotDraw_v5.1.java.lang.String "fgUntitled" <-- DrawApplet
+				}
+				package samples {
+					package javadraw {
+						'DP role: client
+						class JavaDrawApp {
+							-fAnimator: Animator
+							-{static} fgSampleImagesPath: JHotDraw_v5.1.java.lang.String
+							-{static} fgSampleImagesResourcePath: JHotDraw_v5.1.java.lang.String
+							<<Create>> JavaDrawApp()
+							<<Create>> JavaDrawApp(name : JHotDraw_v5.1.java.lang.String)
+							#createAnimationMenu(): JHotDraw_v5.1.java.awt.Menu
+							#createDrawing(): JHotDraw_v5.1.CH.ifa.draw.framework.Drawing
+							#createImagesMenu(): JHotDraw_v5.1.java.awt.Menu
+							#createMenus(mb : JHotDraw_v5.1.java.awt.MenuBar)
+							#createSelectionTool(): JHotDraw_v5.1.CH.ifa.draw.framework.Tool
+							#createTools(palette : JHotDraw_v5.1.java.awt.Panel)
+							#createWindowMenu(): JHotDraw_v5.1.java.awt.Menu
+							#defaultSize(): JHotDraw_v5.1.java.awt.Dimension
+							destroy()
+							endAnimation()
+							{static} main(args : JHotDraw_v5.1.java.lang.String)
+							open()
+							openView()
+							startAnimation()
+						}
+						JHotDraw_v5.1.CH.ifa.draw.application.DrawApplication <|-- JavaDrawApp
+						JHotDraw_v5.1.java.lang.Thread <|-- Animator
+						JavaPrimitiveTypes.int "DELAY" <-- Animator
+						JHotDraw_v5.1.CH.ifa.draw.util.Animatable "fAnimatable" <-- Animator
+						JavaPrimitiveTypes.boolean "fIsRunning" <-- Animator
+						JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView "fView" <-- Animator
+						Animator "fAnimator" <-- JavaDrawApp
+						JHotDraw_v5.1.java.lang.String "fgSampleImagesPath" <-- JavaDrawApp
+						JHotDraw_v5.1.java.lang.String "fgSampleImagesResourcePath" <-- JavaDrawApp
+					}
+				}
+				package figures {
+					'/** 
+					' * Command to group the selection into a GroupFigure.
+					' * @see GroupFigure
+					' */
+					'DP role: concreteCommand
+					class GroupCommand {
+						-fView: JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView
+						'/** 
+						' * Constructs a group command.
+						' * @param name the command name
+						' * @param view the target view
+						' */
+						<<Create>> GroupCommand(name : JHotDraw_v5.1.java.lang.String, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						execute()
+						isExecutable(): JavaPrimitiveTypes.boolean
+					}
+					'/** 
+					' * Command to insert a named image.
+					' */
+					'DP role: concreteCommand
+					class InsertImageCommand {
+						-fImage: JHotDraw_v5.1.java.lang.String
+						-fView: JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView
+						'/** 
+						' * Constructs an insert image command.
+						' * @param name the command name
+						' * @param image the pathname of the image
+						' * @param view the target view
+						' */
+						<<Create>> InsertImageCommand(name : JHotDraw_v5.1.java.lang.String, image : JHotDraw_v5.1.java.lang.String, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						execute()
+					}
+					'/** 
+					' * Command to ungroup the selected figures.
+					' * @see GroupCommand
+					' */
+					'DP role: concreteCommand
+					class UngroupCommand {
+						-fView: JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView
+						'/** 
+						' * Constructs a group command.
+						' * @param name the command name
+						' * @param view the target view
+						' */
+						<<Create>> UngroupCommand(name : JHotDraw_v5.1.java.lang.String, view : JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView)
+						execute()
+						isExecutable(): JavaPrimitiveTypes.boolean
+					}
+					JHotDraw_v5.1.CH.ifa.draw.util.Command <|-- GroupCommand
+					JHotDraw_v5.1.CH.ifa.draw.util.Command <|-- InsertImageCommand
+					JHotDraw_v5.1.CH.ifa.draw.util.Command <|-- UngroupCommand
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView "fView" <-- GroupCommand
+					JHotDraw_v5.1.java.lang.String "fImage" <-- InsertImageCommand
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView "fView" <-- InsertImageCommand
+					JHotDraw_v5.1.CH.ifa.draw.framework.DrawingView "fView" <-- UngroupCommand
+				}
+			}
+		}
+	}
+}
+@enduml

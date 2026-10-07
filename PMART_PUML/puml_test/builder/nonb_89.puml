@@ -1,0 +1,44 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'A TextFigure specialized to edit numbers.
+			class NumberTextFigure {
+				-numberTextFigureSerializedDataVersion: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = -4056859232918336475
+				<<Create>> NumberTextFigure()
+				'Gets the numerical value of the contained text. return the value or 0 in the case of an illegal number format.
+				getValue(): JavaPrimitiveTypes.int
+				'Gets the number of columns to be used by the text overlay.
+				'@see FloatingTextField
+				overlayColumns(): JavaPrimitiveTypes.int
+				'Sets the numberical value of the contained text.
+				setValue(value : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	Builder.nonbuilder.TextFigure <|-- Builder.nonbuilder.NumberTextFigure
+	Builder.nonbuilder.AttributeFigure <|-- Builder.nonbuilder.TextFigure
+	Builder.nonbuilder.FigureChangeListener <|-- Builder.nonbuilder.TextFigure
+	Builder.nonbuilder.TextHolder <|-- Builder.nonbuilder.TextFigure
+	java.lang.Cloneable <|-- Builder.nonbuilder.Figure
+	java.io.Serializable <|-- Builder.nonbuilder.Figure
+	java.awt.Font "fFont" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "fHeight" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.boolean "fIsReadOnly" <-- Builder.nonbuilder.TextFigure
+	Builder.nonbuilder.OffsetLocator "fLocator" <-- Builder.nonbuilder.TextFigure
+	Builder.nonbuilder.Figure "fObservedFigure" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "fOriginX" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "fOriginY" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.boolean "fSizeIsDirty" <-- Builder.nonbuilder.TextFigure
+	java.lang.String "fText" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "fWidth" <-- Builder.nonbuilder.TextFigure
+	java.lang.String "fgCurrentFontName" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontSize" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "fgCurrentFontStyle" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "textFigureSerializedDataVersion" <-- Builder.nonbuilder.TextFigure
+	JavaPrimitiveTypes.int "numberTextFigureSerializedDataVersion" <-- Builder.nonbuilder.NumberTextFigure
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Builder.nonbuilder.NumberTextFigure
+}
+@enduml

@@ -1,0 +1,509 @@
+@startuml
+'Design pattern Adapter
+package "JRefactory v2.6.24" as JRefactory_v2.6.24 {
+	package org {
+		package acm {
+			package seguin {
+				package uml {
+					package line {
+						'/** 
+						' * Creates a label that can be resized by setting it's scaling factor.
+						' * @author    Chris Seguin
+						' */
+						'DP role: client
+						class SizableLabel {
+							-align: JavaPrimitiveTypes.int
+							-ascent: JavaPrimitiveTypes.int
+							-background: JRefactory_v2.6.24.java.awt.Color
+							-bufferCreated: JavaPrimitiveTypes.boolean
+							-{static} defaultColor: JRefactory_v2.6.24.java.awt.Color
+							-{static} defaultFont: JRefactory_v2.6.24.java.awt.Font
+							-font: JRefactory_v2.6.24.java.awt.Font
+							-foreground: JRefactory_v2.6.24.java.awt.Color
+							-height: JavaPrimitiveTypes.int
+							-scaledImage: JRefactory_v2.6.24.java.awt.Image
+							-text: JRefactory_v2.6.24.java.lang.String
+							-width: JavaPrimitiveTypes.int
+							'/** 
+							' * Constructor for the SizableLabel object
+							' */
+							<<Create>> SizableLabel()
+							'/** 
+							' * Constructor for the SizableLabel object
+							' * @param init  Description of Parameter
+							' */
+							<<Create>> SizableLabel(init : JRefactory_v2.6.24.java.lang.String)
+							'/** 
+							' * Creates the buffer from which to draw the resized text
+							' */
+							-createBuffer()
+							'/** 
+							' * Prints some debug information about this label
+							' */
+							-debug()
+							'/** 
+							' * Description of the Method
+							' */
+							-determineSize()
+							'/** 
+							' * Gets the ParentBackground attribute of the SizableLabel object
+							' * @return    The ParentBackground value
+							' */
+							-getParentBackground(): JRefactory_v2.6.24.java.awt.Color
+							'/** 
+							' * Gets the PreferredSize attribute of the SizableLabel object
+							' * @return    The PreferredSize value
+							' */
+							getPreferredSize(): JRefactory_v2.6.24.java.awt.Dimension
+							'/** 
+							' * Gets the Text attribute of the SizableLabel object
+							' * @return    The Text value
+							' */
+							getText(): JRefactory_v2.6.24.java.lang.String
+							'/** 
+							' * Initializes the static font and color
+							' */
+							-{static} init()
+							'/** 
+							' * Paints the sizable label
+							' * @param g  the graphics area to print in
+							' */
+							paint(g : JRefactory_v2.6.24.java.awt.Graphics)
+							'/** 
+							' * Prints the label at the proper location
+							' * @param g  the graphics object
+							' * @param x  the x coordinate
+							' * @param y  the y coordinate
+							' */
+							print(g : JRefactory_v2.6.24.java.awt.Graphics, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+							'/** 
+							' * Scales the image
+							' * @param value  the amount to scale
+							' */
+							scale(value : JavaPrimitiveTypes.double)
+							'/** 
+							' * Sets the Font attribute of the SizableLabel object
+							' * @param value  The new Font value
+							' */
+							setSLFont(value : JRefactory_v2.6.24.java.awt.Font)
+							'/** 
+							' * Sets the Foreground attribute of the SizableLabel object
+							' * @param value  The new Foreground value
+							' */
+							setSLForeground(value : JRefactory_v2.6.24.java.awt.Color)
+							'/** 
+							' * Sets the HorizontalAlignment attribute of the SizableLabel object
+							' * @param value  The new HorizontalAlignment value
+							' */
+							setSLHorizontalAlignment(value : JavaPrimitiveTypes.int)
+							'/** 
+							' * Sets the Text attribute of the SizableLabel object
+							' * @param value  The new Text value
+							' */
+							setText(value : JRefactory_v2.6.24.java.lang.String)
+						}
+						'DP role: adaptee
+						abstract class EndPointPanel {
+							<<Create>> EndPointPanel()
+							<<Create>> EndPointPanel(doubleBuffered : JavaPrimitiveTypes.boolean)
+							<<Create>> EndPointPanel(layout : JRefactory_v2.6.24.java.awt.LayoutManager)
+							<<Create>> EndPointPanel(layout : JRefactory_v2.6.24.java.awt.LayoutManager, doubleBuffered : JavaPrimitiveTypes.boolean)
+							getUnscaledLocation(): JRefactory_v2.6.24.java.awt.Point
+							isSelected(): JavaPrimitiveTypes.boolean
+							setSelected(value : JavaPrimitiveTypes.boolean)
+						}
+						'DP role: adaptee
+						abstract class LinedPanel {
+							-endPoints: JRefactory_v2.6.24.java.util.LinkedList
+							-lineList: JRefactory_v2.6.24.java.util.LinkedList
+							<<Create>> LinedPanel()
+							<<Create>> LinedPanel(doubleBuffered : JavaPrimitiveTypes.boolean)
+							<<Create>> LinedPanel(layout : JRefactory_v2.6.24.java.awt.LayoutManager)
+							<<Create>> LinedPanel(layout : JRefactory_v2.6.24.java.awt.LayoutManager, doubleBuffered : JavaPrimitiveTypes.boolean)
+							add(panel : EndPointPanel)
+							add(value : SegmentedLine)
+							clear()
+							deselectAll()
+							drag(point : JRefactory_v2.6.24.java.awt.Point)
+							drop()
+							#getEndPoints(): JRefactory_v2.6.24.java.util.Iterator
+							#getLines(): JRefactory_v2.6.24.java.util.Iterator
+							hit(point : JRefactory_v2.6.24.java.awt.Point)
+							scale(value : JavaPrimitiveTypes.double)
+							shift(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						}
+						'DP role: adapter
+						class DragPanelAdapter {
+							-mouseStart: JRefactory_v2.6.24.java.awt.Point
+							-panel: EndPointPanel
+							-panelStart: JRefactory_v2.6.24.java.awt.Point
+							-parent: LinedPanel
+							<<Create>> DragPanelAdapter(initPanel : EndPointPanel, initParent : LinedPanel)
+							mouseClicked(mevt : JRefactory_v2.6.24.java.awt.event.MouseEvent)
+							mouseDragged(mevt : JRefactory_v2.6.24.java.awt.event.MouseEvent)
+							mouseEntered(mevt : JRefactory_v2.6.24.java.awt.event.MouseEvent)
+							mouseExited(mevt : JRefactory_v2.6.24.java.awt.event.MouseEvent)
+							mouseMoved(mevt : JRefactory_v2.6.24.java.awt.event.MouseEvent)
+							mousePressed(mevt : JRefactory_v2.6.24.java.awt.event.MouseEvent)
+							mouseReleased(mevt : JRefactory_v2.6.24.java.awt.event.MouseEvent)
+						}
+						ScalablePanel <|-- SizableLabel
+						JRefactory_v2.6.24.javax.swing.JPanel <|-- ScalablePanel
+						ScalablePanel <|-- EndPointPanel
+						JRefactory_v2.6.24.javax.swing.JPanel <|-- LinedPanel
+						JRefactory_v2.6.24.java.awt.event.ComponentListener <|.. SegmentedLine
+						JRefactory_v2.6.24.java.awt.event.MouseListener <|.. DragPanelAdapter
+						JRefactory_v2.6.24.java.awt.event.MouseMotionListener <|.. DragPanelAdapter
+						SegmentedLine <|-- AssociationRelationship
+						JavaPrimitiveTypes.int "absoluteHeight" <-- ScalablePanel
+						JavaPrimitiveTypes.int "absoluteWidth" <-- ScalablePanel
+						JavaPrimitiveTypes.int "absoluteX" <-- ScalablePanel
+						JavaPrimitiveTypes.int "absoluteY" <-- ScalablePanel
+						JavaPrimitiveTypes.boolean "inScaling" <-- ScalablePanel
+						JavaPrimitiveTypes.boolean "inShapeChange" <-- ScalablePanel
+						JavaPrimitiveTypes.double "scale" <-- ScalablePanel
+						JavaPrimitiveTypes.int "align" <-- SizableLabel
+						JavaPrimitiveTypes.int "ascent" <-- SizableLabel
+						JRefactory_v2.6.24.java.awt.Color "background" <-- SizableLabel
+						JavaPrimitiveTypes.boolean "bufferCreated" <-- SizableLabel
+						JRefactory_v2.6.24.java.awt.Color "defaultColor" <-- SizableLabel
+						JRefactory_v2.6.24.java.awt.Font "defaultFont" <-- SizableLabel
+						JRefactory_v2.6.24.java.awt.Font "font" <-- SizableLabel
+						JRefactory_v2.6.24.java.awt.Color "foreground" <-- SizableLabel
+						JavaPrimitiveTypes.int "height" <-- SizableLabel
+						JRefactory_v2.6.24.java.awt.Image "scaledImage" <-- SizableLabel
+						JRefactory_v2.6.24.java.lang.String "text" <-- SizableLabel
+						JavaPrimitiveTypes.int "width" <-- SizableLabel
+						JRefactory_v2.6.24.java.util.LinkedList "endPoints" <-- LinedPanel
+						JRefactory_v2.6.24.java.util.LinkedList "lineList" <-- LinedPanel
+						JavaPrimitiveTypes.double "SHORT_BACK" <-- SegmentedLine
+						JavaPrimitiveTypes.int "Xs 0..*" <-- SegmentedLine
+						JavaPrimitiveTypes.int "Ys 0..*" <-- SegmentedLine
+						JavaPrimitiveTypes.int "activeVertex" <-- SegmentedLine
+						EndPointPanel "endPanel" <-- SegmentedLine
+						JavaPrimitiveTypes.double "scalingFactor" <-- SegmentedLine
+						EndPointPanel "startPanel" <-- SegmentedLine
+						JavaPrimitiveTypes.boolean "activated" <-- Vertex
+						JRefactory_v2.6.24.java.awt.Point "computed" <-- Vertex
+						JavaPrimitiveTypes.double "near" <-- Vertex
+						JRefactory_v2.6.24.java.awt.Point "point" <-- Vertex
+						JavaPrimitiveTypes.boolean "rescaled" <-- Vertex
+						JavaPrimitiveTypes.double "scale" <-- Vertex
+						JavaPrimitiveTypes.boolean "selected" <-- Vertex
+						JavaPrimitiveTypes.int "vertexSize" <-- Vertex
+						JavaPrimitiveTypes.int "vertexSizeHalf" <-- Vertex
+						Vertex "vertices 0..*" <-- SegmentedLine
+						JavaPrimitiveTypes.double "A0" <-- Segment
+						JavaPrimitiveTypes.double "A1" <-- Segment
+						JavaPrimitiveTypes.double "B0" <-- Segment
+						JavaPrimitiveTypes.double "B1" <-- Segment
+						JavaPrimitiveTypes.double "m" <-- Segment
+						Segment "workingSegment" <-- SegmentedLine
+						JRefactory_v2.6.24.java.awt.Point "mouseStart" <-- DragPanelAdapter
+						EndPointPanel "panel" <-- DragPanelAdapter
+						JRefactory_v2.6.24.java.awt.Point "panelStart" <-- DragPanelAdapter
+						LinedPanel "parent" <-- DragPanelAdapter
+						JavaPrimitiveTypes.boolean "dead" <-- AssociationRelationship
+						JRefactory_v2.6.24.org.acm.seguin.uml.UMLField "field" <-- AssociationRelationship
+					}
+					'/** 
+					' * Displays a single UML field in a line
+					' * @author     Chris Seguin
+					' * @created    July 6, 1999
+					' */
+					'DP role: client
+					class UMLField {
+						-association: JavaPrimitiveTypes.boolean
+						-current: UMLPackage
+						-fieldDragAdapter: JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter
+						-parentDragAdapter: JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter
+						-summary: JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary
+						'/** 
+						' * Create a new instance of a UMLLine
+						' * @param initCurrent  Description of Parameter
+						' * @param parent       Description of Parameter
+						' * @param field        Description of Parameter
+						' * @param adapter      Description of Parameter
+						' */
+						<<Create>> UMLField(initCurrent : UMLPackage, parent : UMLType, field : JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary, adapter : JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter)
+						'/** 
+						' * Return the default background color
+						' * @return    the color
+						' */
+						#getDefaultBackground(): JRefactory_v2.6.24.java.awt.Color
+						getSourceSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.Summary
+						'/** 
+						' * Return the summary
+						' * @return    Description of the Returned Value
+						' */
+						getSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary
+						'/** 
+						' * Description of the Method
+						' * @return    Description of the Returned Value
+						' */
+						getType(): JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+						'/** 
+						' * Is this object represented as an association
+						' * @return    Description of the Returned Value
+						' */
+						isAssociation(): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Is this object represented as an association
+						' * @return    Description of the Returned Value
+						' */
+						isConvertable(): JavaPrimitiveTypes.boolean
+						'/** 
+						' * Transform into an association
+						' * @param way  Description of Parameter
+						' */
+						setAssociation(way : JavaPrimitiveTypes.boolean)
+					}
+					'DP role: client
+					class UMLLine {
+						{const} DEFAULT: JavaPrimitiveTypes.int = 3
+						{const} PRIVATE: JavaPrimitiveTypes.int = 4
+						{const} PROTECTED: JavaPrimitiveTypes.int = 2
+						{const} PROTECTED_PRIVATE: JavaPrimitiveTypes.int = 1
+						{const} PUBLIC: JavaPrimitiveTypes.int = 0
+						#{static} abstractFont: JRefactory_v2.6.24.java.awt.Font
+						#{static} abstractTitleFont: JRefactory_v2.6.24.java.awt.Font
+						#{static} defaultFont: JRefactory_v2.6.24.java.awt.Font
+						-font: JRefactory_v2.6.24.java.awt.Font
+						#high: JavaPrimitiveTypes.int
+						#icon: UMLIcon
+						-iconHeight: JavaPrimitiveTypes.int
+						#{const} iconMargin: JavaPrimitiveTypes.int = 1
+						-iconWidth: JavaPrimitiveTypes.int
+						#label: JRefactory_v2.6.24.org.acm.seguin.uml.line.SizableLabel
+						#{const} labelMargin: JavaPrimitiveTypes.int = 1
+						-parent: UMLType
+						-protection: JavaPrimitiveTypes.int
+						#{static} protectionColors: JRefactory_v2.6.24.java.awt.Color [*]
+						#{static} staticFont: JRefactory_v2.6.24.java.awt.Font
+						#{static} titleFont: JRefactory_v2.6.24.java.awt.Font
+						#wide: JavaPrimitiveTypes.int
+						<<Create>> UMLLine(parent : UMLType, adapter : JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter)
+						addMouseListener(listener : JRefactory_v2.6.24.java.awt.event.MouseListener)
+						addMouseMotionListener(listener : JRefactory_v2.6.24.java.awt.event.MouseMotionListener)
+						#drawIcon(g : JRefactory_v2.6.24.java.awt.Graphics, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						#getDefaultBackground(): JRefactory_v2.6.24.java.awt.Color
+						getMinimumSize(): JRefactory_v2.6.24.java.awt.Dimension
+						getParentType(): UMLType
+						getPreferredSize(): JRefactory_v2.6.24.java.awt.Dimension
+						#{static} getProtectionCode(modifiers : JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder): JavaPrimitiveTypes.int
+						#{static} getProtectionColor(level : JavaPrimitiveTypes.int): JRefactory_v2.6.24.java.awt.Color
+						#{static} getProtectionFont(title : JavaPrimitiveTypes.boolean, modifiers : JRefactory_v2.6.24.org.acm.seguin.pretty.ModifierHolder): JRefactory_v2.6.24.java.awt.Font
+						-{static} initFonts()
+						isSelected(): JavaPrimitiveTypes.boolean
+						paint(g : JRefactory_v2.6.24.java.awt.Graphics)
+						print(g : JRefactory_v2.6.24.java.awt.Graphics, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						removeMouseListener(listener : JRefactory_v2.6.24.java.awt.event.MouseListener)
+						removeMouseMotionListener(listener : JRefactory_v2.6.24.java.awt.event.MouseMotionListener)
+						scale(value : JavaPrimitiveTypes.double)
+						setLabelFont(font : JRefactory_v2.6.24.java.awt.Font)
+						setLabelText(msg : JRefactory_v2.6.24.java.lang.String)
+						setProtection(code : JavaPrimitiveTypes.int)
+						setSelected(value : JavaPrimitiveTypes.boolean)
+					}
+					'DP role: client
+					class UMLType {
+						-{const} DEFAULT: JavaPrimitiveTypes.int = 0
+						-{const} FOREIGN: JavaPrimitiveTypes.int = 2
+						-{const} SELECTED: JavaPrimitiveTypes.int = 1
+						-{const} TITLE_BORDER: JavaPrimitiveTypes.int = 4
+						#borderWidth: JavaPrimitiveTypes.int
+						-{static} defaultBG: JRefactory_v2.6.24.java.awt.Color
+						-{static} foreignBG: JRefactory_v2.6.24.java.awt.Color
+						-high: JavaPrimitiveTypes.int
+						#lineSize: JavaPrimitiveTypes.int
+						-nameLabel: JRefactory_v2.6.24.org.acm.seguin.uml.line.SizableLabel
+						-parent: UMLPackage
+						-roles: RoleHolder
+						-{static} selectedBG: JRefactory_v2.6.24.java.awt.Color
+						-{static} selectedForeignBG: JRefactory_v2.6.24.java.awt.Color
+						-state: JavaPrimitiveTypes.int
+						-titleHeight: JavaPrimitiveTypes.int
+						-type: JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+						-wide: JavaPrimitiveTypes.int
+						<<Create>> UMLType(initParent : UMLPackage, initType : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, foreign : JavaPrimitiveTypes.boolean)
+						-computeLineSize(): JavaPrimitiveTypes.int
+						convertToAssociation(packagePanel : UMLPackage, fieldPanel : UMLField): JRefactory_v2.6.24.org.acm.seguin.uml.line.AssociationRelationship
+						convertToAttribute(packagePanel : UMLPackage, fieldPanel : UMLField)
+						deselect()
+						-drawFrame(g : JRefactory_v2.6.24.java.awt.Graphics, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						-getAttributeCount(): JavaPrimitiveTypes.int
+						getBackgroundColor(): JRefactory_v2.6.24.java.awt.Color
+						getField(name : JRefactory_v2.6.24.java.lang.String): UMLField
+						-{static} getFrameColor(): JRefactory_v2.6.24.java.awt.Color
+						getID(): JRefactory_v2.6.24.java.lang.String
+						getMinimumSize(): JRefactory_v2.6.24.java.awt.Dimension
+						getPackage(): UMLPackage
+						-getPackageName(): JRefactory_v2.6.24.java.lang.String
+						getPreferredSize(): JRefactory_v2.6.24.java.awt.Dimension
+						getSourceSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.Summary
+						getSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+						-{static} initColors()
+						isForeign(): JavaPrimitiveTypes.boolean
+						isSelected(): JavaPrimitiveTypes.boolean
+						load(buffer : JRefactory_v2.6.24.java.lang.String)
+						paint(g : JRefactory_v2.6.24.java.awt.Graphics)
+						print(g : JRefactory_v2.6.24.java.awt.Graphics, x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+						resize()
+						save(output : JRefactory_v2.6.24.java.io.PrintWriter)
+						scale(value : JavaPrimitiveTypes.double)
+						select()
+						setSelected(way : JavaPrimitiveTypes.boolean)
+						toggleSelect()
+					}
+					'/** 
+					' * Displays a single UML method in a line
+					' * @author     Chris Seguin
+					' * @created    July 6, 1999
+					' */
+					'DP role: client
+					class UMLMethod {
+						-current: UMLPackage
+						-summary: JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary
+						'/** 
+						' * Create a new instance of a UMLLine
+						' * @param initCurrent  Description of Parameter
+						' * @param parent       Description of Parameter
+						' * @param method       Description of Parameter
+						' * @param adapter      Description of Parameter
+						' */
+						<<Create>> UMLMethod(initCurrent : UMLPackage, parent : UMLType, method : JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary, adapter : JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter)
+						getSourceSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.Summary
+						'/** 
+						' * Description of the Method
+						' * @return    Description of the Returned Value
+						' */
+						getSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary
+					}
+					'/** 
+					' * Displays a single UML nested type in a line
+					' * @author     Chris Seguin
+					' * @created    July 6, 1999
+					' */
+					'DP role: client
+					class UMLNestedType {
+						-current: UMLPackage
+						-summary: JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+						'/** 
+						' * Create a new instance of a UMLLine
+						' * @param initCurrent  Description of Parameter
+						' * @param parent       Description of Parameter
+						' * @param nestedType   Description of Parameter
+						' * @param adapter      Description of Parameter
+						' */
+						<<Create>> UMLNestedType(initCurrent : UMLPackage, parent : UMLType, nestedType : JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary, adapter : JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter)
+						'/** 
+						' * Gets the SourceSummary attribute of the UMLNestedType object
+						' * @return    The SourceSummary value
+						' */
+						getSourceSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.Summary
+						'/** 
+						' * Return the summary
+						' * @return    Description of the Returned Value
+						' */
+						getSummary(): JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary
+					}
+					UMLLine <|-- UMLField
+					ISourceful <|.. UMLField
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.EndPointPanel <|-- UMLLine
+					JRefactory_v2.6.24.javax.swing.Icon <|.. UMLIcon
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.EndPointPanel <|-- UMLType
+					ISourceful <|.. UMLType
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.LinedPanel <|-- UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.io.Saveable <|.. UMLPackage
+					JRefactory_v2.6.24.javax.swing.JPanel <|-- RoleHolder
+					JRefactory_v2.6.24.java.awt.event.MouseAdapter <|-- UMLMouseAdapter
+					UMLLine <|-- UMLMethod
+					ISourceful <|.. UMLMethod
+					UMLLine <|-- UMLNestedType
+					ISourceful <|.. UMLNestedType
+					JavaPrimitiveTypes.int "DEFAULT" <-- UMLLine
+					JavaPrimitiveTypes.int "PRIVATE" <-- UMLLine
+					JavaPrimitiveTypes.int "PROTECTED" <-- UMLLine
+					JavaPrimitiveTypes.int "PROTECTED_PRIVATE" <-- UMLLine
+					JavaPrimitiveTypes.int "PUBLIC" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "abstractFont" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "abstractTitleFont" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "defaultFont" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "font" <-- UMLLine
+					JavaPrimitiveTypes.int "high" <-- UMLLine
+					JavaPrimitiveTypes.int "iconHeight" <-- UMLIcon
+					JavaPrimitiveTypes.int "iconWidth" <-- UMLIcon
+					JavaPrimitiveTypes.double "scale" <-- UMLIcon
+					UMLIcon "icon" <-- UMLLine
+					JavaPrimitiveTypes.int "iconHeight" <-- UMLLine
+					JavaPrimitiveTypes.int "iconMargin" <-- UMLLine
+					JavaPrimitiveTypes.int "iconWidth" <-- UMLLine
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.SizableLabel "label" <-- UMLLine
+					JavaPrimitiveTypes.int "labelMargin" <-- UMLLine
+					JavaPrimitiveTypes.int "DEFAULT" <-- UMLType
+					JavaPrimitiveTypes.int "FOREIGN" <-- UMLType
+					JavaPrimitiveTypes.int "SELECTED" <-- UMLType
+					JavaPrimitiveTypes.int "TITLE_BORDER" <-- UMLType
+					JavaPrimitiveTypes.int "borderWidth" <-- UMLType
+					JRefactory_v2.6.24.java.awt.Color "defaultBG" <-- UMLType
+					JRefactory_v2.6.24.java.awt.Color "foreignBG" <-- UMLType
+					JavaPrimitiveTypes.int "high" <-- UMLType
+					JavaPrimitiveTypes.int "lineSize" <-- UMLType
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.SizableLabel "nameLabel" <-- UMLType
+					JRefactory_v2.6.24.org.acm.seguin.ide.common.ClassListPanel "classListPanel" <-- UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.SegmentedLine "currentLine" <-- UMLPackage
+					JavaPrimitiveTypes.boolean "first" <-- UMLPackage
+					JavaPrimitiveTypes.boolean "hasChanged" <-- UMLPackage
+					JavaPrimitiveTypes.boolean "loading" <-- UMLPackage
+					JRefactory_v2.6.24.java.lang.String "packageName" <-- UMLPackage
+					JRefactory_v2.6.24.javax.swing.JScrollPane "scrollPane" <-- UMLPackage
+					JRefactory_v2.6.24.org.acm.seguin.summary.PackageSummary "summary" <-- UMLPackage
+					UMLPackage "parent" <-- UMLType
+					JavaPrimitiveTypes.int "high" <-- RoleHolder
+					JRefactory_v2.6.24.java.util.LinkedList "labels" <-- RoleHolder
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter "panelDragAdapter" <-- RoleHolder
+					JRefactory_v2.6.24.javax.swing.JPanel "child" <-- UMLMouseAdapter
+					UMLPackage "current" <-- UMLMouseAdapter
+					UMLType "type" <-- UMLMouseAdapter
+					UMLMouseAdapter "popupMenuListener" <-- RoleHolder
+					JavaPrimitiveTypes.int "wide" <-- RoleHolder
+					RoleHolder "roles" <-- UMLType
+					JRefactory_v2.6.24.java.awt.Color "selectedBG" <-- UMLType
+					JRefactory_v2.6.24.java.awt.Color "selectedForeignBG" <-- UMLType
+					JavaPrimitiveTypes.int "state" <-- UMLType
+					JavaPrimitiveTypes.int "titleHeight" <-- UMLType
+					JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary "type" <-- UMLType
+					JavaPrimitiveTypes.int "wide" <-- UMLType
+					UMLType "parent" <-- UMLLine
+					JavaPrimitiveTypes.int "protection" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Color "protectionColors 0..*" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "staticFont" <-- UMLLine
+					JRefactory_v2.6.24.java.awt.Font "titleFont" <-- UMLLine
+					JavaPrimitiveTypes.int "wide" <-- UMLLine
+					JavaPrimitiveTypes.boolean "association" <-- UMLField
+					UMLPackage "current" <-- UMLField
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter "fieldDragAdapter" <-- UMLField
+					JRefactory_v2.6.24.org.acm.seguin.uml.line.DragPanelAdapter "parentDragAdapter" <-- UMLField
+					JRefactory_v2.6.24.org.acm.seguin.summary.FieldSummary "summary" <-- UMLField
+					UMLPackage "current" <-- UMLMethod
+					JRefactory_v2.6.24.org.acm.seguin.summary.MethodSummary "summary" <-- UMLMethod
+					UMLPackage "current" <-- UMLNestedType
+					JRefactory_v2.6.24.org.acm.seguin.summary.TypeSummary "summary" <-- UMLNestedType
+				}
+			}
+		}
+	}
+	package java {
+		package awt {
+			package event {
+				'DP role: target
+				interface MouseListener {
+				}
+				'DP role: target
+				interface MouseMotionListener {
+				}
+			}
+		}
+	}
+}
+@enduml

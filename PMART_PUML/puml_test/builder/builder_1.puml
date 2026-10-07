@@ -1,0 +1,24 @@
+@startuml
+package dpd_jdt {
+	package context {
+		package name {
+			'@class BuildAction
+			'@date 08-20-2001
+			'@author Eric Crahen
+			'@version 1.0
+			class BuildAction {
+				#container: DiagramContainer
+				<<Create>> BuildAction(container : DiagramContainer)
+				actionPerformed(e : java.awt.event.ActionEvent)
+			}
+		}
+	}
+	javax.swing.AbstractAction <|-- context.name.BuildAction
+	context.name.DiagramContainer "container" <-- context.name.BuildAction
+	context.name.BuildAction.BuildDialog.BrowseAction "browseAction" <-- context.name.BuildAction.BuildDialog
+	java.lang.String "currentLanguage" <-- context.name.BuildAction.BuildDialog
+	javax.swing.JTextField "currentPath" <-- context.name.BuildAction.BuildDialog
+	javax.swing.JTextArea "textArea" <-- context.name.BuildAction.BuildDialog
+	javax.swing.JCheckBox "useArrays" <-- context.name.BuildAction.BuildDialog
+}
+@enduml

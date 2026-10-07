@@ -1,0 +1,24 @@
+@startuml
+package dpd_jdt {
+	package context {
+		package noncontext {
+			'Launch from the source browser
+			'@author    Chris Seguin
+			class CommandLineSourceBrowser {
+				-pattern: java.lang.String
+				'Constructor for the CommandLineSourceBrowser object
+				<<Create>> CommandLineSourceBrowser()
+				'Determine if we can go to the source code
+				'@return    Description of the Returned Value
+				canBrowseSource(): JavaPrimitiveTypes.boolean
+				'Command to go to the source code
+				'@param file  Description of Parameter
+				'@param line  Description of Parameter
+				gotoSource(file : java.io.File, line : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	context.noncontext.SourceBrowser <|-- context.noncontext.CommandLineSourceBrowser
+	java.lang.String "pattern" <-- context.noncontext.CommandLineSourceBrowser
+}
+@enduml

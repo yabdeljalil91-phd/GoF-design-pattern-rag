@@ -1,0 +1,264 @@
+@startuml
+package "DrJava v20040326" as DrJava_v20040326 {
+	package javax {
+		package swing {
+			package text {
+				class PlainDocument {
+					-<<TemplateBinding>> added: DrJava_v20040326.java.util.Vector
+					-defaultRoot: AbstractElement
+					{const} lineLimitAttribute: DrJava_v20040326.java.lang.String = lineLimit
+					-<<TemplateBinding>> removed: DrJava_v20040326.java.util.Vector
+					-s: Segment
+					{const} tabSizeAttribute: DrJava_v20040326.java.lang.String = tabSize
+					<<Create>> PlainDocument()
+					<<Create>> PlainDocument(c : Content)
+					#createDefaultRoot(): AbstractElement
+					getDefaultRootElement(): Element
+					getParagraphElement(pos : JavaPrimitiveTypes.int): Element
+					-insertComposedTextUpdate(chng : DefaultDocumentEvent, attr : AttributeSet)
+					insertString(offs : JavaPrimitiveTypes.int, str : DrJava_v20040326.java.lang.String, a : AttributeSet)
+					#insertUpdate(chng : DefaultDocumentEvent, attr : AttributeSet)
+					#removeUpdate(chng : DefaultDocumentEvent)
+				}
+				class DefaultEditorKit {
+				}
+				AbstractDocument <|-- PlainDocument
+				DrJava_v20040326.java.util.Vector "added" <-- PlainDocument
+				AbstractElement "defaultRoot" <-- PlainDocument
+				DrJava_v20040326.java.lang.String "lineLimitAttribute" <-- PlainDocument
+				DrJava_v20040326.java.util.Vector "removed" <-- PlainDocument
+				Segment "s" <-- PlainDocument
+				DrJava_v20040326.java.lang.String "tabSizeAttribute" <-- PlainDocument
+			}
+		}
+	}
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package model {
+						package definitions {
+							class DefinitionsDocument {
+								{const} DOCSTART: JavaPrimitiveTypes.int = 0
+								{const} ERROR_INDEX: JavaPrimitiveTypes.int = -1
+								-{const} MAX_CACHE_SIZE: JavaPrimitiveTypes.int = 10000
+								-{const} UNDO_LIMIT: JavaPrimitiveTypes.int = 1000
+								-_cacheInUse: JavaPrimitiveTypes.boolean
+								-_cachedLineNum: JavaPrimitiveTypes.int
+								-_cachedLocation: JavaPrimitiveTypes.int
+								-_cachedNextLineLoc: JavaPrimitiveTypes.int
+								-_cachedPrevLineLoc: JavaPrimitiveTypes.int
+								-_classFile: DrJava_v20040326.java.io.File
+								-_classFileInSync: JavaPrimitiveTypes.boolean
+								-_currentLocation: JavaPrimitiveTypes.int
+								-_file: DrJava_v20040326.java.io.File
+								-<<TemplateBinding>> _helperCache: DrJava_v20040326.java.util.Hashtable
+								-<<TemplateBinding>> _helperCacheHistory: DrJava_v20040326.java.util.Vector
+								-_indent: JavaPrimitiveTypes.int
+								-_indenter: DrJava_v20040326.edu.rice.cs.drjava.model.definitions.indent.Indenter
+								#{static} <<TemplateBinding>> _keywords: DrJava_v20040326.java.util.HashSet
+								-_modifiedSinceSave: JavaPrimitiveTypes.boolean
+								#{static} <<TemplateBinding>> _normEndings: DrJava_v20040326.java.util.HashSet
+								-_notifier: DrJava_v20040326.edu.rice.cs.drjava.model.GlobalEventNotifier
+								#{static} <<TemplateBinding>> _primTypes: DrJava_v20040326.java.util.HashSet
+								-_reduced: DrJava_v20040326.edu.rice.cs.drjava.model.definitions.reducedmodel.BraceReduction
+								-{static} _tabsRemoved: JavaPrimitiveTypes.boolean
+								-_timestamp: JavaPrimitiveTypes.long
+								-_undoManager: CompoundUndoManager
+								<<Create>> DefinitionsDocument(indenter : DrJava_v20040326.edu.rice.cs.drjava.model.definitions.indent.Indenter, notifier : DrJava_v20040326.edu.rice.cs.drjava.model.GlobalEventNotifier)
+								<<Create>> DefinitionsDocument(notifier : DrJava_v20040326.edu.rice.cs.drjava.model.GlobalEventNotifier)
+								-_addCharToReducedModel(curChar : JavaPrimitiveTypes.char)
+								#_checkCache(key : DrJava_v20040326.java.lang.String): DrJava_v20040326.java.lang.Object
+								#_clearCache()
+								-_commentBlock(start : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int)
+								-_commentLine()
+								-_findKeywordAtToplevel(keyword : DrJava_v20040326.java.lang.String, text : DrJava_v20040326.java.lang.String, textOffset : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								#_getPackageQualifier(): DrJava_v20040326.java.lang.String
+								-_getRelativeLine(): JavaPrimitiveTypes.int
+								-_hasOnlySpaces(text : DrJava_v20040326.java.lang.String): JavaPrimitiveTypes.boolean
+								-_highlightKeywords(v : DrJava_v20040326.java.util.Vector, i : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								-_indentBlock(start : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int, reason : JavaPrimitiveTypes.int, pm : DrJava_v20040326.javax.swing.ProgressMonitor)
+								_indentLine(reason : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								-_init()
+								-_isCommentedOrSpace(i : JavaPrimitiveTypes.int, text : DrJava_v20040326.java.lang.String): JavaPrimitiveTypes.boolean
+								#_isEndOfComment(text : DrJava_v20040326.java.lang.String, pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								-_isNum(x : DrJava_v20040326.java.lang.String): JavaPrimitiveTypes.boolean
+								#_isStartOfComment(text : DrJava_v20040326.java.lang.String, pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								-_isType(x : DrJava_v20040326.java.lang.String): JavaPrimitiveTypes.boolean
+								#{static} _makeKeywords(): DrJava_v20040326.java.util.HashSet
+								#{static} _makeNormEndings(): DrJava_v20040326.java.util.HashSet
+								#{static} _makePrimTypes(): DrJava_v20040326.java.util.HashSet
+								_removeTabs(source : DrJava_v20040326.java.lang.String): DrJava_v20040326.java.lang.String
+								#_storeInCache(key : DrJava_v20040326.java.lang.String, result : DrJava_v20040326.java.lang.Object)
+								-_styleChanged()
+								-_uncommentBlock(start : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int)
+								-_uncommentLine()
+								balanceBackward(): JavaPrimitiveTypes.int
+								balanceForward(): JavaPrimitiveTypes.int
+								commentLines(selStart : JavaPrimitiveTypes.int, selEnd : JavaPrimitiveTypes.int)
+								findCharInStmtBeforePos(findChar : JavaPrimitiveTypes.char, position : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								findCharOnLine(pos : JavaPrimitiveTypes.int, findChar : JavaPrimitiveTypes.char): JavaPrimitiveTypes.int
+								findPrevCharPos(pos : JavaPrimitiveTypes.int, whitespace : JavaPrimitiveTypes.char): JavaPrimitiveTypes.int
+								findPrevDelimiter(pos : JavaPrimitiveTypes.int, delims : JavaPrimitiveTypes.char): JavaPrimitiveTypes.int
+								findPrevDelimiter(pos : JavaPrimitiveTypes.int, delims : JavaPrimitiveTypes.char, skipParenPhrases : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.int
+								findPrevNonWSCharPos(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								getCachedClassFile(): DrJava_v20040326.java.io.File
+								getClassFileInSync(): JavaPrimitiveTypes.boolean
+								getCurrentCol(): JavaPrimitiveTypes.int
+								getCurrentLine(): JavaPrimitiveTypes.int
+								getCurrentLocation(): JavaPrimitiveTypes.int
+								getEnclosingTopLevelClassName(pos : JavaPrimitiveTypes.int): DrJava_v20040326.java.lang.String
+								getFile(): DrJava_v20040326.java.io.File
+								getFilename(): DrJava_v20040326.java.lang.String
+								getFirstNonWSCharPos(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								getFirstNonWSCharPos(pos : JavaPrimitiveTypes.int, acceptComments : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.int
+								getFirstNonWSCharPos(pos : JavaPrimitiveTypes.int, whitespace : JavaPrimitiveTypes.char, acceptComments : JavaPrimitiveTypes.boolean): JavaPrimitiveTypes.int
+								getFirstTopLevelClassName(): DrJava_v20040326.java.lang.String
+								getHighlightStatus(start : JavaPrimitiveTypes.int, end : JavaPrimitiveTypes.int): DrJava_v20040326.java.util.Vector
+								getIndent(): JavaPrimitiveTypes.int
+								getIndentInformation(): DrJava_v20040326.edu.rice.cs.drjava.model.definitions.reducedmodel.IndentInfo
+								getIndentOfCurrStmt(pos : JavaPrimitiveTypes.int): DrJava_v20040326.java.lang.String
+								getIndentOfCurrStmt(pos : JavaPrimitiveTypes.int, delims : JavaPrimitiveTypes.char): DrJava_v20040326.java.lang.String
+								getIndentOfCurrStmt(pos : JavaPrimitiveTypes.int, delims : JavaPrimitiveTypes.char, whitespace : JavaPrimitiveTypes.char): DrJava_v20040326.java.lang.String
+								getIntelligentBeginLinePos(currPos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								getLineEndPos(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								getLineFirstCharPos(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								getLineStartPos(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								getNextRedo(): DrJava_v20040326.javax.swing.undo.UndoableEdit
+								getNextTopLevelClassName(startPos : JavaPrimitiveTypes.int, endPos : JavaPrimitiveTypes.int): DrJava_v20040326.java.lang.String
+								getNextUndo(): DrJava_v20040326.javax.swing.undo.UndoableEdit
+								getOffset(lineNum : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								getPackageName(): DrJava_v20040326.java.lang.String
+								getQualifiedClassName(): DrJava_v20040326.java.lang.String
+								getQualifiedClassName(pos : JavaPrimitiveTypes.int): DrJava_v20040326.java.lang.String
+								getReduced(): DrJava_v20040326.edu.rice.cs.drjava.model.definitions.reducedmodel.BraceReduction
+								getStateAtCurrent(): DrJava_v20040326.edu.rice.cs.drjava.model.definitions.reducedmodel.ReducedModelState
+								getTimestamp(): JavaPrimitiveTypes.long
+								getUndoManager(): CompoundUndoManager
+								getWhiteSpace(): JavaPrimitiveTypes.int
+								-getWhiteSpaceBetween(relStart : JavaPrimitiveTypes.int, relEnd : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+								gotoLine(line : JavaPrimitiveTypes.int)
+								indentLines(selStart : JavaPrimitiveTypes.int, selEnd : JavaPrimitiveTypes.int)
+								indentLines(selStart : JavaPrimitiveTypes.int, selEnd : JavaPrimitiveTypes.int, reason : JavaPrimitiveTypes.int, pm : DrJava_v20040326.javax.swing.ProgressMonitor)
+								insertString(offset : JavaPrimitiveTypes.int, str : DrJava_v20040326.java.lang.String, a : DrJava_v20040326.javax.swing.text.AttributeSet)
+								#insertUpdate(chng : DrJava_v20040326.javax.swing.text.AbstractDocument.DefaultDocumentEvent, attr : DrJava_v20040326.javax.swing.text.AttributeSet)
+								isModifiedOnDisk(): JavaPrimitiveTypes.boolean
+								isModifiedSinceSave(): JavaPrimitiveTypes.boolean
+								isUntitled(): JavaPrimitiveTypes.boolean
+								move(dist : JavaPrimitiveTypes.int)
+								posInParenPhrase(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								posInParenPhrase(): JavaPrimitiveTypes.boolean
+								#posNotInBlock(pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.boolean
+								remove(offset : JavaPrimitiveTypes.int, len : JavaPrimitiveTypes.int)
+								#removeUpdate(chng : DrJava_v20040326.javax.swing.text.AbstractDocument.DefaultDocumentEvent)
+								resetModification()
+								resetReducedModelLocation()
+								resetUndoManager()
+								setCachedClassFile(classFile : DrJava_v20040326.java.io.File)
+								setClassFileInSync(inSync : JavaPrimitiveTypes.boolean)
+								setCurrentLocation(loc : JavaPrimitiveTypes.int)
+								setFile(file : DrJava_v20040326.java.io.File)
+								setIndent(indent : JavaPrimitiveTypes.int)
+								setModifiedSinceSave()
+								setTab(tab : DrJava_v20040326.java.lang.String, pos : JavaPrimitiveTypes.int)
+								stateAtRelLocation(dist : JavaPrimitiveTypes.int): DrJava_v20040326.edu.rice.cs.drjava.model.definitions.reducedmodel.ReducedModelState
+								tabsRemoved(): JavaPrimitiveTypes.boolean
+								uncommentLines(selStart : JavaPrimitiveTypes.int, selEnd : JavaPrimitiveTypes.int)
+							}
+							class DefinitionsEditorKit {
+								-{static} _factory: DrJava_v20040326.javax.swing.text.ViewFactory
+								-_notifier: DrJava_v20040326.edu.rice.cs.drjava.model.GlobalEventNotifier
+								<<Create>> DefinitionsEditorKit(notifier : DrJava_v20040326.edu.rice.cs.drjava.model.GlobalEventNotifier)
+								-_createDefaultTypedDocument(): DefinitionsDocument
+								createNewDocument(): DrJava_v20040326.javax.swing.text.Document
+								getContentType(): DrJava_v20040326.java.lang.String
+								getViewFactory(): DrJava_v20040326.javax.swing.text.ViewFactory
+							}
+							DrJava_v20040326.javax.swing.text.PlainDocument <|-- DefinitionsDocument
+							DrJava_v20040326.edu.rice.cs.drjava.config.OptionConstants <|.. DefinitionsDocument
+							DrJava_v20040326.javax.swing.text.DefaultEditorKit <|-- DefinitionsEditorKit
+							DrJava_v20040326.javax.swing.undo.UndoManager <|-- CompoundUndoManager
+							JavaPrimitiveTypes.int "DOCSTART" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "ERROR_INDEX" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "MAX_CACHE_SIZE" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "UNDO_LIMIT" <-- DefinitionsDocument
+							JavaPrimitiveTypes.boolean "_cacheInUse" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_cachedLineNum" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_cachedLocation" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_cachedNextLineLoc" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_cachedPrevLineLoc" <-- DefinitionsDocument
+							DrJava_v20040326.java.io.File "_classFile" <-- DefinitionsDocument
+							JavaPrimitiveTypes.boolean "_classFileInSync" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_currentLocation" <-- DefinitionsDocument
+							DrJava_v20040326.java.io.File "_file" <-- DefinitionsDocument
+							DrJava_v20040326.java.util.Hashtable "_helperCache" <-- DefinitionsDocument
+							DrJava_v20040326.java.util.Vector "_helperCacheHistory" <-- DefinitionsDocument
+							JavaPrimitiveTypes.int "_indent" <-- DefinitionsDocument
+							DrJava_v20040326.edu.rice.cs.drjava.model.definitions.indent.Indenter "_indenter" <-- DefinitionsDocument
+							DrJava_v20040326.java.util.HashSet "_keywords" <-- DefinitionsDocument
+							JavaPrimitiveTypes.boolean "_modifiedSinceSave" <-- DefinitionsDocument
+							DrJava_v20040326.java.util.HashSet "_normEndings" <-- DefinitionsDocument
+							DrJava_v20040326.javax.swing.text.ViewFactory "_factory" <-- DefinitionsEditorKit
+							DrJava_v20040326.edu.rice.cs.drjava.model.GlobalEventNotifier "_notifier" <-- DefinitionsEditorKit
+							DrJava_v20040326.edu.rice.cs.drjava.model.GlobalEventNotifier "_notifier" <-- DefinitionsDocument
+							DrJava_v20040326.java.util.HashSet "_primTypes" <-- DefinitionsDocument
+							DrJava_v20040326.edu.rice.cs.drjava.model.definitions.reducedmodel.BraceReduction "_reduced" <-- DefinitionsDocument
+							JavaPrimitiveTypes.boolean "_tabsRemoved" <-- DefinitionsDocument
+							JavaPrimitiveTypes.long "_timestamp" <-- DefinitionsDocument
+							DrJava_v20040326.java.util.LinkedList "_compoundEdits" <-- CompoundUndoManager
+							DrJava_v20040326.java.util.LinkedList "_keys" <-- CompoundUndoManager
+							JavaPrimitiveTypes.int "_nextKey" <-- CompoundUndoManager
+							DrJava_v20040326.edu.rice.cs.drjava.model.GlobalEventNotifier "_notifier" <-- CompoundUndoManager
+							DrJava_v20040326.javax.swing.undo.UndoableEdit "_savePoint" <-- CompoundUndoManager
+							CompoundUndoManager "_undoManager" <-- DefinitionsDocument
+							DrJava_v20040326.java.lang.Runnable "_redoCommand" <-- CommandUndoableEdit
+							DrJava_v20040326.java.lang.Runnable "_undoCommand" <-- CommandUndoableEdit
+							JavaPrimitiveTypes.int "_offset" <-- InsertCommand
+							DrJava_v20040326.java.lang.String "_text" <-- InsertCommand
+							JavaPrimitiveTypes.int "_length" <-- RemoveCommand
+							JavaPrimitiveTypes.int "_offset" <-- RemoveCommand
+						}
+						EventNotifier <|-- GlobalEventNotifier
+						GlobalModelListener <|.. GlobalEventNotifier
+						DrJava_v20040326.edu.rice.cs.drjava.model.repl.InteractionsListener <|-- GlobalModelListener
+						JavadocListener <|-- GlobalModelListener
+						DrJava_v20040326.edu.rice.cs.drjava.model.compiler.CompilerListener <|-- GlobalModelListener
+						DrJava_v20040326.edu.rice.cs.drjava.model.junit.JUnitListener <|-- GlobalModelListener
+						GlobalModel <|.. DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.config.OptionConstants <|.. DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.util.swing.DocumentIterator <|.. DefaultGlobalModel
+						IGetDocuments <|-- GlobalModel
+						ILoadDocuments <|-- GlobalModel
+						DrJava_v20040326.java.lang.String "SUGGESTED_DIR_NAME" <-- JavadocModel
+						DrJava_v20040326.java.lang.String "DOCUMENT_OUT_OF_SYNC_MSG" <-- DefaultGlobalModel
+						JavaPrimitiveTypes.int "WRITE_DELAY" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.compiler.CompilerListener "_clearInteractionsListener" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.compiler.CompilerModel "_compilerModel" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.repl.ConsoleDocument "_consoleDoc" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.util.text.SwingDocumentAdapter "_consoleDocAdapter" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.debug.Debugger "_debugger" <-- DefaultGlobalModel
+						DrJava_v20040326.javax.swing.DefaultListModel "_definitionsDocs" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsEditorKit "_editorKit" <-- DefaultGlobalModel
+						InputListener "_inputListener" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.util.text.SwingDocumentAdapter "_interactionsDocAdapter" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.repl.DefaultInteractionsModel "_interactionsModel" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.repl.newjvm.MainJVM "_interpreterControl" <-- DefaultGlobalModel
+						JavadocModel "_javadocModel" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.junit.DefaultJUnitModel "_junitModel" <-- DefaultGlobalModel
+						GlobalEventNotifier "_notifier" <-- DefaultGlobalModel
+						DrJava_v20040326.java.awt.print.PageFormat "_pageFormat" <-- DefaultGlobalModel
+						JavaPrimitiveTypes.boolean "_resetAfterCompile" <-- DefaultGlobalModel
+						DrJava_v20040326.java.lang.Object "_systemWriterLock" <-- DefaultGlobalModel
+						DrJava_v20040326.edu.rice.cs.drjava.model.print.DrJavaBook "_book" <-- DefinitionsDocumentHandler
+						DrJava_v20040326.java.util.Vector "_breakpoints" <-- DefinitionsDocumentHandler
+						DrJava_v20040326.edu.rice.cs.drjava.model.definitions.DefinitionsDocument "_doc" <-- DefinitionsDocumentHandler
+						DrJava_v20040326.java.io.File "_file" <-- TrivialFSS
+						DrJava_v20040326.java.util.LinkedList "_listeners" <-- EventNotifier
+						DrJava_v20040326.edu.rice.cs.util.ReaderWriterLock "_lock" <-- EventNotifier
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

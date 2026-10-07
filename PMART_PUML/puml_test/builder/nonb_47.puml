@@ -1,0 +1,26 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Modifies the key bindings whenever the keymap changes
+			'@author    Chris Seguin
+			class ModifyKeyBinding {
+				-extractMethod: javax.swing.Action
+				-prettyPrint: javax.swing.Action
+				'Constructor for the ModifyKeyBinding object
+				'@param one  Description of Parameter
+				'@param two  Description of Parameter
+				<<Create>> ModifyKeyBinding(one : javax.swing.Action, two : javax.swing.Action)
+				'The EditorManager will call this function anytime it fires a property change
+				'@param e  the event
+				propertyChange(e : java.beans.PropertyChangeEvent)
+				'Sets the HotKeys attribute of the ModifyKeyBinding object
+				-setHotKeys()
+			}
+		}
+	}
+	java.beans.PropertyChangeListener <|.. Builder.nonbuilder.ModifyKeyBinding
+	javax.swing.Action "extractMethod" <-- Builder.nonbuilder.ModifyKeyBinding
+	javax.swing.Action "prettyPrint" <-- Builder.nonbuilder.ModifyKeyBinding
+}
+@enduml

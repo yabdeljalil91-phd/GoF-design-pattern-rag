@@ -1,0 +1,31 @@
+@startuml
+package dpd_jdt {
+	package Factory_method {
+		package nonfactorymethod {
+			class AnimationDecorator {
+				-animationDecoratorSerializedDataVersion: JavaPrimitiveTypes.int
+				-fXVelocity: JavaPrimitiveTypes.int
+				-fYVelocity: JavaPrimitiveTypes.int
+				-{const} serialVersionUID: JavaPrimitiveTypes.long = 7894632974364110685
+				<<Create>> AnimationDecorator()
+				<<Create>> AnimationDecorator(figure : Figure)
+				animationStep()
+				basicDisplayBox(origin : java.awt.Point, corner : java.awt.Point)
+				basicMoveBy(x : JavaPrimitiveTypes.int, y : JavaPrimitiveTypes.int)
+				displayBox(): java.awt.Rectangle
+				read(dr : StorableInput)
+				velocity(xVelocity : JavaPrimitiveTypes.int, yVelocity : JavaPrimitiveTypes.int)
+				velocity(): java.awt.Point
+				write(dw : StorableOutput)
+			}
+		}
+	}
+	Factory_method.nonfactorymethod.DecoratorFigure <|-- Factory_method.nonfactorymethod.AnimationDecorator
+	java.lang.Cloneable <|-- Factory_method.nonfactorymethod.Figure
+	java.io.Serializable <|-- Factory_method.nonfactorymethod.Figure
+	JavaPrimitiveTypes.int "animationDecoratorSerializedDataVersion" <-- Factory_method.nonfactorymethod.AnimationDecorator
+	JavaPrimitiveTypes.int "fXVelocity" <-- Factory_method.nonfactorymethod.AnimationDecorator
+	JavaPrimitiveTypes.int "fYVelocity" <-- Factory_method.nonfactorymethod.AnimationDecorator
+	JavaPrimitiveTypes.long "serialVersionUID" <-- Factory_method.nonfactorymethod.AnimationDecorator
+}
+@enduml

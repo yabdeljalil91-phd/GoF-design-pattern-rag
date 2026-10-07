@@ -1,0 +1,128 @@
+@startuml
+'Design pattern Observer (clear Subject–Observer structure)
+
+package "QuickUML 2001" as QuickUML_2001 {
+	package diagram {
+		package tool {
+
+			'==================== SUBJECT ====================
+			'DP role: Subject (Observer Pattern)
+			abstract class AbstractTool {
+				' Maintains list of observers (listeners)
+				-listeners: QuickUML_2001.util.WeakList
+				
+				<<Create>> AbstractTool()
+
+				' Register an observer
+				addToolListener(l : ToolListener)
+
+				' Notify observers (event: finished)
+				#fireToolFinished()
+
+				' Notify observers (event: started)
+				#fireToolStarted()
+
+				#handleError(t : QuickUML_2001.java.lang.Throwable)
+
+				' Hook methods for tool lifecycle
+				install(diagram : QuickUML_2001.diagram.Diagram)
+				removeToolListener(l : ToolListener)
+				uninstall(diagram : QuickUML_2001.diagram.Diagram)
+			}
+
+			'==================== OBSERVER ====================
+			'DP role: Observer (Observer Pattern)
+			interface ToolListener {
+				' Callback when subject changes state
+				toolFinished(tool : Tool)
+				toolStarted(tool : Tool)
+			}
+
+			'==================== CONCRETE SUBJECTS ====================
+			'DP role: ConcreteSubject
+			class ClipboardTool {
+				' Produces events via inherited notification methods
+			}
+
+			'DP role: ConcreteSubject
+			class EditingTool {
+			}
+
+			'DP role: ConcreteSubject
+			class FigureDraggingTool {
+			}
+
+			'DP role: ConcreteSubject
+			class FigureShappingTool {
+			}
+
+			'DP role: ConcreteSubject
+			class FigureTool {
+			}
+
+			'DP role: ConcreteSubject
+			class LinkShappingTool {
+			}
+
+			'DP role: ConcreteSubject
+			class LinkTool {
+			}
+
+			'DP role: ConcreteSubject
+			class SelectionTool {
+			}
+
+			'==================== INHERITANCE ====================
+			Tool <|.. AbstractTool : realizes >
+			
+			' Generalization hierarchy (important for pattern detection)
+			AbstractTool <|-- ClipboardTool : extends >
+			AbstractTool <|-- EditingTool : extends >
+			AbstractTool <|-- FigureDraggingTool : extends >
+			AbstractTool <|-- FigureShappingTool : extends >
+			AbstractTool <|-- FigureTool : extends >
+			AbstractTool <|-- LinkShappingTool : extends >
+			AbstractTool <|-- LinkTool : extends >
+			AbstractTool <|-- SelectionTool : extends >
+
+			'==================== OBSERVER RELATION ====================
+			' Aggregation: Subject maintains list of observers
+			QuickUML_2001.util.WeakList "listeners" <-- AbstractTool : aggregates >
+			
+			' Logical association: Subject -> Observer
+			AbstractTool --> ToolListener : notifies >
+
+		}
+
+		'==================== UI OBSERVER ====================
+		package uml {
+			package ui {
+
+				'DP role: ConcreteObserver
+				class ToolPalette {
+					' Observes tool lifecycle events
+					-currentTool: QuickUML_2001.diagram.tool.Tool
+					
+					<<Create>> ToolPalette(container : DiagramContainer)
+
+					' Observer callbacks
+					toolFinished(tool : QuickUML_2001.diagram.tool.Tool)
+					toolStarted(tool : QuickUML_2001.diagram.tool.Tool)
+
+					' Reacts to subject changes
+					propertyChange(e : QuickUML_2001.java.beans.PropertyChangeEvent)
+				}
+
+				' Implements Observer interface
+				QuickUML_2001.diagram.tool.ToolListener <|.. ToolPalette : observes >
+
+				' Also listens to property changes (secondary observer pattern)
+				QuickUML_2001.java.beans.PropertyChangeListener <|.. ToolPalette
+
+				' Association: observer depends on subject
+				QuickUML_2001.diagram.tool.Tool "currentTool" <-- ToolPalette : observes >
+			}
+		}
+	}
+}
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+title Template Method: Figure Rendering Lifecycle
+
+abstract class AttributeFigure {
+    - fAttributes: FigureAttributes
+    .. Template Method ..
+    + draw(Graphics g)
+    .. Primitive Operations (Hooks) ..
+    # {abstract} drawBackground(Graphics g)
+    # {abstract} drawFrame(Graphics g)
+}
+
+note right of AttributeFigure::draw
+  **Template Method Logic:**
+  void draw(Graphics g) {
+    // 1. Setup attributes
+    // 2. Step 1
+    drawBackground(g);
+    // 3. Step 2
+    drawFrame(g);
+  }
+end note
+
+class RectangleFigure {
+    # drawBackground(Graphics g)
+    # drawFrame(Graphics g)
+}
+
+class EllipseFigure {
+    # drawBackground(Graphics g)
+    # drawFrame(Graphics g)
+}
+
+class FigureAttributes {
+    - fMap: Hashtable
+    + getAttribute(name)
+    + setAttribute(name, value)
+}
+
+' Relationships
+AttributeFigure <|-- RectangleFigure
+AttributeFigure <|-- EllipseFigure
+AttributeFigure o--> FigureAttributes : manages
+@enduml

@@ -1,0 +1,71 @@
+@startuml
+package dpd_jdt {
+	package context {
+		package name {
+			'Various services related to indentation and text formatting are located here. Each kit can have different formatter so the first action should be getting the right formatter by calling Formatter.getFormatter(kitClass).
+			'@author Miloslav Metelka
+			'@version 1.00
+			class Formatter {
+				-expandTabs: JavaPrimitiveTypes.boolean
+				-hotCharAcceptor: Acceptor
+				-{static} kitFormatters: java.util.Map
+				-{static} settingsListener: SettingsChangeListener
+				-shiftWidth: JavaPrimitiveTypes.int
+				-spacesPerTab: JavaPrimitiveTypes.int
+				-tabSize: JavaPrimitiveTypes.int
+				<<Create>> Formatter()
+				'Increase/decrease indentation of the block of the code. Document is atomically locked during the operation.
+				'@param doc document to operate on
+				'@param startPos starting line position
+				'@param endPos ending line position
+				'@param shiftCnt positive/negative count of shiftwidths by which indentationshould be shifted right/left
+				changeBlockIndent(doc : BaseDocument, startPos : JavaPrimitiveTypes.int, endPos : JavaPrimitiveTypes.int, shiftCnt : JavaPrimitiveTypes.int)
+				'Change the indent of the given row. Document is atomically locked during this operation.
+				changeRowIndent(doc : BaseDocument, pos : JavaPrimitiveTypes.int, newIndent : JavaPrimitiveTypes.int)
+				'Creates writer that formats text that is inserted into it. The writer should not modify the document but use the  provided writer to write to. Usually the underlaying writer will modify the document itself and optionally it can remember the current position in document. That is why the newly created writer should do no buffering. <P> The provided document and pos are only informational, should not be modified but only used to find correct indentation strategy.
+				'@param doc document 
+				'@param pos position to begin inserts at
+				'@param writer writer to write to
+				'@return new writer that will format written text and pass itinto the writer
+				createWriter(doc : javax.swing.text.Document, pos : JavaPrimitiveTypes.int, writer : java.io.Writer): java.io.Writer
+				expandTabs(): JavaPrimitiveTypes.boolean
+				{static} getFormatter(kitClass : java.lang.Class): Formatter
+				getIndentChars(indent : JavaPrimitiveTypes.int): JavaPrimitiveTypes.char
+				'Get size of one indentation level
+				getShiftWidth(): JavaPrimitiveTypes.int
+				getSpacesPerTab(): JavaPrimitiveTypes.int
+				getTabSize(): JavaPrimitiveTypes.int
+				'Indents the current line. Should not affect any other lines.
+				'@param doc the document to work on
+				'@param pos the pos of a character on the line
+				'@return new pos of the original character
+				indentLine(d : javax.swing.text.Document, pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+				'Inserts new line at given position and indents the new line with spaces.
+				'@param doc the document to work on
+				'@param pos the pos of a character on the line
+				'@return new pos to place cursor to
+				indentNewLine(d : javax.swing.text.Document, pos : JavaPrimitiveTypes.int): JavaPrimitiveTypes.int
+				'Is the given character an indentation hotcharacter?
+				isHotChar(ch : JavaPrimitiveTypes.char): JavaPrimitiveTypes.boolean
+				#settingsChange(evt : SettingsChangeEvent, kitClass : java.lang.Class)
+				shiftLine(doc : BaseDocument, dotPos : JavaPrimitiveTypes.int, right : JavaPrimitiveTypes.boolean)
+				'Update indentation of the block of the code. Document is atomically locked during the operation.
+				'@param doc document to operate on
+				'@param startPos starting line position
+				'@param endPos ending line position
+				'@param shiftCnt positive/negative count of shiftwidths by which indentationshould be shifted right/left
+				updateBlockIndent(doc : BaseDocument, startPos : JavaPrimitiveTypes.int, endPos : JavaPrimitiveTypes.int)
+				'Change row indent by the appropriate indentation engine
+				updateRowIndent(doc : BaseDocument, pos : JavaPrimitiveTypes.int)
+			}
+		}
+	}
+	JavaPrimitiveTypes.boolean "expandTabs" <-- context.name.Formatter
+	context.name.Acceptor "hotCharAcceptor" <-- context.name.Formatter
+	java.util.Map "kitFormatters" <-- context.name.Formatter
+	context.name.SettingsChangeListener "settingsListener" <-- context.name.Formatter
+	JavaPrimitiveTypes.int "shiftWidth" <-- context.name.Formatter
+	JavaPrimitiveTypes.int "spacesPerTab" <-- context.name.Formatter
+	JavaPrimitiveTypes.int "tabSize" <-- context.name.Formatter
+}
+@enduml

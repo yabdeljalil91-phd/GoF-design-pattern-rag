@@ -1,0 +1,25 @@
+@startuml
+package dpd_jdt {
+	package Holder {
+		package nonHolder {
+			'Description of the Class
+			'@author    Chris Seguin
+			class MenuBuilder {
+				<<Create>> MenuBuilder()
+				'Description of the Method
+				'@return    Description of the Returned Value
+				{static} build(): ActionGroup
+				'Description of the Method
+				'@return    Description of the Returned Value
+				{static} buildField(): ActionGroup
+				'Description of the Method
+				'@return    Description of the Returned Value
+				{static} buildMethod(): ActionGroup
+				'Description of the Method
+				'@return    Description of the Returned Value
+				-{static} buildType(): ActionGroup
+			}
+		}
+	}
+}
+@enduml

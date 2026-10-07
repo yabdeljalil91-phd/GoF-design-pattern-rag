@@ -1,0 +1,512 @@
+@startuml
+'Design pattern Adapter
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package openide {
+			package loaders {
+				'/** 
+				' * Pool of data loaders. Provides access to set of registered {@link DataLoader loaders} in the system. They are used to find valid data objectsfor given files. <P> The default instance can be retrieved with {@link org.openide.TopManager#getLoaderPool}.
+				' * @author Jaroslav Tulach, Petr Hamernik, Dafe Simonek
+				' */
+				'DP role: client
+				abstract class DataLoaderPool {
+					-{static} defaultLoaders: DataLoader [*]
+					-{const} emptyDataLoaderRecognized: RecognizedFiles
+					-listeners: Netbeans_v1.0.x.java.util.HashSet
+					-loaderArray: DataLoader [*]
+					-map: Netbeans_v1.0.x.java.util.HashMap
+					-operations: Netbeans_v1.0.x.java.util.HashSet
+					-preferredLoader: DataLoader
+					{const} serialVersionUID: JavaPrimitiveTypes.long = -360141823874889956
+					-{static} systemLoaders: DataLoader [*]
+					'/** 
+					' * Create new loader pool.
+					' */
+					#<<Create>> DataLoaderPool()
+					'/** 
+					' * Create new loader pool and set preferred loader. The preferred loader will be asked before any other to recognize files (also before the system loader).
+					' * @param loader the preferred loader
+					' */
+					#<<Create>> DataLoaderPool(loader : DataLoader)
+					'/** 
+					' * Add a new listener to the listener list. A listener is notified of any change which was made to the loader pool (add, remove, or reorder).
+					' * @param chl new listener
+					' */
+					addChangeListener(chl : Netbeans_v1.0.x.javax.swing.event.ChangeListener)
+					'/** 
+					' * Add a listener for operations on data objects.
+					' * @param l the listener
+					' */
+					addOperationListener(l : OperationListener)
+					'/** 
+					' * Get an enumeration of all loaders, including the preferred and system loaders. This should be the list of loaders as actually used by the system. Typically it will consist of, in this order: <ol> <li>The preferred loader, if any. <li>The system loaders, such as may be used for folders, shadows, etc. <li>Module-specified loaders. <li>The loader for instance data objects. <li>Default loaders, which may handle files not otherwise recognizable. </ol> Applications should not rely on the exact contents of the pool, rather the fact that this contains all the loaders which are capable of recognizing files in the order in which they are called.
+					' * @return enumeration of {@link DataLoader}s 
+					' */
+					allLoaders(): Netbeans_v1.0.x.java.util.Enumeration
+					'/** 
+					' * Find a data object for this file object. All loaders are asked to recognize it according to their priority. <p><em>Note:</em> normally you are looking for the data object, whether one had been created already or not; so do not use this, rather use  {@link DataObject#find}!
+					' * @param fo file object to recognize
+					' * @return the data object for this object or <CODE>null</CODE> ifno loader recognizes this file
+					' * @exception DataObjectExistsException if the object for this primary filealready exists
+					' * @exception IOException if the data object is recognized butan error occurs during instantiation
+					' * @see #findDataObject(FileObject,DataLoader.RecognizedFiles)
+					' */
+					findDataObject(fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject): DataObject
+					'/** 
+					' * Find a data object for this file object, considering already-recognized files. First of all looks at the file extended attribute <code>NetBeansDataLoader</code>; if it is set and it contains the class name of a valid  {@link DataLoader}, that loader is given preference. For all loaders used, the first to return non-<code>null</code> from  {@link DataLoader#findDataObject}is used. <p><em>Note:</em> normally you are looking for the data object, whether one had been created already or not; so do not use this, rather use  {@link DataObject#find}!
+					' * @param fo file object to recognize
+					' * @param r recognized files buffer
+					' * @return the data object for this object
+					' * @exception DataObjectExistsException if the object for this primary filealready exists
+					' * @exception IOException if the data object is recognized butan error occurs during instantiation
+					' */
+					findDataObject(fo : Netbeans_v1.0.x.org.openide.filesystems.FileObject, r : RecognizedFiles): DataObject
+					'/** 
+					' * Fire change event to all listeners. Asynchronously.
+					' * @param che change event
+					' */
+					#fireChangeEvent(che : Netbeans_v1.0.x.javax.swing.event.ChangeEvent)
+					'/** 
+					' * Fires operation event to all listeners. Clears loaderArray before firing a change.
+					' * @param ev event to fire
+					' * @param type the type of the event
+					' */
+					fireOperationEvent(ev : OperationEvent, type : JavaPrimitiveTypes.int)
+					'/** 
+					' * Finds the first producer of a representation class. Scans through the list of all loaders and returns the first one whose representation class is a superclass of <code>clazz</code>.
+					' * @param clazz class to find producer for
+					' * @return data loader or <CODE>null</CODE> if there is no loader thatcan produce the class
+					' */
+					firstProducerOf(clazz : Netbeans_v1.0.x.java.lang.Class): DataLoader
+					'/** 
+					' * Gets assigned loader.
+					' * @param name - name of the loader
+					' * @return data loader
+					' */
+					-getAssignedDataLoader(name : Netbeans_v1.0.x.java.lang.String): DataLoader
+					'/** 
+					' * Getter for default file loader
+					' * @return the default file loader
+					' */
+					{static} getDefaultFileLoader(): DataLoader
+					'/** 
+					' * Lazy getter for default loaders.
+					' */
+					-{static} getDefaultLoaders(): DataLoader
+					'/** 
+					' * Getter for folder loader
+					' * @return the folder loader
+					' */
+					{static} getFolderLoader(): DataLoader
+					'/** 
+					' * Creates map that maps names of loaders to loaders in the pool.
+					' * @return map (String, DataLoader)
+					' */
+					-getMap(): Netbeans_v1.0.x.java.util.HashMap
+					'/** 
+					' * Getter for shadow loader.
+					' */
+					{static} getShadowLoader(): DataLoader
+					'/** 
+					' * Lazy getter for system loaders.
+					' */
+					-{static} getSystemLoaders(): DataLoader
+					'/** 
+					' * Get an enumeration of data loaders. Must be overridden in subclasses to provide a list of additional loaders. The list should <em>not</em> include the preferred loader.
+					' * @return enumeration of {@link DataLoader}s
+					' */
+					#loaders(): Netbeans_v1.0.x.java.util.Enumeration
+					'/** 
+					' * Get an enumeration of all producers of a representation class.
+					' * @see #firstProducerOf
+					' * @param clazz class to find producers for
+					' * @return enumeration of {@link DataLoader}s
+					' */
+					producersOf(clazz : Netbeans_v1.0.x.java.lang.Class): Netbeans_v1.0.x.java.util.Enumeration
+					'/** 
+					' * Remove a listener from the listener list.
+					' * @param chl listener to remove
+					' */
+					removeChangeListener(chl : Netbeans_v1.0.x.javax.swing.event.ChangeListener)
+					'/** 
+					' * Remove a listener for operations on data objects.
+					' * @param l the listener
+					' */
+					removeOperationListener(l : OperationListener)
+					'/** 
+					' * Get an array of loaders that are currently registered. Does not include special system loaders, etc.
+					' * @return array of loaders
+					' * @see #loaders
+					' */
+					toArray(): DataLoader
+				}
+				'DP role: target
+				'DP role: adaptee
+				interface OperationListener {
+					operationCopy(ev : Copy)
+					operationCreateFromTemplate(ev : Copy)
+					operationCreateShadow(ev : Copy)
+					operationDelete(ev : OperationEvent)
+					operationMove(ev : Move)
+					operationPostCreate(ev : OperationEvent)
+					operationRename(ev : Rename)
+				}
+				'/** 
+				' * Adapter for methods of <code>OperationListener</code>.
+				' * @author Jaroslav Tulach
+				' */
+				'DP role: adapter
+				class OperationAdapter {
+					<<Create>> OperationAdapter()
+					operationCopy(ev : Copy)
+					operationCreateFromTemplate(ev : Copy)
+					operationCreateShadow(ev : Copy)
+					operationDelete(ev : OperationEvent)
+					operationMove(ev : Move)
+					operationPostCreate(ev : OperationEvent)
+					operationRename(ev : Rename)
+				}
+				Netbeans_v1.0.x.java.io.Serializable <|.. DataLoaderPool
+				Netbeans_v1.0.x.org.openide.util.SharedClassObject <|-- DataLoader
+				Netbeans_v1.0.x.org.openide.nodes.Node.Cookie <|.. DataObject
+				Netbeans_v1.0.x.java.io.Serializable <|.. DataObject
+				DataObject <|-- DataFolder
+				Netbeans_v1.0.x.java.io.Serializable <|.. DataFolder
+				Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener <|.. FolderList
+				Netbeans_v1.0.x.java.io.Serializable <|-- DataFilter
+				DataObject <|-- DataShadow
+				Netbeans_v1.0.x.org.openide.nodes.AbstractNode <|-- DataNode
+				Netbeans_v1.0.x.java.util.EventObject <|-- OperationEvent
+				Netbeans_v1.0.x.java.util.EventListener <|-- OperationListener
+				MultiFileLoader <|-- UniFileLoader
+				DataLoader <|-- MultiFileLoader
+				DataObject <|-- MultiDataObject
+				Netbeans_v1.0.x.java.lang.Cloneable <|.. ExtensionList
+				Netbeans_v1.0.x.java.io.Serializable <|.. ExtensionList
+				OperationListener <|.. OperationAdapter
+				Netbeans_v1.0.x.java.lang.String "PROP_ACTIONS" <-- DataLoader
+				Netbeans_v1.0.x.java.lang.String "PROP_DISPLAY_NAME" <-- DataLoader
+				Netbeans_v1.0.x.java.lang.Object "PROP_REPRESENTATION_CLASS" <-- DataLoader
+				Netbeans_v1.0.x.java.lang.String "EA_ASSIGNED_LOADER" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_COOKIE" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_FILES" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_HELP" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_MODIFIED" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_NAME" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_PRIMARY_FILE" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_TEMPLATE" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "PROP_VALID" <-- DataObject
+				Netbeans_v1.0.x.java.lang.ref.Reference "obj" <-- Item
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "primaryFile" <-- Item
+				Item "item" <-- DataObject
+				Netbeans_v1.0.x.javax.swing.event.EventListenerList "listeners" <-- DataObject
+				DataLoader "loader" <-- DataObject
+				JavaPrimitiveTypes.boolean "modif" <-- DataObject
+				Netbeans_v1.0.x.java.util.HashSet "listeners" <-- ModifiedRegistry
+				JavaPrimitiveTypes.long "serialVersionUID" <-- ModifiedRegistry
+				ModifiedRegistry "modified" <-- DataObject
+				Netbeans_v1.0.x.org.openide.nodes.Node "nodeDelegate" <-- DataObject
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DataObject
+				Netbeans_v1.0.x.java.util.Set "syncModified" <-- DataObject
+				Netbeans_v1.0.x.java.lang.String "EA_ORDER" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "EA_SORT_MODE" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "FOLDER_ICON_BASE" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "PROP_CHILDREN" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "PROP_ORDER" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "PROP_SORT_MODE" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "ROOT_SHADOW_NAME" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.String "SET_SORTING" <-- DataFolder
+				JavaPrimitiveTypes.int "LATER_PRIORITY" <-- FolderList
+				Netbeans_v1.0.x.org.openide.util.RequestProcessor "PROCESSOR" <-- FolderList
+				DataFolder "folder" <-- FolderList
+				Netbeans_v1.0.x.java.util.List "order" <-- FolderList
+				Netbeans_v1.0.x.java.util.HashMap "primaryFiles" <-- FolderList
+				Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task "refreshTask" <-- FolderList
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FolderList
+				JavaPrimitiveTypes.long "time" <-- FolderList
+				FolderListListener "filter" <-- ListTask
+				Netbeans_v1.0.x.java.util.ArrayList "result" <-- ListTask
+				Netbeans_v1.0.x.org.openide.util.RequestProcessor.Task "task" <-- ListTask
+				FolderList "list" <-- DataFolder
+				Netbeans_v1.0.x.org.openide.nodes.Node "node" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.ref.Reference "order" <-- DataFolder
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DataFolder
+				Netbeans_v1.0.x.java.lang.ref.Reference "sortMode" <-- DataFolder
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DataFilter
+				Netbeans_v1.0.x.java.util.Comparator "comp" <-- Order
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "folder" <-- Order
+				Netbeans_v1.0.x.java.util.HashMap "order" <-- Order
+				Netbeans_v1.0.x.java.lang.String "SHADOW_EXTENSION" <-- DataShadow
+				DataObject "original" <-- DataShadow
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DataShadow
+				Netbeans_v1.0.x.java.text.MessageFormat "descriptionFormat" <-- ShadowNode
+				Netbeans_v1.0.x.java.text.MessageFormat "format" <-- ShadowNode
+				DataShadow "obj" <-- ShadowNode
+				Netbeans_v1.0.x.org.openide.nodes.Sheet "sheet" <-- ShadowNode
+				Netbeans_v1.0.x.java.lang.String "ICON_BASE" <-- DataNode
+				DataObject "obj" <-- DataNode
+				Netbeans_v1.0.x.org.openide.filesystems.FileSystem "previous" <-- PropL
+				Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener "weakL" <-- PropL
+				PropL "propL" <-- DataNode
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DataNode
+				JavaPrimitiveTypes.boolean "clone" <-- ObjectHandle
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "obj" <-- ObjectHandle
+				JavaPrimitiveTypes.long "serialVersionUID" <-- ObjectHandle
+				DataFolder "df" <-- Index
+				Listener "listener" <-- Index
+				Netbeans_v1.0.x.org.openide.nodes.Node "node" <-- Index
+				JavaPrimitiveTypes.int "COPY" <-- OperationEvent
+				JavaPrimitiveTypes.int "CREATE" <-- OperationEvent
+				JavaPrimitiveTypes.int "DELETE" <-- OperationEvent
+				JavaPrimitiveTypes.int "MOVE" <-- OperationEvent
+				JavaPrimitiveTypes.int "RENAME" <-- OperationEvent
+				JavaPrimitiveTypes.int "SHADOW" <-- OperationEvent
+				JavaPrimitiveTypes.int "TEMPL" <-- OperationEvent
+				DataObject "obj" <-- OperationEvent
+				JavaPrimitiveTypes.long "serialVersionUID" <-- OperationEvent
+				DataObject "orig" <-- Copy
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Copy
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "file" <-- Move
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Move
+				Netbeans_v1.0.x.java.lang.String "name" <-- Rename
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Rename
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "fo" <-- Replace
+				DataObject "obj" <-- Replace
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Replace
+				DataLoader "defaultLoaders 0..*" <-- DataLoaderPool
+				RecognizedFiles "emptyDataLoaderRecognized" <-- DataLoaderPool
+				Netbeans_v1.0.x.java.util.HashSet "listeners" <-- DataLoaderPool
+				DataLoader "loaderArray 0..*" <-- DataLoaderPool
+				Netbeans_v1.0.x.java.util.HashMap "map" <-- DataLoaderPool
+				Netbeans_v1.0.x.java.util.HashSet "operations" <-- DataLoaderPool
+				DataLoader "preferredLoader" <-- DataLoaderPool
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DataLoaderPool
+				DataLoader "systemLoaders 0..*" <-- DataLoaderPool
+				Netbeans_v1.0.x.org.openide.util.actions.SystemAction "defaultDataActions 0..*" <-- DefaultLoader
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DefaultLoader
+				Netbeans_v1.0.x.org.openide.util.actions.SystemAction "defaultFolderActions 0..*" <-- FolderLoader
+				JavaPrimitiveTypes.long "serialVersionUID" <-- FolderLoader
+				JavaPrimitiveTypes.long "serialVersionUID" <-- MultiFileLoader
+				EntryL "cookieL" <-- MultiDataObject
+				Netbeans_v1.0.x.org.openide.nodes.CookieSet "cookieSet" <-- MultiDataObject
+				Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener "entryL" <-- MultiDataObject
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "file" <-- Entry
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "lock" <-- Entry
+				JavaPrimitiveTypes.long "serialVersionUID" <-- Entry
+				Entry "primary" <-- MultiDataObject
+				Netbeans_v1.0.x.java.util.HashMap "secondary" <-- MultiDataObject
+				JavaPrimitiveTypes.long "serialVersionUID" <-- MultiDataObject
+				Entry "entry" <-- EntryReplace
+				Netbeans_v1.0.x.org.openide.filesystems.FileObject "file" <-- EntryReplace
+				JavaPrimitiveTypes.long "serialVersionUID" <-- EntryReplace
+				Netbeans_v1.0.x.java.lang.String "PROP_EXTENSIONS" <-- UniFileLoader
+				Netbeans_v1.0.x.java.util.Hashtable "list" <-- ExtensionList
+				JavaPrimitiveTypes.long "serialVersionUID" <-- ExtensionList
+				JavaPrimitiveTypes.long "serialVersionUID" <-- InstanceLoader
+				JavaPrimitiveTypes.long "serialVersionUID" <-- ShadowLoader
+			}
+			package util {
+				'DP role: adaptee
+				class RequestProcessor {
+					-{static} DEFAULT: RequestProcessor
+					-{static} debug: Debug
+					-name: Netbeans_v1.0.x.java.lang.String
+					-{static} processorCount: JavaPrimitiveTypes.int
+					-thread: ProcessorThread
+					waiting: Netbeans_v1.0.x.java.util.SortedSet
+					<<Create>> RequestProcessor()
+					<<Create>> RequestProcessor(name : Netbeans_v1.0.x.java.lang.String)
+					checkTimerQueue()
+					create(run : Netbeans_v1.0.x.java.lang.Runnable): Task
+					{static} createRequest(run : Netbeans_v1.0.x.java.lang.Runnable): Task
+					#finalize()
+					{static} getTopLevelThreadGroup(): Netbeans_v1.0.x.java.lang.ThreadGroup
+					isRequestProcessorThread(): JavaPrimitiveTypes.boolean
+					post(run : Netbeans_v1.0.x.java.lang.Runnable): Task
+					post(run : Netbeans_v1.0.x.java.lang.Runnable, timeToWait : JavaPrimitiveTypes.int): Task
+					post(run : Netbeans_v1.0.x.java.lang.Runnable, timeToWait : JavaPrimitiveTypes.int, priority : JavaPrimitiveTypes.int): Task
+					{static} postRequest(run : Netbeans_v1.0.x.java.lang.Runnable): Task
+					{static} postRequest(run : Netbeans_v1.0.x.java.lang.Runnable, timeToWait : JavaPrimitiveTypes.int): Task
+					{static} postRequest(run : Netbeans_v1.0.x.java.lang.Runnable, timeToWait : JavaPrimitiveTypes.int, priority : JavaPrimitiveTypes.int): Task
+					stop()
+				}
+				'/** 
+				' * Property change listener that delegates to another one change listener but hold only weak reference to that listener, so it does not prevent it to be finalized.
+				' * @author Jaroslav Tulach
+				' */
+				'DP role: client
+				abstract class WeakListener {
+					-{static} CLEANER_TASK: Task
+					-{static} CLEANER_TIME: JavaPrimitiveTypes.int
+					-{static} QUEUE: Netbeans_v1.0.x.java.lang.ref.ReferenceQueue
+					-{static} factory: Factory
+					listenerClass: Netbeans_v1.0.x.java.lang.Class
+					-ref: Netbeans_v1.0.x.java.lang.ref.Reference
+					-source: Netbeans_v1.0.x.java.lang.ref.Reference
+					'/** 
+					' * @param listenerClass class of the listener
+					' * @param l listener to delegate to
+					' */
+					#<<Create>> WeakListener(listenerClass : Netbeans_v1.0.x.java.lang.Class, l : Netbeans_v1.0.x.java.util.EventListener)
+					{static} change(l : Netbeans_v1.0.x.javax.swing.event.ChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.ChangeListener
+					{static} document(l : Netbeans_v1.0.x.javax.swing.event.DocumentListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.DocumentListener
+					{static} fileChange(l : Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+					{static} fileStatus(l : Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener
+					{static} focus(l : Netbeans_v1.0.x.java.awt.event.FocusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.awt.event.FocusListener
+					'/** 
+					' * Getter for the target listener.
+					' * @param event the event the we want to distribute
+					' * @return null if there is no listener because it has been finalized
+					' */
+					#get(ev : Netbeans_v1.0.x.java.util.EventObject): Netbeans_v1.0.x.java.util.EventListener
+					'/** 
+					' * Creates a weak listener. The sample usage code is <PRE> AnySource source; AnyListener listener; AnyListener weak = WeakListener.any (listener, source); source.addAnyListener (weak); </PRE>
+					' * @param l the listener to delegate to
+					' * @param source the source that the listener should detach from when listener <CODE>l</CODE>is no longer used, can be <CODE>null</CODE>
+					' */
+					{static} node(l : Netbeans_v1.0.x.org.openide.nodes.NodeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.nodes.NodeListener
+					{static} operation(l : Netbeans_v1.0.x.org.openide.loaders.OperationListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.loaders.OperationListener
+					{static} propertyChange(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					'/** 
+					' * Removes a listener if the source field is filled.
+					' */
+					-removeListener()
+					'/** 
+					' * Tries to find a removePropertyChangeListener method and invoke it
+					' * @param source the source object
+					' */
+					-removeListener(source : Netbeans_v1.0.x.java.lang.Object)
+					'/** 
+					' * Method name to use for removing the listener.
+					' * @return name of method of the source object that should be usedto remove the listener from listening on source of events
+					' */
+					#removeMethodName(): Netbeans_v1.0.x.java.lang.String
+					{static} repository(l : Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener
+					'/** 
+					' * Setter for source
+					' */
+					setSource(source : Netbeans_v1.0.x.java.lang.Object)
+					'/** 
+					' * To string.
+					' */
+					toString(): Netbeans_v1.0.x.java.lang.String
+					{static} vetoableChange(l : Netbeans_v1.0.x.java.beans.VetoableChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.VetoableChangeListener
+				}
+				'/** 
+				' * Factory for JDK 1.2.
+				' * @author Jaroslav Tulach
+				' */
+				'DP role: client
+				class WeakListener12 {
+					<<Create>> WeakListener12()
+					change(l : Netbeans_v1.0.x.javax.swing.event.ChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.ChangeListener
+					document(l : Netbeans_v1.0.x.javax.swing.event.DocumentListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.DocumentListener
+					fileChange(l : Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+					fileStatus(l : Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener
+					focus(l : Netbeans_v1.0.x.java.awt.event.FocusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.awt.event.FocusListener
+					node(l : Netbeans_v1.0.x.org.openide.nodes.NodeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.nodes.NodeListener
+					operation(l : Netbeans_v1.0.x.org.openide.loaders.OperationListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.loaders.OperationListener
+					propertyChange(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					repository(l : Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener
+					vetoableChange(l : Netbeans_v1.0.x.java.beans.VetoableChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.VetoableChangeListener
+				}
+				'/** 
+				' * Factory for JDK 1.3. Uses java.lang.reflect.Proxy
+				' * @author Jaroslav Tulach
+				' */
+				'DP role: client
+				class WeakListener13 {
+					<<Create>> WeakListener13()
+					change(l : Netbeans_v1.0.x.javax.swing.event.ChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.ChangeListener
+					'/** 
+					' * Creates a proxy for given class
+					' */
+					-{static} create(clazz : Netbeans_v1.0.x.java.lang.Class, listener : Netbeans_v1.0.x.java.util.EventListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.Object
+					document(l : Netbeans_v1.0.x.javax.swing.event.DocumentListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.javax.swing.event.DocumentListener
+					fileChange(l : Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileChangeListener
+					fileStatus(l : Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.FileStatusListener
+					focus(l : Netbeans_v1.0.x.java.awt.event.FocusListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.awt.event.FocusListener
+					node(l : Netbeans_v1.0.x.org.openide.nodes.NodeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.nodes.NodeListener
+					operation(l : Netbeans_v1.0.x.org.openide.loaders.OperationListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.loaders.OperationListener
+					propertyChange(l : Netbeans_v1.0.x.java.beans.PropertyChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.PropertyChangeListener
+					repository(l : Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.org.openide.filesystems.RepositoryListener
+					vetoableChange(l : Netbeans_v1.0.x.java.beans.VetoableChangeListener, source : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.beans.VetoableChangeListener
+				}
+				Netbeans_v1.0.x.java.io.Externalizable <|.. SharedClassObject
+				Netbeans_v1.0.x.java.lang.Runnable <|.. Task
+				Netbeans_v1.0.x.java.util.EventListener <|-- TaskListener
+				Netbeans_v1.0.x.java.util.EventListener <|.. WeakListener
+				Factory <|.. WeakListener12
+				Factory <|.. WeakListener13
+				Netbeans_v1.0.x.java.lang.Object "PROP_SUPPORT" <-- SharedClassObject
+				JavaPrimitiveTypes.int "count" <-- DataEntry
+				Netbeans_v1.0.x.java.util.HashMap "map" <-- DataEntry
+				Netbeans_v1.0.x.java.lang.ref.WeakReference "ref" <-- DataEntry
+				DataEntry "dataEntry" <-- SharedClassObject
+				JavaPrimitiveTypes.long "serialVersionUID" <-- SharedClassObject
+				Netbeans_v1.0.x.java.util.HashMap "values" <-- SharedClassObject
+				Netbeans_v1.0.x.java.lang.Class "clazz" <-- WriteReplace
+				SharedClassObject "object" <-- WriteReplace
+				JavaPrimitiveTypes.long "serialVersionUID" <-- WriteReplace
+				Netbeans_v1.0.x.java.net.URL "helpCtx" <-- HelpCtx
+				Netbeans_v1.0.x.java.lang.String "helpID" <-- HelpCtx
+				JavaPrimitiveTypes.boolean "finished" <-- Task
+				Netbeans_v1.0.x.java.util.HashSet "list" <-- Task
+				Netbeans_v1.0.x.java.lang.Runnable "run" <-- Task
+				JavaPrimitiveTypes.int "priority" <-- Holder
+				Task "task" <-- Holder
+				JavaPrimitiveTypes.long "time" <-- Holder
+				Holder "holder" <-- Task
+				JavaPrimitiveTypes.int "priority" <-- Task
+				JavaPrimitiveTypes.long "time" <-- Task
+				Debug "debug" <-- RequestProcessor
+				Netbeans_v1.0.x.java.lang.String "name" <-- RequestProcessor
+				JavaPrimitiveTypes.int "processorCount" <-- RequestProcessor
+				JavaPrimitiveTypes.long "at" <-- ProcessorThread
+				Netbeans_v1.0.x.java.util.TreeSet "pending" <-- ProcessorThread
+				JavaPrimitiveTypes.int "priority" <-- ProcessorThread
+				Netbeans_v1.0.x.java.lang.ref.Reference "requestProcessor" <-- ProcessorThread
+				Netbeans_v1.0.x.java.lang.Object "sleep" <-- ProcessorThread
+				JavaPrimitiveTypes.boolean "stop" <-- ProcessorThread
+				ProcessorThread "thread" <-- RequestProcessor
+				Netbeans_v1.0.x.java.util.SortedSet "waiting" <-- RequestProcessor
+				JavaPrimitiveTypes.int "CHAIN" <-- Mutex
+				Netbeans_v1.0.x.java.lang.Object "LOCK" <-- Mutex
+				JavaPrimitiveTypes.int "MODE_COUNT" <-- Mutex
+				JavaPrimitiveTypes.int "NONE" <-- Mutex
+				JavaPrimitiveTypes.int "S" <-- Mutex
+				JavaPrimitiveTypes.long "TIMEOUT" <-- Mutex
+				Netbeans_v1.0.x.java.lang.Object "TREELOCK" <-- Mutex
+				JavaPrimitiveTypes.int "X" <-- Mutex
+				JavaPrimitiveTypes.boolean "cmatrix 0..*" <-- Mutex
+				JavaPrimitiveTypes.int "grantedMode" <-- Mutex
+				JavaPrimitiveTypes.boolean "killDeadlocksOn" <-- Mutex
+				JavaPrimitiveTypes.int "readersNo" <-- Mutex
+				Netbeans_v1.0.x.java.util.Map "registeredThreads" <-- Mutex
+				Netbeans_v1.0.x.java.util.List "waiters" <-- Mutex
+				JavaPrimitiveTypes.boolean "left" <-- QueueCell
+				JavaPrimitiveTypes.int "mode" <-- QueueCell
+				JavaPrimitiveTypes.boolean "signal" <-- QueueCell
+				Netbeans_v1.0.x.java.lang.Thread "t" <-- QueueCell
+				JavaPrimitiveTypes.long "timeout" <-- QueueCell
+				JavaPrimitiveTypes.int "counts 0..*" <-- ThreadInfo
+				JavaPrimitiveTypes.boolean "forced" <-- ThreadInfo
+				JavaPrimitiveTypes.int "mode" <-- ThreadInfo
+				Netbeans_v1.0.x.java.util.List "queues 0..*" <-- ThreadInfo
+				JavaPrimitiveTypes.int "rsnapshot" <-- ThreadInfo
+				Netbeans_v1.0.x.java.lang.Thread "t" <-- ThreadInfo
+				JavaPrimitiveTypes.long "serialVersionUID" <-- DeadlockAvoidanceException
+				Task "CLEANER_TASK" <-- WeakListener
+				JavaPrimitiveTypes.int "CLEANER_TIME" <-- WeakListener
+				Netbeans_v1.0.x.java.lang.ref.ReferenceQueue "QUEUE" <-- WeakListener
+				Factory "factory" <-- WeakListener
+				Netbeans_v1.0.x.java.lang.Class "listenerClass" <-- WeakListener
+				Netbeans_v1.0.x.java.lang.ref.Reference "ref" <-- WeakListener
+				Netbeans_v1.0.x.java.lang.ref.Reference "source" <-- WeakListener
+				WeakListener "weakListener" <-- ListenerReference
+				Netbeans_v1.0.x.java.lang.Object "proxy" <-- ProxyListener
+			}
+		}
+	}
+}
+@enduml

@@ -1,0 +1,47 @@
+@startuml
+package dpd_jdt {
+	package Res {
+		package name {
+			'Abstract class used to automate the creation of Components based on the XML Document and its Elements. It determines the Component type based on its element tag and "id" attribute). Concrete subclasses must override the <code>initTagTable</code> method and populate the tagTable with suggested components for the elements in the XML document. <p> This class contains two primary methods: <ul> <li><code>getSuggestedComponents</code> - for use by design tools.</li> <li><code>createComponents</code> - to automatically create and bind <code>Components</code> at runtime.</li> </ul>
+			abstract class ComponentFactory {
+				{const} ID_DELIMITER: java.lang.String = __
+				{const} TEMPLATE_NODE: java.lang.String = TEMPLATE_NODE
+				#tagTable: java.util.Hashtable
+				'Default constructor which initializes tag table by calling initTagTable
+				<<Create>> ComponentFactory()
+				'Create a component for given element and set its properties.
+				'@param id the id of the Element to create the Component for.
+				'@param element the Element to create the Component for.
+				'@param holders the array of ValueHolders for binding
+				#createComponentForElement(id : java.lang.String, element : org.w3c.dom.Element, holders : ValueHolder): Component
+				'<p>Creates components based on document, set their properties (including valueHolder) and adds them to the container. As it moves through the document, it first checks to see if the component is already in the container (by matching id's). If it is, the existing component is moved to the proper place in the heirarchy. Otherwise it will create a component. </p> <p>This method builds a component heirarchy which matches the document order and heirarchy. If any newly created component is itself a Container type, then all children of that component are added to it rather than its parent container. </p> <p>Only bound components which are bound to one of the given value holders are created.</p>
+				'@param container the Container to add components to
+				'@param holders an array of valueholders.
+				createComponents(container : Container, holders : ValueHolder)
+				'<p>Creates components based on document, set their properties (including valueHolder) and adds them to the container. As it moves through the document, it first checks to see if the component is already in the container (by matching id's). If it is, the existing component is moved to the proper place in the heirarchy. Otherwise it will create a component. </p> <p>This method builds a component heirarchy which matches the document order and heirarchy. If any newly created component is itself a Container type, then all children of that component are added to it rather than its parent container. </p> <p>Only bound components which are bound to one of the given value holders are created.</p>
+				'@param parentNode the parent node of the children to process and recurse
+				'@param parentContainer the current Container to add components to
+				'@param holders an array of valueholders.
+				'@param rootContainer the top Container which may contain existingComponents
+				-createComponents(parentNode : org.w3c.dom.Node, parentContainer : Container, holders : ValueHolder, rootContainer : Container)
+				'Returns a Vector of suggested Component class names for given Element. This method will choose the appropriate Components based on the type of Element given.  The default Component type will be the first in the list. <p> If the Element has an ID, then the DocumentElement Component will be added to the end of the suggestion list. <p> If the id contains the TEMPLATE_NODE keyword, then a Template will be added to the top of the suggestion list. <p> If there are no suggested types of Component for the given Element, then an empty Vector will be returned. <p> Subclasses should override this method if more than the Element tag name is needed to determine the suggested components.
+				'@param element to return default Component type for
+				'@return a Vector containing any suggested Component class names
+				getSuggestedComponents(element : org.w3c.dom.Element): java.util.Vector
+				'Returns a Vector of suggested Component class names for given Element. This method will choose the appropriate Components based on the type of tag given.  The default Component type will be the first in the list. <p> If an ID is given, then the DocumentElement Component will be added to the end of the suggestion list. <p> If the id contains the TEMPLATE_NODE keyword, then a Template will be added to the top of the suggestion list. <p> If an ID is given and the id does not contain the TEMPLATE_NODE keyword, but the given element has child nodes, then a Template will be added before the DocumentElement suggestion. <p> If there are no suggested types of Component for the given tag, then an empty Vector will be returned.
+				'@param tagName to return default Component type for
+				'@param id of the tag or null
+				'@param element the Element to get suggestions for
+				'@return a Vector containing any suggested Component class names
+				#getSuggestedComponents(tagName : java.lang.String, id : java.lang.String, element : org.w3c.dom.Element): java.util.Vector
+				'Initialize values in the tag table
+				#initTagTable()
+				-traceCreateComponents(msg : java.lang.String)
+			}
+		}
+	}
+	java.lang.String "ID_DELIMITER" <-- Res.name.ComponentFactory
+	java.lang.String "TEMPLATE_NODE" <-- Res.name.ComponentFactory
+	java.util.Hashtable "tagTable" <-- Res.name.ComponentFactory
+}
+@enduml

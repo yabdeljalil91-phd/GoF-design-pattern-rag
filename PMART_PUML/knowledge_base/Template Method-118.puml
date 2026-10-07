@@ -1,0 +1,5 @@
+@startuml
+'Design pattern Template Method
+package "10 - Nutch v0.4" as 10_-_Nutch_v0.4 {
+}
+@enduml

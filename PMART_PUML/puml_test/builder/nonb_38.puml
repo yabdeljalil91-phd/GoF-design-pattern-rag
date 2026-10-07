@@ -1,0 +1,24 @@
+@startuml
+package dpd_jdt {
+	package Builder {
+		package nonbuilder {
+			'Exits after this menu option is selected
+			'@author     Chris Seguin
+			'@created    August 2, 1999
+			class ExitMenuSelection {
+				<<Create>> ExitMenuSelection()
+				'Exits when this menu items is selected
+				'@param evt  The triggering event
+				actionPerformed(evt : java.awt.event.ActionEvent)
+				'Close everything down
+				-finish()
+				'The window is closing
+				'@param evt  Description of Parameter
+				windowClosing(evt : java.awt.event.WindowEvent)
+			}
+		}
+	}
+	java.awt.event.ActionListener <|.. Builder.nonbuilder.ExitMenuSelection
+	java.awt.event.WindowAdapter <|-- Builder.nonbuilder.ExitMenuSelection
+}
+@enduml

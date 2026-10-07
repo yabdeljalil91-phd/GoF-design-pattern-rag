@@ -1,0 +1,170 @@
+@startuml
+'Design pattern Iterator
+package "Netbeans v1.0.x" as Netbeans_v1.0.x {
+	package org {
+		package openide {
+			'/** 
+			' * Implements a basic "wizard" GUI system. A list of <em>wizard panels</em> may be specified and these may be traversed at the proper times using the "Previous" and "Next" buttons (or "Finish" on the last one).
+			' * @author Ian Formanek, Jaroslav Tulach
+			' */
+			'DP role: client
+			'DP role: concreteAggregate
+			class WizardDescriptor {
+				-{const} CLOSE_PREVENTER: Netbeans_v1.0.x.java.awt.event.ActionListener
+				{const} FINISH_OPTION: Netbeans_v1.0.x.java.lang.Object
+				{const} NEXT_OPTION: Netbeans_v1.0.x.java.lang.Object
+				{const} PREVIOUS_OPTION: Netbeans_v1.0.x.java.lang.Object
+				-cancelButton: Netbeans_v1.0.x.javax.swing.JButton
+				-current: Panel
+				-finishButton: Netbeans_v1.0.x.javax.swing.JButton
+				-listener: Listener
+				-nextButton: Netbeans_v1.0.x.javax.swing.JButton
+				-panels: Iterator
+				-previousButton: Netbeans_v1.0.x.javax.swing.JButton
+				-properties: Netbeans_v1.0.x.java.util.Map
+				-settings: Netbeans_v1.0.x.java.lang.Object
+				-titleFormat: Netbeans_v1.0.x.java.text.MessageFormat
+				'/** 
+				' * Create a new wizard from a fixed list of panels, passing some settings to the panels.
+				' * @param wizardPanels the panels to use
+				' * @param settings the settings to pass to panels, or <code>null</code>
+				' * @see #WizardDescriptor(WizardDescriptor.Iterator,Object)
+				' */
+				<<Create>> WizardDescriptor(wizardPanels : Panel, settings : Netbeans_v1.0.x.java.lang.Object)
+				'/** 
+				' * Create a new wizard from a fixed list of panels with settings defaulted to <CODE>this</CODE>.
+				' * @param wizardPanels the panels to use
+				' * @see #WizardDescriptor(WizardDescriptor.Iterator,Object)
+				' */
+				<<Create>> WizardDescriptor(wizardPanels : Panel)
+				'/** 
+				' * Create wizard for a sequence of panels, passing some settings to the panels.
+				' * @param panels iterator over all {@link WizardDescriptor.Panel}s that can appear in the wizard
+				' * @param settings the settings to provide to the panels (may be any data understood by them)
+				' * @see WizardDescriptor.Panel#readSettings
+				' * @see WizardDescriptor.Panel#storeSettings
+				' */
+				<<Create>> WizardDescriptor(panels : Iterator, settings : Netbeans_v1.0.x.java.lang.Object)
+				'/** 
+				' * Create wizard for a sequence of panels, with settings defaulted to <CODE>this</CODE>.
+				' * @param panels iterator over all {@link WizardDescriptor.Panel}s that can appear in the wizard
+				' */
+				<<Create>> WizardDescriptor(panels : Iterator)
+				'/** 
+				' * Converts some options.
+				' */
+				-convertOptions(options : Netbeans_v1.0.x.java.lang.Object): Netbeans_v1.0.x.java.lang.Object
+				'/** 
+				' * Getter for stored property.
+				' * @param name name of the property
+				' * @return the value
+				' */
+				getProperty(name : Netbeans_v1.0.x.java.lang.String): Netbeans_v1.0.x.java.lang.Object
+				'/** 
+				' * Getter for current format to be used to format title.
+				' * @return the format
+				' * @see #setTitleFormat
+				' */
+				getTitleFormat(): Netbeans_v1.0.x.java.text.MessageFormat
+				'/** 
+				' * Allows Panels that use WizardDescriptor as settings object to store additional settings into it.
+				' * @param name name of the property
+				' * @param value value of property
+				' */
+				putProperty(name : Netbeans_v1.0.x.java.lang.String, value : Netbeans_v1.0.x.java.lang.Object)
+				'/** 
+				' * @param options the options to set
+				' */
+				setAdditionalOptions(options : Netbeans_v1.0.x.java.lang.Object)
+				'/** 
+				' * @param options the options to set
+				' */
+				setClosingOptions(options : Netbeans_v1.0.x.java.lang.Object)
+				'/** 
+				' * Set options permitted by the wizard considered as a <code>DialogDescriptor</code>. Substitutes tokens such as  {@link #NEXT_OPTION} with the actual button.
+				' * @param options the options to set
+				' */
+				setOptions(options : Netbeans_v1.0.x.java.lang.Object)
+				'/** 
+				' * Set a different list of panels. Correctly updates the buttons.
+				' * @param panels the new list of {@link WizardDescriptor.Panel}s 
+				' */
+				setPanels(panels : Iterator)
+				'/** 
+				' * Sets the message format to create title of the wizard. The format can take two parameters. The name of the current component and the name returned by the iterator that defines the order of panels. The default value is something like <PRE> {0} wizard {1} </PRE> That can be expanded to something like this <PRE> EJB wizard (1 of 8) </PRE> This method allows anybody to provide own title format.
+				' * @param format message format to the title
+				' */
+				setTitleFormat(format : Netbeans_v1.0.x.java.text.MessageFormat)
+				'/** 
+				' * Updates buttons to reflect the current state of the panels. Can be overridden by subclasses to change the options to special values. In such a case use: <p><code><PRE> super.updateState (); setOptions (...); </PRE></code>
+				' */
+				#updateState()
+			}
+			DialogDescriptor <|-- WizardDescriptor
+			NotifyDescriptor <|-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.Object "CANCEL_OPTION" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "CLOSED_OPTION" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "DEFAULT_OPTION" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "ERROR_MESSAGE" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "INFORMATION_MESSAGE" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "MAXIMUM_TEXT_WIDTH" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "NO_OPTION" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "OK_CANCEL_OPTION" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "OK_OPTION" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "PLAIN_MESSAGE" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_DETAIL" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_MESSAGE" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_MESSAGE_TYPE" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_OPTIONS" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_OPTION_TYPE" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_TITLE" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_VALUE" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "QUESTION_MESSAGE" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "WARNING_MESSAGE" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "YES_NO_CANCEL_OPTION" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "YES_NO_OPTION" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "YES_OPTION" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "adOptions 0..*" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.beans.PropertyChangeSupport "changeSupport" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "message" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "messageType" <-- NotifyDescriptor
+			JavaPrimitiveTypes.int "optionType" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "options 0..*" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.String "title" <-- NotifyDescriptor
+			Netbeans_v1.0.x.java.lang.Object "value" <-- NotifyDescriptor
+			JavaPrimitiveTypes.long "serialVersionUID" <-- Exception
+			Netbeans_v1.0.x.javax.swing.JTextField "textField" <-- InputLine
+			JavaPrimitiveTypes.int "BOTTOM_ALIGN" <-- DialogDescriptor
+			JavaPrimitiveTypes.int "DEFAULT_ALIGN" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.Object "DEFAULT_CLOSING_OPTIONS 0..*" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_BUTTON_LISTENER" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_CLOSING_OPTIONS" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_HELP_CTX" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_MODAL" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.String "PROP_OPTIONS_ALIGN" <-- DialogDescriptor
+			JavaPrimitiveTypes.int "RIGHT_ALIGN" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.awt.event.ActionListener "buttonListener" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.lang.Object "closingOptions 0..*" <-- DialogDescriptor
+			Netbeans_v1.0.x.org.openide.util.HelpCtx "helpCtx" <-- DialogDescriptor
+			JavaPrimitiveTypes.boolean "modal" <-- DialogDescriptor
+			JavaPrimitiveTypes.int "optionsAlign" <-- DialogDescriptor
+			Netbeans_v1.0.x.java.awt.event.ActionListener "CLOSE_PREVENTER" <-- WizardDescriptor
+			Netbeans_v1.0.x.java.lang.Object "FINISH_OPTION" <-- WizardDescriptor
+			Netbeans_v1.0.x.java.lang.Object "NEXT_OPTION" <-- WizardDescriptor
+			Netbeans_v1.0.x.java.lang.Object "PREVIOUS_OPTION" <-- WizardDescriptor
+			Netbeans_v1.0.x.javax.swing.JButton "cancelButton" <-- WizardDescriptor
+			Panel "current" <-- WizardDescriptor
+			Netbeans_v1.0.x.javax.swing.JButton "finishButton" <-- WizardDescriptor
+			Listener "listener" <-- WizardDescriptor
+			Netbeans_v1.0.x.javax.swing.JButton "nextButton" <-- WizardDescriptor
+			Iterator "panels" <-- WizardDescriptor
+			Netbeans_v1.0.x.javax.swing.JButton "previousButton" <-- WizardDescriptor
+			Netbeans_v1.0.x.java.util.Map "properties" <-- WizardDescriptor
+			Netbeans_v1.0.x.java.lang.Object "settings" <-- WizardDescriptor
+			Netbeans_v1.0.x.java.text.MessageFormat "titleFormat" <-- WizardDescriptor
+			JavaPrimitiveTypes.int "index" <-- ArrayIterator
+			Panel "panels 0..*" <-- ArrayIterator
+		}
+	}
+}
+@enduml

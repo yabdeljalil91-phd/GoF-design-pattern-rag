@@ -1,0 +1,94 @@
+@startuml
+package "DrJava v20030203" as DrJava_v20030203 {
+	package edu {
+		package rice {
+			package cs {
+				package drjava {
+					package config {
+						class VectorOption {
+							delim: JavaPrimitiveTypes.char
+							footer: DrJava_v20030203.java.lang.String
+							#<<TemplateBinding>> formatter: FormatStrategy
+							header: DrJava_v20030203.java.lang.String
+							#<<TemplateBinding>> parser: ParseStrategy
+						}
+						interface FormatStrategy {
+							format(val : T): DrJava_v20030203.java.lang.String
+						}
+						interface ParseStrategy {
+							parse(val : DrJava_v20030203.java.lang.String): T
+						}
+						class KeyStrokeOption {
+							{const} NULL_KEYSTROKE: DrJava_v20030203.javax.swing.KeyStroke
+							{static} keys: DrJava_v20030203.java.util.Hashtable
+							<<Create>> KeyStrokeOption(key : DrJava_v20030203.java.lang.String, def : DrJava_v20030203.javax.swing.KeyStroke)
+							-_isMacPlatform(): JavaPrimitiveTypes.boolean
+							format(k : DrJava_v20030203.javax.swing.KeyStroke): DrJava_v20030203.java.lang.String
+							parse(s : DrJava_v20030203.java.lang.String): DrJava_v20030203.javax.swing.KeyStroke
+						}
+						class StringOption {
+							<<Create>> StringOption(key : DrJava_v20030203.java.lang.String, def : DrJava_v20030203.java.lang.String)
+							format(s : DrJava_v20030203.java.lang.String): DrJava_v20030203.java.lang.String
+							parse(s : DrJava_v20030203.java.lang.String): DrJava_v20030203.java.lang.String
+						}
+						class BooleanOption {
+							<<Create>> BooleanOption(key : DrJava_v20030203.java.lang.String, def : DrJava_v20030203.java.lang.Boolean)
+							parse(s : DrJava_v20030203.java.lang.String): DrJava_v20030203.java.lang.Boolean
+						}
+						class ColorOption {
+							<<Create>> ColorOption(key : DrJava_v20030203.java.lang.String, def : DrJava_v20030203.java.awt.Color)
+							format(c : DrJava_v20030203.java.awt.Color): DrJava_v20030203.java.lang.String
+							parse(s : DrJava_v20030203.java.lang.String): DrJava_v20030203.java.awt.Color
+						}
+						class FileOption {
+							{const} NULL_FILE: DrJava_v20030203.java.io.File
+							<<Create>> FileOption(key : DrJava_v20030203.java.lang.String, def : DrJava_v20030203.java.io.File)
+							format(f : DrJava_v20030203.java.io.File): DrJava_v20030203.java.lang.String
+							parse(s : DrJava_v20030203.java.lang.String): DrJava_v20030203.java.io.File
+						}
+						class IntegerOption {
+							<<Create>> IntegerOption(key : DrJava_v20030203.java.lang.String, def : DrJava_v20030203.java.lang.Integer)
+							parse(s : DrJava_v20030203.java.lang.String): DrJava_v20030203.java.lang.Integer
+						}
+						class NonNegativeIntegerOption {
+							<<Create>> NonNegativeIntegerOption(key : DrJava_v20030203.java.lang.String, def : DrJava_v20030203.java.lang.Integer)
+							parse(s : DrJava_v20030203.java.lang.String): DrJava_v20030203.java.lang.Integer
+						}
+						class FontOption {
+							<<Create>> FontOption(key : DrJava_v20030203.java.lang.String, def : DrJava_v20030203.java.awt.Font)
+							format(f : DrJava_v20030203.java.awt.Font): DrJava_v20030203.java.lang.String
+							parse(s : DrJava_v20030203.java.lang.String): DrJava_v20030203.java.awt.Font
+						}
+						Option <|-- KeyStrokeOption
+						OptionParser <|-- Option
+						FormatStrategy <|.. Option
+						ParseStrategy <|.. OptionParser
+						OptionMap <|.. DefaultOptionMap
+						Option <|-- StringOption
+						Option <|-- BooleanOption
+						Option <|-- ColorOption
+						Option <|-- FileOption
+						Option <|-- IntegerOption
+						IntegerOption <|-- NonNegativeIntegerOption
+						Option <|-- FontOption
+						JavaPrimitiveTypes.char "delim" <-- VectorOption
+						DrJava_v20030203.java.lang.String "footer" <-- VectorOption
+						FormatStrategy "formatter" <-- VectorOption
+						DrJava_v20030203.java.lang.String "header" <-- VectorOption
+						ParseStrategy "parser" <-- VectorOption
+						DrJava_v20030203.javax.swing.KeyStroke "defaultValue" <-- OptionParser
+						DrJava_v20030203.java.lang.String "name" <-- OptionParser
+						DrJava_v20030203.java.lang.Exception "_startupException" <-- Configuration
+						OptionMap "map" <-- Configuration
+						Option "option" <-- OptionEvent
+						T "value" <-- OptionEvent
+						DrJava_v20030203.javax.swing.KeyStroke "NULL_KEYSTROKE" <-- KeyStrokeOption
+						DrJava_v20030203.java.util.Hashtable "keys" <-- KeyStrokeOption
+						DrJava_v20030203.java.io.File "NULL_FILE" <-- FileOption
+					}
+				}
+			}
+		}
+	}
+}
+@enduml

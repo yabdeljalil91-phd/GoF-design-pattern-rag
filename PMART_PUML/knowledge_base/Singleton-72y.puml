@@ -1,0 +1,14 @@
+@startuml
+' Singleton class UML for Version (JUnit 3.7)
+
+package "JUnit v3.7" as JUnit {
+
+    class Version {
+        ' Protected constructor to prevent instantiation
+        #Version()
+
+        ' Static method returning the version ID
+        {static} id(): String
+    }
+}
+@enduml

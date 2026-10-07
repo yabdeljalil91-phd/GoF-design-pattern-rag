@@ -1,0 +1,95 @@
+@startuml
+package dpd_jdt {
+	package text {
+		package name {
+			'Determines what the current summary is based on the information from the IDE.
+			'@author    Chris Seguin
+			abstract class CurrentSummary {
+				-fileSummary: FileSummary
+				-{static} text: CurrentSummary
+				-summary: Summary
+				#upToDate: JavaPrimitiveTypes.boolean
+				'Constructor for the CurrentSummary object
+				#<<Create>> CurrentSummary()
+				'Method that receives notification when the editor changes
+				'@param evt  Description of Parameter
+				changedUpdate(evt : javax.swing.event.DocumentEvent)
+				'Description of the Method
+				'@return    Description of the Returned Value
+				-find(): Summary
+				'Description of the Method
+				'@param next        Description of Parameter
+				'@param lineNumber  Description of Parameter
+				'@return             Description of the Returned Value
+				-findSummaryInType(next : TypeSummary, lineNumber : JavaPrimitiveTypes.int): Summary
+				'Method to get the text object
+				'@return    the current summary
+				{static} get(): CurrentSummary
+				'Gets the ActiveFile attribute of the CurrentSummary object
+				'@return    The ActiveFile value
+				#getActiveFile(): java.io.File
+				'Gets the CurrentSummary attribute of the CurrentSummary object
+				'@return    The CurrentSummary value
+				getCurrentSummary(): Summary
+				'Gets the InType attribute of the CurrentSummary object
+				'@param fileSummary  Description of Parameter
+				'@param lineNumber   Description of Parameter
+				'@return              The InType value
+				-getInType(fileSummary : FileSummary, lineNumber : JavaPrimitiveTypes.int): Summary
+				'Returns the initial line number
+				'@return    The LineNumber value
+				#getLineNumber(): JavaPrimitiveTypes.int
+				'Gets the reloader
+				'@return    The MetadataReloader value
+				#getMetadataReloader(): MultipleDirClassDiagramReloader
+				'Method that receives notification when the editor changes
+				'@param evt  Description of Parameter
+				insertUpdate(evt : javax.swing.event.DocumentEvent)
+				'Gets the InField attribute of the CurrentSummary object
+				'@param typeSummary  Description of Parameter
+				'@param lineNumber   Description of Parameter
+				'@return              The InField value
+				-isInField(typeSummary : TypeSummary, lineNumber : JavaPrimitiveTypes.int): Summary
+				'Gets the InMethod attribute of the CurrentSummary object
+				'@param typeSummary  Description of Parameter
+				'@param lineNumber   Description of Parameter
+				'@return              The InMethod value
+				-isInMethod(typeSummary : TypeSummary, lineNumber : JavaPrimitiveTypes.int): Summary
+				'Gets the InNestedClass attribute of the CurrentSummary object
+				'@param typeSummary  Description of Parameter
+				'@param lineNumber   Description of Parameter
+				'@return              The InNestedClass value
+				-isInNestedClass(typeSummary : TypeSummary, lineNumber : JavaPrimitiveTypes.int): Summary
+				'Gets the InSameSummary attribute of the CurrentSummary object
+				'@return    The InSameSummary value
+				-isInSameSummary(): JavaPrimitiveTypes.boolean
+				'Gets the SameNode attribute of the CurrentSummary object
+				'@return    The SameNode value
+				-isSameFile(): JavaPrimitiveTypes.boolean
+				'Only does one find at a time
+				-lockAccess()
+				'Register the current summary
+				'@param value  Description of Parameter
+				{static} register(value : CurrentSummary)
+				'Register with the current document
+				#registerWithCurrentDocument()
+				'Description of the Method
+				'@return                  Description of the Returned Value
+				'@exception IOException  Description of Exception
+				-reloadNode(): FileSummary
+				'Method that receives notification when the editor changes
+				'@param evt  Description of Parameter
+				removeUpdate(evt : javax.swing.event.DocumentEvent)
+				'Description of the Method
+				reset()
+				'Reloads all the metadata before attempting to perform a refactoring.
+				updateMetaData()
+			}
+		}
+	}
+	javax.swing.event.DocumentListener <|.. text.name.CurrentSummary
+	text.name.FileSummary "fileSummary" <-- text.name.CurrentSummary
+	text.name.Summary "summary" <-- text.name.CurrentSummary
+	JavaPrimitiveTypes.boolean "upToDate" <-- text.name.CurrentSummary
+}
+@enduml
